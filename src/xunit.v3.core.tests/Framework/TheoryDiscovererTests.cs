@@ -692,4 +692,166 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 		[MyData]
 		public void TestMethod(int _) { }
 	}
+
+	[Fact]
+	public async ValueTask IncludeTestCaseIndex_SetToFalse_YieldsTestCasesWithoutIndex()
+	{
+		discoveryOptions.SetPreEnumerateTheories(true);
+		var discoverer = new TheoryDiscoverer();
+		var testMethod = TestData.XunitTestMethod<IndexedTheoryClass_WithoutIndex>(nameof(IndexedTheoryClass_WithoutIndex.TheoryMethod));
+		var factAttribute = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
+
+		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttribute)).ToList();
+
+		Assert.Collection(
+			testCases.Select(tc => tc.TestCaseDisplayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithoutIndex).FullName}.{nameof(IndexedTheoryClass_WithoutIndex.TheoryMethod)}(_: 1)", displayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithoutIndex).FullName}.{nameof(IndexedTheoryClass_WithoutIndex.TheoryMethod)}(_: 2)", displayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithoutIndex).FullName}.{nameof(IndexedTheoryClass_WithoutIndex.TheoryMethod)}(_: 3)", displayName)
+		);
+	}
+
+	class IndexedTheoryClass_WithoutIndex
+	{
+		[Theory(IncludeTestCaseIndex = false)]
+		[InlineData(1)]
+		[InlineData(2)]
+		[InlineData(3)]
+		public void TheoryMethod(int _) { }
+	}
+
+	[Fact]
+	public async ValueTask IncludeTestCaseIndex_SetToTrue_YieldsTestCasesWithZeroPaddedIndex()
+	{
+		discoveryOptions.SetPreEnumerateTheories(true);
+		var discoverer = new TheoryDiscoverer();
+		var testMethod = TestData.XunitTestMethod<IndexedTheoryClass_WithIndex>(nameof(IndexedTheoryClass_WithIndex.TheoryMethod));
+		var factAttribute = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
+
+		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttribute)).ToList();
+
+		Assert.Collection(
+			testCases.Select(tc => tc.TestCaseDisplayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_01(_: 1)", displayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_02(_: 2)", displayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_03(_: 3)", displayName)
+		);
+	}
+
+	class IndexedTheoryClass_WithIndex
+	{
+		[Theory(IncludeTestCaseIndex = true)]
+		[InlineData(1)]
+		[InlineData(2)]
+		[InlineData(3)]
+		public void TheoryMethod(int _) { }
+	}
+
+	[Fact]
+	public async ValueTask IncludeTestCaseIndex_SetToTrue_IndexPaddingScalesWithCount()
+	{
+		discoveryOptions.SetPreEnumerateTheories(true);
+		var discoverer = new TheoryDiscoverer();
+		var testMethod = TestData.XunitTestMethod<IndexedTheoryClass_WithLargeDataSet>(nameof(IndexedTheoryClass_WithLargeDataSet.TheoryMethod));
+		var factAttribute = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
+
+		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttribute)).ToList();
+
+		Assert.Equal($"{typeof(IndexedTheoryClass_WithLargeDataSet).FullName}.{nameof(IndexedTheoryClass_WithLargeDataSet.TheoryMethod)}_001(_: 1)", testCases.First().TestCaseDisplayName);
+		Assert.Equal($"{typeof(IndexedTheoryClass_WithLargeDataSet).FullName}.{nameof(IndexedTheoryClass_WithLargeDataSet.TheoryMethod)}_100(_: 100)", testCases.Last().TestCaseDisplayName);
+	}
+
+	class IndexedTheoryClass_WithLargeDataSet
+	{
+		public static IEnumerable<TheoryDataRow<int>> Data =>
+			Enumerable.Range(1, 100).Select(i => new TheoryDataRow<int>(i));
+
+		[Theory(IncludeTestCaseIndex = true)]
+		[MemberData(nameof(Data))]
+		public void TheoryMethod(int _) { }
+	}
+
+	[Fact]
+	public async ValueTask IncludeTestCaseIndex_SetToTrueWithLabel_YieldsIndexedDisplayNameWithLabel()
+	{
+		discoveryOptions.SetPreEnumerateTheories(true);
+		var discoverer = new TheoryDiscoverer();
+		var testMethod = TestData.XunitTestMethod<IndexedTheoryClass_WithLabel>(nameof(IndexedTheoryClass_WithLabel.TheoryMethod));
+		var factAttribute = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
+
+		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttribute)).ToList();
+
+		Assert.Collection(
+			testCases.Select(tc => tc.TestCaseDisplayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithLabel).FullName}.{nameof(IndexedTheoryClass_WithLabel.TheoryMethod)}_01 [smoke]", displayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithLabel).FullName}.{nameof(IndexedTheoryClass_WithLabel.TheoryMethod)}_02 [smoke]", displayName)
+		);
+	}
+
+	class IndexedTheoryClass_WithLabel
+	{
+		public static IEnumerable<TheoryDataRow<int>> Data =>
+			[new TheoryDataRow<int>(1) { Label = "smoke" }, new TheoryDataRow<int>(2) { Label = "smoke" }];
+
+		[Theory(IncludeTestCaseIndex = true)]
+		[MemberData(nameof(Data))]
+		public void TheoryMethod(int _) { }
+	}
+
+	[Fact]
+	public async ValueTask IncludeTestCaseIndex_SetToTrueWithTestDisplayName_YieldsIndexedCustomDisplayName()
+	{
+		discoveryOptions.SetPreEnumerateTheories(true);
+		var discoverer = new TheoryDiscoverer();
+		var testMethod = TestData.XunitTestMethod<IndexedTheoryClass_WithTestDisplayName>(nameof(IndexedTheoryClass_WithTestDisplayName.TheoryMethod));
+		var factAttribute = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
+
+		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttribute)).ToList();
+
+		Assert.Collection(
+			testCases.Select(tc => tc.TestCaseDisplayName),
+			displayName => Assert.Equal("first case_01(_: 1)", displayName),
+			displayName => Assert.Equal("second case_02(_: 2)", displayName)
+		);
+	}
+
+	class IndexedTheoryClass_WithTestDisplayName
+	{
+		public static IEnumerable<TheoryDataRow<int>> Data =>
+			[new TheoryDataRow<int>(1) { TestDisplayName = "first case" }, new TheoryDataRow<int>(2) { TestDisplayName = "second case" }];
+
+		[Theory(IncludeTestCaseIndex = true)]
+		[MemberData(nameof(Data))]
+		public void TheoryMethod(int _) { }
+	}
+
+	[Fact]
+	public async ValueTask IncludeTestCaseIndex_SetToTrueWithLabelAndTestDisplayName_TestDisplayNameTakesPrecedence()
+	{
+		discoveryOptions.SetPreEnumerateTheories(true);
+		var discoverer = new TheoryDiscoverer();
+		var testMethod = TestData.XunitTestMethod<IndexedTheoryClass_WithLabelAndTestDisplayName>(nameof(IndexedTheoryClass_WithLabelAndTestDisplayName.TheoryMethod));
+		var factAttribute = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
+
+		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttribute)).ToList();
+
+		Assert.Collection(
+			testCases.Select(tc => tc.TestCaseDisplayName),
+			displayName => Assert.Equal("my custom name_01 [smoke]", displayName),
+			displayName => Assert.Equal("my custom name_02 [smoke]", displayName)
+		);
+	}
+
+	class IndexedTheoryClass_WithLabelAndTestDisplayName
+	{
+		public static IEnumerable<TheoryDataRow<int>> Data =>
+		[
+			new TheoryDataRow<int>(1) { TestDisplayName = "my custom name", Label = "smoke" },
+			new TheoryDataRow<int>(2) { TestDisplayName = "my custom name", Label = "smoke" },
+		];
+
+		[Theory(IncludeTestCaseIndex = true)]
+		[MemberData(nameof(Data))]
+		public void TheoryMethod(int _) { }
+	}
 }

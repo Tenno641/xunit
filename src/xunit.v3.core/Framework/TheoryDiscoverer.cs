@@ -309,12 +309,8 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 		if (index is null)
 			return null;
 
-		int paddingWidth = GetPaddingWidth(index.Value);
-
-		string testCaseIndex = $"_{index.Value.ToString($"D{paddingWidth}", CultureInfo.CurrentCulture)}";
+		string testCaseIndex = $"_{index.Value.ToString($"D3", CultureInfo.CurrentCulture)}";
 
 		return testCaseIndex;
 	}
-
-	private static int GetPaddingWidth(int index) => index <= 99 ? 2 : index <= 999 ? 3 : 4;
 }
