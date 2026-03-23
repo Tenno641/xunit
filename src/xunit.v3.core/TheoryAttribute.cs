@@ -29,4 +29,7 @@ public class TheoryAttribute(
 
 	/// <inheritdoc/>
 	public bool SkipTestWithoutData { get; set; }
+
+	/// <inheritdoc />
+	public bool IncludeTestCaseIndex { get; set;}
 }

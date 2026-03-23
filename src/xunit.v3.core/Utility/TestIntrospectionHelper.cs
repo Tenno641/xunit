@@ -12,7 +12,7 @@ namespace Xunit.v3;
 public static class TestIntrospectionHelper
 {
 	/// <summary>
-	/// Please use <see cref="GetTestCaseDetails(ITestFrameworkDiscoveryOptions, IXunitTestMethod, IFactAttribute, object?[], int?, string?, string?)"/>.
+	/// Please use <see cref="GetTestCaseDetails(ITestFrameworkDiscoveryOptions, IXunitTestMethod, IFactAttribute, object?[], int?, string?, string?, string?)"/>.
 	/// This overload will be removed in the next major version.
 	/// </summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
@@ -51,6 +51,7 @@ public static class TestIntrospectionHelper
 	/// <param name="timeout">The optional timeout; if not provided, will be looked up from the <paramref name="factAttribute"/>.</param>
 	/// <param name="baseDisplayName">The optional base display name for the test method.</param>
 	/// <param name="label">The optional label to be used to help format the test case display name.</param>
+	/// <param name="index">The optional zero-padded index appended to the test case display name.</param>
 	public static (
 		string TestCaseDisplayName,
 		bool Explicit,
@@ -71,7 +72,8 @@ public static class TestIntrospectionHelper
 		object?[]? testMethodArguments = null,
 		int? timeout = null,
 		string? baseDisplayName = null,
-		string? label = null)
+		string? label = null,
+		string? index = null)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
@@ -81,11 +83,14 @@ public static class TestIntrospectionHelper
 		var defaultMethodDisplayOptions = discoveryOptions.MethodDisplayOptionsOrDefault();
 		var formatter = new DisplayNameFormatter(defaultMethodDisplay, defaultMethodDisplayOptions);
 
-		baseDisplayName ??= factAttribute.DisplayName;
+		if (baseDisplayName is not null)
+			baseDisplayName = $"{baseDisplayName}{index}";
+
+		baseDisplayName ??= factAttribute.DisplayName is not null ? $"{factAttribute.DisplayName}{index}" : null;
 		baseDisplayName ??=
 			defaultMethodDisplay == TestMethodDisplay.ClassAndMethod
-				? formatter.Format(string.Format(CultureInfo.CurrentCulture, "{0}.{1}", testMethod.TestClass.TestClassName, testMethod.MethodName))
-				: formatter.Format(testMethod.MethodName);
+				? formatter.Format(string.Format(CultureInfo.CurrentCulture, "{0}.{1}{2}", testMethod.TestClass.TestClassName, testMethod.MethodName, index))
+				: formatter.Format($"{testMethod.MethodName}{index}");
 
 		timeout ??= factAttribute.Timeout;
 
@@ -127,6 +132,7 @@ public static class TestIntrospectionHelper
 	/// <param name="theoryAttribute">The theory attribute that decorates the test method.</param>
 	/// <param name="dataRow">The data row for the test.</param>
 	/// <param name="testMethodArguments">The test method arguments obtained from the <paramref name="dataRow"/> after being type-resolved.</param>
+	/// <param name="index">The optional zero-padded index appended to the test case display name.</param>
 	public static (
 		string TestCaseDisplayName,
 		bool Explicit,
@@ -145,7 +151,8 @@ public static class TestIntrospectionHelper
 		IXunitTestMethod testMethod,
 		ITheoryAttribute theoryAttribute,
 		ITheoryDataRow dataRow,
-		object?[] testMethodArguments)
+		object?[] testMethodArguments,
+		string? index = null)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
@@ -153,7 +160,7 @@ public static class TestIntrospectionHelper
 		Guard.ArgumentNotNull(dataRow);
 		Guard.ArgumentNotNull(testMethodArguments);
 
-		var result = GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, testMethodArguments, dataRow.Timeout, dataRow.TestDisplayName, dataRow.Label);
+		var result = GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, testMethodArguments, dataRow.Timeout, dataRow.TestDisplayName, dataRow.Label, index);
 
 		if (dataRow.Explicit.HasValue)
 			result.Explicit = dataRow.Explicit.Value;

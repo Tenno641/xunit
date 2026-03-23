@@ -14,7 +14,8 @@ public class CulturedTheoryAttributeDiscoverer : TheoryDiscoverer
 		IXunitTestMethod testMethod,
 		ITheoryAttribute theoryAttribute,
 		ITheoryDataRow dataRow,
-		object?[] testMethodArguments)
+		object?[] testMethodArguments,
+		string? index = null)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
@@ -22,7 +23,7 @@ public class CulturedTheoryAttributeDiscoverer : TheoryDiscoverer
 		Guard.ArgumentNotNull(dataRow);
 		Guard.ArgumentNotNull(testMethodArguments);
 
-		var details = TestIntrospectionHelper.GetTestCaseDetailsForTheoryDataRow(discoveryOptions, testMethod, theoryAttribute, dataRow, testMethodArguments);
+		var details = TestIntrospectionHelper.GetTestCaseDetailsForTheoryDataRow(discoveryOptions, testMethod, theoryAttribute, dataRow, testMethodArguments, index);
 
 		if (theoryAttribute is not CulturedTheoryAttribute culturedTheoryAttribute)
 			return Error(
@@ -70,13 +71,14 @@ public class CulturedTheoryAttributeDiscoverer : TheoryDiscoverer
 	protected override ValueTask<IReadOnlyCollection<IXunitTestCase>> CreateTestCasesForTheory(
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		IXunitTestMethod testMethod,
-		ITheoryAttribute theoryAttribute)
+		ITheoryAttribute theoryAttribute,
+		string? index = null)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(theoryAttribute);
 
-		var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute);
+		var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, index: index);
 
 		if (theoryAttribute is not CulturedTheoryAttribute culturedTheoryAttribute)
 			return Error(
