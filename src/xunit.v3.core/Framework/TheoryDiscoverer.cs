@@ -173,7 +173,7 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 				{
 					if (!dataAttribute.SupportsDiscoveryEnumeration())
 						return await CreateTestCasesForTheory(discoveryOptions, testMethod, theoryAttribute);
-					
+
 					var data = await dataAttribute.GetData(testMethod.Method, disposalTracker);
 					if (disposalTracker.TrackedObjects.Count > 0)
 						return await CreateTestCasesForTheory(discoveryOptions, testMethod, theoryAttribute);

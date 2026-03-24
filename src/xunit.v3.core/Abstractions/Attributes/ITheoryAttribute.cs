@@ -32,5 +32,5 @@ public interface ITheoryAttribute : IFactAttribute
 	/// <see cref="ClassDataAttribute"/>) should include an auto-incremented, zero-padded
 	/// index in its display name.
 	/// </summary>
-	bool IncludeTestCaseIndex { get;}
+	bool IncludeTestCaseIndex { get; }
 }

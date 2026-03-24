@@ -31,5 +31,5 @@ public class TheoryAttribute(
 	public bool SkipTestWithoutData { get; set; }
 
 	/// <inheritdoc />
-	public bool IncludeTestCaseIndex { get; set;}
+	public bool IncludeTestCaseIndex { get; set; }
 }
