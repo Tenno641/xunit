@@ -732,9 +732,9 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 
 		Assert.Collection(
 			testCases.Select(tc => tc.TestCaseDisplayName),
-			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_01(_: 1)", displayName),
-			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_02(_: 2)", displayName),
-			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_03(_: 3)", displayName)
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_001(_: 1)", displayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_002(_: 2)", displayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithIndex).FullName}.{nameof(IndexedTheoryClass_WithIndex.TheoryMethod)}_003(_: 3)", displayName)
 		);
 	}
 
@@ -783,8 +783,8 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 
 		Assert.Collection(
 			testCases.Select(tc => tc.TestCaseDisplayName),
-			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithLabel).FullName}.{nameof(IndexedTheoryClass_WithLabel.TheoryMethod)}_01 [smoke]", displayName),
-			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithLabel).FullName}.{nameof(IndexedTheoryClass_WithLabel.TheoryMethod)}_02 [smoke]", displayName)
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithLabel).FullName}.{nameof(IndexedTheoryClass_WithLabel.TheoryMethod)}_001 [smoke]", displayName),
+			displayName => Assert.Equal($"{typeof(IndexedTheoryClass_WithLabel).FullName}.{nameof(IndexedTheoryClass_WithLabel.TheoryMethod)}_002 [smoke]", displayName)
 		);
 	}
 
@@ -810,8 +810,8 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 
 		Assert.Collection(
 			testCases.Select(tc => tc.TestCaseDisplayName),
-			displayName => Assert.Equal("first case_01(_: 1)", displayName),
-			displayName => Assert.Equal("second case_02(_: 2)", displayName)
+			displayName => Assert.Equal("first case_001(_: 1)", displayName),
+			displayName => Assert.Equal("second case_002(_: 2)", displayName)
 		);
 	}
 
@@ -837,8 +837,8 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 
 		Assert.Collection(
 			testCases.Select(tc => tc.TestCaseDisplayName),
-			displayName => Assert.Equal("my custom name_01 [smoke]", displayName),
-			displayName => Assert.Equal("my custom name_02 [smoke]", displayName)
+			displayName => Assert.Equal("my custom name_001 [smoke]", displayName),
+			displayName => Assert.Equal("my custom name_002 [smoke]", displayName)
 		);
 	}
 
