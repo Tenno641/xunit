@@ -25,4 +25,12 @@ public interface ITheoryAttribute : IFactAttribute
 	/// a lack of data.
 	/// </summary>
 	bool SkipTestWithoutData { get; }
+
+	/// <summary>
+	/// Gets a flag which indicates whether each test case generated from data sources
+	/// (<see cref="InlineDataAttribute"/>, <see cref="MemberDataAttribute"/>, and
+	/// <see cref="ClassDataAttribute"/>) should include an auto-incremented, zero-padded
+	/// index in its display name.
+	/// </summary>
+	bool IncludeTestCaseIndex { get; }
 }
