@@ -1118,7 +1118,9 @@ public partial class Xunit3TheoryAcceptanceTests
 		{
 			// Explicit conversion defined on the parameter's type
 			[Theory]
+#pragma warning disable xUnit1010  // This value isn't convertible in Native AOT
 			[InlineData("abc")]
+#pragma warning restore xUnit1010
 			public void ParameterDeclaredExplicitConversion(Explicit e)
 			{
 				Assert.Equal("abc", e.Value);
@@ -1126,7 +1128,9 @@ public partial class Xunit3TheoryAcceptanceTests
 
 			// Implicit conversion defined on the parameter's type
 			[Theory]
+#pragma warning disable xUnit1010  // This value isn't convertible in Native AOT
 			[InlineData("abc")]
+#pragma warning restore xUnit1010
 			public void ParameterDeclaredImplicitConversion(Implicit i)
 			{
 				Assert.Equal("abc", i.Value);
