@@ -55,7 +55,7 @@ partial class TestIntrospectionHelper
 		if (baseDisplayName is not null)
 			baseDisplayName = $"{baseDisplayName}{index}";
 
-		baseDisplayName ??= factAttribute.DisplayName is not null ? $"{factAttribute.DisplayName}{index}" : null; 
+		baseDisplayName ??= factAttribute.DisplayName is not null ? $"{factAttribute.DisplayName}{index}" : null;
 		baseDisplayName ??=
 			defaultMethodDisplay == TestMethodDisplay.ClassAndMethod
 				? formatter.Format(string.Format(CultureInfo.CurrentCulture, "{0}.{1}{2}", testMethod.TestClass.TestClassName, testMethod.MethodName, index))

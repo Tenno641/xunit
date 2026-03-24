@@ -257,7 +257,7 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 
 				if (results.Count == 0)
 				{
-					var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, index: FormatTestCaseIndex(++index)); 
+					var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, index: FormatTestCaseIndex(++index));
 					var message = string.Format(
 						CultureInfo.CurrentCulture,
 						"No data found for {0}.{1}",
