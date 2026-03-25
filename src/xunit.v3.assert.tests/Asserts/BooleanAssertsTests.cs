@@ -1,9 +1,9 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class BooleanAssertsTests
+public static class BooleanAssertsTests
 {
-	public class False
+	public static class False
 	{
 		[Fact]
 		public static void AssertFalse()
@@ -51,7 +51,7 @@ public class BooleanAssertsTests
 		}
 	}
 
-	public class True
+	public static class True
 	{
 		[Fact]
 		public static void AssertTrue()

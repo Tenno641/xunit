@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using Xunit;
 using Xunit.Sdk;
 
-public class DictionaryAssertsTests
+public static class DictionaryAssertsTests
 {
-	public class Contains
+	public static class Contains
 	{
 		[Fact]
 		public static void KeyInDictionary()
@@ -53,7 +53,7 @@ public class DictionaryAssertsTests
 		}
 	}
 
-	public class DoesNotContain
+	public static class DoesNotContain
 	{
 		[Fact]
 		public static void KeyNotInDictionary()

@@ -1,9 +1,9 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class EventAssertsTests
+public static class EventAssertsTests
 {
-	public class Raises_Action
+	public static class Raises_Action
 	{
 		[Fact]
 		public static void NoEventRaised()
@@ -85,7 +85,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class Raises_EventHandler
+	public static class Raises_EventHandler
 	{
 		[Fact]
 		public static void NoEventRaised()
@@ -170,7 +170,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class RaisesAny_Action
+	public static class RaisesAny_Action
 	{
 		[Fact]
 		public static void NoEventRaised()
@@ -229,7 +229,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class RaisesAny_EventHandler
+	public static class RaisesAny_EventHandler
 	{
 		[Fact]
 		public static void NoEventRaised()
@@ -344,7 +344,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class RaisesAnyAsync_Action
+	public static class RaisesAnyAsync_Action
 	{
 		[Fact]
 		public static async Task NoEventRaised()
@@ -403,7 +403,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class RaisesAnyAsync_EventHandler
+	public static class RaisesAnyAsync_EventHandler
 	{
 		[Fact]
 		public static async Task NoEventRaised()
@@ -518,7 +518,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class RaisesAsync_Action
+	public static class RaisesAsync_Action
 	{
 		[Fact]
 		public static async Task NoEventRaised()
@@ -600,7 +600,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class RaisesAsync_EventHandler
+	public static class RaisesAsync_EventHandler
 	{
 		[Fact]
 		public static async Task NoEventRaised()
@@ -665,7 +665,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class NotRaisedAny_Action
+	public static class NotRaisedAny_Action
 	{
 		[Fact]
 		public static void NoEventRaised()
@@ -706,7 +706,7 @@ public class EventAssertsTests
 
 	}
 
-	public class NotRaisedAny_EventHandler
+	public static class NotRaisedAny_EventHandler
 	{
 		[Fact]
 		public static void NoEventRaised()
@@ -746,7 +746,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class NotRaisedAnyAsync_Action
+	public static class NotRaisedAnyAsync_Action
 	{
 		[Fact]
 		public static async Task NoEventRaised()
@@ -786,7 +786,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class NotRaisedAnyAsync_EventHandler
+	public static class NotRaisedAnyAsync_EventHandler
 	{
 		[Fact]
 		public static async Task NoEventRaised()
@@ -826,7 +826,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class NotRaisedAny_NoArgs
+	public static class NotRaisedAny_NoArgs
 	{
 		[Fact]
 		public static void NoEventRaised()
@@ -862,7 +862,7 @@ public class EventAssertsTests
 		}
 	}
 
-	public class NotRaisedAnyAsync_NoArgs
+	public static class NotRaisedAnyAsync_NoArgs
 	{
 		[Fact]
 		public static async Task NoEventRaised()

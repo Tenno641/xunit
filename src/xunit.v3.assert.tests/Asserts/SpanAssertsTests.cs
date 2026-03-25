@@ -1,26 +1,26 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class SpanAssertsTests
+public static class SpanAssertsTests
 {
-	public class Contains
+	public static class Contains
 	{
-		public class Strings
+		public static class Strings
 		{
 			[Fact]
-			public void ReadOnlySpan_Success()
+			public static void ReadOnlySpan_Success()
 			{
 				Assert.Contains("wor".AsSpan(), "Hello, world!".AsSpan());
 			}
 
 			[Fact]
-			public void ReadWriteSpan_Success()
+			public static void ReadWriteSpan_Success()
 			{
 				Assert.Contains("wor".Spanify(), "Hello, world!".Spanify());
 			}
 
 			[Fact]
-			public void ReadOnlySpan_CaseSensitiveByDefault()
+			public static void ReadOnlySpan_CaseSensitiveByDefault()
 			{
 				var ex = Record.Exception(() => Assert.Contains("WORLD".AsSpan(), "Hello, world!".AsSpan()));
 
@@ -34,7 +34,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteSpan_CaseSensitiveByDefault()
+			public static void ReadWriteSpan_CaseSensitiveByDefault()
 			{
 				var ex = Record.Exception(() => Assert.Contains("WORLD".Spanify(), "Hello, world!".Spanify()));
 
@@ -48,19 +48,19 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadOnlySpan_CanSpecifyComparisonType()
+			public static void ReadOnlySpan_CanSpecifyComparisonType()
 			{
 				Assert.Contains("WORLD".AsSpan(), "Hello, world!".AsSpan(), StringComparison.OrdinalIgnoreCase);
 			}
 
 			[Fact]
-			public void ReadWriteSpan_CanSpecifyComparisonType()
+			public static void ReadWriteSpan_CanSpecifyComparisonType()
 			{
 				Assert.Contains("WORLD".Spanify(), "Hello, world!".Spanify(), StringComparison.OrdinalIgnoreCase);
 			}
 
 			[Fact]
-			public void ReadOnlySpan_NullStringIsEmpty()
+			public static void ReadOnlySpan_NullStringIsEmpty()
 			{
 				var ex = Record.Exception(() => Assert.Contains("foo".AsSpan(), default(string).AsSpan()));
 
@@ -74,7 +74,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteSpan_NullStringIsEmpty()
+			public static void ReadWriteSpan_NullStringIsEmpty()
 			{
 				var ex = Record.Exception(() => Assert.Contains("foo".Spanify(), default(string).Spanify()));
 
@@ -88,7 +88,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void VeryLongStrings()
+			public static void VeryLongStrings()
 			{
 				var ex = Record.Exception(
 					() => Assert.Contains(
@@ -107,34 +107,34 @@ public class SpanAssertsTests
 			}
 		}
 
-		public class NonStrings
+		public static class NonStrings
 		{
 			[Fact]
-			public void ReadOnlySpanOfInts_Success()
+			public static void ReadOnlySpanOfInts_Success()
 			{
 				Assert.Contains(new int[] { 3, 4 }.AsSpan(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.AsSpan());
 			}
 
 			[Fact]
-			public void ReadOnlySpanOfStrings_Success()
+			public static void ReadOnlySpanOfStrings_Success()
 			{
 				Assert.Contains(new string[] { "test", "it" }.AsSpan(), new string[] { "something", "interesting", "test", "it", "out" }.AsSpan());
 			}
 
 			[Fact]
-			public void ReadWriteSpanOfInts_Success()
+			public static void ReadWriteSpanOfInts_Success()
 			{
 				Assert.Contains(new int[] { 3, 4 }.Spanify(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.Spanify());
 			}
 
 			[Fact]
-			public void ReadWriteSpanOfStrings_Success()
+			public static void ReadWriteSpanOfStrings_Success()
 			{
 				Assert.Contains(new string[] { "test", "it" }.Spanify(), new string[] { "something", "interesting", "test", "it", "out" }.Spanify());
 			}
 
 			[Fact]
-			public void ReadOnlySpanOfInts_Failure()
+			public static void ReadOnlySpanOfInts_Failure()
 			{
 				var ex = Record.Exception(() => Assert.Contains(new int[] { 13, 14 }.AsSpan(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.AsSpan()));
 
@@ -148,7 +148,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteSpanOfInts_Failure()
+			public static void ReadWriteSpanOfInts_Failure()
 			{
 				var ex = Record.Exception(() => Assert.Contains(new int[] { 13, 14 }.Spanify(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.Spanify()));
 
@@ -162,7 +162,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void FindingNonEmptySpanInsideEmptySpanFails()
+			public static void FindingNonEmptySpanInsideEmptySpanFails()
 			{
 				var ex = Record.Exception(() => Assert.Contains(new int[] { 3, 4 }.Spanify(), Span<int>.Empty));
 
@@ -176,7 +176,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void FindingEmptySpanInsideAnySpanSucceeds()
+			public static void FindingEmptySpanInsideAnySpanSucceeds()
 			{
 				Assert.Contains(Span<int>.Empty, new int[] { 3, 4 }.Spanify());
 				Assert.Contains(Span<int>.Empty, Span<int>.Empty);
@@ -184,36 +184,36 @@ public class SpanAssertsTests
 		}
 	}
 
-	public class DoesNotContain
+	public static class DoesNotContain
 	{
-		public class Strings
+		public static class Strings
 		{
 			[Fact]
-			public void ReadOnlySpan_Success()
+			public static void ReadOnlySpan_Success()
 			{
 				Assert.DoesNotContain("hey".AsSpan(), "Hello, world!".AsSpan());
 			}
 
 			[Fact]
-			public void ReadWriteSpan_Success()
+			public static void ReadWriteSpan_Success()
 			{
 				Assert.DoesNotContain("hey".Spanify(), "Hello, world!".Spanify());
 			}
 
 			[Fact]
-			public void ReadOnlySpan_CaseSensitiveByDefault()
+			public static void ReadOnlySpan_CaseSensitiveByDefault()
 			{
 				Assert.DoesNotContain("WORLD".AsSpan(), "Hello, world!".AsSpan());
 			}
 
 			[Fact]
-			public void ReadWriteSpan_CaseSensitiveByDefault()
+			public static void ReadWriteSpan_CaseSensitiveByDefault()
 			{
 				Assert.DoesNotContain("WORLD".Spanify(), "Hello, world!".Spanify());
 			}
 
 			[Fact]
-			public void ReadOnlySpan_CanSpecifyComparisonType()
+			public static void ReadOnlySpan_CanSpecifyComparisonType()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("WORLD".AsSpan(), "Hello, world!".AsSpan(), StringComparison.OrdinalIgnoreCase));
 
@@ -228,7 +228,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteSpan_CanSpecifyComparisonType()
+			public static void ReadWriteSpan_CanSpecifyComparisonType()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("WORLD".Spanify(), "Hello, world!".Spanify(), StringComparison.OrdinalIgnoreCase));
 
@@ -243,7 +243,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadOnlySpan_Failure()
+			public static void ReadOnlySpan_Failure()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".AsSpan(), "Hello, world!".AsSpan()));
 
@@ -258,7 +258,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteSpan_Failure()
+			public static void ReadWriteSpan_Failure()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".Spanify(), "Hello, world!".Spanify()));
 
@@ -273,19 +273,19 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadOnlySpan_NullStringIsEmpty()
+			public static void ReadOnlySpan_NullStringIsEmpty()
 			{
 				Assert.DoesNotContain("foo".AsSpan(), default(string).AsSpan());
 			}
 
 			[Fact]
-			public void ReadWriteSpan_NullStringIsEmpty()
+			public static void ReadWriteSpan_NullStringIsEmpty()
 			{
 				Assert.DoesNotContain("foo".Spanify(), default(string).AsSpan());
 			}
 
 			[Fact]
-			public void VeryLongString_FoundAtFront()
+			public static void VeryLongString_FoundAtFront()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".AsSpan(), "Hello, world from a very long string that will end up being truncated".AsSpan()));
 
@@ -300,7 +300,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void VeryLongString_FoundInMiddle()
+			public static void VeryLongString_FoundInMiddle()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".AsSpan(), "This is a relatively long string that has 'Hello, world' placed in the middle so that we can dual trunaction".AsSpan()));
 
@@ -315,7 +315,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void VeryLongString_FoundAtEnd()
+			public static void VeryLongString_FoundAtEnd()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".AsSpan(), "This is a relatively long string that will from the front truncated, just to say 'Hello, world'".AsSpan()));
 
@@ -330,34 +330,34 @@ public class SpanAssertsTests
 			}
 		}
 
-		public class NonStrings
+		public static class NonStrings
 		{
 			[Fact]
-			public void ReadOnlySpanOfInts_Success()
+			public static void ReadOnlySpanOfInts_Success()
 			{
 				Assert.DoesNotContain(new int[] { 13, 14 }.AsSpan(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.AsSpan());
 			}
 
 			[Fact]
-			public void ReadOnlySpanOfStrings_Success()
+			public static void ReadOnlySpanOfStrings_Success()
 			{
 				Assert.DoesNotContain(new string[] { "it", "test" }.AsSpan(), new string[] { "something", "interesting", "test", "it", "out" }.AsSpan());
 			}
 
 			[Fact]
-			public void ReadWriteSpanOfInts_Success()
+			public static void ReadWriteSpanOfInts_Success()
 			{
 				Assert.DoesNotContain(new int[] { 13, 14 }.Spanify(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.Spanify());
 			}
 
 			[Fact]
-			public void ReadWriteSpanOfStrings_Success()
+			public static void ReadWriteSpanOfStrings_Success()
 			{
 				Assert.DoesNotContain(new string[] { "it", "test" }.Spanify(), new string[] { "something", "interesting", "test", "it", "out" }.Spanify());
 			}
 
 			[Fact]
-			public void ReadOnlySpanOfInts_Failure()
+			public static void ReadOnlySpanOfInts_Failure()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain(new int[] { 3, 4 }.AsSpan(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.AsSpan()));
 
@@ -372,7 +372,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteSpanOfInts_Failure()
+			public static void ReadWriteSpanOfInts_Failure()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain(new int[] { 3, 4 }.Spanify(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.Spanify()));
 
@@ -387,7 +387,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void FindingNonEmptySpanInsideEmptySpanSucceeds()
+			public static void FindingNonEmptySpanInsideEmptySpanSucceeds()
 			{
 				Assert.DoesNotContain(new int[] { 3, 4 }.Spanify(), Span<int>.Empty);
 			}
@@ -395,7 +395,7 @@ public class SpanAssertsTests
 			[Theory]
 			[InlineData(new[] { 3, 4 })]
 			[InlineData(new int[0])]
-			public void FindingEmptySpanInsideAnySpanFails(IEnumerable<int> data)
+			public static void FindingEmptySpanInsideAnySpanFails(IEnumerable<int> data)
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain(Span<int>.Empty, data.ToArray().Spanify()));
 
@@ -411,10 +411,10 @@ public class SpanAssertsTests
 		}
 	}
 
-	public class EndsWith
+	public static class EndsWith
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.EndsWith("world!".AsSpan(), "Hello, world!".AsSpan());
 			Assert.EndsWith("world!".AsSpan(), "Hello, world!".Spanify());
@@ -423,7 +423,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			static void assertFailure(Action action)
 			{
@@ -445,7 +445,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void CaseSensitiveByDefault()
+		public static void CaseSensitiveByDefault()
 		{
 			static void assertFailure(Action action)
 			{
@@ -467,7 +467,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void CanSpecifyComparisonType()
+		public static void CanSpecifyComparisonType()
 		{
 			Assert.EndsWith("WORLD!".AsSpan(), "Hello, world!".AsSpan(), StringComparison.OrdinalIgnoreCase);
 			Assert.EndsWith("WORLD!".AsSpan(), "Hello, world!".Spanify(), StringComparison.OrdinalIgnoreCase);
@@ -476,7 +476,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void NullStringIsEmpty()
+		public static void NullStringIsEmpty()
 		{
 			static void assertFailure(Action action)
 			{
@@ -496,7 +496,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void Truncation()
+		public static void Truncation()
 		{
 			var expected = "This is a long string that we're looking for at the end";
 			var actual = "This is the long string that we expected to find this ending inside";
@@ -521,9 +521,9 @@ public class SpanAssertsTests
 		}
 	}
 
-	public class Equal
+	public static class Equal
 	{
-		public class Chars_TreatedLikeStrings
+		public static class Chars_TreatedLikeStrings
 		{
 			[Theory]
 			// Null values
@@ -565,7 +565,7 @@ public class SpanAssertsTests
 			[InlineData("", "  ", false, false, true, true)]
 			[InlineData("", "\t", false, false, true, true)]
 			[InlineData("foobar", "foo bar", false, false, true, true)]
-			public void Success(
+			public static void Success(
 				string? value1,
 				string? value2,
 				bool ignoreCase,
@@ -607,7 +607,7 @@ public class SpanAssertsTests
 			[InlineData("foo bar", "foo  Bar", false, false, true, false, "    ↓ (pos 4)", "     ↑ (pos 5)")]
 			// Ignore all white space differences
 			[InlineData("foobar", "foo Bar", false, false, false, true, "   ↓ (pos 3)", "    ↑ (pos 4)")]
-			public void Failure(
+			public static void Failure(
 				string expected,
 				string actual,
 				bool ignoreCase,
@@ -647,7 +647,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void Truncation()
+			public static void Truncation()
 			{
 				static void assertFailure(Action action)
 				{
@@ -692,14 +692,14 @@ public class SpanAssertsTests
 
 			// https://github.com/xunit/xunit/discussions/3021
 			[Fact]
-			public void ArrayOverload()
+			public static void ArrayOverload()
 			{
 				string[] str = ["hello"];
 				Assert.Equal(["hello"], str);
 			}
 		}
 
-		public class Ints
+		public static class Ints
 		{
 			[Theory]
 			// Null values
@@ -708,7 +708,7 @@ public class SpanAssertsTests
 			[InlineData(new int[] { }, null)]
 			// Identical values
 			[InlineData(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })]
-			public void Success(
+			public static void Success(
 				int[]? value1,
 				int[]? value2)
 			{
@@ -732,7 +732,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void Failure_MidCollection()
+			public static void Failure_MidCollection()
 			{
 				static void assertFailure(Action action)
 				{
@@ -756,7 +756,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void Failure_BeyondEnd()
+			public static void Failure_BeyondEnd()
 			{
 				static void assertFailure(Action action)
 				{
@@ -779,7 +779,7 @@ public class SpanAssertsTests
 			}
 		}
 
-		public class Strings
+		public static class Strings
 		{
 			[Theory]
 			// Null values
@@ -788,7 +788,7 @@ public class SpanAssertsTests
 			[InlineData(new string[] { }, null)]
 			// Identical values
 			[InlineData(new string[] { "yes", "no", "maybe" }, new string[] { "yes", "no", "maybe" })]
-			public void Success(
+			public static void Success(
 				string[]? value1,
 				string[]? value2)
 			{
@@ -812,7 +812,7 @@ public class SpanAssertsTests
 			}
 
 			[Fact]
-			public void Failure()
+			public static void Failure()
 			{
 				static void assertFailure(Action action)
 				{
@@ -836,10 +836,10 @@ public class SpanAssertsTests
 		}
 	}
 
-	public class StartsWith
+	public static class StartsWith
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.StartsWith("Hello".AsSpan(), "Hello, world!".AsSpan());
 			Assert.StartsWith("Hello".AsSpan(), "Hello, world!".Spanify());
@@ -848,7 +848,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			static void assertFailure(Action action)
 			{
@@ -870,7 +870,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void CaseSensitiveByDefault()
+		public static void CaseSensitiveByDefault()
 		{
 			static void assertFailure(Action action)
 			{
@@ -892,7 +892,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void CanSpecifyComparisonType()
+		public static void CanSpecifyComparisonType()
 		{
 			Assert.StartsWith("HELLO".AsSpan(), "Hello, world!".AsSpan(), StringComparison.OrdinalIgnoreCase);
 			Assert.StartsWith("HELLO".AsSpan(), "Hello, world!".Spanify(), StringComparison.OrdinalIgnoreCase);
@@ -901,7 +901,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void NullStringIsEmpty()
+		public static void NullStringIsEmpty()
 		{
 			static void assertFailure(Action action)
 			{
@@ -921,7 +921,7 @@ public class SpanAssertsTests
 		}
 
 		[Fact]
-		public void Truncation()
+		public static void Truncation()
 		{
 			var expected = "This is a long string that we're looking for at the start";
 			var actual = "This is the long string that we expected to find this starting inside";

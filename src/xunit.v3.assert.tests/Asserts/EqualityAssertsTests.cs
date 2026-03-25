@@ -7,15 +7,15 @@ using System.Collections.ObjectModel;
 using Xunit;
 using Xunit.Sdk;
 
-public class EqualityAssertsTests
+public static class EqualityAssertsTests
 {
-	public class Equal
+	public static class Equal
 	{
-		public class ReferenceEquality
+		public static class ReferenceEquality
 		{
 			// https://github.com/xunit/xunit/issues/2271
 			[Fact]
-			public void TwoIdenticalReferencesShouldBeEqual()
+			public static void TwoIdenticalReferencesShouldBeEqual()
 			{
 				Field x = new Field();
 
@@ -49,16 +49,16 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Intrinsics
+		public static class Intrinsics
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(42, 42);
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(42, 2112));
 
@@ -72,7 +72,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void StringsPassViaObjectEqualAreNotFormattedOrTruncated()
+			public static void StringsPassViaObjectEqualAreNotFormattedOrTruncated()
 			{
 				var ex = Record.Exception(
 					() => Assert.Equal(
@@ -95,22 +95,22 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithComparer
+		public static class WithComparer
 		{
 			[Fact]
-			public void GuardClause()
+			public static void GuardClause()
 			{
 				Assert.Throws<ArgumentNullException>("comparer", () => Assert.Equal(1, 2, default(IEqualityComparer<int>)!));
 			}
 
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(42, 21, new Comparer<int>(true));
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(42, 42, new Comparer<int>(false)));
 
@@ -134,7 +134,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonEnumerable_WithThrow_RecordsInnerException()
+			public static void NonEnumerable_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.Equal(42, 2112, new ThrowingIntComparer()));
 
@@ -157,7 +157,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Enumerable_WithThrow_RecordsInnerException()
+			public static void Enumerable_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.Equal([1, 2], [1, 3], new ThrowingEnumerableComparer()));
 
@@ -180,22 +180,22 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithFunc
+		public static class WithFunc
 		{
 			[Fact]
-			public void GuardClause()
+			public static void GuardClause()
 			{
 				Assert.Throws<ArgumentNullException>("comparer", () => Assert.Equal(1, 2, default(Func<int, int, bool>)!));
 			}
 
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(42, 21, (x, y) => true);
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(42, 42, (x, y) => false));
 
@@ -209,7 +209,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonEnumerable_WithThrow_RecordsInnerException()
+			public static void NonEnumerable_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.Equal(42, 2112, (e, a) => throw new DivideByZeroException()));
 
@@ -224,7 +224,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Enumerable_WithThrow_RecordsInnerException()
+			public static void Enumerable_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(
 					() => Assert.Equal(
@@ -245,10 +245,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Comparable
+		public static class Comparable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var obj1 = new SpyComparable(0);
 				var obj2 = new SpyComparable(0);
@@ -258,7 +258,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var obj1 = new SpyComparable(-1);
 				var obj2 = new SpyComparable(0);
@@ -280,7 +280,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonGeneric_SameType_Equal()
+			public static void NonGeneric_SameType_Equal()
 			{
 				var expected = new MultiComparable(1);
 				var actual = new MultiComparable(1);
@@ -291,7 +291,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonGeneric_SameType_NotEqual()
+			public static void NonGeneric_SameType_NotEqual()
 			{
 				var expected = new MultiComparable(1);
 				var actual = new MultiComparable(2);
@@ -320,7 +320,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonGeneric_DifferentType_Equal()
+			public static void NonGeneric_DifferentType_Equal()
 			{
 				var expected = new MultiComparable(1);
 				var actual = 1;
@@ -330,7 +330,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonGeneric_DifferentType_NotEqual()
+			public static void NonGeneric_DifferentType_NotEqual()
 			{
 				var expected = new MultiComparable(1);
 				var actual = 2;
@@ -357,7 +357,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Generic_Equal()
+			public static void Generic_Equal()
 			{
 				var obj1 = new SpyComparable_Generic();
 				var obj2 = new SpyComparable_Generic();
@@ -367,7 +367,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Generic_NotEqual()
+			public static void Generic_NotEqual()
 			{
 				var obj1 = new SpyComparable_Generic(-1);
 				var obj2 = new SpyComparable_Generic();
@@ -391,7 +391,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // The default comparer can't go deep without reflection
 
 			[Fact]
-			public void SubClass_SubClass_Equal()
+			public static void SubClass_SubClass_Equal()
 			{
 				var expected = new ComparableSubClassA(1);
 				var actual = new ComparableSubClassB(1);
@@ -400,7 +400,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_SubClass_NotEqual()
+			public static void SubClass_SubClass_NotEqual()
 			{
 				var expected = new ComparableSubClassA(1);
 				var actual = new ComparableSubClassB(2);
@@ -419,7 +419,7 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 
 			[Fact]
-			public void BaseClass_SubClass_Equal()
+			public static void BaseClass_SubClass_Equal()
 			{
 				var expected = new ComparableBaseClass(1);
 				var actual = new ComparableSubClassA(1);
@@ -428,7 +428,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void BaseClass_SubClass_NotEqual()
+			public static void BaseClass_SubClass_NotEqual()
 			{
 				var expected = new ComparableBaseClass(1);
 				var actual = new ComparableSubClassA(2);
@@ -450,7 +450,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_BaseClass_Equal()
+			public static void SubClass_BaseClass_Equal()
 			{
 				var expected = new ComparableSubClassA(1);
 				var actual = new ComparableBaseClass(1);
@@ -459,7 +459,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_BaseClass_NotEqual()
+			public static void SubClass_BaseClass_NotEqual()
 			{
 				var expected = new ComparableSubClassA(1);
 				var actual = new ComparableBaseClass(2);
@@ -481,7 +481,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Generic_ThrowsException_Equal()
+			public static void Generic_ThrowsException_Equal()
 			{
 				var expected = new ComparableThrower(1);
 				var actual = new ComparableThrower(1);
@@ -492,7 +492,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Generic_ThrowsException_NotEqual()
+			public static void Generic_ThrowsException_NotEqual()
 			{
 				var expected = new ComparableThrower(1);
 				var actual = new ComparableThrower(2);
@@ -523,7 +523,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // IComparable<Expected> vs. IComparable<Actual> cannot be done in Native AOT because of the reflection restrictions
 
 			[Fact]
-			public void DifferentTypes_ImplicitImplementation_Equal()
+			public static void DifferentTypes_ImplicitImplementation_Equal()
 			{
 				object expected = new ImplicitIComparableExpected(1);
 				object actual = new IntWrapper(1);
@@ -532,7 +532,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ImplicitImplementation_NotEqual()
+			public static void DifferentTypes_ImplicitImplementation_NotEqual()
 			{
 				object expected = new ImplicitIComparableExpected(1);
 				object actual = new IntWrapper(2);
@@ -549,7 +549,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ExplicitImplementation_Equal()
+			public static void DifferentTypes_ExplicitImplementation_Equal()
 			{
 				object expected = new ExplicitIComparableActual(1);
 				object actual = new IntWrapper(1);
@@ -558,7 +558,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ExplicitImplementation_NotEqual()
+			public static void DifferentTypes_ExplicitImplementation_NotEqual()
 			{
 				object expected = new ExplicitIComparableActual(1);
 				object actual = new IntWrapper(2);
@@ -575,7 +575,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Throws_Equal()
+			public static void DifferentTypes_Throws_Equal()
 			{
 				object expected = new IComparableActualThrower(1);
 				object actual = new IntWrapper(1);
@@ -584,7 +584,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Throws_NotEqual()
+			public static void DifferentTypes_Throws_NotEqual()
 			{
 				object expected = new IComparableActualThrower(1);
 				object actual = new IntWrapper(2);
@@ -603,10 +603,10 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 		}
 
-		public class NotComparable
+		public static class NotComparable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var nco1 = new NonComparableObject();
 				var nco2 = new NonComparableObject();
@@ -615,7 +615,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var nco1 = new NonComparableObject(false);
 				var nco2 = new NonComparableObject();
@@ -637,10 +637,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Equatable
+		public static class Equatable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var obj1 = new SpyEquatable();
 				var obj2 = new SpyEquatable();
@@ -652,7 +652,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var obj1 = new SpyEquatable(false);
 				var obj2 = new SpyEquatable();
@@ -674,7 +674,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_SubClass_Equal()
+			public static void SubClass_SubClass_Equal()
 			{
 				var expected = new EquatableSubClassA(1);
 				var actual = new EquatableSubClassB(1);
@@ -683,7 +683,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_SubClass_NotEqual()
+			public static void SubClass_SubClass_NotEqual()
 			{
 				var expected = new EquatableSubClassA(1);
 				var actual = new EquatableSubClassB(2);
@@ -705,7 +705,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void BaseClass_SubClass_Equal()
+			public static void BaseClass_SubClass_Equal()
 			{
 				var expected = new EquatableBaseClass(1);
 				var actual = new EquatableSubClassA(1);
@@ -714,7 +714,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void BaseClass_SubClass_NotEqual()
+			public static void BaseClass_SubClass_NotEqual()
 			{
 				var expected = new EquatableBaseClass(1);
 				var actual = new EquatableSubClassA(2);
@@ -736,7 +736,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_BaseClass_Equal()
+			public static void SubClass_BaseClass_Equal()
 			{
 				var expected = new EquatableSubClassA(1);
 				var actual = new EquatableBaseClass(1);
@@ -745,7 +745,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_BaseClass_NotEqual()
+			public static void SubClass_BaseClass_NotEqual()
 			{
 				var expected = new EquatableSubClassA(1);
 				var actual = new EquatableBaseClass(2);
@@ -769,7 +769,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // Support for IEquatable<Expected> vs. IEquatable<Actual> cannot be done in Native AOT because of the reflection restrictions
 
 			[Fact]
-			public void DifferentTypes_ImplicitImplementation_Equal()
+			public static void DifferentTypes_ImplicitImplementation_Equal()
 			{
 				object expected = new ImplicitIEquatableExpected(1);
 				object actual = new IntWrapper(1);
@@ -778,7 +778,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ImplicitImplementation_NotEqual()
+			public static void DifferentTypes_ImplicitImplementation_NotEqual()
 			{
 				object expected = new ImplicitIEquatableExpected(1);
 				object actual = new IntWrapper(2);
@@ -795,7 +795,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ExplicitImplementation_Equal()
+			public static void DifferentTypes_ExplicitImplementation_Equal()
 			{
 				object expected = new ExplicitIEquatableExpected(1);
 				object actual = new IntWrapper(1);
@@ -804,7 +804,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ExplicitImplementation_NotEqual()
+			public static void DifferentTypes_ExplicitImplementation_NotEqual()
 			{
 				object expected = new ExplicitIEquatableExpected(1);
 				object actual = new IntWrapper(2);
@@ -823,10 +823,10 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 		}
 
-		public class StructuralEquatable
+		public static class StructuralEquatable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new StructuralStringWrapper("a");
 				var actual = new StructuralStringWrapper("a");
@@ -837,7 +837,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new StructuralStringWrapper("a");
 				var actual = new StructuralStringWrapper("b");
@@ -866,7 +866,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void ExpectedNull_ActualNull()
+			public static void ExpectedNull_ActualNull()
 			{
 				var expected = new Tuple<StringWrapper?>(null);
 				var actual = new Tuple<StringWrapper?>(null);
@@ -877,7 +877,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void ExpectedNull_ActualNonNull()
+			public static void ExpectedNull_ActualNonNull()
 			{
 				var expected = new Tuple<StringWrapper?>(null);
 				var actual = new Tuple<StringWrapper?>(new StringWrapper("a"));
@@ -905,7 +905,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void ExpectedNonNull_ActualNull()
+			public static void ExpectedNonNull_ActualNull()
 			{
 				var expected = new Tuple<StringWrapper?>(new StringWrapper("a"));
 				var actual = new Tuple<StringWrapper?>(null);
@@ -933,10 +933,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Collections
+		public static class Collections
 		{
 			[Fact]
-			public void IReadOnlyCollection_IEnumerable_Equal()
+			public static void IReadOnlyCollection_IEnumerable_Equal()
 			{
 				var expected = new string[] { "foo", "bar" };
 				var actual = new ReadOnlyCollection<string>(expected);
@@ -946,7 +946,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void IReadOnlyCollection_IEnumerable_NotEqual()
+			public static void IReadOnlyCollection_IEnumerable_NotEqual()
 			{
 				var expected = new string[] { @"C:\Program Files (x86)\Common Files\Extremely Long Path Name\VST2" };
 				var actual = new ReadOnlyCollection<string>([@"C:\Program Files (x86)\Common Files\Extremely Long Path Name\VST3"]);
@@ -979,7 +979,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionDepth_Equal()
+			public static void CollectionDepth_Equal()
 			{
 				var x = new List<object> { new List<object> { new List<object> { 1 } } };
 				var y = new List<object> { new List<object> { new List<object> { 1 } } };
@@ -988,7 +988,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionDepth_NotEqual()
+			public static void CollectionDepth_NotEqual()
 			{
 				var x = new List<object> { new List<object> { new List<object> { 1 } } };
 				var y = new List<object> { new List<object> { new List<object> { 2 } } };
@@ -1007,7 +1007,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void StringArray_ObjectArray_Equal()
+			public static void StringArray_ObjectArray_Equal()
 			{
 				var expected = new string[] { "foo", "bar" };
 				var actual = new object[] { "foo", "bar" };
@@ -1017,7 +1017,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void StringArray_ObjectArray_NotEqual()
+			public static void StringArray_ObjectArray_NotEqual()
 			{
 				var expected = new string[] { "foo", "bar" };
 				var actual = new object[] { "foo", "baz" };
@@ -1050,7 +1050,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void MultidimensionalArrays_Equal()
+			public static void MultidimensionalArrays_Equal()
 			{
 				var expected = new int[,] { { 1 }, { 2 } };
 				var actual = new int[,] { { 1 }, { 2 } };
@@ -1059,7 +1059,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void MultidimensionalArrays_NotEqual()
+			public static void MultidimensionalArrays_NotEqual()
 			{
 				var expected = new int[,] { { 1, 2 } };
 				var actual = new int[,] { { 1 }, { 2 } };
@@ -1080,7 +1080,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // Array.CreateInstance is not available in Native AOT
 
 			[Fact]
-			public void NonZeroBoundedArrays_Equal()
+			public static void NonZeroBoundedArrays_Equal()
 			{
 				var expected = Array.CreateInstance(typeof(int), [1], [1]);
 				expected.SetValue(42, 1);
@@ -1091,7 +1091,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonZeroBoundedArrays_NotEqual()
+			public static void NonZeroBoundedArrays_NotEqual()
 			{
 				var expected = Array.CreateInstance(typeof(int), [1], [1]);
 				expected.SetValue(42, 1);
@@ -1112,7 +1112,7 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 
 			[Fact]
-			public void PrintPointersWithCompatibleComparers()
+			public static void PrintPointersWithCompatibleComparers()
 			{
 				var expected = new[] { 1, 2, 3, 4, 5 };
 				var actual = new[] { 1, 2, 0, 4, 5 };
@@ -1137,7 +1137,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CustomComparerWithSafeEnumerable()
+			public static void CustomComparerWithSafeEnumerable()
 			{
 				var expected = new[] { 1, 2, 3, 4, 5 };
 				var actual = new[] { 1, 2, 0, 4, 5 };
@@ -1154,7 +1154,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CustomComparerWithUnsafeEnumerable()
+			public static void CustomComparerWithUnsafeEnumerable()
 			{
 				var ex = Record.Exception(() => Assert.Equal(new UnsafeEnumerable(), new[] { 1, 2, 3 }, new MyComparer()));
 
@@ -1186,7 +1186,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionWithIEquatable_Equal()
+			public static void CollectionWithIEquatable_Equal()
 			{
 				var expected = new EnumerableEquatable<int> { 42, 2112 };
 				var actual = new EnumerableEquatable<int> { 2112, 42 };
@@ -1195,7 +1195,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionWithIEquatable_NotEqual()
+			public static void CollectionWithIEquatable_NotEqual()
 			{
 				var expected = new EnumerableEquatable<int> { 42, 2112 };
 				var actual = new EnumerableEquatable<int> { 2112, 2600 };
@@ -1242,10 +1242,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Dictionaries
+		public static class Dictionaries
 		{
 			[Fact]
-			public void SameTypes_Equal()
+			public static void SameTypes_Equal()
 			{
 				var expected = new Dictionary<string, string> { ["foo"] = "bar" };
 				var actual = new Dictionary<string, string> { ["foo"] = "bar" };
@@ -1256,7 +1256,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SameTypes_NotEqual()
+			public static void SameTypes_NotEqual()
 			{
 				var expected = new Dictionary<string, string> { ["foo"] = "bar" };
 				var actual = new Dictionary<string, string> { ["foo"] = "baz" };
@@ -1285,7 +1285,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Equal()
+			public static void DifferentTypes_Equal()
 			{
 				var expected = new Dictionary<string, string> { ["foo"] = "bar" };
 				var actual = new ConcurrentDictionary<string, string>(expected);
@@ -1295,7 +1295,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_NotEqual()
+			public static void DifferentTypes_NotEqual()
 			{
 				var expected = new Dictionary<string, string> { ["foo"] = "bar" };
 				var actual = new ConcurrentDictionary<string, string> { ["foo"] = "baz" };
@@ -1323,7 +1323,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NullValue_Equal()
+			public static void NullValue_Equal()
 			{
 				var expected = new Dictionary<string, int?> { { "two", null } };
 				var actual = new Dictionary<string, int?> { { "two", null } };
@@ -1332,7 +1332,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NullValue_NotEqual()
+			public static void NullValue_NotEqual()
 			{
 				var expected = new Dictionary<string, int?> { { "two", null } };
 				var actual = new Dictionary<string, int?> { { "two", 1 } };
@@ -1354,7 +1354,7 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class HashSets
+		public static class HashSets
 		{
 			[Fact]
 			public static void InOrder_Equal()
@@ -1443,7 +1443,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Equal()
+			public static void DifferentTypes_Equal()
 			{
 				var expected = new HashSet<string> { "bar", "foo" };
 				var actual = new SortedSet<string> { "foo", "bar" };
@@ -1460,7 +1460,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // AOT can't detect sets dynamically so it just treats it like a linear collection
 
 			[Fact]
-			public void DifferentTypes_NotEqual()
+			public static void DifferentTypes_NotEqual()
 			{
 				object expected = new HashSet<int> { 42 };
 				object actual = new HashSet<long> { 42L };
@@ -1481,7 +1481,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // Comparer func overload is disabled in AOT via compiler
 
 			[Fact]
-			public void ComparerFunc_Throws()
+			public static void ComparerFunc_Throws()
 			{
 				var expected = new HashSet<string> { "bar" };
 				var actual = new HashSet<string> { "baz" };
@@ -1500,10 +1500,10 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 		}
 
-		public class Sets
+		public static class Sets
 		{
 			[Fact]
-			public void InOrder_Equal()
+			public static void InOrder_Equal()
 			{
 				var expected = new NonGenericSet { "bar", "foo" };
 				var actual = new NonGenericSet { "bar", "foo" };
@@ -1518,7 +1518,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void InOrder_NotEqual()
+			public static void InOrder_NotEqual()
 			{
 				var expected = new NonGenericSet { "bar", "foo" };
 				var actual = new NonGenericSet { "bar", "baz" };
@@ -1546,7 +1546,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void OutOfOrder_Equal()
+			public static void OutOfOrder_Equal()
 			{
 				var expected = new NonGenericSet { "bar", "foo" };
 				var actual = new NonGenericSet { "foo", "bar" };
@@ -1561,7 +1561,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void OutOfOrder_NotEqual()
+			public static void OutOfOrder_NotEqual()
 			{
 				var expected = new NonGenericSet { "bar", "foo" };
 				var actual = new NonGenericSet { "foo", "baz" };
@@ -1589,7 +1589,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentContents()
+			public static void DifferentContents()
 			{
 				var expected = new NonGenericSet { "bar" };
 				var actual = new NonGenericSet { "bar", "foo" };
@@ -1617,7 +1617,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Equal()
+			public static void DifferentTypes_Equal()
 			{
 				var expected = new NonGenericSet { "bar" };
 				var actual = new HashSet<string> { "bar" };
@@ -1632,7 +1632,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_NotEqual()
+			public static void DifferentTypes_NotEqual()
 			{
 				var expected = new NonGenericSet { "bar" };
 				var actual = new HashSet<string> { "baz" };
@@ -1660,7 +1660,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void TwoGenericSubClass_Equal()
+			public static void TwoGenericSubClass_Equal()
 			{
 				var expected = new TwoGenericSet<string, int> { "foo", "bar" };
 				var actual = new TwoGenericSet<string, int> { "foo", "bar" };
@@ -1675,7 +1675,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void TwoGenericSubClass_NotEqual()
+			public static void TwoGenericSubClass_NotEqual()
 			{
 				var expected = new TwoGenericSet<string, int> { "foo", "bar" };
 				var actual = new TwoGenericSet<string, int> { "foo", "baz" };
@@ -1705,7 +1705,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // Comparer func overload is disabled in AOT via compiler
 
 			[Fact]
-			public void ComparerFunc_Throws()
+			public static void ComparerFunc_Throws()
 			{
 				var expected = new NonGenericSet { "bar" };
 				var actual = new HashSet<string> { "baz" };
@@ -1725,10 +1725,10 @@ public class EqualityAssertsTests
 		}
 
 		// https://github.com/xunit/xunit/issues/3137
-		public class ImmutableArrays
+		public static class ImmutableArrays
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new[] { 1, 2, 3 }.ToImmutableArray();
 				var actual = new[] { 1, 2, 3 }.ToImmutableArray();
@@ -1737,7 +1737,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new[] { 1, 2, 3 }.ToImmutableArray();
 				var actual = new[] { 1, 2, 4 }.ToImmutableArray();
@@ -1756,12 +1756,12 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class KeyValuePair
+		public static class KeyValuePair
 		{
 #if !XUNIT_AOT  // AOT can't deep dive into collections in the same was a non-AOT
 
 			[Fact]
-			public void CollectionKeys_Equal()
+			public static void CollectionKeys_Equal()
 			{
 #pragma warning disable IDE0028 // Simplify collection initialization
 #pragma warning disable IDE0300 // Simplify collection initialization
@@ -1775,7 +1775,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionKeys_NotEqual()
+			public static void CollectionKeys_NotEqual()
 			{
 #pragma warning disable IDE0028 // Simplify collection initialization
 #pragma warning disable IDE0300 // Simplify collection initialization
@@ -1797,7 +1797,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionValues_Equal()
+			public static void CollectionValues_Equal()
 			{
 #pragma warning disable IDE0028 // Simplify collection initialization
 #pragma warning disable IDE0300 // Simplify collection initialization
@@ -1811,7 +1811,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionValues_NotEqual()
+			public static void CollectionValues_NotEqual()
 			{
 #pragma warning disable IDE0028 // Simplify collection initialization
 #pragma warning disable IDE0300 // Simplify collection initialization
@@ -1835,7 +1835,7 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 
 			[Fact]
-			public void EquatableKeys_Equal()
+			public static void EquatableKeys_Equal()
 			{
 				var expected = new KeyValuePair<EquatableObject, int>(new() { Char = 'a' }, 42);
 				var actual = new KeyValuePair<EquatableObject, int>(new() { Char = 'a' }, 42);
@@ -1844,7 +1844,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void EquatableKeys_NotEqual()
+			public static void EquatableKeys_NotEqual()
 			{
 				var expected = new KeyValuePair<EquatableObject, int>(new() { Char = 'a' }, 42);
 				var actual = new KeyValuePair<EquatableObject, int>(new() { Char = 'b' }, 42);
@@ -1866,7 +1866,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void EquatableValues_Equal()
+			public static void EquatableValues_Equal()
 			{
 				var expected = new KeyValuePair<string, EquatableObject>("Key1", new() { Char = 'a' });
 				var actual = new KeyValuePair<string, EquatableObject>("Key1", new() { Char = 'a' });
@@ -1875,7 +1875,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void EquatableValues_NotEqual()
+			public static void EquatableValues_NotEqual()
 			{
 				var expected = new KeyValuePair<string, EquatableObject>("Key1", new() { Char = 'a' });
 				var actual = new KeyValuePair<string, EquatableObject>("Key1", new() { Char = 'b' });
@@ -1911,7 +1911,7 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class DoubleEnumerationPrevention
+		public static class DoubleEnumerationPrevention
 		{
 			[Fact]
 			public static void EnumeratesOnlyOnce_Equal()
@@ -1942,12 +1942,12 @@ public class EqualityAssertsTests
 		}
 	}
 
-	public class Equal_DateTime
+	public static class Equal_DateTime
 	{
-		public class WithoutPrecision
+		public static class WithoutPrecision
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new DateTime(2023, 2, 11, 15, 4, 0);
 				var actual = new DateTime(2023, 2, 11, 15, 4, 0);
@@ -1956,7 +1956,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new DateTime(2023, 2, 11, 15, 4, 0);
 				var actual = new DateTime(2023, 2, 11, 15, 5, 0);
@@ -1973,10 +1973,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithPrecision
+		public static class WithPrecision
 		{
 			[Fact]
-			public void InRange()
+			public static void InRange()
 			{
 				var date1 = new DateTime(2023, 2, 11, 15, 4, 0);
 				var date2 = new DateTime(2023, 2, 11, 15, 5, 0);
@@ -1987,7 +1987,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void OutOfRange()
+			public static void OutOfRange()
 			{
 				var date1 = new DateTime(2023, 2, 11, 15, 4, 0);
 				var date2 = new DateTime(2023, 2, 11, 15, 6, 0);
@@ -2019,12 +2019,12 @@ public class EqualityAssertsTests
 		}
 	}
 
-	public class Equal_DateTimeOffset
+	public static class Equal_DateTimeOffset
 	{
-		public class WithoutPrecision_SameTimeZone
+		public static class WithoutPrecision_SameTimeZone
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
 				var actual = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
@@ -2034,7 +2034,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
 				var actual = new DateTimeOffset(2023, 2, 11, 15, 5, 0, TimeSpan.Zero);
@@ -2051,10 +2051,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithoutPrecision_DifferentTimeZone
+		public static class WithoutPrecision_DifferentTimeZone
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
 				var actual = new DateTimeOffset(2023, 2, 11, 16, 4, 0, TimeSpan.FromHours(1));
@@ -2063,7 +2063,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
 				var actual = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.FromHours(1));
@@ -2080,10 +2080,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithPrecision_SameTimeZone
+		public static class WithPrecision_SameTimeZone
 		{
 			[Fact]
-			public void InRange()
+			public static void InRange()
 			{
 				var date1 = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
 				var date2 = new DateTimeOffset(2023, 2, 11, 15, 5, 0, TimeSpan.Zero);
@@ -2094,7 +2094,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void OutOfRange()
+			public static void OutOfRange()
 			{
 				var date1 = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
 				var date2 = new DateTimeOffset(2023, 2, 11, 15, 6, 0, TimeSpan.Zero);
@@ -2125,10 +2125,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithPrecision_DifferentTimeZone
+		public static class WithPrecision_DifferentTimeZone
 		{
 			[Fact]
-			public void InRange()
+			public static void InRange()
 			{
 				var date1 = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
 				var date2 = new DateTimeOffset(2023, 2, 11, 16, 5, 0, TimeSpan.FromHours(1));
@@ -2139,7 +2139,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void OutOfRange()
+			public static void OutOfRange()
 			{
 				var date1 = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.Zero);
 				var date2 = new DateTimeOffset(2023, 2, 11, 15, 4, 0, TimeSpan.FromHours(1));
@@ -2171,16 +2171,16 @@ public class EqualityAssertsTests
 		}
 	}
 
-	public class Equal_Decimal
+	public static class Equal_Decimal
 	{
 		[Fact]
-		public void Equal()
+		public static void Equal()
 		{
 			Assert.Equal(0.11111M, 0.11444M, 2);
 		}
 
 		[CulturedFact(["en-US", "fr-FR"])]
-		public void NotEqual()
+		public static void NotEqual()
 		{
 			var ex = Record.Exception(() => Assert.Equal(0.11111M, 0.11444M, 3));
 
@@ -2194,18 +2194,18 @@ public class EqualityAssertsTests
 		}
 	}
 
-	public class Equal_Double
+	public static class Equal_Double
 	{
-		public class WithPrecision
+		public static class WithPrecision
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(0.11111, 0.11444, 2);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.11111, 0.11444, 3));
 
@@ -2219,16 +2219,16 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithMidPointRounding
+		public static class WithMidPointRounding
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(10.565, 10.566, 2, MidpointRounding.AwayFromZero);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.11113, 0.11115, 4, MidpointRounding.ToEven));
 
@@ -2242,10 +2242,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithTolerance
+		public static class WithTolerance
 		{
 			[Fact]
-			public void GuardClause()
+			public static void GuardClause()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.0, 1.0, double.NegativeInfinity));
 
@@ -2255,13 +2255,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(10.566, 10.565, 0.01);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.11113, 0.11115, 0.00001));
 
@@ -2275,13 +2275,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NaN_Equal()
+			public static void NaN_Equal()
 			{
 				Assert.Equal(double.NaN, double.NaN, 1000.0);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NaN_NotEqual()
+			public static void NaN_NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(20210102.2208, double.NaN, 20000000.0));
 
@@ -2295,13 +2295,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void InfiniteTolerance_Equal()
+			public static void InfiniteTolerance_Equal()
 			{
 				Assert.Equal(double.MinValue, double.MaxValue, double.PositiveInfinity);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void PositiveInfinity_NotEqual()
+			public static void PositiveInfinity_NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(double.PositiveInfinity, 77.7, 1.0));
 
@@ -2315,7 +2315,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NegativeInfinity_NotEqual()
+			public static void NegativeInfinity_NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.0, double.NegativeInfinity, 1.0));
 
@@ -2330,18 +2330,18 @@ public class EqualityAssertsTests
 		}
 	}
 
-	public class Equal_Float
+	public static class Equal_Float
 	{
-		public class WithPrecision
+		public static class WithPrecision
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(0.11111f, 0.11444f, 2);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.11111f, 0.11444f, 3));
 
@@ -2355,16 +2355,16 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithMidPointRounding
+		public static class WithMidPointRounding
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(10.5655f, 10.5666f, 2, MidpointRounding.AwayFromZero);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.111133f, 0.111155f, 4, MidpointRounding.ToEven));
 
@@ -2378,10 +2378,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithTolerance
+		public static class WithTolerance
 		{
 			[Fact]
-			public void GuardClause()
+			public static void GuardClause()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.0f, 1.0f, float.NegativeInfinity));
 
@@ -2391,13 +2391,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				Assert.Equal(10.569f, 10.562f, 0.01f);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.11113f, 0.11115f, 0.00001f));
 
@@ -2411,13 +2411,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NaN_Equal()
+			public static void NaN_Equal()
 			{
 				Assert.Equal(float.NaN, float.NaN, 1000.0f);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NaN_NotEqual()
+			public static void NaN_NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(20210102.2208f, float.NaN, 20000000.0f));
 
@@ -2431,13 +2431,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void InfiniteTolerance_Equal()
+			public static void InfiniteTolerance_Equal()
 			{
 				Assert.Equal(float.MinValue, float.MaxValue, float.PositiveInfinity);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void PositiveInfinity_NotEqual()
+			public static void PositiveInfinity_NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(float.PositiveInfinity, 77.7f, 1.0f));
 
@@ -2451,7 +2451,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NegativeInfinity_NotEqual()
+			public static void NegativeInfinity_NotEqual()
 			{
 				var ex = Record.Exception(() => Assert.Equal(0.0f, float.NegativeInfinity, 1.0f));
 
@@ -2466,12 +2466,12 @@ public class EqualityAssertsTests
 		}
 	}
 
-	public class NotEqual
+	public static class NotEqual
 	{
-		public class Intrinsics
+		public static class Intrinsics
 		{
 			[Fact]
-			public void EqualValues()
+			public static void EqualValues()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(42, 42));
 
@@ -2485,22 +2485,22 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void UnequalValues()
+			public static void UnequalValues()
 			{
 				Assert.NotEqual(42, 2112);
 			}
 		}
 
-		public class WithComparer
+		public static class WithComparer
 		{
 			[Fact]
-			public void GuardClause()
+			public static void GuardClause()
 			{
 				Assert.Throws<ArgumentNullException>("comparer", () => Assert.NotEqual(1, 2, default(IEqualityComparer<int>)!));
 			}
 
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(42, 21, new Comparer<int>(true)));
 
@@ -2514,7 +2514,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual(42, 42, new Comparer<int>(false));
 			}
@@ -2530,7 +2530,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonEnumerable_WithThrow_RecordsInnerException()
+			public static void NonEnumerable_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(42, 42, new ThrowingIntComparer()));
 
@@ -2553,7 +2553,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Enumerable_WithThrow_RecordsInnerException()
+			public static void Enumerable_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual([1, 2], [1, 2], new ThrowingEnumerableComparer()));
 
@@ -2576,7 +2576,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Strings_WithThrow_RecordsInnerException()
+			public static void Strings_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual("42", "42", new ThrowingStringComparer()));
 
@@ -2599,16 +2599,16 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class WithFunc
+		public static class WithFunc
 		{
 			[Fact]
-			public void GuardClause()
+			public static void GuardClause()
 			{
 				Assert.Throws<ArgumentNullException>("comparer", () => Assert.NotEqual(1, 2, default(Func<int, int, bool>)!));
 			}
 
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(42, 21, (x, y) => true));
 
@@ -2622,13 +2622,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual(42, 42, (x, y) => false);
 			}
 
 			[Fact]
-			public void NonEnumerable_WithThrow_RecordsInnerException()
+			public static void NonEnumerable_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(42, 42, (e, a) => throw new DivideByZeroException()));
 
@@ -2643,7 +2643,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Enumerable_WithThrow_RecordsInnerException()
+			public static void Enumerable_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(
 					() => Assert.NotEqual(
@@ -2664,7 +2664,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Strings_WithThrow_RecordsInnerException()
+			public static void Strings_WithThrow_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual("42", "42", (e, a) => throw new DivideByZeroException()));
 
@@ -2679,10 +2679,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Comparable
+		public static class Comparable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var obj1 = new SpyComparable(0);
 				var obj2 = new SpyComparable(0);
@@ -2704,7 +2704,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var obj1 = new SpyComparable(-1);
 				var obj2 = new SpyComparable(0);
@@ -2714,7 +2714,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonGeneric_SameType_Equal()
+			public static void NonGeneric_SameType_Equal()
 			{
 				var expected = new MultiComparable(1);
 				var actual = new MultiComparable(1);
@@ -2743,7 +2743,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonGeneric_SameType_NotEqual()
+			public static void NonGeneric_SameType_NotEqual()
 			{
 				var expected = new MultiComparable(1);
 				var actual = new MultiComparable(2);
@@ -2754,7 +2754,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonGeneric_DifferentType_Equal()
+			public static void NonGeneric_DifferentType_Equal()
 			{
 				var expected = new MultiComparable(1);
 				var actual = 1;
@@ -2781,7 +2781,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonGeneric_DifferentType_NotEqual()
+			public static void NonGeneric_DifferentType_NotEqual()
 			{
 				var expected = new MultiComparable(1);
 				var actual = 2;
@@ -2791,7 +2791,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Generic_Equal()
+			public static void Generic_Equal()
 			{
 				var obj1 = new SpyComparable_Generic();
 				var obj2 = new SpyComparable_Generic();
@@ -2813,7 +2813,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Generic_NotEqual()
+			public static void Generic_NotEqual()
 			{
 				var obj1 = new SpyComparable_Generic(-1);
 				var obj2 = new SpyComparable_Generic();
@@ -2823,7 +2823,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_SubClass_Equal()
+			public static void SubClass_SubClass_Equal()
 			{
 				var expected = new ComparableSubClassA(1);
 				var actual = new ComparableSubClassB(1);
@@ -2845,7 +2845,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_SubClass_NotEqual()
+			public static void SubClass_SubClass_NotEqual()
 			{
 				var expected = new ComparableSubClassA(1);
 				var actual = new ComparableSubClassB(2);
@@ -2854,7 +2854,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void BaseClass_SubClass_Equal()
+			public static void BaseClass_SubClass_Equal()
 			{
 				var expected = new ComparableBaseClass(1);
 				var actual = new ComparableSubClassA(1);
@@ -2876,7 +2876,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void BaseClass_SubClass_NotEqual()
+			public static void BaseClass_SubClass_NotEqual()
 			{
 				var expected = new ComparableBaseClass(1);
 				var actual = new ComparableSubClassA(2);
@@ -2885,7 +2885,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_BaseClass_Equal()
+			public static void SubClass_BaseClass_Equal()
 			{
 				var expected = new ComparableSubClassA(1);
 				var actual = new ComparableBaseClass(1);
@@ -2907,7 +2907,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_BaseClass_NotEqual()
+			public static void SubClass_BaseClass_NotEqual()
 			{
 				var expected = new ComparableSubClassA(1);
 				var actual = new ComparableBaseClass(2);
@@ -2916,7 +2916,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Generic_ThrowsException_Equal()
+			public static void Generic_ThrowsException_Equal()
 			{
 				var expected = new ComparableThrower(1);
 				var actual = new ComparableThrower(1);
@@ -2945,7 +2945,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void Generic_ThrowsException_NotEqual()
+			public static void Generic_ThrowsException_NotEqual()
 			{
 				var expected = new ComparableThrower(1);
 				var actual = new ComparableThrower(2);
@@ -2958,7 +2958,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // IComparable<Expected> vs. IComparable<Actual> cannot be done in Native AOT because of the reflection restrictions
 
 			[Fact]
-			public void DifferentTypes_ImplicitImplementation_Equal()
+			public static void DifferentTypes_ImplicitImplementation_Equal()
 			{
 				object expected = new ImplicitIComparableExpected(1);
 				object actual = new IntWrapper(1);
@@ -2975,7 +2975,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ImplicitImplementation_NotEqual()
+			public static void DifferentTypes_ImplicitImplementation_NotEqual()
 			{
 				object expected = new ImplicitIComparableExpected(1);
 				object actual = new IntWrapper(2);
@@ -2984,7 +2984,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ExplicitImplementation_Equal()
+			public static void DifferentTypes_ExplicitImplementation_Equal()
 			{
 				object expected = new ExplicitIComparableActual(1);
 				object actual = new IntWrapper(1);
@@ -3001,7 +3001,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ExplicitImplementation_NotEqual()
+			public static void DifferentTypes_ExplicitImplementation_NotEqual()
 			{
 				object expected = new ExplicitIComparableActual(1);
 				object actual = new IntWrapper(2);
@@ -3010,7 +3010,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Throws_Equal()
+			public static void DifferentTypes_Throws_Equal()
 			{
 				object expected = new IComparableActualThrower(1);
 				object actual = new IntWrapper(1);
@@ -3027,7 +3027,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Throws_NotEqual()
+			public static void DifferentTypes_Throws_NotEqual()
 			{
 				object expected = new IComparableActualThrower(1);
 				object actual = new IntWrapper(2);
@@ -3038,10 +3038,10 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 		}
 
-		public class NotComparable
+		public static class NotComparable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var nco1 = new NonComparableObject();
 				var nco2 = new NonComparableObject();
@@ -3063,7 +3063,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var nco1 = new NonComparableObject(false);
 				var nco2 = new NonComparableObject();
@@ -3072,10 +3072,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Equatable
+		public static class Equatable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var obj1 = new SpyEquatable();
 				var obj2 = new SpyEquatable();
@@ -3097,7 +3097,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var obj1 = new SpyEquatable(false);
 				var obj2 = new SpyEquatable();
@@ -3109,7 +3109,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_SubClass_Equal()
+			public static void SubClass_SubClass_Equal()
 			{
 				var expected = new EquatableSubClassA(1);
 				var actual = new EquatableSubClassB(1);
@@ -3131,7 +3131,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_SubClass_NotEqual()
+			public static void SubClass_SubClass_NotEqual()
 			{
 				var expected = new EquatableSubClassA(1);
 				var actual = new EquatableSubClassB(2);
@@ -3140,7 +3140,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void BaseClass_SubClass_Equal()
+			public static void BaseClass_SubClass_Equal()
 			{
 				var expected = new EquatableBaseClass(1);
 				var actual = new EquatableSubClassA(1);
@@ -3162,7 +3162,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void BaseClass_SubClass_NotEqual()
+			public static void BaseClass_SubClass_NotEqual()
 			{
 				var expected = new EquatableBaseClass(1);
 				var actual = new EquatableSubClassA(2);
@@ -3171,7 +3171,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_BaseClass_Equal()
+			public static void SubClass_BaseClass_Equal()
 			{
 				var expected = new EquatableSubClassA(1);
 				var actual = new EquatableBaseClass(1);
@@ -3193,7 +3193,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SubClass_BaseClass_NotEqual()
+			public static void SubClass_BaseClass_NotEqual()
 			{
 				var expected = new EquatableSubClassA(1);
 				var actual = new EquatableBaseClass(2);
@@ -3204,7 +3204,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // Support for IEquatable<Expected> vs. IEquatable<Actual> cannot be done in Native AOT because of the reflection restrictions
 
 			[Fact]
-			public void DifferentTypes_ImplicitImplementation_Equal()
+			public static void DifferentTypes_ImplicitImplementation_Equal()
 			{
 				object expected = new ImplicitIEquatableExpected(1);
 				object actual = new IntWrapper(1);
@@ -3221,7 +3221,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ImplicitImplementation_NotEqual()
+			public static void DifferentTypes_ImplicitImplementation_NotEqual()
 			{
 				object expected = new ImplicitIEquatableExpected(1);
 				object actual = new IntWrapper(2);
@@ -3230,7 +3230,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ExplicitImplementation_Equal()
+			public static void DifferentTypes_ExplicitImplementation_Equal()
 			{
 				object expected = new ExplicitIEquatableExpected(1);
 				object actual = new IntWrapper(1);
@@ -3247,7 +3247,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_ExplicitImplementation_NotEqual()
+			public static void DifferentTypes_ExplicitImplementation_NotEqual()
 			{
 				object expected = new ExplicitIEquatableExpected(1);
 				object actual = new IntWrapper(2);
@@ -3258,10 +3258,10 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 		}
 
-		public class StructuralEquatable
+		public static class StructuralEquatable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new StructuralStringWrapper("a");
 				var actual = new StructuralStringWrapper("a");
@@ -3290,7 +3290,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new StructuralStringWrapper("a");
 				var actual = new StructuralStringWrapper("b");
@@ -3301,7 +3301,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void ExpectedNull_ActualNull()
+			public static void ExpectedNull_ActualNull()
 			{
 				var expected = new Tuple<StringWrapper?>(null);
 				var actual = new Tuple<StringWrapper?>(null);
@@ -3325,7 +3325,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void ExpectedNull_ActualNonNull()
+			public static void ExpectedNull_ActualNonNull()
 			{
 				var expected = new Tuple<StringWrapper?>(null);
 				var actual = new Tuple<StringWrapper?>(new StringWrapper("a"));
@@ -3336,7 +3336,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void ExpectedNonNull_ActualNull()
+			public static void ExpectedNonNull_ActualNull()
 			{
 				var expected = new Tuple<StringWrapper?>(new StringWrapper("a"));
 				var actual = new Tuple<StringWrapper?>(null);
@@ -3347,10 +3347,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Collections
+		public static class Collections
 		{
 			[Fact]
-			public void IReadOnlyCollection_IEnumerable_Equal()
+			public static void IReadOnlyCollection_IEnumerable_Equal()
 			{
 				var expected = new string[] { "foo", "bar" };
 				var actual = new ReadOnlyCollection<string>(expected);
@@ -3373,7 +3373,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void IReadOnlyCollection_IEnumerable_NotEqual()
+			public static void IReadOnlyCollection_IEnumerable_NotEqual()
 			{
 				var expected = new string[] { "foo", "bar" };
 				var actual = new ReadOnlyCollection<string>(["bar", "foo"]);
@@ -3383,7 +3383,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionDepth_Equal()
+			public static void CollectionDepth_Equal()
 			{
 				var x = new List<object> { new List<object> { new List<object> { 1 } } };
 				var y = new List<object> { new List<object> { new List<object> { 1 } } };
@@ -3400,7 +3400,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionDepth_NotEqual()
+			public static void CollectionDepth_NotEqual()
 			{
 				var x = new List<object> { new List<object> { new List<object> { 1 } } };
 				var y = new List<object> { new List<object> { new List<object> { 2 } } };
@@ -3409,7 +3409,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void StringArray_ObjectArray_Equal()
+			public static void StringArray_ObjectArray_Equal()
 			{
 				var expected = new string[] { "foo", "bar" };
 				var actual = new object[] { "foo", "bar" };
@@ -3432,7 +3432,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void StringArray_ObjectArray_NotEqual()
+			public static void StringArray_ObjectArray_NotEqual()
 			{
 				var expected = new string[] { "foo", "bar" };
 				var actual = new object[] { "foo", "baz" };
@@ -3442,7 +3442,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void MultidimensionalArrays_Equal()
+			public static void MultidimensionalArrays_Equal()
 			{
 				var expected = new int[,] { { 1 }, { 2 } };
 				var actual = new int[,] { { 1 }, { 2 } };
@@ -3461,7 +3461,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void MultidimensionalArrays_NotEqual()
+			public static void MultidimensionalArrays_NotEqual()
 			{
 				var expected = new int[,] { { 1, 2 } };
 				var actual = new int[,] { { 1 }, { 2 } };
@@ -3472,7 +3472,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // Array.CreateInstance is not available in Native AOT
 
 			[Fact]
-			public void NonZeroBoundedArrays_Equal()
+			public static void NonZeroBoundedArrays_Equal()
 			{
 				var expected = Array.CreateInstance(typeof(int), [1], [1]);
 				expected.SetValue(42, 1);
@@ -3492,7 +3492,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NonZeroBoundedArrays_NotEqual()
+			public static void NonZeroBoundedArrays_NotEqual()
 			{
 				var expected = Array.CreateInstance(typeof(int), [1], [1]);
 				expected.SetValue(42, 1);
@@ -3505,7 +3505,7 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 
 			[Fact]
-			public void CollectionWithIEquatable_Equal()
+			public static void CollectionWithIEquatable_Equal()
 			{
 				var expected = new EnumerableEquatable<int> { 42, 2112 };
 				var actual = new EnumerableEquatable<int> { 2112, 42 };
@@ -3522,7 +3522,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionWithIEquatable_NotEqual()
+			public static void CollectionWithIEquatable_NotEqual()
 			{
 				var expected = new EnumerableEquatable<int> { 42, 2112 };
 				var actual = new EnumerableEquatable<int> { 2112, 2600 };
@@ -3559,10 +3559,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Dictionaries
+		public static class Dictionaries
 		{
 			[Fact]
-			public void SameTypes_Equal()
+			public static void SameTypes_Equal()
 			{
 				var expected = new Dictionary<string, string> { ["foo"] = "bar" };
 				var actual = new Dictionary<string, string> { ["foo"] = "bar" };
@@ -3591,7 +3591,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void SameTypes_NotEqual()
+			public static void SameTypes_NotEqual()
 			{
 				var expected = new Dictionary<string, string> { ["foo"] = "bar" };
 				var actual = new Dictionary<string, string> { ["foo"] = "baz" };
@@ -3602,7 +3602,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Equal()
+			public static void DifferentTypes_Equal()
 			{
 				var expected = new Dictionary<string, string> { ["foo"] = "bar" };
 				var actual = new ConcurrentDictionary<string, string>(expected);
@@ -3630,7 +3630,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_NotEqual()
+			public static void DifferentTypes_NotEqual()
 			{
 				var expected = new Dictionary<string, string> { ["foo"] = "bar" };
 				var actual = new ConcurrentDictionary<string, string> { ["foo"] = "baz" };
@@ -3640,7 +3640,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NullValue_Equal()
+			public static void NullValue_Equal()
 			{
 				var expected = new Dictionary<string, int?> { { "two", null } };
 				var actual = new Dictionary<string, int?> { { "two", null } };
@@ -3662,7 +3662,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NullValue_NotEqual()
+			public static void NullValue_NotEqual()
 			{
 				var expected = new Dictionary<string, int?> { { "two", null } };
 				var actual = new Dictionary<string, int?> { { "two", 1 } };
@@ -3671,7 +3671,7 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class HashSets
+		public static class HashSets
 		{
 			[Fact]
 			public static void InOrder_Equal()
@@ -3726,7 +3726,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Equal()
+			public static void DifferentTypes_Equal()
 			{
 				var expected = new HashSet<string> { "bar", "foo" };
 				var actual = new SortedSet<string> { "foo", "bar" };
@@ -3754,7 +3754,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_NotEqual()
+			public static void DifferentTypes_NotEqual()
 			{
 				object expected = new HashSet<int> { 42 };
 				object actual = new HashSet<long> { 42L };
@@ -3765,7 +3765,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // Comparer func overload is disabled in AOT via compiler
 
 			[Fact]
-			public void ComparerFunc_Throws()
+			public static void ComparerFunc_Throws()
 			{
 				var expected = new HashSet<string> { "bar" };
 				var actual = new HashSet<string> { "baz" };
@@ -3784,10 +3784,10 @@ public class EqualityAssertsTests
 #endif  // !XUNIT_AOT
 		}
 
-		public class Sets
+		public static class Sets
 		{
 			[Fact]
-			public void InOrder_Equal()
+			public static void InOrder_Equal()
 			{
 				var expected = new NonGenericSet { "bar", "foo" };
 				var actual = new NonGenericSet { "bar", "foo" };
@@ -3815,7 +3815,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void InOrder_NotEqual()
+			public static void InOrder_NotEqual()
 			{
 				var expected = new NonGenericSet { "bar", "foo" };
 				var actual = new NonGenericSet { "bar", "baz" };
@@ -3830,7 +3830,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void OutOfOrder_Equal()
+			public static void OutOfOrder_Equal()
 			{
 				var expected = new NonGenericSet { "bar", "foo" };
 				var actual = new NonGenericSet { "foo", "bar" };
@@ -3858,7 +3858,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void OutOfOrder_NotEqual()
+			public static void OutOfOrder_NotEqual()
 			{
 				var expected = new NonGenericSet { "bar", "foo" };
 				var actual = new NonGenericSet { "foo", "baz" };
@@ -3873,7 +3873,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentContents()
+			public static void DifferentContents()
 			{
 				var expected = new NonGenericSet { "bar" };
 				var actual = new NonGenericSet { "bar", "foo" };
@@ -3888,7 +3888,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_Equal()
+			public static void DifferentTypes_Equal()
 			{
 				var expected = new NonGenericSet { "bar" };
 				var actual = new HashSet<string> { "bar" };
@@ -3916,7 +3916,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void DifferentTypes_NotEqual()
+			public static void DifferentTypes_NotEqual()
 			{
 				var expected = new NonGenericSet { "bar" };
 				var actual = new HashSet<string> { "baz" };
@@ -3931,7 +3931,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void TwoGenericSubClass_Equal()
+			public static void TwoGenericSubClass_Equal()
 			{
 				var expected = new TwoGenericSet<string, int> { "foo", "bar" };
 				var actual = new TwoGenericSet<string, int> { "foo", "bar" };
@@ -3959,7 +3959,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void TwoGenericSubClass_NotEqual()
+			public static void TwoGenericSubClass_NotEqual()
 			{
 				var expected = new TwoGenericSet<string, int> { "foo", "bar" };
 				var actual = new TwoGenericSet<string, int> { "foo", "baz" };
@@ -3976,7 +3976,7 @@ public class EqualityAssertsTests
 #if !XUNIT_AOT  // Comparer func overload is disabled in AOT via compiler
 
 			[Fact]
-			public void ComparerFunc_Throws()
+			public static void ComparerFunc_Throws()
 			{
 				var expected = new NonGenericSet { "bar" };
 				var actual = new HashSet<string> { "baz" };
@@ -3996,10 +3996,10 @@ public class EqualityAssertsTests
 		}
 
 		// https://github.com/xunit/xunit/issues/3137
-		public class ImmutableArrays
+		public static class ImmutableArrays
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new[] { 1, 2, 3 }.ToImmutableArray();
 				var actual = new[] { 1, 2, 3 }.ToImmutableArray();
@@ -4016,7 +4016,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new[] { 1, 2, 3 }.ToImmutableArray();
 				var actual = new[] { 1, 2, 4 }.ToImmutableArray();
@@ -4025,10 +4025,10 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class Strings
+		public static class Strings
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual("actual", "actual"));
 
@@ -4042,13 +4042,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual("foo", "bar");
 			}
 
 			[Fact]
-			public void Truncation()
+			public static void Truncation()
 			{
 				var ex = Record.Exception(
 					() => Assert.NotEqual(
@@ -4067,12 +4067,12 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class KeyValuePair
+		public static class KeyValuePair
 		{
 #if !XUNIT_AOT  // AOT can't deep dive into collections in the same was a non-AOT
 
 			[Fact]
-			public void CollectionKeys_Equal()
+			public static void CollectionKeys_Equal()
 			{
 				// Different concrete collection types in the key slot, per https://github.com/xunit/xunit/issues/2850
 #pragma warning disable IDE0028 // Simplify collection initialization
@@ -4099,7 +4099,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionKeys_NotEqual()
+			public static void CollectionKeys_NotEqual()
 			{
 				// Different concrete collection types in the key slot, per https://github.com/xunit/xunit/issues/2850
 #pragma warning disable IDE0028 // Simplify collection initialization
@@ -4113,7 +4113,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionValues_Equal()
+			public static void CollectionValues_Equal()
 			{
 				// Different concrete collection types in the key slot, per https://github.com/xunit/xunit/issues/2850
 #pragma warning disable IDE0028 // Simplify collection initialization
@@ -4140,7 +4140,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void CollectionValues_NotEqual()
+			public static void CollectionValues_NotEqual()
 			{
 				// Different concrete collection types in the key slot, per https://github.com/xunit/xunit/issues/2850
 #pragma warning disable IDE0028 // Simplify collection initialization
@@ -4156,7 +4156,7 @@ public class EqualityAssertsTests
 #endif // !XUNIT_AOT
 
 			[Fact]
-			public void EquatableKeys_Equal()
+			public static void EquatableKeys_Equal()
 			{
 				var expected = new KeyValuePair<EquatableObject, int>(new() { Char = 'a' }, 42);
 				var actual = new KeyValuePair<EquatableObject, int>(new() { Char = 'a' }, 42);
@@ -4178,7 +4178,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void EquatableKeys_NotEqual()
+			public static void EquatableKeys_NotEqual()
 			{
 				var expected = new KeyValuePair<EquatableObject, int>(new() { Char = 'a' }, 42);
 				var actual = new KeyValuePair<EquatableObject, int>(new() { Char = 'b' }, 42);
@@ -4187,7 +4187,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void EquatableValues_Equal()
+			public static void EquatableValues_Equal()
 			{
 				var expected = new KeyValuePair<string, EquatableObject>("Key1", new() { Char = 'a' });
 				var actual = new KeyValuePair<string, EquatableObject>("Key1", new() { Char = 'a' });
@@ -4209,7 +4209,7 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void EquatableValues_NotEqual()
+			public static void EquatableValues_NotEqual()
 			{
 				var expected = new KeyValuePair<string, EquatableObject>("Key1", new() { Char = 'a' });
 				var actual = new KeyValuePair<string, EquatableObject>("Key1", new() { Char = 'b' });
@@ -4232,7 +4232,7 @@ public class EqualityAssertsTests
 			}
 		}
 
-		public class DoubleEnumerationPrevention
+		public static class DoubleEnumerationPrevention
 		{
 			[Fact]
 			public static void EnumeratesOnlyOnce_Equal()
@@ -4262,10 +4262,10 @@ public class EqualityAssertsTests
 		}
 	}
 
-	public class NotEqual_Decimal
+	public static class NotEqual_Decimal
 	{
 		[CulturedFact(["en-US", "fr-FR"])]
-		public void Equal()
+		public static void Equal()
 		{
 			var ex = Record.Exception(() => Assert.NotEqual(0.11111M, 0.11444M, 2));
 
@@ -4279,18 +4279,18 @@ public class EqualityAssertsTests
 		}
 
 		[Fact]
-		public void NotEqual()
+		public static void NotEqual()
 		{
 			Assert.NotEqual(0.11111M, 0.11444M, 3);
 		}
 	}
 
-	public class NotEqual_Double
+	public static class NotEqual_Double
 	{
-		public class WithPrecision
+		public static class WithPrecision
 		{
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(0.11111, 0.11444, 2));
 
@@ -4304,16 +4304,16 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual(0.11111, 0.11444, 3);
 			}
 		}
 
-		public class WithMidPointRounding
+		public static class WithMidPointRounding
 		{
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(10.565, 10.566, 2, MidpointRounding.AwayFromZero));
 
@@ -4327,16 +4327,16 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual(0.11113, 0.11115, 4, MidpointRounding.ToEven);
 			}
 		}
 
-		public class WithTolerance
+		public static class WithTolerance
 		{
 			[Fact]
-			public void GuardClause()
+			public static void GuardClause()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(0.0, 1.0, double.NegativeInfinity));
 
@@ -4346,7 +4346,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(10.566, 10.565, 0.01));
 
@@ -4360,13 +4360,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual(0.11113, 0.11115, 0.00001);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NaN_Equal()
+			public static void NaN_Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(double.NaN, double.NaN, 1000.0));
 
@@ -4380,13 +4380,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NaN_NotEqual()
+			public static void NaN_NotEqual()
 			{
 				Assert.NotEqual(20210102.2208, double.NaN, 20000000.0);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void InfiniteTolerance_Equal()
+			public static void InfiniteTolerance_Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(double.MinValue, double.MaxValue, double.PositiveInfinity));
 
@@ -4400,25 +4400,25 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void PositiveInfinity_NotEqual()
+			public static void PositiveInfinity_NotEqual()
 			{
 				Assert.NotEqual(double.PositiveInfinity, 77.7, 1.0);
 			}
 
 			[Fact]
-			public void NegativeInfinity_NotEqual()
+			public static void NegativeInfinity_NotEqual()
 			{
 				Assert.NotEqual(0.0, double.NegativeInfinity, 1.0);
 			}
 		}
 	}
 
-	public class NotEqual_Float
+	public static class NotEqual_Float
 	{
-		public class WithPrecision
+		public static class WithPrecision
 		{
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(0.11111f, 0.11444f, 2));
 
@@ -4432,16 +4432,16 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual(0.11111f, 0.11444f, 3);
 			}
 		}
 
-		public class WithMidPointRounding
+		public static class WithMidPointRounding
 		{
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(10.5655f, 10.5666f, 2, MidpointRounding.AwayFromZero));
 
@@ -4455,16 +4455,16 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual(0.111133f, 0.111155f, 4, MidpointRounding.ToEven);
 			}
 		}
 
-		public class WithTolerance
+		public static class WithTolerance
 		{
 			[Fact]
-			public void GuardClause()
+			public static void GuardClause()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(0.0f, 1.0f, float.NegativeInfinity));
 
@@ -4474,7 +4474,7 @@ public class EqualityAssertsTests
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void Equal()
+			public static void Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(10.569f, 10.562f, 0.01f));
 
@@ -4488,13 +4488,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				Assert.NotEqual(0.11113f, 0.11115f, 0.00001f);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void NaN_Equal()
+			public static void NaN_Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(float.NaN, float.NaN, 1000.0f));
 
@@ -4508,13 +4508,13 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void NaN_NotEqual()
+			public static void NaN_NotEqual()
 			{
 				Assert.NotEqual(20210102.2208f, float.NaN, 20000000.0f);
 			}
 
 			[CulturedFact(["en-US", "fr-FR"])]
-			public void InfiniteTolerance_Equal()
+			public static void InfiniteTolerance_Equal()
 			{
 				var ex = Record.Exception(() => Assert.NotEqual(float.MinValue, float.MaxValue, float.PositiveInfinity));
 
@@ -4528,20 +4528,20 @@ public class EqualityAssertsTests
 			}
 
 			[Fact]
-			public void PositiveInfinity_NotEqual()
+			public static void PositiveInfinity_NotEqual()
 			{
 				Assert.NotEqual(float.PositiveInfinity, 77.7f, 1.0f);
 			}
 
 			[Fact]
-			public void NegativeInfinity_NotEqual()
+			public static void NegativeInfinity_NotEqual()
 			{
 				Assert.NotEqual(0.0f, float.NegativeInfinity, 1.0f);
 			}
 		}
 	}
 
-	public class NotStrictEqual
+	public static class NotStrictEqual
 	{
 		[Fact]
 		public static void Equal()
@@ -4589,7 +4589,7 @@ public class EqualityAssertsTests
 		}
 	}
 
-	public class StrictEqual
+	public static class StrictEqual
 	{
 		[Fact]
 		public static void Equal()

@@ -2,9 +2,9 @@ using System.Collections;
 using Xunit;
 using Xunit.Sdk;
 
-public class ArgumentFormatterTests
+public static class ArgumentFormatterTests
 {
-	public class SimpleValues
+	public static class SimpleValues
 	{
 		[CulturedFact(["en-US", "fr-FR"])]
 		public static void NullValue()
@@ -202,7 +202,7 @@ public class ArgumentFormatterTests
 		}
 	}
 
-	public class Enums
+	public static class Enums
 	{
 		public enum NonFlagsEnum
 		{
@@ -247,7 +247,7 @@ public class ArgumentFormatterTests
 		}
 	}
 
-	public class KeyValuePair
+	public static class KeyValuePair
 	{
 		[CulturedFact(["en-US", "fr-FR"])]
 		public static void KeyValuePairValue()
@@ -259,7 +259,7 @@ public class ArgumentFormatterTests
 		}
 	}
 
-	public class Enumerables
+	public static class Enumerables
 	{
 #pragma warning disable xUnit1047 // Avoid using TheoryDataRow arguments that might not be serializable
 
@@ -354,7 +354,7 @@ public class ArgumentFormatterTests
 		}
 	}
 
-	public class ComplexTypes
+	public static class ComplexTypes
 	{
 		[CulturedFact(["en-US", "fr-FR"])]
 		public static void Empty()
@@ -522,7 +522,7 @@ public class ArgumentFormatterTests
 		}
 	}
 
-	public class TypeNames
+	public static class TypeNames
 	{
 		public static TheoryData<Type, string> ArgumentFormatterFormatTypeNamesData = new()
 		{
@@ -537,13 +537,13 @@ public class ArgumentFormatterTests
 
 		[Theory]
 		[MemberData(nameof(ArgumentFormatterFormatTypeNamesData), DisableDiscoveryEnumeration = true)]
-		public void ArgumentFormatterFormatTypeNames(Type type, string expectedResult)
+		public static void ArgumentFormatterFormatTypeNames(Type type, string expectedResult)
 		{
 			Assert.Equal(expectedResult, ArgumentFormatter.Format(type));
 		}
 
 		[Fact]
-		public void ArgumentFormatterFormatTypeNameGenericTypeParameter()
+		public static void ArgumentFormatterFormatTypeNameGenericTypeParameter()
 		{
 			var genericTypeParameters = typeof(List<>).GetGenericArguments();
 			var parameterType = genericTypeParameters.First();
@@ -552,7 +552,7 @@ public class ArgumentFormatterTests
 		}
 
 		[Fact]
-		public void ArgumentFormatterFormatTypeNameGenericTypeParameters()
+		public static void ArgumentFormatterFormatTypeNameGenericTypeParameters()
 		{
 			var genericTypeParameters = typeof(Dictionary<,>).GetGenericArguments();
 			var parameterTKey = genericTypeParameters.First();

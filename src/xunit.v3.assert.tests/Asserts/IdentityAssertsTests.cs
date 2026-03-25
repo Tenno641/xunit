@@ -1,12 +1,12 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class IdentityAssertsTests
+public static class IdentityAssertsTests
 {
-	public class NotSame
+	public static class NotSame
 	{
 		[Fact]
-		public void Identical()
+		public static void Identical()
 		{
 			var actual = new object();
 
@@ -17,16 +17,16 @@ public class IdentityAssertsTests
 		}
 
 		[Fact]
-		public void NotIdentical()
+		public static void NotIdentical()
 		{
 			Assert.NotSame("bob", "jim");
 		}
 	}
 
-	public class Same
+	public static class Same
 	{
 		[Fact]
-		public void Identical()
+		public static void Identical()
 		{
 			var actual = new object();
 
@@ -34,7 +34,7 @@ public class IdentityAssertsTests
 		}
 
 		[Fact]
-		public void NotIdentical()
+		public static void NotIdentical()
 		{
 			var ex = Record.Exception(() => Assert.Same("bob", "jim"));
 
@@ -48,7 +48,7 @@ public class IdentityAssertsTests
 		}
 
 		[Fact]
-		public void EqualValueTypeValuesAreNotSameBecauseOfBoxing()
+		public static void EqualValueTypeValuesAreNotSameBecauseOfBoxing()
 		{
 #pragma warning disable xUnit2005 // Do not use identity check on value type
 			Assert.Throws<SameException>(() => Assert.Same(0, 0));

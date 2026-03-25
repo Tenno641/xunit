@@ -7,9 +7,9 @@ using System.Text;
 using Xunit;
 using Xunit.Sdk;
 
-public class CollectionAssertsTests
+public static class CollectionAssertsTests
 {
-	public class All
+	public static class All
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -82,7 +82,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class AllAsync
+	public static class AllAsync
 	{
 		[Fact]
 		public static async Task GuardClauses()
@@ -155,7 +155,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Collection
+	public static class Collection
 	{
 		[Fact]
 		public static void EmptyCollection()
@@ -227,7 +227,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class CollectionAsync
+	public static class CollectionAsync
 	{
 		[Fact]
 		public static async Task EmptyCollection()
@@ -316,7 +316,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Contains
+	public static class Contains
 	{
 		[Fact]
 		public static void GuardClause()
@@ -385,7 +385,7 @@ public class CollectionAssertsTests
 #endif  // NET8_0_OR_GREATER
 	}
 
-	public class Contains_Comparer
+	public static class Contains_Comparer
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -428,7 +428,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Contains_Predicate
+	public static class Contains_Predicate
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -461,7 +461,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Distinct
+	public static class Distinct
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -536,7 +536,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class DoesNotContain
+	public static class DoesNotContain
 	{
 		[Fact]
 		public static void GuardClause()
@@ -624,7 +624,7 @@ public class CollectionAssertsTests
 #endif  // NET8_0_OR_GREATER
 	}
 
-	public class DoesNotContain_Comparer
+	public static class DoesNotContain_Comparer
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -661,7 +661,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class DoesNotContain_Predicate
+	public static class DoesNotContain_Predicate
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -695,7 +695,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Empty
+	public static class Empty
 	{
 		[Fact]
 		public static void GuardClause()
@@ -737,9 +737,9 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Equal
+	public static class Equal
 	{
-		public class Null
+		public static class Null
 		{
 			[Fact]
 			public static void BothNull()
@@ -785,7 +785,7 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class Arrays
+		public static class Arrays
 		{
 			[Fact]
 			public static void Equal()
@@ -820,7 +820,7 @@ public class CollectionAssertsTests
 			[InlineData(new[] { 1, 2, 3, 4, 5 }, new[] { 1, 2, 3, 4 }, "            ↓ (pos 4)", null)]
 			[InlineData(new[] { 1 }, new int[0], "↓ (pos 0)", null)]
 			[InlineData(new int[0], new[] { 1 }, null, "↑ (pos 0)")]
-			public void NotEqual(
+			public static void NotEqual(
 				int[]? expected,
 				int[]? actual,
 				string? expectedPointer,
@@ -893,7 +893,7 @@ public class CollectionAssertsTests
 				new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, "           ↓ (pos 7)", "[$$ELLIPSIS$$, 6, 7, 8, 9, 10, $$ELLIPSIS$$]",
 				new[] { 1, 2, 3, 4, 5, 6, 7 }, "[$$ELLIPSIS$$, 6, 7]", null
 			)]
-			public void Truncation(
+			public static void Truncation(
 				int[]? expected,
 				string? expectedPointer,
 				string expectedDisplay,
@@ -920,7 +920,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void SameValueDifferentType()
+			public static void SameValueDifferentType()
 			{
 				var ex = Record.Exception(() => Assert.Equal(new object[] { 1, 2, 3 }, [1, 2, 3L]));
 
@@ -936,11 +936,11 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class ArraysWithComparer
+		public static class ArraysWithComparer
 		{
 			// https://github.com/xunit/xunit/issues/2795
 			[Fact]
-			public void CollectionItemIsEnumerable()
+			public static void CollectionItemIsEnumerable()
 			{
 				var actual = new EnumerableItem[] { new(0), new(2) };
 				var expected = new EnumerableItem[] { new(1), new(3) };
@@ -970,11 +970,11 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class ArraysWithFunc
+		public static class ArraysWithFunc
 		{
 			// https://github.com/xunit/xunit/issues/2795
 			[Fact]
-			public void CollectionItemIsEnumerable()
+			public static void CollectionItemIsEnumerable()
 			{
 				var actual = new EnumerableItem[] { new(0), new(2) };
 				var expected = new EnumerableItem[] { new(1), new(3) };
@@ -995,7 +995,7 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class Collections
+		public static class Collections
 		{
 			[Fact]
 			public static void Equal()
@@ -1048,7 +1048,7 @@ public class CollectionAssertsTests
 				new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, "                      ↓ (pos 7)", "int[]     [$$ELLIPSIS$$, 6, 7, 8, 9, 10, $$ELLIPSIS$$]",
 				new[] { 1, 2, 3, 4, 5, 6, 7 }, "List<int> [$$ELLIPSIS$$, 6, 7]", null
 			)]
-			public void NotEqual(
+			public static void NotEqual(
 				int[]? expected,
 				string? expectedPointer,
 				string expectedDisplay,
@@ -1076,7 +1076,7 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class CollectionsWithComparer
+		public static class CollectionsWithComparer
 		{
 			[Fact]
 			public static void AlwaysFalse()
@@ -1117,7 +1117,7 @@ public class CollectionAssertsTests
 
 			// https://github.com/xunit/xunit/issues/2795
 			[Fact]
-			public void CollectionItemIsEnumerable()
+			public static void CollectionItemIsEnumerable()
 			{
 				var actual = new List<EnumerableItem> { new(0), new(2) };
 				var expected = new List<EnumerableItem> { new(1), new(3) };
@@ -1147,7 +1147,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
+			public static void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
 			{
 				var ex = Record.Exception(() => Assert.Equal([1, 2], [1, 3], new ThrowingComparer()));
 
@@ -1175,10 +1175,10 @@ public class CollectionAssertsTests
 
 #if !XUNIT_AOT  // Embedded IEquatable<T> cannot be done in Native AOT because of the reflection restrictions
 
-		public class CollectionsWithEquatable
+		public static class CollectionsWithEquatable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new[] { new EquatableObject { Char = 'a' } };
 				var actual = new[] { new EquatableObject { Char = 'a' } };
@@ -1187,7 +1187,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new[] { new EquatableObject { Char = 'a' } };
 				var actual = new[] { new EquatableObject { Char = 'b' } };
@@ -1222,7 +1222,7 @@ public class CollectionAssertsTests
 
 #endif  // !XUNIT_AOT
 
-		public class CollectionsWithFunc
+		public static class CollectionsWithFunc
 		{
 			[Fact]
 			public static void AlwaysFalse()
@@ -1254,7 +1254,7 @@ public class CollectionAssertsTests
 
 			// https://github.com/xunit/xunit/issues/2795
 			[Fact]
-			public void CollectionItemIsEnumerable()
+			public static void CollectionItemIsEnumerable()
 			{
 				var expected = new List<EnumerableItem> { new(1), new(3) };
 				var actual = new List<EnumerableItem> { new(0), new(2) };
@@ -1275,7 +1275,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
+			public static void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
 			{
 				var ex = Record.Exception(() =>
 					Assert.Equal(
@@ -1298,7 +1298,7 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class Dictionaries
+		public static class Dictionaries
 		{
 			[Fact]
 			public static void InOrderDictionary()
@@ -1464,7 +1464,7 @@ public class CollectionAssertsTests
 #if !XUNIT_AOT  // Embedded IEquatable<T> cannot be done in Native AOT because of the reflection restrictions
 
 			[Fact]
-			public void EquatableValues_Equal()
+			public static void EquatableValues_Equal()
 			{
 				var expected = new Dictionary<string, EquatableObject> { { "Key1", new() { Char = 'a' } } };
 				var actual = new Dictionary<string, EquatableObject> { { "Key1", new() { Char = 'a' } } };
@@ -1473,7 +1473,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void EquatableValues_NotEqual()
+			public static void EquatableValues_NotEqual()
 			{
 				var expected = new Dictionary<string, EquatableObject> { { "Key1", new() { Char = 'a' } } };
 				var actual = new Dictionary<string, EquatableObject> { { "Key1", new() { Char = 'b' } } };
@@ -1506,7 +1506,7 @@ public class CollectionAssertsTests
 #endif  // !XUNIT_AOT
 
 			[Fact]
-			public void ComplexEmbeddedValues_Equal()
+			public static void ComplexEmbeddedValues_Equal()
 			{
 				var expected = new Dictionary<string, object>()
 				{
@@ -1539,7 +1539,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void ComplexEmbeddedValues_NotEqual()
+			public static void ComplexEmbeddedValues_NotEqual()
 			{
 				var expected = new Dictionary<string, object>()
 				{
@@ -1585,10 +1585,10 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class Sets
+		public static class Sets
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new HashSet<int> { 42, 2112 };
 				var actual = new HashSet<int> { 2112, 42 };
@@ -1597,7 +1597,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void Equal_WithInternalComparer()
+			public static void Equal_WithInternalComparer()
 			{
 				var comparer = new BitArrayComparer();
 				var expected = new HashSet<BitArray>(comparer) { new([true, false]) };
@@ -1607,7 +1607,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void Equal_WithExternalComparer()
+			public static void Equal_WithExternalComparer()
 			{
 				var expected = new HashSet<BitArray> { new([true, false]) };
 				var actual = new HashSet<BitArray> { new([true, false]) };
@@ -1616,7 +1616,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new HashSet<int> { 42, 2112 };
 				var actual = new HashSet<int> { 2600, 42 };
@@ -1633,7 +1633,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual_WithInternalComparer()
+			public static void NotEqual_WithInternalComparer()
 			{
 				var comparer = new BitArrayComparer();
 				var expected = new HashSet<BitArray>(comparer) { new([true, false]) };
@@ -1651,7 +1651,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual_WithExternalComparer()
+			public static void NotEqual_WithExternalComparer()
 			{
 				var expected = new HashSet<BitArray> { new([true, false]) };
 				var actual = new HashSet<BitArray> { new([true, true]) };
@@ -1693,7 +1693,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class NotEmpty
+	public static class NotEmpty
 	{
 		[Fact]
 		public static void EmptyContainer()
@@ -1728,9 +1728,9 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class NotEqual
+	public static class NotEqual
 	{
-		public class Null
+		public static class Null
 		{
 			[Fact]
 			public static void BothNull()
@@ -1767,7 +1767,7 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class Arrays
+		public static class Arrays
 		{
 			[Fact]
 			public static void Equal()
@@ -1817,7 +1817,7 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class Collections
+		public static class Collections
 		{
 			[Fact]
 			public static void Equal()
@@ -1913,10 +1913,10 @@ public class CollectionAssertsTests
 
 #if !XUNIT_AOT  // Embedded IEquatable<T> cannot be done in Native AOT because of the reflection restrictions
 
-		public class CollectionsWithEquatable
+		public static class CollectionsWithEquatable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new[] { new EquatableObject { Char = 'a' } };
 				var actual = new[] { new EquatableObject { Char = 'a' } };
@@ -1933,7 +1933,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new[] { new EquatableObject { Char = 'a' } };
 				var actual = new[] { new EquatableObject { Char = 'b' } };
@@ -1958,7 +1958,7 @@ public class CollectionAssertsTests
 
 #endif  // !XUNIT_AOT
 
-		public class CollectionsWithFunc
+		public static class CollectionsWithFunc
 		{
 			[Fact]
 			public static void AlwaysFalse()
@@ -1987,7 +1987,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
+			public static void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
 			{
 				var ex = Record.Exception(() =>
 					Assert.NotEqual(
@@ -2010,7 +2010,7 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class Dictionaries
+		public static class Dictionaries
 		{
 			[Fact]
 			public static void InOrderDictionary()
@@ -2163,7 +2163,7 @@ public class CollectionAssertsTests
 #if !XUNIT_AOT  // Embedded IEquatable<T> cannot be done in Native AOT because of the reflection restrictions
 
 			[Fact]
-			public void EquatableValues_Equal()
+			public static void EquatableValues_Equal()
 			{
 				var expected = new Dictionary<string, EquatableObject> { { "Key1", new() { Char = 'a' } } };
 				var actual = new Dictionary<string, EquatableObject> { { "Key1", new() { Char = 'a' } } };
@@ -2180,7 +2180,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void EquatableValues_NotEqual()
+			public static void EquatableValues_NotEqual()
 			{
 				var expected = new Dictionary<string, EquatableObject> { { "Key1", new() { Char = 'a' } } };
 				var actual = new Dictionary<string, EquatableObject> { { "Key1", new() { Char = 'b' } } };
@@ -2205,7 +2205,7 @@ public class CollectionAssertsTests
 #endif  // !XUNIT_AOT
 
 			[Fact]
-			public void ComplexEmbeddedValues_Equal()
+			public static void ComplexEmbeddedValues_Equal()
 			{
 				var expected = new Dictionary<string, object>()
 				{
@@ -2251,7 +2251,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void ComplexEmbeddedValues_NotEqual()
+			public static void ComplexEmbeddedValues_NotEqual()
 			{
 				var expected = new Dictionary<string, object>()
 				{
@@ -2284,10 +2284,10 @@ public class CollectionAssertsTests
 			}
 		}
 
-		public class Sets
+		public static class Sets
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new HashSet<int> { 42, 2112 };
 				var actual = new HashSet<int> { 2112, 42 };
@@ -2304,7 +2304,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void Equal_WithInternalComparer()
+			public static void Equal_WithInternalComparer()
 			{
 				var comparer = new BitArrayComparer();
 				var expected = new HashSet<BitArray>(comparer) { new([true, false]) };
@@ -2322,7 +2322,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void Equal_WithExternalComparer()
+			public static void Equal_WithExternalComparer()
 			{
 				var expected = new HashSet<BitArray> { new([true, false]) };
 				var actual = new HashSet<BitArray> { new([true, false]) };
@@ -2339,7 +2339,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new HashSet<int> { 42, 2112 };
 				var actual = new HashSet<int> { 2600, 42 };
@@ -2348,7 +2348,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual_WithInternalComparer()
+			public static void NotEqual_WithInternalComparer()
 			{
 				var comparer = new BitArrayComparer();
 				var expected = new HashSet<BitArray>(comparer) { new([true, false]) };
@@ -2358,7 +2358,7 @@ public class CollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual_WithExternalComparer()
+			public static void NotEqual_WithExternalComparer()
 			{
 				var expected = new HashSet<BitArray> { new([true, false]) };
 				var actual = new HashSet<BitArray> { new([true, true]) };
@@ -2392,7 +2392,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Single_NonGeneric
+	public static class Single_NonGeneric
 	{
 		[Fact]
 		public static void GuardClause()
@@ -2452,7 +2452,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Single_NonGeneric_WithObject
+	public static class Single_NonGeneric_WithObject
 	{
 		[Fact]
 		public static void GuardClause()
@@ -2527,7 +2527,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Single_Generic
+	public static class Single_Generic
 	{
 		[Fact]
 		public static void GuardClause()
@@ -2612,7 +2612,7 @@ public class CollectionAssertsTests
 		}
 	}
 
-	public class Single_Generic_WithPredicate
+	public static class Single_Generic_WithPredicate
 	{
 		[Fact]
 		public static void GuardClauses()

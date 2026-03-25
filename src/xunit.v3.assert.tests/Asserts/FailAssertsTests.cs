@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class FailAssertsTests
+public static class FailAssertsTests
 {
 	[Fact]
-	public void WithoutMessage()
+	public static void WithoutMessage()
 	{
 		var ex = Record.Exception(() => Assert.Fail());
 
@@ -13,7 +13,7 @@ public class FailAssertsTests
 	}
 
 	[Fact]
-	public void WithMessage()
+	public static void WithMessage()
 	{
 		var ex = Record.Exception(() => Assert.Fail("This is a user message"));
 

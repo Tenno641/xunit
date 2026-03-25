@@ -2,19 +2,19 @@ using System.ComponentModel;
 using Xunit;
 using Xunit.Sdk;
 
-public class PropertyAssertsTests
+public static class PropertyAssertsTests
 {
-	public class PropertyChanged
+	public static class PropertyChanged
 	{
 		[Fact]
-		public void GuardClauses()
+		public static void GuardClauses()
 		{
 			Assert.Throws<ArgumentNullException>("object", () => Assert.PropertyChanged(null!, "propertyName", delegate { }));
 			Assert.Throws<ArgumentNullException>("testCode", () => Assert.PropertyChanged(new NotifiedClass(), "propertyName", (Action)null!));
 		}
 
 		[Fact]
-		public void ExceptionThrownWhenPropertyNotChanged()
+		public static void ExceptionThrownWhenPropertyNotChanged()
 		{
 			var obj = new NotifiedClass();
 
@@ -25,7 +25,7 @@ public class PropertyAssertsTests
 		}
 
 		[Fact]
-		public void ExceptionThrownWhenWrongPropertyChanged()
+		public static void ExceptionThrownWhenWrongPropertyChanged()
 		{
 			var obj = new NotifiedClass();
 
@@ -36,7 +36,7 @@ public class PropertyAssertsTests
 		}
 
 		[Fact]
-		public void NoExceptionThrownWhenPropertyChanged()
+		public static void NoExceptionThrownWhenPropertyChanged()
 		{
 			var obj = new NotifiedClass();
 
@@ -44,7 +44,7 @@ public class PropertyAssertsTests
 		}
 
 		[Fact]
-		public void NoExceptionThrownWhenMultiplePropertyChangesIncludesCorrectProperty()
+		public static void NoExceptionThrownWhenMultiplePropertyChangesIncludesCorrectProperty()
 		{
 			var obj = new NotifiedClass();
 
@@ -57,17 +57,17 @@ public class PropertyAssertsTests
 		}
 	}
 
-	public class PropertyChangedAsync
+	public static class PropertyChangedAsync
 	{
 		[Fact]
-		public async Task GuardClauses()
+		public static async Task GuardClauses()
 		{
 			await Assert.ThrowsAsync<ArgumentNullException>("object", () => Assert.PropertyChangedAsync(null!, "propertyName", () => Task.FromResult(0)));
-			await Assert.ThrowsAsync<ArgumentNullException>("testCode", () => Assert.PropertyChangedAsync(new NotifiedClass(), "propertyName", default(Func<Task>)!));
+			await Assert.ThrowsAsync<ArgumentNullException>("testCode", () => Assert.PropertyChangedAsync(new NotifiedClass(), "propertyName", default!));
 		}
 
 		[Fact]
-		public async Task ExceptionThrownWhenPropertyNotChanged_Task()
+		public static async Task ExceptionThrownWhenPropertyNotChanged_Task()
 		{
 			var obj = new NotifiedClass();
 
@@ -79,7 +79,7 @@ public class PropertyAssertsTests
 
 #pragma warning disable CS1998
 		[Fact]
-		public async Task ExceptionThrownWhenWrongPropertyChangedAsync_Task()
+		public static async Task ExceptionThrownWhenWrongPropertyChangedAsync_Task()
 		{
 			var obj = new NotifiedClass();
 			async Task setter() => obj!.Property2 = 42;
@@ -91,7 +91,7 @@ public class PropertyAssertsTests
 		}
 
 		[Fact]
-		public async Task NoExceptionThrownWhenPropertyChangedAsync_Task()
+		public static async Task NoExceptionThrownWhenPropertyChangedAsync_Task()
 		{
 			var obj = new NotifiedClass();
 			async Task setter() => obj!.Property1 = "NewValue";
@@ -100,7 +100,7 @@ public class PropertyAssertsTests
 		}
 
 		[Fact]
-		public async Task NoExceptionThrownWhenMultiplePropertyChangesIncludesCorrectProperty_Task()
+		public static async Task NoExceptionThrownWhenMultiplePropertyChangesIncludesCorrectProperty_Task()
 		{
 			var obj = new NotifiedClass();
 

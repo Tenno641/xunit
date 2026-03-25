@@ -1,12 +1,12 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class RangeAssertsTests
+public static class RangeAssertsTests
 {
-	public class InRange
+	public static class InRange
 	{
 		[CulturedFact(["en-US", "fr-FR"])]
-		public void DoubleNotWithinRange()
+		public static void DoubleNotWithinRange()
 		{
 			var ex = Record.Exception(() => Assert.InRange(1.50, .75, 1.25));
 
@@ -20,13 +20,13 @@ public class RangeAssertsTests
 		}
 
 		[Fact]
-		public void DoubleValueWithinRange()
+		public static void DoubleValueWithinRange()
 		{
 			Assert.InRange(1.0, .75, 1.25);
 		}
 
 		[Fact]
-		public void IntNotWithinRangeWithZeroActual()
+		public static void IntNotWithinRangeWithZeroActual()
 		{
 			var ex = Record.Exception(() => Assert.InRange(0, 1, 2));
 
@@ -40,7 +40,7 @@ public class RangeAssertsTests
 		}
 
 		[Fact]
-		public void IntNotWithinRangeWithZeroMinimum()
+		public static void IntNotWithinRangeWithZeroMinimum()
 		{
 			var ex = Record.Exception(() => Assert.InRange(2, 0, 1));
 
@@ -54,13 +54,13 @@ public class RangeAssertsTests
 		}
 
 		[Fact]
-		public void IntValueWithinRange()
+		public static void IntValueWithinRange()
 		{
 			Assert.InRange(2, 1, 3);
 		}
 
 		[Fact]
-		public void StringNotWithinRange()
+		public static void StringNotWithinRange()
 		{
 			var ex = Record.Exception(() => Assert.InRange("adam", "bob", "scott"));
 
@@ -74,22 +74,22 @@ public class RangeAssertsTests
 		}
 
 		[Fact]
-		public void StringValueWithinRange()
+		public static void StringValueWithinRange()
 		{
 			Assert.InRange("bob", "adam", "scott");
 		}
 	}
 
-	public class InRange_WithComparer
+	public static class InRange_WithComparer
 	{
 		[Fact]
-		public void DoubleValueWithinRange()
+		public static void DoubleValueWithinRange()
 		{
 			Assert.InRange(400.0, .75, 1.25, new DoubleComparer(-1));
 		}
 
 		[CulturedFact(["en-US", "fr-FR"])]
-		public void DoubleValueNotWithinRange()
+		public static void DoubleValueNotWithinRange()
 		{
 			var ex = Record.Exception(() => Assert.InRange(1.0, .75, 1.25, new DoubleComparer(1)));
 
@@ -103,16 +103,16 @@ public class RangeAssertsTests
 		}
 	}
 
-	public class NotInRange
+	public static class NotInRange
 	{
 		[Fact]
-		public void DoubleNotWithinRange()
+		public static void DoubleNotWithinRange()
 		{
 			Assert.NotInRange(1.50, .75, 1.25);
 		}
 
 		[Fact]
-		public void DoubleWithinRange()
+		public static void DoubleWithinRange()
 		{
 			var ex = Record.Exception(() => Assert.NotInRange(1.0, .75, 1.25));
 
@@ -126,13 +126,13 @@ public class RangeAssertsTests
 		}
 
 		[Fact]
-		public void IntNotWithinRange()
+		public static void IntNotWithinRange()
 		{
 			Assert.NotInRange(1, 2, 3);
 		}
 
 		[Fact]
-		public void IntWithinRange()
+		public static void IntWithinRange()
 		{
 			var ex = Record.Exception(() => Assert.NotInRange(2, 1, 3));
 
@@ -146,13 +146,13 @@ public class RangeAssertsTests
 		}
 
 		[Fact]
-		public void StringNotWithNotInRange()
+		public static void StringNotWithNotInRange()
 		{
 			Assert.NotInRange("adam", "bob", "scott");
 		}
 
 		[Fact]
-		public void StringWithNotInRange()
+		public static void StringWithNotInRange()
 		{
 			var ex = Record.Exception(() => Assert.NotInRange("bob", "adam", "scott"));
 
@@ -166,10 +166,10 @@ public class RangeAssertsTests
 		}
 	}
 
-	public class NotInRange_WithComparer
+	public static class NotInRange_WithComparer
 	{
 		[Fact]
-		public void DoubleValueWithinRange()
+		public static void DoubleValueWithinRange()
 		{
 			var ex = Record.Exception(() => Assert.NotInRange(400.0, .75, 1.25, new DoubleComparer(-1)));
 
@@ -183,7 +183,7 @@ public class RangeAssertsTests
 		}
 
 		[Fact]
-		public void DoubleValueNotWithinRange()
+		public static void DoubleValueNotWithinRange()
 		{
 			Assert.NotInRange(1.0, .75, 1.25, new DoubleComparer(1));
 		}

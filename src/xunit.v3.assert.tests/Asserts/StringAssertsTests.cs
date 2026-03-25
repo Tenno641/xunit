@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 using Xunit;
 using Xunit.Sdk;
 
-public class StringAssertsTests
+public static class StringAssertsTests
 {
-	public class Contains
+	public static class Contains
 	{
 		[Fact]
-		public void CanSearchForSubstrings()
+		public static void CanSearchForSubstrings()
 		{
 			Assert.Contains("wor", "Hello, world!");
 			Assert.Contains("wor".Memoryify(), "Hello, world!".Memoryify());
@@ -23,7 +23,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void SubstringContainsIsCaseSensitiveByDefault()
+		public static void SubstringContainsIsCaseSensitiveByDefault()
 		{
 			static void verify(Action action)
 			{
@@ -50,7 +50,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void SubstringNotFound()
+		public static void SubstringNotFound()
 		{
 			static void verify(Action action)
 			{
@@ -77,7 +77,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void NullActualStringThrows()
+		public static void NullActualStringThrows()
 		{
 			var ex = Record.Exception(() => Assert.Contains("foo", default(string)));
 
@@ -91,7 +91,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void VeryLongStrings()
+		public static void VeryLongStrings()
 		{
 			var expected = "We are looking for something that is actually very long as well";
 			var actual = "This is a relatively long string so that we can see the truncation in action";
@@ -121,7 +121,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void CanSearchForSubstringsCaseInsensitive()
+		public static void CanSearchForSubstringsCaseInsensitive()
 		{
 			Assert.Contains("WORLD", "Hello, world!", StringComparison.OrdinalIgnoreCase);
 			Assert.Contains("WORLD".Memoryify(), "Hello, world!".Memoryify(), StringComparison.OrdinalIgnoreCase);
@@ -135,10 +135,10 @@ public class StringAssertsTests
 		}
 	}
 
-	public class DoesNotContain
+	public static class DoesNotContain
 	{
 		[Fact]
-		public void CanSearchForSubstrings()
+		public static void CanSearchForSubstrings()
 		{
 			Assert.DoesNotContain("hey", "Hello, world!");
 			Assert.DoesNotContain("hey".Memoryify(), "Hello, world!".Memoryify());
@@ -152,7 +152,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void SubstringDoesNotContainIsCaseSensitiveByDefault()
+		public static void SubstringDoesNotContainIsCaseSensitiveByDefault()
 		{
 			Assert.DoesNotContain("WORLD", "Hello, world!");
 			Assert.DoesNotContain("WORLD".Memoryify(), "Hello, world!".Memoryify());
@@ -166,7 +166,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void SubstringFound()
+		public static void SubstringFound()
 		{
 			static void verify(Action action)
 			{
@@ -194,13 +194,13 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void NullActualStringDoesNotThrow()
+		public static void NullActualStringDoesNotThrow()
 		{
 			Assert.DoesNotContain("foo", (string?)null);
 		}
 
 		[Fact]
-		public void VeryLongString_FoundAtFront()
+		public static void VeryLongString_FoundAtFront()
 		{
 			static void verify(Action action)
 			{
@@ -228,7 +228,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void VeryLongString_FoundInMiddle()
+		public static void VeryLongString_FoundInMiddle()
 		{
 			static void verify(Action action)
 			{
@@ -256,7 +256,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void VeryLongString_FoundAtEnd()
+		public static void VeryLongString_FoundAtEnd()
 		{
 			static void verify(Action action)
 			{
@@ -284,7 +284,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void CanSearchForSubstringsCaseInsensitive()
+		public static void CanSearchForSubstringsCaseInsensitive()
 		{
 			static void verify(Action action)
 			{
@@ -312,22 +312,22 @@ public class StringAssertsTests
 		}
 	}
 
-	public class DoesNotMatch_Pattern
+	public static class DoesNotMatch_Pattern
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			Assert.Throws<ArgumentNullException>("expectedRegexPattern", () => Assert.DoesNotMatch((string?)null!, "Hello, world!"));
 		}
 
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.DoesNotMatch(@"\d", "Hello");
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.DoesNotMatch("ll", "Hello, world!"));
 
@@ -342,22 +342,22 @@ public class StringAssertsTests
 		}
 	}
 
-	public class DoesNotMatch_Regex
+	public static class DoesNotMatch_Regex
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			Assert.Throws<ArgumentNullException>("expectedRegex", () => Assert.DoesNotMatch((Regex?)null!, "Hello, world!"));
 		}
 
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.DoesNotMatch(new Regex(@"\d"), "Hello");
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.DoesNotMatch(new Regex(@"ll"), "Hello, world!"));
 
@@ -372,7 +372,7 @@ public class StringAssertsTests
 		}
 	}
 
-	public class Empty
+	public static class Empty
 	{
 		[Fact]
 		public static void GuardClause()
@@ -400,10 +400,10 @@ public class StringAssertsTests
 		}
 	}
 
-	public class EndsWith
+	public static class EndsWith
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.EndsWith("world!", "Hello, world!");
 			Assert.EndsWith("world!".Memoryify(), "Hello, world!".Memoryify());
@@ -417,7 +417,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			static void verify(Action action)
 			{
@@ -444,7 +444,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void CaseSensitiveByDefault()
+		public static void CaseSensitiveByDefault()
 		{
 			static void verify(Action action)
 			{
@@ -471,7 +471,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void CanSpecifyComparisonType()
+		public static void CanSpecifyComparisonType()
 		{
 			Assert.EndsWith("WORLD!", "Hello, world!", StringComparison.OrdinalIgnoreCase);
 			Assert.EndsWith("WORLD!".Memoryify(), "Hello, world!".Memoryify(), StringComparison.OrdinalIgnoreCase);
@@ -485,7 +485,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void NullString()
+		public static void NullString()
 		{
 			var ex = Record.Exception(() => Assert.EndsWith("foo", null));
 
@@ -499,7 +499,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Truncation()
+		public static void Truncation()
 		{
 			var expected = "This is a long string that we're looking for at the end";
 			var actual = "This is the long string that we expected to find this ending inside";
@@ -529,7 +529,7 @@ public class StringAssertsTests
 		}
 	}
 
-	public class Equal
+	public static class Equal
 	{
 		[Theory]
 		// Null values
@@ -568,7 +568,7 @@ public class StringAssertsTests
 		[InlineData("", "  ", false, false, true, true)]
 		[InlineData("", "\t", false, false, true, true)]
 		[InlineData("foobar", "foo bar", false, false, true, true)]
-		public void Success(
+		public static void Success(
 			string? value1,
 			string? value2,
 			bool ignoreCase,
@@ -615,7 +615,7 @@ public class StringAssertsTests
 		[InlineData("foo bar", "foo  Bar", false, false, true, false, "    ↓ (pos 4)", "     ↑ (pos 5)")]
 		// Ignore all white space differences
 		[InlineData("foobar", "foo Bar", false, false, false, true, "   ↓ (pos 3)", "    ↑ (pos 4)")]
-		public void Failure(
+		public static void Failure(
 			string? expected,
 			string? actual,
 			bool ignoreCase,
@@ -660,7 +660,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Truncation()
+		public static void Truncation()
 		{
 			var expected = "Why hello there world, you're a long string with some truncation!";
 			var actual = "Why hello there world! You're a long string!";
@@ -692,7 +692,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Overrun_LongerExpected()
+		public static void Overrun_LongerExpected()
 		{
 			var expected = "012345678901234567890123456789012345678901234567890123456789";
 			var actual = "01234567890123456789012345678901234567890123456789";
@@ -723,7 +723,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Overrun_LongerExpected_IgnoreWhitespace()
+		public static void Overrun_LongerExpected_IgnoreWhitespace()
 		{
 			var expected = "     012345678901234567890123456789012345678901234567890123456789";
 			var actual = "   01234567890123456789012345678901234567890123456789";
@@ -754,7 +754,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Overrun_LongerActual()
+		public static void Overrun_LongerActual()
 		{
 			var expected = "01234567890123456789012345678901234567890123456789";
 			var actual = "012345678901234567890123456789012345678901234567890123456789";
@@ -785,7 +785,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Overrun_LongerActual_IgnoreWhitespace()
+		public static void Overrun_LongerActual_IgnoreWhitespace()
 		{
 			var expected = "   01234567890123456789012345678901234567890123456789";
 			var actual = "     012345678901234567890123456789012345678901234567890123456789";
@@ -816,7 +816,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void MismatchedAtEnd_LongerExpected()
+		public static void MismatchedAtEnd_LongerExpected()
 		{
 			var expected = "012345678901234567890123456789012345678901234567890123456789";
 			var actual = "01234567890123456789012345678901234567890123456789_1234";
@@ -848,7 +848,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void MismatchedAtEnd_LongerExpected_IgnoreWhitespace()
+		public static void MismatchedAtEnd_LongerExpected_IgnoreWhitespace()
 		{
 			var expected = "     012345678901234567890123456789012345678901234567890123456789";
 			var actual = "   01234567890123456789012345678901234567890123456789_1234";
@@ -880,7 +880,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void MismatchedAtEnd_LongerActual()
+		public static void MismatchedAtEnd_LongerActual()
 		{
 			var expected = "01234567890123456789012345678901234567890123456789_1234";
 			var actual = "012345678901234567890123456789012345678901234567890123456789";
@@ -912,7 +912,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void MismatchedAtEnd_LongerActual_IgnoreWhitespace()
+		public static void MismatchedAtEnd_LongerActual_IgnoreWhitespace()
 		{
 			var expected = "   01234567890123456789012345678901234567890123456789_1234";
 			var actual = "     012345678901234567890123456789012345678901234567890123456789";
@@ -944,22 +944,22 @@ public class StringAssertsTests
 		}
 	}
 
-	public class Matches_Pattern
+	public static class Matches_Pattern
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			Assert.Throws<ArgumentNullException>("expectedRegexPattern", () => Assert.Matches((string?)null!, "Hello, world!"));
 		}
 
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Matches(@"\w", "Hello");
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Matches(@"\d+", "Hello, world!"));
 
@@ -973,7 +973,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Failure_NullActual()
+		public static void Failure_NullActual()
 		{
 			var ex = Record.Exception(() => Assert.Matches(@"\d+", null));
 
@@ -987,28 +987,28 @@ public class StringAssertsTests
 		}
 	}
 
-	public class Matches_Regex
+	public static class Matches_Regex
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			Assert.Throws<ArgumentNullException>("expectedRegex", () => Assert.Matches((Regex?)null!, "Hello, world!"));
 		}
 
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Matches(new Regex(@"\w+"), "Hello");
 		}
 
 		[Fact]
-		public void UsesRegexOptions()
+		public static void UsesRegexOptions()
 		{
 			Assert.Matches(new Regex(@"[a-z]+", RegexOptions.IgnoreCase), "HELLO");
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Matches(new Regex(@"\d+"), "Hello, world!"));
 
@@ -1022,7 +1022,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Failure_NullActual()
+		public static void Failure_NullActual()
 		{
 			var ex = Record.Exception(() => Assert.Matches(new Regex(@"\d+"), null));
 
@@ -1036,10 +1036,10 @@ public class StringAssertsTests
 		}
 	}
 
-	public class StartsWith
+	public static class StartsWith
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.StartsWith("Hello", "Hello, world!");
 			Assert.StartsWith("Hello".Memoryify(), "Hello, world!".Memoryify());
@@ -1053,7 +1053,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			static void verify(Action action)
 			{
@@ -1080,7 +1080,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void CaseSensitiveByDefault()
+		public static void CaseSensitiveByDefault()
 		{
 			static void verify(Action action)
 			{
@@ -1107,7 +1107,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void CanSpecifyComparisonType()
+		public static void CanSpecifyComparisonType()
 		{
 			Assert.StartsWith("HELLO", "Hello, world!", StringComparison.OrdinalIgnoreCase);
 			Assert.StartsWith("HELLO".Memoryify(), "Hello, world!".Memoryify(), StringComparison.OrdinalIgnoreCase);
@@ -1121,7 +1121,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void NullStrings()
+		public static void NullStrings()
 		{
 			var ex = Record.Exception(() => Assert.StartsWith(default(string), default));
 
@@ -1135,7 +1135,7 @@ public class StringAssertsTests
 		}
 
 		[Fact]
-		public void Truncation()
+		public static void Truncation()
 		{
 			var expected = "This is a long string that we're looking for at the start";
 			var actual = "This is the long string that we expected to find this starting inside";

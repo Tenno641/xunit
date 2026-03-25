@@ -1,16 +1,16 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class MultipleAssertsTests
+public static class MultipleAssertsTests
 {
 	[Fact]
-	public void NoActions_DoesNotThrow()
+	public static void NoActions_DoesNotThrow()
 	{
 		Assert.Multiple();
 	}
 
 	[Fact]
-	public void SingleAssert_Success_DoesNotThrow()
+	public static void SingleAssert_Success_DoesNotThrow()
 	{
 		Assert.Multiple(
 			static () => Assert.True(true)
@@ -18,7 +18,7 @@ public class MultipleAssertsTests
 	}
 
 	[Fact]
-	public void SingleAssert_Fails_ThrowsFailingAssert()
+	public static void SingleAssert_Fails_ThrowsFailingAssert()
 	{
 		var ex = Record.Exception(() =>
 			Assert.Multiple(
@@ -30,7 +30,7 @@ public class MultipleAssertsTests
 	}
 
 	[Fact]
-	public void MultipleAssert_Success_DoesNotThrow()
+	public static void MultipleAssert_Success_DoesNotThrow()
 	{
 		Assert.Multiple(
 			static () => Assert.True(true),
@@ -39,7 +39,7 @@ public class MultipleAssertsTests
 	}
 
 	[Fact]
-	public void MultipleAssert_SingleFailure_ThrowsFailingAssert()
+	public static void MultipleAssert_SingleFailure_ThrowsFailingAssert()
 	{
 		var ex = Record.Exception(static () =>
 			Assert.Multiple(
@@ -52,7 +52,7 @@ public class MultipleAssertsTests
 	}
 
 	[Fact]
-	public void MultipleAssert_MultipleFailures_ThrowsMultipleException()
+	public static void MultipleAssert_MultipleFailures_ThrowsMultipleException()
 	{
 		var ex = Record.Exception(static () =>
 			Assert.Multiple(
@@ -74,13 +74,13 @@ public class MultipleAssertsTests
 	}
 
 	[Fact]
-	public async Task MultipleAsync_NoActions_DoesNotThrow()
+	public static async Task MultipleAsync_NoActions_DoesNotThrow()
 	{
 		await Assert.MultipleAsync();
 	}
 
 	[Fact]
-	public async Task MultipleAsync_SingleAssert_Success_DoesNotThrow()
+	public static async Task MultipleAsync_SingleAssert_Success_DoesNotThrow()
 	{
 		static Task<bool> task(bool isTrue) => Task.FromResult(isTrue);
 
@@ -90,7 +90,7 @@ public class MultipleAssertsTests
 	}
 
 	[Fact]
-	public async Task MultipleAsync_Success_DoesNotThrow()
+	public static async Task MultipleAsync_Success_DoesNotThrow()
 	{
 		static Task<bool> task(bool isTrue) => Task.FromResult(isTrue);
 
@@ -102,7 +102,7 @@ public class MultipleAssertsTests
 	}
 
 	[Fact]
-	public async Task MultipleAsync_SingleAssert_Fails_ThrowsFailingAssert()
+	public static async Task MultipleAsync_SingleAssert_Fails_ThrowsFailingAssert()
 	{
 		static Task<bool> task(bool isTrue) => Task.FromResult(isTrue);
 
@@ -116,7 +116,7 @@ public class MultipleAssertsTests
 	}
 
 	[Fact]
-	public async Task MultipleAsync_SingleAssert_Multiple_ThrowsFailingAssert()
+	public static async Task MultipleAsync_SingleAssert_Multiple_ThrowsFailingAssert()
 	{
 		static Task<bool> task(bool isTrue) => Task.FromResult(isTrue);
 

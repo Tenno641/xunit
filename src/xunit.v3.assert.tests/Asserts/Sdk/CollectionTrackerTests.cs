@@ -1,9 +1,9 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class CollectionTrackerTests
+public static class CollectionTrackerTests
 {
-	public class FormatIndexedMismatch_IEnumerable
+	public static class FormatIndexedMismatch_IEnumerable
 	{
 		[Fact]
 		public static void ExceededDepth()
@@ -66,7 +66,7 @@ public class CollectionTrackerTests
 		}
 	}
 
-	public class FormatIndexedMismatch_Span
+	public static class FormatIndexedMismatch_Span
 	{
 		[Fact]
 		public static void ExceededDepth()
@@ -129,7 +129,7 @@ public class CollectionTrackerTests
 		}
 	}
 
-	public class FormatStart_IEnumerable_Tracked
+	public static class FormatStart_IEnumerable_Tracked
 	{
 		[Fact]
 		public static void Empty()
@@ -164,7 +164,7 @@ public class CollectionTrackerTests
 		}
 	}
 
-	public class FormatStart_IEnumerable_Untracked
+	public static class FormatStart_IEnumerable_Untracked
 	{
 		[Fact]
 		public static void Empty()
@@ -199,7 +199,7 @@ public class CollectionTrackerTests
 		}
 	}
 
-	public class FormatStart_Span
+	public static class FormatStart_Span
 	{
 		[Fact]
 		public static void Empty()
