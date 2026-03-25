@@ -1,11 +1,11 @@
 using Xunit;
 
-public class StringExtensionsTests
+public static class StringExtensionsTests
 {
-	public class SplitAtOuterCommas
+	public static class SplitAtOuterCommas
 	{
 		[Fact]
-		public void NoCommas()
+		public static void NoCommas()
 		{
 			var result = StringExtensions.SplitAtOuterCommas("hello");
 
@@ -14,7 +14,7 @@ public class StringExtensionsTests
 		}
 
 		[Fact]
-		public void CommasOutsideSquareBrackets()
+		public static void CommasOutsideSquareBrackets()
 		{
 			var result = StringExtensions.SplitAtOuterCommas("hello, world");
 
@@ -26,7 +26,7 @@ public class StringExtensionsTests
 		}
 
 		[Fact]
-		public void CommasInsideSquareBrackets()
+		public static void CommasInsideSquareBrackets()
 		{
 			var result = StringExtensions.SplitAtOuterCommas("hello, [there, my], friend");
 
@@ -39,7 +39,7 @@ public class StringExtensionsTests
 		}
 
 		[Fact]
-		public void StartingComma()
+		public static void StartingComma()
 		{
 			var result = StringExtensions.SplitAtOuterCommas(",hello");
 
@@ -51,7 +51,7 @@ public class StringExtensionsTests
 		}
 
 		[Fact]
-		public void EscapedCommas()
+		public static void EscapedCommas()
 		{
 			var result = StringExtensions.SplitAtOuterCommas("hello\\, [there, my], friend");
 

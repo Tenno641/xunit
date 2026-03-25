@@ -8,7 +8,9 @@ using System.Diagnostics;
 using System.Xml;
 #endif
 
+#pragma warning disable CA1052 // This is used as an instance in one of the tests
 public class SerializationHelperTests
+#pragma warning restore CA1052
 {
 	public static TheoryData<object?, string> NonNullSuccessData = new()
 	{
@@ -154,10 +156,10 @@ public class SerializationHelperTests
 		{ typeof(Uri), "24" },
 	};
 
-	public class Deserialize
+	public static class Deserialize
 	{
 		[Fact]
-		public void GuardClauseForNullSerializedValue()
+		public static void GuardClauseForNullSerializedValue()
 		{
 			var ex = Record.Exception(() => TestableSerializationHelper.Instance.Deserialize(null!));
 
@@ -168,7 +170,7 @@ public class SerializationHelperTests
 		[Theory]
 		[InlineData("abc")]
 		[InlineData("abc:123")]
-		public void GuardClauseForUnknownTypeIndex(string value)
+		public static void GuardClauseForUnknownTypeIndex(string value)
 		{
 			var ex = Record.Exception(() => TestableSerializationHelper.Instance.Deserialize(value));
 
@@ -179,7 +181,7 @@ public class SerializationHelperTests
 
 		[CulturedTheory(["en-US", "fo-FO"])]
 		[MemberData(nameof(NullSuccessData), MemberType = typeof(SerializationHelperTests), DisableDiscoveryEnumeration = true)]
-		public void NullSuccessCases(
+		public static void NullSuccessCases(
 			Type _,
 			string serialization)
 		{
@@ -189,7 +191,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void ArraysCanBeNull()
+		public static void ArraysCanBeNull()
 		{
 			var result = TestableSerializationHelper.Instance.Deserialize("[]");
 
@@ -198,7 +200,7 @@ public class SerializationHelperTests
 
 		[CulturedTheory(["en-US", "fo-FO"], DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(NonNullSuccessData), MemberType = typeof(SerializationHelperTests))]
-		public void NonNullSuccessCases<T>(
+		public static void NonNullSuccessCases<T>(
 			T? expectedValue,
 			string serialization)
 		{
@@ -218,7 +220,7 @@ public class SerializationHelperTests
 		[InlineData("21", "Index")]
 		[InlineData("22:1..2", "Range")]
 		[InlineData("22", "Range")]
-		public void UnsupportedPlatform(
+		public static void UnsupportedPlatform(
 			string value,
 			string typeName)
 		{
@@ -234,7 +236,7 @@ public class SerializationHelperTests
 #if NET8_0_OR_GREATER
 
 		[Fact]
-		public void TryParseReturningFalseFails()
+		public static void TryParseReturningFalseFails()
 		{
 			var value = new FormattableClassReturningFalse();
 			var serialized = TestableSerializationHelper.Instance.Serialize(value);
@@ -269,7 +271,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void TryParseReturningNullValueFails()
+		public static void TryParseReturningNullValueFails()
 		{
 			var value = new FormattableClassReturningNullValue();
 			var serialized = TestableSerializationHelper.Instance.Serialize(value);
@@ -304,7 +306,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void ParseReturningNullValueFails()
+		public static void ParseReturningNullValueFails()
 		{
 			var value = new FormattableClassWithHiddenTryParseReturningNullValue();
 			var serialized = TestableSerializationHelper.Instance.Serialize(value);
@@ -341,7 +343,7 @@ public class SerializationHelperTests
 
 		// Since we invoke this via reflection, hiding the implementation entirely will fail
 		[Fact]
-		public void HidingBothParseAndTryParseFails()
+		public static void HidingBothParseAndTryParseFails()
 		{
 			var value = new FormattableClassWithEverythingHidden();
 			var serialized = TestableSerializationHelper.Instance.Serialize(value);
@@ -379,7 +381,7 @@ public class SerializationHelperTests
 #endif  // NET8_0_OR_GREATER
 	}
 
-	public class IsSerializable
+	public static class IsSerializable
 	{
 		public static TheoryData<Type> SupportedTypes =
 		[
@@ -429,7 +431,7 @@ public class SerializationHelperTests
 
 		[CulturedTheory(["en-US", "fo-FO"])]
 		[MemberData(nameof(SupportedTypes), DisableDiscoveryEnumeration = true)]
-		public void SuccessCases(Type type)
+		public static void SuccessCases(Type type)
 		{
 			Assert.True(TestableSerializationHelper.Instance.IsSerializable(null, type));
 
@@ -442,7 +444,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void CanSerializeRuntimeType()
+		public static void CanSerializeRuntimeType()
 		{
 			// Type is abstract; RuntimeType is what you get at runtime and since it's
 			// internal, we can't just call typeof() to get one
@@ -452,7 +454,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void CannotSerializeGenericArgumentType()
+		public static void CannotSerializeGenericArgumentType()
 		{
 			var value = typeof(ClassWithGenericMethod).GetMethod(nameof(ClassWithGenericMethod.GenericMethod))!.GetGenericArguments()[0];
 			var type = value.GetType();
@@ -468,7 +470,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void CannotSerializeGenericArgumentTypeInsideArray()
+		public static void CannotSerializeGenericArgumentTypeInsideArray()
 		{
 			Type[] value =
 			[
@@ -483,11 +485,11 @@ public class SerializationHelperTests
 		}
 	}
 
-	public class Serialize
+	public static class Serialize
 	{
 		[CulturedTheory(["en-US", "fo-FO"])]
 		[MemberData(nameof(NullSuccessData), MemberType = typeof(SerializationHelperTests), DisableDiscoveryEnumeration = true)]
-		public void NullSuccessCases(
+		public static void NullSuccessCases(
 			Type nullableType,
 			string? expectedSerialization)
 		{
@@ -499,7 +501,7 @@ public class SerializationHelperTests
 		[Theory]
 		[InlineData(typeof(object[]))]
 		[InlineData(typeof(int?[]))]
-		public void ArraysCanBeNull(Type arrayType)
+		public static void ArraysCanBeNull(Type arrayType)
 		{
 			var result = TestableSerializationHelper.Instance.Serialize(null, arrayType);
 
@@ -508,7 +510,7 @@ public class SerializationHelperTests
 
 		[CulturedTheory(["en-US", "fo-FO"], DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(NonNullSuccessData), MemberType = typeof(SerializationHelperTests))]
-		public void NonNullSuccessCases<T>(
+		public static void NonNullSuccessCases<T>(
 			T? value,
 			string? expectedSerialization)
 		{
@@ -562,7 +564,7 @@ public class SerializationHelperTests
 
 		[CulturedTheory(["en-US", "fo-FO"], DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(FailureData))]
-		public void FailureCases(
+		public static void FailureCases(
 			object? value,
 			Type valueType,
 			string expectedExceptionMessage)
@@ -578,7 +580,7 @@ public class SerializationHelperTests
 #if NET8_0_OR_GREATER
 
 		[Fact]
-		public void FormattableWithoutParsableFails()
+		public static void FormattableWithoutParsableFails()
 		{
 			var value = new FormattableClass();
 
@@ -599,10 +601,10 @@ public class SerializationHelperTests
 #endif  // NET8_0_OR_GREATER
 	}
 
-	public class SerializerRegistration
+	public static class SerializerRegistration
 	{
 		[Fact]
-		public void ExceptionThrownBySerializerConstruction()
+		public static void ExceptionThrownBySerializerConstruction()
 		{
 			var attr = Mocks.RegisterXunitSerializerAttribute(typeof(ThrowingCtor), typeof(object));
 
@@ -613,7 +615,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void SerializerDoesNotImplementInterface()
+		public static void SerializerDoesNotImplementInterface()
 		{
 			var attr = Mocks.RegisterXunitSerializerAttribute(typeof(Unserializable), typeof(object));
 
@@ -624,7 +626,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void NoSupportedTypes()
+		public static void NoSupportedTypes()
 		{
 			var attr = Mocks.RegisterXunitSerializerAttribute(typeof(MyCustomTypeSerializer));
 
@@ -635,7 +637,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void CannotRegisterForBuiltInSupportedType()
+		public static void CannotRegisterForBuiltInSupportedType()
 		{
 			var attr = Mocks.RegisterXunitSerializerAttribute(typeof(MyCustomTypeSerializer), typeof(object));
 
@@ -646,7 +648,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void CannotRegisterForTypeThatsAlreadyRegistered()
+		public static void CannotRegisterForTypeThatsAlreadyRegistered()
 		{
 			var attr1 = Mocks.RegisterXunitSerializerAttribute(typeof(MyCustomTypeSerializer), typeof(MyCustomType));
 			var attr2 = Mocks.RegisterXunitSerializerAttribute(typeof(MyUnserializableSerializer), typeof(MyCustomType));
@@ -658,7 +660,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void CannotRegisterForArray()
+		public static void CannotRegisterForArray()
 		{
 			var attr = Mocks.RegisterXunitSerializerAttribute(typeof(MyCustomTypeSerializer), typeof(MyCustomType[]));
 
@@ -669,7 +671,7 @@ public class SerializationHelperTests
 		}
 
 		[Fact]
-		public void CustomSerializerChosenBeforeBuiltInSerializer()
+		public static void CustomSerializerChosenBeforeBuiltInSerializer()
 		{
 			var attr = Mocks.RegisterXunitSerializerAttribute(typeof(MyCustomTypeSerializer), typeof(IMyCustomType));
 			var helper = new TestableSerializationHelper(attr);
@@ -680,7 +682,7 @@ public class SerializationHelperTests
 		}
 	}
 
-	public class TypeNameSerialization
+	public static class TypeNameSerialization
 	{
 		public static TheoryData<Type, string> TypeSerializationData = new()
 		{
@@ -706,7 +708,7 @@ public class SerializationHelperTests
 
 		[Theory]
 		[MemberData(nameof(TypeSerializationData))]
-		public void TypeToSerializedName(
+		public static void TypeToSerializedName(
 			Type type,
 			string expectedName)
 		{
@@ -717,7 +719,7 @@ public class SerializationHelperTests
 
 		[Theory]
 		[MemberData(nameof(TypeSerializationData))]
-		public void SerializedTypeNameToType(
+		public static void SerializedTypeNameToType(
 			Type expectedType,
 			string name)
 		{

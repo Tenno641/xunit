@@ -11,9 +11,9 @@ using Xunit.Sdk;
 [assembly: ReflectionExtensionsTests_reflection.GetMatchingCustomAttributes.ThrowingAttributeUnderTest<int>]
 #endif
 
-public class ReflectionExtensionsTests_reflection
+public static class ReflectionExtensionsTests_reflection
 {
-	public class GetMatchingCustomAttributes
+	public static class GetMatchingCustomAttributes
 	{
 		public interface IAttributeUnderTest { }
 
@@ -38,7 +38,7 @@ public class ReflectionExtensionsTests_reflection
 #endif
 
 		[Fact]
-		public void ForAssembly_NonGeneric()
+		public static void ForAssembly_NonGeneric()
 		{
 			var warnings = new List<string>();
 
@@ -53,7 +53,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void ForAssembly_Generic()
+		public static void ForAssembly_Generic()
 		{
 			var warnings = new List<string>();
 
@@ -68,7 +68,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void ForAttribute_NonGeneric()
+		public static void ForAttribute_NonGeneric()
 		{
 			var warnings = new List<string>();
 
@@ -83,7 +83,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void ForAttribute_Generic()
+		public static void ForAttribute_Generic()
 		{
 			var warnings = new List<string>();
 
@@ -107,7 +107,7 @@ public class ReflectionExtensionsTests_reflection
 		class AttributeWithAttribute : Attribute { }
 
 		[Fact]
-		public void ForMethod_NonGeneric()
+		public static void ForMethod_NonGeneric()
 		{
 			var warnings = new List<string>();
 
@@ -123,7 +123,7 @@ public class ReflectionExtensionsTests_reflection
 
 
 		[Fact]
-		public void ForMethod_Generic()
+		public static void ForMethod_Generic()
 		{
 			var warnings = new List<string>();
 
@@ -146,7 +146,7 @@ public class ReflectionExtensionsTests_reflection
 		static void MethodWithAttribute() { }
 
 		[Fact]
-		public void ForParameter_NonGeneric()
+		public static void ForParameter_NonGeneric()
 		{
 			var warnings = new List<string>();
 			var method = typeof(GetMatchingCustomAttributes).GetMethod(nameof(MethodWithParameter), BindingFlags.NonPublic | BindingFlags.Static);
@@ -163,7 +163,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void ForParameter_Generic()
+		public static void ForParameter_Generic()
 		{
 			var warnings = new List<string>();
 			var method = typeof(GetMatchingCustomAttributes).GetMethod(nameof(MethodWithParameter), BindingFlags.NonPublic | BindingFlags.Static);
@@ -191,7 +191,7 @@ public class ReflectionExtensionsTests_reflection
 		{ }
 
 		[Fact]
-		public void ForType_NonGeneric()
+		public static void ForType_NonGeneric()
 		{
 			var warnings = new List<string>();
 
@@ -206,7 +206,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void ForType_Generic()
+		public static void ForType_Generic()
 		{
 			var warnings = new List<string>();
 
@@ -230,7 +230,7 @@ public class ReflectionExtensionsTests_reflection
 	}
 
 	[Fact]
-	public void Implements()
+	public static void Implements()
 	{
 		Assert.True(typeof(string).Implements(typeof(IEnumerable<char>)));
 		Assert.True(typeof(IEnumerable<>).Implements(typeof(IEnumerable)));
@@ -240,7 +240,7 @@ public class ReflectionExtensionsTests_reflection
 		Assert.False(typeof(IAsyncDisposable).Implements(typeof(IDisposable)));
 	}
 
-	public class ResolveGenericTypes
+	public static class ResolveGenericTypes
 	{
 		public static IEnumerable<TheoryDataRow<string, object?[], Type[]>> MethodTestData()
 		{
@@ -449,7 +449,7 @@ public class ReflectionExtensionsTests_reflection
 #pragma warning disable CA1822 // Mark members as static
 #pragma warning disable IDE0060 // Remove unused parameter
 
-		public class GenericMethodContainer
+		public static class GenericMethodContainer
 		{
 			public static void NoGenericParameters_NoParameters() { }
 			public static void NoGenericParameters_OneParameter(int i) { }
@@ -543,10 +543,10 @@ public class ReflectionExtensionsTests_reflection
 		public class GenericImplements2SubClassOf1BaseClass<T, U> : GenericImplements1BaseClass<T, U> { }
 	}
 
-	public class ResolveMethodArguments
+	public static class ResolveMethodArguments
 	{
 		[Fact]
-		public void NoArguments()
+		public static void NoArguments()
 		{
 			var method = typeof(ResolveMethodArguments).GetMethod(nameof(MethodWithNoArgs), BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.NotNull(method);
@@ -559,7 +559,7 @@ public class ReflectionExtensionsTests_reflection
 		static void MethodWithNoArgs() { }
 
 		[Fact]
-		public void TooFewArguments()
+		public static void TooFewArguments()
 		{
 			var method = typeof(ResolveMethodArguments).GetMethod(nameof(MethodWithTwoArgs), BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.NotNull(method);
@@ -573,7 +573,7 @@ public class ReflectionExtensionsTests_reflection
 		static void MethodWithTwoArgs(object _1, int _2) { }
 
 		[Fact]
-		public void MethodWithDefaultValue_UsesDefaultValue()
+		public static void MethodWithDefaultValue_UsesDefaultValue()
 		{
 			var method = typeof(ResolveMethodArguments).GetMethod(nameof(MethodWithDefaultValue), BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.NotNull(method);
@@ -587,7 +587,7 @@ public class ReflectionExtensionsTests_reflection
 		static void MethodWithDefaultValue(int _ = 42) { }
 
 		[Fact]
-		public void MethodWithParams_NoValuesProvided()
+		public static void MethodWithParams_NoValuesProvided()
 		{
 			var method = typeof(ResolveMethodArguments).GetMethod(nameof(MethodWithParams), BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.NotNull(method);
@@ -600,7 +600,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void MethodWithParams_NullProvided()
+		public static void MethodWithParams_NullProvided()
 		{
 			var method = typeof(ResolveMethodArguments).GetMethod(nameof(MethodWithParams), BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.NotNull(method);
@@ -612,7 +612,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void MethodWithParams_DirectArrayProvided()
+		public static void MethodWithParams_DirectArrayProvided()
 		{
 			var method = typeof(ResolveMethodArguments).GetMethod(nameof(MethodWithParams), BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.NotNull(method);
@@ -625,7 +625,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void MethodWithParams_MultipleValuesProvided()
+		public static void MethodWithParams_MultipleValuesProvided()
 		{
 			var method = typeof(ResolveMethodArguments).GetMethod(nameof(MethodWithParams), BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.NotNull(method);
@@ -638,7 +638,7 @@ public class ReflectionExtensionsTests_reflection
 		}
 
 		[Fact]
-		public void MethodWithParams_WrongType()
+		public static void MethodWithParams_WrongType()
 		{
 			var method = typeof(ResolveMethodArguments).GetMethod(nameof(MethodWithParams), BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.NotNull(method);
@@ -654,7 +654,7 @@ public class ReflectionExtensionsTests_reflection
 		[Theory]
 		[InlineData("Hello", "string: Hello")]
 		[InlineData(42, "int: 42")]
-		public void CanConvert(
+		public static void CanConvert(
 			object input,
 			string expectedConversion)
 		{
@@ -683,7 +683,7 @@ public class ReflectionExtensionsTests_reflection
 	}
 
 	[Fact]
-	public void ToDisplayName()
+	public static void ToDisplayName()
 	{
 		Assert.Equal("Object", typeof(object).ToDisplayName());
 		Assert.Equal("Dictionary<String, List<Int32>>", typeof(Dictionary<string, List<int>>).ToDisplayName());

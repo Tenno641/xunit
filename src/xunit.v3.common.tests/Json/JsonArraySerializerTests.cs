@@ -2,7 +2,7 @@ using System.Text;
 using Xunit;
 using Xunit.Sdk;
 
-public class JsonArraySerializerTests
+public static class JsonArraySerializerTests
 {
 	public static IEnumerable<TheoryDataRow<Action<JsonArraySerializer>, string>> ValueFuncs()
 	{
@@ -42,7 +42,7 @@ public class JsonArraySerializerTests
 
 	[Theory(DisableDiscoveryEnumeration = true)]
 	[MemberData(nameof(ValueFuncs))]
-	public void SerializeValues(
+	public static void SerializeValues(
 		Action<JsonArraySerializer> action,
 		string expectedResult)
 	{

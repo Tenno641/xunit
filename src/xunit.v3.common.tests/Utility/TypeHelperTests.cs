@@ -1,13 +1,13 @@
 using Xunit;
 using Xunit.Sdk;
 
-public partial class TypeHelperTests
+public static partial class TypeHelperTests
 {
-	public class ConversionAcceptanceTests
+	public static class ConversionAcceptanceTests
 	{
 		[Theory]
 		[InlineData("{5B21E154-15EB-4B1E-BC30-127E8A41ECA1}")]
-		public void GuidAcceptanceTest(Guid actual)
+		public static void GuidAcceptanceTest(Guid actual)
 		{
 			var expected = Guid.Parse("{5B21E154-15EB-4B1E-BC30-127E8A41ECA1}");
 
@@ -16,7 +16,7 @@ public partial class TypeHelperTests
 
 		[Theory]
 		[InlineData("2017-11-3 16:48")]
-		public void DateTimeAcceptanceTest(DateTime actual)
+		public static void DateTimeAcceptanceTest(DateTime actual)
 		{
 			var expected = DateTime.Parse("2017-11-3 16:48", CultureInfo.InvariantCulture);
 
@@ -25,7 +25,7 @@ public partial class TypeHelperTests
 
 		[Theory]
 		[InlineData("2017-11-3 16:48")]
-		public void DateTimeOffsetAcceptanceTest(DateTimeOffset actual)
+		public static void DateTimeOffsetAcceptanceTest(DateTimeOffset actual)
 		{
 			var expected = DateTimeOffset.Parse("2017-11-3 16:48", CultureInfo.InvariantCulture);
 
@@ -33,7 +33,7 @@ public partial class TypeHelperTests
 		}
 	}
 
-	public class TryConvert
+	public static class TryConvert
 	{
 		[Theory]
 		[InlineData("{5B21E154-15EB-4B1E-BC30-127E8A41ECA1}")]
@@ -42,7 +42,7 @@ public partial class TypeHelperTests
 		[InlineData("{5b21e154-15eb-4b1e-bc30-127e8a41eca1}")]
 		[InlineData("4ebcd32c-a2b8-4600-9e72-3873347e285c")]
 		[InlineData("39a3b4c85fef43a988eb4bb4ac4d4103")]
-		public void ConvertsStringToGuid(string text)
+		public static void ConvertsStringToGuid(string text)
 		{
 			var guid = Guid.Parse(text);
 
@@ -56,7 +56,7 @@ public partial class TypeHelperTests
 		[InlineData("2017-11-3")]
 		[InlineData("2017-11-3 16:48")]
 		[InlineData("16:48")]
-		public void ConvertsStringToDateTime(string text)
+		public static void ConvertsStringToDateTime(string text)
 		{
 			var dateTime = DateTime.Parse(text, CultureInfo.InvariantCulture);
 
@@ -70,7 +70,7 @@ public partial class TypeHelperTests
 		[InlineData("2017-11-3")]
 		[InlineData("2017-11-3 16:48")]
 		[InlineData("16:48")]
-		public void ConvertsStringToDateTimeOffset(string text)
+		public static void ConvertsStringToDateTimeOffset(string text)
 		{
 			var dateTimeOffset = DateTimeOffset.Parse(text, CultureInfo.InvariantCulture);
 
@@ -81,7 +81,7 @@ public partial class TypeHelperTests
 		}
 	}
 
-	public class TryConvertNullable
+	public static class TryConvertNullable
 	{
 		[Theory]
 		[InlineData("{5B21E154-15EB-4B1E-BC30-127E8A41ECA1}")]
@@ -90,7 +90,7 @@ public partial class TypeHelperTests
 		[InlineData("{5b21e154-15eb-4b1e-bc30-127e8a41eca1}")]
 		[InlineData("4ebcd32c-a2b8-4600-9e72-3873347e285c")]
 		[InlineData("39a3b4c85fef43a988eb4bb4ac4d4103")]
-		public void ConvertsStringToGuid(string text)
+		public static void ConvertsStringToGuid(string text)
 		{
 			var guid = Guid.Parse(text);
 
@@ -104,7 +104,7 @@ public partial class TypeHelperTests
 		[InlineData("2017-11-3")]
 		[InlineData("2017-11-3 16:48")]
 		[InlineData("16:48")]
-		public void ConvertsStringToDateTime(string text)
+		public static void ConvertsStringToDateTime(string text)
 		{
 			var dateTime = DateTime.Parse(text, CultureInfo.InvariantCulture);
 
@@ -118,7 +118,7 @@ public partial class TypeHelperTests
 		[InlineData("2017-11-3")]
 		[InlineData("2017-11-3 16:48")]
 		[InlineData("16:48")]
-		public void ConvertsStringToDateTimeOffset(string text)
+		public static void ConvertsStringToDateTimeOffset(string text)
 		{
 			var dateTimeOffset = DateTimeOffset.Parse(text, CultureInfo.InvariantCulture);
 

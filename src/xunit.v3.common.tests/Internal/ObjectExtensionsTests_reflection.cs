@@ -1,11 +1,11 @@
 using Xunit;
 
-public class ObjectExtensionsTests
+public static class ObjectExtensionsTests
 {
-	public class AsValueTask
+	public static class AsValueTask
 	{
 		[Fact]
-		public void NullValue()
+		public static void NullValue()
 		{
 			var result = ObjectExtensions.AsValueTask(null);
 
@@ -13,7 +13,7 @@ public class ObjectExtensionsTests
 		}
 
 		[Fact]
-		public void NonTaskValue()
+		public static void NonTaskValue()
 		{
 			var result = ObjectExtensions.AsValueTask(42);
 
@@ -21,7 +21,7 @@ public class ObjectExtensionsTests
 		}
 
 		[Fact]
-		public async ValueTask ValueTaskValue()
+		public static async ValueTask ValueTaskValue()
 		{
 			var task = new ValueTask<int>(42);
 
@@ -32,7 +32,7 @@ public class ObjectExtensionsTests
 		}
 
 		[Fact]
-		public async ValueTask TaskValue()
+		public static async ValueTask TaskValue()
 		{
 			var task = Task.FromResult(42);
 

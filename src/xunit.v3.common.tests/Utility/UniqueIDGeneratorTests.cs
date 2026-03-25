@@ -1,12 +1,12 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class UniqueIDGeneratorTests
+public static class UniqueIDGeneratorTests
 {
-	public class Compute
+	public static class Compute
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			using var generator = new UniqueIDGenerator();
 
@@ -17,7 +17,7 @@ public class UniqueIDGeneratorTests
 		}
 
 		[Fact]
-		public void NoData()
+		public static void NoData()
 		{
 			using var generator = new UniqueIDGenerator();
 
@@ -27,7 +27,7 @@ public class UniqueIDGeneratorTests
 		}
 
 		[Fact]
-		public void SingleString()
+		public static void SingleString()
 		{
 			using var generator = new UniqueIDGenerator();
 			generator.Add("Hello, world!");
@@ -38,7 +38,7 @@ public class UniqueIDGeneratorTests
 		}
 
 		[Fact]
-		public void CannotAddAfterCompute()
+		public static void CannotAddAfterCompute()
 		{
 			using var generator = new UniqueIDGenerator();
 			generator.Compute();
@@ -50,7 +50,7 @@ public class UniqueIDGeneratorTests
 		}
 
 		[Fact]
-		public void CannotComputeTwice()
+		public static void CannotComputeTwice()
 		{
 			using var generator = new UniqueIDGenerator();
 			generator.Compute();
@@ -62,7 +62,7 @@ public class UniqueIDGeneratorTests
 		}
 
 		[Fact]
-		public void CannotAddAfterDipose()
+		public static void CannotAddAfterDipose()
 		{
 			using var generator = new UniqueIDGenerator();
 			generator.Dispose();
@@ -74,7 +74,7 @@ public class UniqueIDGeneratorTests
 		}
 
 		[Fact]
-		public void CannotComputeAfterDispose()
+		public static void CannotComputeAfterDispose()
 		{
 			using var generator = new UniqueIDGenerator();
 			generator.Dispose();
@@ -86,10 +86,10 @@ public class UniqueIDGeneratorTests
 		}
 	}
 
-	public class ForAssembly
+	public static class ForAssembly
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			var ex = Record.Exception(() => UniqueIDGenerator.ForAssembly(null!, "config-path"));
 
@@ -100,7 +100,7 @@ public class UniqueIDGeneratorTests
 		[Theory]
 		[InlineData("asm-path", null, "9b101eb6f7a9ca48b696d43c4384ce51c3b1522ca5d82cddc04900177ee4824f")]
 		[InlineData("asm-path", "config-path", "87f1ea729573561e318de0a470397143c37511bed90420cb0ad4536b0e149c68")]
-		public void SuccessCases(
+		public static void SuccessCases(
 			string assemblyPath,
 			string? configFilePath,
 			string expected)

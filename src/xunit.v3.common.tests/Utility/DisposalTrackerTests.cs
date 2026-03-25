@@ -1,7 +1,7 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class DisposalTrackerTests
+public static class DisposalTrackerTests
 {
 	public sealed class AfterDisposed : IAsyncLifetime
 	{
@@ -45,10 +45,10 @@ public class DisposalTrackerTests
 		}
 	}
 
-	public class ExceptionHandling
+	public static class ExceptionHandling
 	{
 		[Fact]
-		public async ValueTask NoExceptions_DoesNotThrow()
+		public static async ValueTask NoExceptions_DoesNotThrow()
 		{
 			var classUnderTest = new DisposalTracker();
 			var obj = new SpyDisposable();
@@ -61,7 +61,7 @@ public class DisposalTrackerTests
 		}
 
 		[Fact]
-		public async ValueTask SingleException_CleansUpAllObjects_ThrowsTheSingleException()
+		public static async ValueTask SingleException_CleansUpAllObjects_ThrowsTheSingleException()
 		{
 			var classUnderTest = new DisposalTracker();
 			var obj1 = new SpyDisposable();
@@ -81,7 +81,7 @@ public class DisposalTrackerTests
 		}
 
 		[Fact]
-		public async ValueTask MultipleExceptions_ThrowsAggregateException()
+		public static async ValueTask MultipleExceptions_ThrowsAggregateException()
 		{
 			var classUnderTest = new DisposalTracker();
 			var obj1 = new SpyDisposable { DisposeException = new DivideByZeroException() };
