@@ -27,6 +27,7 @@ public static class Names
 			{
 				public const string DisableDiscoveryEnumeration = nameof(DisableDiscoveryEnumeration);
 				public const string SkipTestWithoutData = nameof(SkipTestWithoutData);
+				public const string IncludeTestCaseIndex = nameof(IncludeTestCaseIndex);
 			}
 		}
 

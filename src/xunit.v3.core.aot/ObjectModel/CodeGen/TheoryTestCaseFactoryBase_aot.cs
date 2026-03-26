@@ -35,6 +35,14 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// a lack of data.
 	/// </summary>
 	public bool SkipTestWithoutData { get; set; }
+	
+	/// <summary>
+	/// Gets a flag which indicates whether each test case generated from data sources
+	/// (<see cref="InlineDataAttribute"/>, <see cref="MemberDataAttribute"/>, and
+	/// <see cref="ClassDataAttribute"/>) should include an auto-incremented, zero-padded
+	/// index in its display name.
+	/// </summary>
+	public bool IncludeTestCaseIndex { get; set; }
 
 	/// <summary>
 	/// Creates a <see cref="CodeGenTest"/> attached to a <see cref="ICodeGenTestCase"/> used for delay enumeration.
@@ -108,6 +116,7 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// <param name="methodInvoker">The method invoker</param>
 	/// <param name="testCaseIndex">The index to be used for unique ID generation</param>
 	/// <param name="displayNameSuffix">The optional display name suffix (will also be appended to the end of the unique ID)</param>
+	/// <param name="displayNameIndex">The optional zero-padded index appended to the test case display name.</param>
 	protected CodeGenTestCase CreatePreEnumeratedTestCase(
 		ICodeGenTestMethod testMethod,
 		string displayName,
@@ -115,12 +124,13 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 		ITheoryDataRow dataRow,
 		Func<object?, ValueTask> methodInvoker,
 		int testCaseIndex,
-		string? displayNameSuffix = null)
+		string? displayNameSuffix = null,
+		string? displayNameIndex = null)
 	{
 		Guard.ArgumentNotNull(dataRow);
 		Guard.ArgumentNotNull(testMethod);
 
-		var testDisplayName = GetTestDisplayName(dataRow, displayName, displayNameSuffix);
+		var testDisplayName = GetTestDisplayName(dataRow, displayName, displayNameSuffix, displayNameIndex: displayNameIndex);
 		var mergedTraits = MergeTraits(traits, dataRow.Traits);
 
 		var skipReason = SkipReason;
@@ -301,15 +311,17 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// <param name="dataRow">The data row</param>
 	/// <param name="baseDisplayName">The base display name</param>
 	/// <param name="displayNameSuffix">The display name suffix</param>
+	/// <param name="displayNameIndex">The optional zero-padded index appended to the test case display name.</param>
 	protected string GetTestDisplayName(
 		ITheoryDataRow dataRow,
 		string baseDisplayName,
-		string? displayNameSuffix)
+		string? displayNameSuffix,
+		string? displayNameIndex = null)
 	{
 		Guard.ArgumentNotNull(dataRow);
 		Guard.ArgumentNotNull(baseDisplayName);
 
-		var displayName = dataRow.TestDisplayName ?? baseDisplayName;
+		var displayName = $"{dataRow.TestDisplayName ?? baseDisplayName}{displayNameIndex}";
 		var label = dataRow.Label;
 
 		if (label is null)

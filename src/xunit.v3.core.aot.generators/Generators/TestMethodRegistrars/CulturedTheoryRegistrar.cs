@@ -98,6 +98,8 @@ static class CulturedTheoryRegistrar
 			initValues.Add($"Timeout = {details.Timeout}");
 		if (details.Traits.Count != 0)
 			initValues.Add($"Traits = {CodeGenRegistration.ToTraits(details.Traits)}");
+		if (details.IncludeTestCaseIndex)
+			initValues.Add("IncludeTestCaseIndex = true");
 
 		return new(
 			details.MethodName,

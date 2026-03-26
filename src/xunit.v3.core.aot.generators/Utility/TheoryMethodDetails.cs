@@ -137,6 +137,8 @@ public class TheoryMethodDetails : MethodDetailsBase
 	public List<string> ParameterNames { get; } = [];
 
 	public bool SkipTestWithoutData { get; set; }
+	
+	public bool IncludeTestCaseIndex { get; set; }
 
 	protected override void ProcessNamedArgument(
 		string name,
@@ -150,6 +152,10 @@ public class TheoryMethodDetails : MethodDetailsBase
 
 			case Names.Xunit.Internal.TheoryAttributeBase.SkipTestWithoutData:
 				SkipTestWithoutData = value.Value is true;
+				break;
+			
+			case Names.Xunit.Internal.TheoryAttributeBase.IncludeTestCaseIndex:
+				IncludeTestCaseIndex = value.Value is true;
 				break;
 
 			default:
