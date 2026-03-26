@@ -8,9 +8,9 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Runner.MSBuild;
 
-public class xunitTests
+public static class xunitTests
 {
-	public class Execute
+	public static class Execute
 	{
 		[Fact, PreserveWorkingDirectory]
 		public static void ChangesCurrentDirectoryWhenWorkingFolderIsNotNull()
@@ -80,7 +80,7 @@ public class xunitTests
 		}
 
 		[Fact]
-		public void ReporterMessageHandlerIsDisposed()
+		public static void ReporterMessageHandlerIsDisposed()
 		{
 			var xunit = new Testable_xunit();
 			var reporter = new SpyRunnerReporter(isEnvironmentallyEnabled: true);
