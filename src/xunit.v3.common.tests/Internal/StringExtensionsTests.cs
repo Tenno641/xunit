@@ -61,5 +61,23 @@ public static class StringExtensionsTests
 				part => Assert.Equal(" friend", part)
 			);
 		}
+		
+		[Fact]
+		public void FormatTestCaseIndex()
+		{
+			var zeroIndexResult = StringExtensions.FormatTestCaseIndex(3);
+			
+			Assert.Equal("_003", zeroIndexResult);
+		}
+
+		[Fact]
+		public void FormatTestCaseIndex_IndexIsNullOrZero_ShouldReturnNull()
+		{
+			var zeroIndexResult = StringExtensions.FormatTestCaseIndex(0);
+			var nullIndexResult = StringExtensions.FormatTestCaseIndex(null);
+			
+			Assert.Null(zeroIndexResult);
+			Assert.Null(nullIndexResult);
+		}
 	}
 }
