@@ -81,14 +81,13 @@ public class CulturedTheoryAttributeDiscoverer : TheoryDiscoverer
 	protected override ValueTask<IReadOnlyCollection<IXunitTestCase>> CreateTestCasesForTheory(
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		IXunitTestMethod testMethod,
-		ITheoryAttribute theoryAttribute,
-		string? index = null)
+		ITheoryAttribute theoryAttribute)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(theoryAttribute);
 
-		var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, index: index);
+		var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute);
 
 		if (theoryAttribute is not CulturedTheoryAttribute culturedTheoryAttribute)
 			return Error(

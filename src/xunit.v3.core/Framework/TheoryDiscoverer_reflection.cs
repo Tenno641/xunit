@@ -69,7 +69,6 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 	/// <param name="discoveryOptions">The discovery options to be used.</param>
 	/// <param name="testMethod">The test method the test cases belong to.</param>
 	/// <param name="theoryAttribute">The theory attribute attached to the test method.</param>
-	/// <param name="index">The optional zero-padded index appended to the test case display name.</param>
 	/// <returns>The test case</returns>
 	/// <remarks>
 	/// By default, returns a single instance of <see cref="XunitDelayEnumeratedTheoryTestCase"/> (which
@@ -79,14 +78,13 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 	protected virtual ValueTask<IReadOnlyCollection<IXunitTestCase>> CreateTestCasesForTheory(
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		IXunitTestMethod testMethod,
-		ITheoryAttribute theoryAttribute,
-		string? index = null)
+		ITheoryAttribute theoryAttribute)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(theoryAttribute);
 
-		var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, index: index);
+		var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute);
 		var testCase =
 			details.SkipReason is not null && details.SkipUnless is null && details.SkipWhen is null
 				? new XunitTestCase(
@@ -185,7 +183,7 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 
 					if (data is null)
 					{
-						var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, index: FormatTestCaseIndex(++index));
+						var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, displayNameIndex: StringExtensions.FormatTestCaseIndex(++index));
 
 						results.Add(
 							new ExecutionErrorTestCase(
@@ -239,7 +237,7 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 
 						try
 						{
-							results.AddRange(await CreateTestCasesForDataRow(discoveryOptions, testMethod, theoryAttribute, dataRow, resolvedData, FormatTestCaseIndex(++index)));
+							results.AddRange(await CreateTestCasesForDataRow(discoveryOptions, testMethod, theoryAttribute, dataRow, resolvedData, StringExtensions.FormatTestCaseIndex(++index)));
 						}
 						catch (Exception ex)
 						{
@@ -257,7 +255,7 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 
 				if (results.Count == 0)
 				{
-					var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, index: FormatTestCaseIndex(++index));
+					var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, displayNameIndex: StringExtensions.FormatTestCaseIndex(++index));
 					var message = string.Format(
 						CultureInfo.CurrentCulture,
 						"No data found for {0}.{1}",
@@ -307,15 +305,5 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 		}
 
 		return await CreateTestCasesForTheory(discoveryOptions, testMethod, theoryAttribute);
-	}
-
-	private static string? FormatTestCaseIndex(int? index)
-	{
-		if (index is null)
-			return null;
-
-		string testCaseIndex = $"_{index.Value.ToString($"D3", CultureInfo.CurrentCulture)}";
-
-		return testCaseIndex;
 	}
 }
