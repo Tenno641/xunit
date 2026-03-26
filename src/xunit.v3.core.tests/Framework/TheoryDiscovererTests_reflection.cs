@@ -897,4 +897,29 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 		[MemberData(nameof(Data))]
 		public void TheoryMethod(int _) { }
 	}
+
+	[Fact]
+	public async ValueTask IncludeTestCaseIndex_SetToTrueWithMultipleCultures()
+	{
+		var discoverer = new CulturedTheoryAttributeDiscoverer();
+		var testMethod = TestData.XunitTestMethod<IndexedCulturedTheoryClass_WithMultupleCultures>(nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod));
+		var factAttributes = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
+
+		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttributes)).ToList();
+		
+		Assert.Collection(
+			testCases.OrderBy(tc => tc.TestCaseDisplayName),
+			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_001(_: 42)[en-US]", testCase.TestCaseDisplayName),
+			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_001(_: 42)[fr-FR]", testCase.TestCaseDisplayName),
+			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_002(_: 2112)[en-US]", testCase.TestCaseDisplayName),
+			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_002(_: 2112)[fr-FR]", testCase.TestCaseDisplayName));
+	}
+
+	class IndexedCulturedTheoryClass_WithMultupleCultures
+	{
+		[CulturedTheory(cultures: ["en-US", "fr-FR"], IncludeTestCaseIndex = true)]
+		[InlineData(42)]
+		[InlineData(2112)]
+		public void TheoryMethod(int _) { }
+	}
 }
