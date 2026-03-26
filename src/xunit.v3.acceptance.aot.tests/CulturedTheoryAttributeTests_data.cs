@@ -12,11 +12,11 @@ public partial class CulturedTheoryAttributeTests
 		public static void TestMethod(int _) =>
 			Assert.Equal("fr-FR", CultureInfo.CurrentCulture.Name);
 	}
-	
+
 #if XUNIT_AOT
 	public
 #endif
-		class IndexedTestClassWithSingleCulture
+	class IndexedTestClassWithSingleCulture
 	{
 		[CulturedTheory(cultures: ["fr-FR"], IncludeTestCaseIndex = true)]
 		[InlineData(42)]
@@ -35,11 +35,11 @@ public partial class CulturedTheoryAttributeTests
 		public static void TestMethod(int _) =>
 			Assert.Equal("fr-FR", CultureInfo.CurrentCulture.Name);
 	}
-	
+
 #if XUNIT_AOT
 	public
 #endif
-		class IndexedTestClassWithMultipleCultures
+	class IndexedTestClassWithMultipleCultures
 	{
 		[CulturedTheory(cultures: ["en-US", "fr-FR"], IncludeTestCaseIndex = true)]
 		[InlineData(42)]

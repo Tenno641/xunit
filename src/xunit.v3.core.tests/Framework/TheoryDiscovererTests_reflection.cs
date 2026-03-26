@@ -880,7 +880,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 		var factAttribute = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
 
 		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttribute)).ToList();
-		
+
 		var displayName = Assert.Single(testCases.Select(tc => tc.TestCaseDisplayName));
 		Assert.Equal($"{typeof(IndexedTheoryClass_WithDisabledDiscoveryEnumeration).FullName}.{nameof(IndexedTheoryClass_WithDisabledDiscoveryEnumeration.TheoryMethod)}", displayName);
 	}
@@ -892,7 +892,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 			new TheoryDataRow<int>(1),
 			new TheoryDataRow<int>(2)
 		];
-		
+
 		[Theory(IncludeTestCaseIndex = true, DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(Data))]
 		public void TheoryMethod(int _) { }
@@ -906,7 +906,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 		var factAttributes = testMethod.FactAttributes.FirstOrDefault() ?? throw new InvalidOperationException("Could not find fact attribute");
 
 		var testCases = (await discoverer.Discover(discoveryOptions, testMethod, factAttributes)).ToList();
-		
+
 		Assert.Collection(
 			testCases.OrderBy(tc => tc.TestCaseDisplayName),
 			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_001(_: 42)[en-US]", testCase.TestCaseDisplayName),

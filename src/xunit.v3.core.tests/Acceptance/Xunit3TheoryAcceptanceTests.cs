@@ -854,7 +854,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithoutIndex.DisabledTestCaseIndex(_: 2)", passed.Test.TestDisplayName),
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithoutIndex.DisabledTestCaseIndex(_: 3)", passed.Test.TestDisplayName));
 		}
-		
+
 		[Fact]
 		public async ValueTask IncludeTestCaseIndex_SetToTrue_YieldsTestCasesWithZeroPaddedIndex()
 		{
@@ -869,7 +869,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithIndex.EnabledTestCaseIndex_002(_: 2)", passed.Test.TestDisplayName),
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithIndex.EnabledTestCaseIndex_003(_: 3)", passed.Test.TestDisplayName));
 		}
-		
+
 		[Fact]
 		public async ValueTask IncludeTestCaseIndex_SetToTrue_IndexPaddingScalesWithCount()
 		{
@@ -883,7 +883,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 			Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLargeDataSet.IndexedTestCases_001(_: 1)", testMessages.First().Test.TestDisplayName);
 			Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLargeDataSet.IndexedTestCases_100(_: 100)", testMessages.Last().Test.TestDisplayName);
 		}
-		
+
 		[Fact]
 		public async ValueTask IncludeTestCaseIndex_SetToTrueWithLabel_YieldsIndexedDisplayNameWithLabel()
 		{
@@ -897,7 +897,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLabel.IndexedMemberDataWithLabel_001 [smoke]", passed.Test.TestDisplayName),
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLabel.IndexedMemberDataWithLabel_002 [smoke]", passed.Test.TestDisplayName));
 		}
-		
+
 		[Fact]
 		public async ValueTask IncludeTestCaseIndex_SetToTrueWithTestDisplayName_YieldsIndexedCustomDisplayName()
 		{
@@ -911,7 +911,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 				testCase => Assert.Equal("first case_001(_: 1)", testCase.Test.TestDisplayName),
 				testCase => Assert.Equal("second case_002(_: 2)", testCase.Test.TestDisplayName));
 		}
-		
+
 		[Fact]
 		public async ValueTask IncludeTestCaseIndex_SetToTrueWithLabelAndTestDisplayName_TestDisplayNameTakesPrecedence()
 		{

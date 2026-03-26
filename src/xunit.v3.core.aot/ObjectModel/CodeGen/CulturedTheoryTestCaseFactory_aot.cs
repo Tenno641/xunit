@@ -82,26 +82,26 @@ public class CulturedTheoryTestCaseFactory : TheoryTestCaseFactoryBase
 			var idx = 0;
 
 			foreach (var dataRowFactory in dataRowFactories)
-			foreach (var dataRow in await dataRowFactory(disposalTracker))
-			{
-				idx++;
-				var displayNameIndex = IncludeTestCaseIndex
-					? StringExtensions.FormatTestCaseIndex(idx)
-					: null;
-				
-				result.Add(
-					CreatePreEnumeratedTestCase(
-						testMethod,
-						displayName,
-						traits,
-						dataRow,
-						async obj => await CultureOverride.Call(culture, obj, await MethodInvokerFactory(dataRow)),
-						idx,
-						displayNameSuffix,
-						displayNameIndex
-					)
-				);
-			}
+				foreach (var dataRow in await dataRowFactory(disposalTracker))
+				{
+					idx++;
+					var displayNameIndex = IncludeTestCaseIndex
+						? StringExtensions.FormatTestCaseIndex(idx)
+						: null;
+
+					result.Add(
+						CreatePreEnumeratedTestCase(
+							testMethod,
+							displayName,
+							traits,
+							dataRow,
+							async obj => await CultureOverride.Call(culture, obj, await MethodInvokerFactory(dataRow)),
+							idx,
+							displayNameSuffix,
+							displayNameIndex
+						)
+					);
+				}
 		}
 
 		return result;

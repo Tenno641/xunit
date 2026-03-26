@@ -1271,18 +1271,18 @@ public partial class Xunit3TheoryAcceptanceTests
 				yield return new TheoryDataRow<int, string?>(0, null) { Skip = "Don't run this!" };
 			}
 		}
-		
+
 #if XUNIT_AOT
 		public 
 #endif
 		class IndexedTheoryClassWithoutIndex
-        	{
-        		[Theory(IncludeTestCaseIndex = false)]
-        		[InlineData(1)]
-        		[InlineData(2)]
-        		[InlineData(3)]
-        		public void DisabledTestCaseIndex(int _) { }
-        	}
+		{
+			[Theory(IncludeTestCaseIndex = false)]
+			[InlineData(1)]
+			[InlineData(2)]
+			[InlineData(3)]
+			public void DisabledTestCaseIndex(int _) { }
+		}
 #if XUNIT_AOT
 		public 
 #endif
@@ -1294,7 +1294,7 @@ public partial class Xunit3TheoryAcceptanceTests
 			[InlineData(3)]
 			public void EnabledTestCaseIndex(int _) { }
 		}
-		
+
 #if XUNIT_AOT
 		public 
 #endif
@@ -1307,7 +1307,7 @@ public partial class Xunit3TheoryAcceptanceTests
 			[MemberData(nameof(Data))]
 			public void IndexedTestCases(int _) { }
 		}
-		
+
 #if XUNIT_AOT
 		public 
 #endif
@@ -1320,7 +1320,7 @@ public partial class Xunit3TheoryAcceptanceTests
 			[MemberData(nameof(Data))]
 			public void IndexedMemberDataWithLabel(int _) { }
 		}
-		
+
 #if XUNIT_AOT
 		public 
 #endif
@@ -1333,7 +1333,7 @@ public partial class Xunit3TheoryAcceptanceTests
 			[MemberData(nameof(Data))]
 			public void TheoryMethod(int _) { }
 		}
-		
+
 #if XUNIT_AOT
 		public 
 #endif
