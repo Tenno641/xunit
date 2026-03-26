@@ -4,12 +4,12 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class CodeGenTestAssemblyRunnerTests
+public static class CodeGenTestAssemblyRunnerTests
 {
 	public class Messages : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask Passing()
+		public static async ValueTask Passing()
 		{
 			var messages = await RunAsync("CodeGenTestAssemblyRunnerTests+Messages+Passing");
 
@@ -239,7 +239,7 @@ public class CodeGenTestAssemblyRunnerTests
 		}
 	}
 
-	public class AssemblyFixtures
+	public static class AssemblyFixtures
 	{
 		[Fact]
 		public static async ValueTask FixtureCreationFailure()

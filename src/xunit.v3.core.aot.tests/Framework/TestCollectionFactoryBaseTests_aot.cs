@@ -1,7 +1,7 @@
 using Xunit;
 using Xunit.v3;
 
-public class TestCollectionFactoryBaseTests
+public static class TestCollectionFactoryBaseTests
 {
 	[Theory]
 	[InlineData(typeof(TestClassForByName), null, "foo", "ec41e871ca6761e15a5b062a4a39cf6a2f2c6e6e6cb5939681b917eca76a151f")]
@@ -44,7 +44,7 @@ public class TestCollectionFactoryBaseTests
 	internal class TestClassForByType { }
 
 	[Fact]
-	public void ReadsCollectionDefinitionAttributeForParallelization()
+	public static void ReadsCollectionDefinitionAttributeForParallelization()
 	{
 		var collectionDefinitions = new Dictionary<string, CodeGenTestCollectionRegistration>()
 		{

@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class CodeGenTestCollectionRunnerTests
+public static class CodeGenTestCollectionRunnerTests
 {
-	public class CollectionFixtures
+	public static class CollectionFixtures
 	{
 		[Fact]
 		public static async ValueTask FixtureCreationFailure()
