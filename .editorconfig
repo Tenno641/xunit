@@ -358,3 +358,7 @@ dotnet_diagnostic.xUnit3000.severity = warning
 dotnet_diagnostic.xUnit3001.severity = warning
 dotnet_diagnostic.xUnit3002.severity = warning
 dotnet_diagnostic.xUnit3003.severity = warning
+
+[*{Tests,Tests_aot,Tests_reflection}.cs]
+dotnet_diagnostic.CA1052.severity = warning  # Static holder types should be sealed
+dotnet_diagnostic.CA1822.severity = warning  # Mark members as static
