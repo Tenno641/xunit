@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using Xunit;
 using Xunit.Runner.Common;
 
-public class CommandLineTests
+public static class CommandLineTests
 {
 #if !XUNIT_AOT
 	public static string CommandLineLocation { get; }
@@ -19,7 +19,7 @@ public class CommandLineTests
 #endif
 	}
 
-	public class UnknownOption
+	public static class UnknownOption
 	{
 		[Fact]
 		public static void UnknownOptionThrows()
@@ -33,7 +33,7 @@ public class CommandLineTests
 		}
 	}
 
-	public class Project
+	public static class Project
 	{
 		[Fact]
 		public static void AssemblyDoesNotExist_Throws()
@@ -155,6 +155,8 @@ public class CommandLineTests
 		}
 	}
 
+#pragma warning disable CA1822  // Tests in this class depend on the instance to set & clean environment
+
 	[Collection("Switches Test Collection")]
 	public sealed class Switches : IDisposable
 	{
@@ -237,9 +239,11 @@ public class CommandLineTests
 		}
 	}
 
-	public class OptionsWithArguments
+#pragma warning restore CA1822
+
+	public static class OptionsWithArguments
 	{
-		public class AppDomains
+		public static class AppDomains
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -291,7 +295,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class AssertEquivalentMaxDepth
+		public static class AssertEquivalentMaxDepth
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -316,7 +320,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class Culture
+		public static class Culture
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -363,7 +367,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class LongRunning
+		public static class LongRunning
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -416,7 +420,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class MaxThreads
+		public static class MaxThreads
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -491,7 +495,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class Parallelization
+		public static class Parallelization
 		{
 			[Fact]
 			public static void ParallelizationOptionsAreNullByDefault()
@@ -543,7 +547,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class PrintMaxEnumerableLength
+		public static class PrintMaxEnumerableLength
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -568,7 +572,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class PrintMaxObjectDepth
+		public static class PrintMaxObjectDepth
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -593,7 +597,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class PrintMaxObjectMemberCount()
+		public static class PrintMaxObjectMemberCount
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -618,7 +622,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class PrintMaxStringLength
+		public static class PrintMaxStringLength
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -644,7 +648,7 @@ public class CommandLineTests
 		}
 	}
 
-	public class Filters
+	public static class Filters
 	{
 		[Fact]
 		public static void DefaultFilters()
@@ -720,7 +724,7 @@ public class CommandLineTests
 			);
 		}
 
-		public class Traits
+		public static class Traits
 		{
 			static readonly string[] SwitchOptionsList =
 			[
@@ -816,7 +820,7 @@ public class CommandLineTests
 		}
 	}
 
-	public class ResultWriters
+	public static class ResultWriters
 	{
 		static readonly IReadOnlyDictionary<string, IConsoleResultWriter> ConsoleResultWriters = RegisteredRunnerConfig.GetConsoleResultWriters(typeof(ResultWriters).Assembly);
 
