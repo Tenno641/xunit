@@ -63,7 +63,7 @@ public static class StringExtensionsTests
 		}
 
 		[Fact]
-		public void FormatTestCaseIndex()
+		public static void FormatTestCaseIndex()
 		{
 			var zeroIndexResult = StringExtensions.FormatTestCaseIndex(3);
 
@@ -71,7 +71,7 @@ public static class StringExtensionsTests
 		}
 
 		[Fact]
-		public void FormatTestCaseIndex_IndexIsNullOrZero_ShouldReturnNull()
+		public static void FormatTestCaseIndex_IndexIsNullOrZero_ShouldReturnNull()
 		{
 			var zeroIndexResult = StringExtensions.FormatTestCaseIndex(0);
 			var nullIndexResult = StringExtensions.FormatTestCaseIndex(null);
