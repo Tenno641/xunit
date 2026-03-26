@@ -1,12 +1,12 @@
 using Xunit;
 using Xunit.Sdk;
 
-public partial class Xunit3AcceptanceTests
+public static partial class Xunit3AcceptanceTests
 {
 	public partial class AsyncLifetime : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask AsyncLifetimeAcceptanceTest()
+		public static async ValueTask AsyncLifetimeAcceptanceTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime");
@@ -19,7 +19,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask AsyncDisposableAcceptanceTest()
+		public static async ValueTask AsyncDisposableAcceptanceTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncDisposable");
@@ -33,7 +33,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask DisposableAcceptanceTest()
+		public static async ValueTask DisposableAcceptanceTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithDisposable");
@@ -46,7 +46,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ThrowingConstructor()
+		public static async ValueTask ThrowingConstructor()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime_ThrowingCtor");
@@ -59,7 +59,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ThrowingInitializeAsync()
+		public static async ValueTask ThrowingInitializeAsync()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime_ThrowingInitializeAsync");
@@ -72,7 +72,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ThrowingDisposeAsync()
+		public static async ValueTask ThrowingDisposeAsync()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime_ThrowingDisposeAsync");
@@ -85,7 +85,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ThrowingDisposeAsync_Disposable()
+		public static async ValueTask ThrowingDisposeAsync_Disposable()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncDisposable_ThrowingDisposeAsync");
@@ -98,7 +98,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask FailingTest()
+		public static async ValueTask FailingTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime_FailingTest");
@@ -124,7 +124,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class ClassFailures : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask TestFailureResultsFromThrowingCtorInTestClass()
+		public static async ValueTask TestFailureResultsFromThrowingCtorInTestClass()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("Xunit3AcceptanceTests+ClassFailures+ClassUnderTest_CtorFailure");
@@ -137,7 +137,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestFailureResultsFromThrowingDisposeInTestClass()
+		public static async ValueTask TestFailureResultsFromThrowingDisposeInTestClass()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("Xunit3AcceptanceTests+ClassFailures+ClassUnderTest_DisposeFailure");
@@ -150,7 +150,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask CompositeTestFailureResultsFromFailingTestsPlusThrowingDisposeInTestClass()
+		public static async ValueTask CompositeTestFailureResultsFromFailingTestsPlusThrowingDisposeInTestClass()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("Xunit3AcceptanceTests+ClassFailures+ClassUnderTest_FailingTestAndDisposeFailure");
@@ -174,7 +174,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class EndToEndMessageInspection : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask NoTests()
+		public static async ValueTask NoTests()
 		{
 #if XUNIT_AOT
 			var results = await RunAsync("Xunit3AcceptanceTests+EndToEndMessageInspection+NoTestsClass");
@@ -201,7 +201,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask SinglePassingTest()
+		public static async ValueTask SinglePassingTest()
 		{
 			string? observedAssemblyID = default;
 			string? observedCollectionID = default;
@@ -397,7 +397,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class ErrorAggregation : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask EachTestMethodHasIndividualExceptionMessage()
+		public static async ValueTask EachTestMethodHasIndividualExceptionMessage()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunAsync("Xunit3AcceptanceTests+ErrorAggregation+ClassUnderTest");
@@ -420,7 +420,7 @@ public partial class Xunit3AcceptanceTests
 		[Theory]
 		[InlineData(null)]
 		[InlineData(ExplicitOption.Off)]
-		public async ValueTask OnlyRunNonExplicit(ExplicitOption? @explicit)
+		public static async ValueTask OnlyRunNonExplicit(ExplicitOption? @explicit)
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3AcceptanceTests+ExplicitTests+ClassWithExplicitTest", explicitOption: @explicit);
@@ -436,7 +436,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask OnlyRunExplicit()
+		public static async ValueTask OnlyRunExplicit()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3AcceptanceTests+ExplicitTests+ClassWithExplicitTest", explicitOption: ExplicitOption.Only);
@@ -452,7 +452,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask RunEverything()
+		public static async ValueTask RunEverything()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3AcceptanceTests+ExplicitTests+ClassWithExplicitTest", explicitOption: ExplicitOption.On);
@@ -471,7 +471,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class FailingTests : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask SingleFailingTest()
+		public static async ValueTask SingleFailingTest()
 		{
 #if XUNIT_AOT
 			var results = await RunAsync("Xunit3AcceptanceTests+FailingTests+SingleFailingTestClass");
@@ -490,7 +490,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask SingleFailingTestReturningValueTask()
+		public static async ValueTask SingleFailingTestReturningValueTask()
 		{
 #if XUNIT_AOT
 			var results = await RunAsync("Xunit3AcceptanceTests+FailingTests+SingleFailingValueTaskTestClass");
@@ -512,7 +512,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class NonStartedTasks : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask TestWithUnstartedTaskThrows()
+		public static async ValueTask TestWithUnstartedTaskThrows()
 		{
 #if XUNIT_AOT
 			//Assert.Skip("This test is not running successfully in AOT yet");
@@ -531,7 +531,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class SkippedTests : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask SingleSkippedTest()
+		public static async ValueTask SingleSkippedTest()
 		{
 #if XUNIT_AOT
 			var results = await RunAsync("Xunit3AcceptanceTests+SkippedTests+SingleSkippedTestClass");
@@ -554,7 +554,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ConditionallySkippedTests()
+		public static async ValueTask ConditionallySkippedTests()
 		{
 #if XUNIT_AOT
 			var results = await RunAsync("Xunit3AcceptanceTests+SkippedTests+ConditionallySkippedTestClass");
@@ -588,7 +588,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ConditionallySkippedTests_UsingSkipType()
+		public static async ValueTask ConditionallySkippedTests_UsingSkipType()
 		{
 #if XUNIT_AOT
 			var results = await RunAsync("Xunit3AcceptanceTests+SkippedTests+ConditionallySkippedTestsClass_UsingSkipType");
@@ -618,7 +618,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class StaticClassSupport : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask TestsCanBeInStaticClasses()
+		public static async ValueTask TestsCanBeInStaticClasses()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunAsync("Xunit3AcceptanceTests+StaticClassSupport+StaticClassUnderTest");
@@ -635,7 +635,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class TestContextAccessor : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask CanInjectTestContextAccessor()
+		public static async ValueTask CanInjectTestContextAccessor()
 		{
 #if XUNIT_AOT
 			var msgs = await RunAsync("Xunit3AcceptanceTests+TestContextAccessor+ClassUnderTest");
@@ -655,7 +655,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class TestNonParallelOrdering : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask NonParallelCollectionsRunLast()
+		public static async ValueTask NonParallelCollectionsRunLast()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunAsync(["Xunit3AcceptanceTests+TestNonParallelOrdering+TestClassNonParallelCollection", "Xunit3AcceptanceTests+TestNonParallelOrdering+TestClassParallelCollection"]);
@@ -676,7 +676,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class TestOrdering : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask OverrideOfOrderingAtCollectionLevel()
+		public static async ValueTask OverrideOfOrderingAtCollectionLevel()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunAsync("Xunit3AcceptanceTests+TestOrdering+TestClassUsingCollection");
@@ -693,7 +693,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask OverrideOfOrderingAtClassLevel()
+		public static async ValueTask OverrideOfOrderingAtClassLevel()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3AcceptanceTests+TestOrdering+TestClassWithoutCollection");
@@ -713,7 +713,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class TestOutput : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask SendOutputMessages()
+		public static async ValueTask SendOutputMessages()
 		{
 #if XUNIT_AOT
 			var msgs = await RunAsync("Xunit3AcceptanceTests+TestOutput+ClassUnderTest");
@@ -752,7 +752,7 @@ public partial class Xunit3AcceptanceTests
 	public partial class Warnings : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask LegalWarnings()
+		public static async ValueTask LegalWarnings()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3AcceptanceTests+Warnings+ClassWithLegalWarnings");
@@ -808,7 +808,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask IllegalWarning()
+		public static async ValueTask IllegalWarning()
 		{
 			var diagnosticSink = SpyMessageSink.Capture();
 

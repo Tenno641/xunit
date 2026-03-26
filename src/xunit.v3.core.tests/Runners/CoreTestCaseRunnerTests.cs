@@ -2,12 +2,12 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class CoreTestCaseRunnerTests
+public static class CoreTestCaseRunnerTests
 {
-	public class InvokeHandlers
+	public static class InvokeHandlers
 	{
 		[Fact]
-		public async ValueTask RunsPreAndPostInvokeByDefault()
+		public static async ValueTask RunsPreAndPostInvokeByDefault()
 		{
 			var operations = new List<string>();
 			var testCase = Mocks.CoreTestCase(
@@ -30,7 +30,7 @@ public class CoreTestCaseRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask PreInvokeFails_SkipsPostInvoke()
+		public static async ValueTask PreInvokeFails_SkipsPostInvoke()
 		{
 			var operations = new List<string>();
 			var testCase = Mocks.CoreTestCase(
@@ -49,7 +49,7 @@ public class CoreTestCaseRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask AggregatorContainsException_SkipsPreAndPostInvoke()
+		public static async ValueTask AggregatorContainsException_SkipsPreAndPostInvoke()
 		{
 			var operations = new List<string>();
 			var testCase = Mocks.CoreTestCase(

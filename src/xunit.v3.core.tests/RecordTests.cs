@@ -1,12 +1,12 @@
 using Xunit;
 using Xunit.v3;
 
-public class RecordTests
+public static class RecordTests
 {
-	public class MethodsWithoutReturnValues
+	public static class MethodsWithoutReturnValues
 	{
 		[Fact]
-		public void Exception()
+		public static void Exception()
 		{
 			static void testCode() => throw new InvalidOperationException();
 
@@ -17,7 +17,7 @@ public class RecordTests
 		}
 
 		[Fact]
-		public void NoException()
+		public static void NoException()
 		{
 			static void testCode()
 			{ }
@@ -28,7 +28,7 @@ public class RecordTests
 		}
 
 		[Fact]
-		public void SkipExceptionEscapes()
+		public static void SkipExceptionEscapes()
 		{
 			static void testCode() => Assert.Skip("This is a skipped test");
 
@@ -44,10 +44,10 @@ public class RecordTests
 		}
 	}
 
-	public class MethodsReturningTask
+	public static class MethodsReturningTask
 	{
 		[Fact]
-		public async ValueTask Exception()
+		public static async ValueTask Exception()
 		{
 			static Task testCode() => Task.Run(() => throw new InvalidOperationException(), TestContext.Current.CancellationToken);
 
@@ -58,7 +58,7 @@ public class RecordTests
 		}
 
 		[Fact]
-		public async ValueTask NoException()
+		public static async ValueTask NoException()
 		{
 			static Task testCode() => Task.Run(() => { }, TestContext.Current.CancellationToken);
 
@@ -68,7 +68,7 @@ public class RecordTests
 		}
 
 		[Fact]
-		public async ValueTask SkipExceptionEscapes()
+		public static async ValueTask SkipExceptionEscapes()
 		{
 			static Task testCode() => Task.Run(() => Assert.Skip("This is a skipped test"), TestContext.Current.CancellationToken);
 
@@ -84,10 +84,10 @@ public class RecordTests
 		}
 	}
 
-	public class MethodsWithReturnValues
+	public static class MethodsWithReturnValues
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			static object testCode() => Task.Run(() => { }, TestContext.Current.CancellationToken);
 
@@ -98,7 +98,7 @@ public class RecordTests
 		}
 
 		[Fact]
-		public void Exception()
+		public static void Exception()
 		{
 			var accessor = new StubAccessor();
 
@@ -109,7 +109,7 @@ public class RecordTests
 		}
 
 		[Fact]
-		public void NoException()
+		public static void NoException()
 		{
 			var accessor = new StubAccessor();
 
@@ -119,7 +119,7 @@ public class RecordTests
 		}
 
 		[Fact]
-		public void SkipExceptionEscapes()
+		public static void SkipExceptionEscapes()
 		{
 			var accessor = new StubAccessor();
 

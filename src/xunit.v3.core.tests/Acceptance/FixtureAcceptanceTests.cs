@@ -3,12 +3,12 @@
 using Xunit;
 using Xunit.Sdk;
 
-public partial class FixtureAcceptanceTests
+public static partial class FixtureAcceptanceTests
 {
 	public partial class AsyncClassFixture : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask FixtureDataShouldHaveBeenSetup()
+		public static async ValueTask FixtureDataShouldHaveBeenSetup()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+AsyncClassFixture+FixtureSpy");
@@ -20,7 +20,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ThrowingFixtureInitializeAsyncShouldResultInFailedTest()
+		public static async ValueTask ThrowingFixtureInitializeAsyncShouldResultInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+AsyncClassFixture+ClassWithThrowingFixtureInitializeAsync");
@@ -38,7 +38,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingFixtureAsyncDisposeResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingFixtureAsyncDisposeResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestClassCleanupFailure>("FixtureAcceptanceTests+AsyncClassFixture+ClassWithThrowingFixtureDisposeAsync");
@@ -59,7 +59,7 @@ public partial class FixtureAcceptanceTests
 	public partial class AsyncCollectionFixture : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask CollectionFixtureAsyncSetupShouldOnlyRunOnce()
+		public static async ValueTask CollectionFixtureAsyncSetupShouldOnlyRunOnce()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync(["FixtureAcceptanceTests+AsyncCollectionFixture+Fixture1", "FixtureAcceptanceTests+AsyncCollectionFixture+Fixture2"]);
@@ -71,7 +71,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingCollectionFixtureSetupAsyncResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingCollectionFixtureSetupAsyncResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+AsyncCollectionFixture+ClassWithThrowingFixtureInitializeAsync");
@@ -89,7 +89,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingCollectionFixtureDisposeAsyncResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingCollectionFixtureDisposeAsyncResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync("FixtureAcceptanceTests+AsyncCollectionFixture+ClassWithThrowingFixtureDisposeAsync");
@@ -110,7 +110,7 @@ public partial class FixtureAcceptanceTests
 	public partial class ClassFixture : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask TestClassWithMissingArgumentToConstructorIsAcceptable()
+		public static async ValueTask TestClassWithMissingArgumentToConstructorIsAcceptable()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+ClassFixture+ClassWithMissingCtorArg");
@@ -122,7 +122,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithoutCtorWithThrowingFixtureConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithoutCtorWithThrowingFixtureConstructorResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+ClassFixture+ClassWithThrowingFixtureCtor");
@@ -140,7 +140,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithCtorWithThrowingFixtureConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithCtorWithThrowingFixtureConstructorResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+ClassFixture+ClassWithCtorAndThrowingFixtureCtor");
@@ -158,7 +158,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingFixtureDisposeResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingFixtureDisposeResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestClassCleanupFailure>("FixtureAcceptanceTests+ClassFixture+ClassWithThrowingFixtureDispose");
@@ -176,7 +176,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask FixtureDataIsPassedToConstructorAndAvailableViaContext()
+		public static async ValueTask FixtureDataIsPassedToConstructorAndAvailableViaContext()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+ClassFixture+FixtureSpy");
@@ -188,7 +188,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithDefaultParameter()
+		public static async ValueTask TestClassWithDefaultParameter()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync("FixtureAcceptanceTests+ClassFixture+ClassWithDefaultCtorArg");
@@ -202,7 +202,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithOptionalParameter()
+		public static async ValueTask TestClassWithOptionalParameter()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync("FixtureAcceptanceTests+ClassFixture+ClassWithOptionalCtorArg");
@@ -216,7 +216,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithParamsParameter()
+		public static async ValueTask TestClassWithParamsParameter()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync("FixtureAcceptanceTests+ClassFixture+ClassWithParamsArg");
@@ -230,7 +230,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ClassFixtureCanAcceptIMessageSink()
+		public static async ValueTask ClassFixtureCanAcceptIMessageSink()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+ClassFixture+ClassWithMessageSinkFixture");
@@ -244,7 +244,7 @@ public partial class FixtureAcceptanceTests
 
 		// https://github.com/xunit/xunit/issues/3371
 		[Fact]
-		public async ValueTask FixtureWithAllSkippedTestsIsNotCreated()
+		public static async ValueTask FixtureWithAllSkippedTestsIsNotCreated()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+ClassFixture+ClassWithSkippedTests");
@@ -259,7 +259,7 @@ public partial class FixtureAcceptanceTests
 
 		// https://github.com/xunit/xunit/issues/3371
 		[Fact]
-		public async ValueTask FixtureWithAllSkippedTestsIsNotCreated_WithConstructor()
+		public static async ValueTask FixtureWithAllSkippedTestsIsNotCreated_WithConstructor()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+ClassFixture+ClassWithSkippedTests_WithConstructor");
@@ -276,7 +276,7 @@ public partial class FixtureAcceptanceTests
 	public partial class CollectionFixture : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask TestClassWithExtraArgumentToConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithExtraArgumentToConstructorResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+CollectionFixture+ClassWithExtraCtorArg");
@@ -294,7 +294,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithMissingArgumentToConstructorIsAcceptable()
+		public static async ValueTask TestClassWithMissingArgumentToConstructorIsAcceptable()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixture+ClassWithMissingCtorArg");
@@ -306,7 +306,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingFixtureConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingFixtureConstructorResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+CollectionFixture+ClassWithThrowingFixtureCtor");
@@ -324,7 +324,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingCollectionFixtureDisposeResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingCollectionFixtureDisposeResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestCollectionCleanupFailure>("FixtureAcceptanceTests+CollectionFixture+ClassWithThrowingFixtureDispose");
@@ -342,7 +342,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask FixtureDataIsPassedToConstructorAndAvailableViaContext()
+		public static async ValueTask FixtureDataIsPassedToConstructorAndAvailableViaContext()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+CollectionFixture+FixtureSpy");
@@ -354,7 +354,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask FixtureDataIsSameInstanceAcrossClasses()
+		public static async ValueTask FixtureDataIsSameInstanceAcrossClasses()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync(["FixtureAcceptanceTests+CollectionFixture+FixtureSaver1", "FixtureAcceptanceTests+CollectionFixture+FixtureSaver2"]);
@@ -370,7 +370,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ClassFixtureOnCollectionDecorationWorks()
+		public static async ValueTask ClassFixtureOnCollectionDecorationWorks()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixture+FixtureSpy_ClassFixture");
@@ -382,7 +382,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ClassFixtureOnTestClassTakesPrecedenceOverClassFixtureOnCollection()
+		public static async ValueTask ClassFixtureOnTestClassTakesPrecedenceOverClassFixtureOnCollection()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixture+ClassWithCountedFixture");
@@ -394,7 +394,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask CollectionFixtureCanAcceptIMessageSink()
+		public static async ValueTask CollectionFixtureCanAcceptIMessageSink()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+CollectionFixture+ClassWithMessageSinkFixture");
@@ -408,7 +408,7 @@ public partial class FixtureAcceptanceTests
 
 		// https://github.com/xunit/xunit/issues/3371
 		[Fact]
-		public async ValueTask FixtureWithAllSkippedTestsIsNotCreated()
+		public static async ValueTask FixtureWithAllSkippedTestsIsNotCreated()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+CollectionFixture+ClassWithSkippedTests");
@@ -423,7 +423,7 @@ public partial class FixtureAcceptanceTests
 
 		// https://github.com/xunit/xunit/issues/3371
 		[Fact]
-		public async ValueTask FixtureWithAllSkippedTestsIsNotCreated_WithConstructor()
+		public static async ValueTask FixtureWithAllSkippedTestsIsNotCreated_WithConstructor()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+CollectionFixture+ClassWithSkippedTests_WithConstructor");
@@ -440,7 +440,7 @@ public partial class FixtureAcceptanceTests
 	public partial class CollectionFixtureByTypeArgument : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask TestClassWithExtraArgumentToConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithExtraArgumentToConstructorResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+CollectionFixtureByTypeArgument+ClassWithExtraCtorArg");
@@ -458,7 +458,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithMissingArgumentToConstructorIsAcceptable()
+		public static async ValueTask TestClassWithMissingArgumentToConstructorIsAcceptable()
 		{
 #if XUNIT_AOT
 			var messages = await RunForResultsAsync("FixtureAcceptanceTests+CollectionFixtureByTypeArgument+ClassWithMissingCtorArg");
@@ -470,7 +470,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingFixtureConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingFixtureConstructorResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+CollectionFixtureByTypeArgument+ClassWithThrowingFixtureCtor");
@@ -488,7 +488,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingCollectionFixtureDisposeResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingCollectionFixtureDisposeResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestCollectionCleanupFailure>("FixtureAcceptanceTests+CollectionFixtureByTypeArgument+ClassWithThrowingFixtureDispose");
@@ -506,7 +506,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask FixtureDataIsPassedToConstructorAndAvailableViaContext()
+		public static async ValueTask FixtureDataIsPassedToConstructorAndAvailableViaContext()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixtureByTypeArgument+FixtureSpy");
@@ -518,7 +518,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask FixtureDataIsSameInstanceAcrossClasses()
+		public static async ValueTask FixtureDataIsSameInstanceAcrossClasses()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync(["FixtureAcceptanceTests+CollectionFixtureByTypeArgument+FixtureSaver1", "FixtureAcceptanceTests+CollectionFixtureByTypeArgument+FixtureSaver2"]);
@@ -534,7 +534,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ClassFixtureOnCollectionDecorationWorks()
+		public static async ValueTask ClassFixtureOnCollectionDecorationWorks()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixtureByTypeArgument+FixtureSpy_ClassFixture");
@@ -546,7 +546,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ClassFixtureOnTestClassTakesPrecedenceOverClassFixtureOnCollection()
+		public static async ValueTask ClassFixtureOnTestClassTakesPrecedenceOverClassFixtureOnCollection()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixtureByTypeArgument+ClassWithCountedFixture");
@@ -563,7 +563,7 @@ public partial class FixtureAcceptanceTests
 	public partial class CollectionFixtureGeneric : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask TestClassWithExtraArgumentToConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithExtraArgumentToConstructorResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+CollectionFixtureGeneric+ClassWithExtraCtorArg");
@@ -581,7 +581,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithMissingArgumentToConstructorIsAcceptable()
+		public static async ValueTask TestClassWithMissingArgumentToConstructorIsAcceptable()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixtureGeneric+ClassWithMissingCtorArg");
@@ -593,7 +593,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingFixtureConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingFixtureConstructorResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestFailed>("FixtureAcceptanceTests+CollectionFixtureGeneric+ClassWithThrowingFixtureCtor");
@@ -611,7 +611,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask TestClassWithThrowingCollectionFixtureDisposeResultsInFailedTest()
+		public static async ValueTask TestClassWithThrowingCollectionFixtureDisposeResultsInFailedTest()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestCollectionCleanupFailure>("FixtureAcceptanceTests+CollectionFixtureGeneric+ClassWithThrowingFixtureDispose");
@@ -629,7 +629,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask FixtureDataIsPassedToConstructor()
+		public static async ValueTask FixtureDataIsPassedToConstructor()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixtureGeneric+FixtureSpy");
@@ -641,7 +641,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask FixtureDataIsSameInstanceAcrossClasses()
+		public static async ValueTask FixtureDataIsSameInstanceAcrossClasses()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync(["FixtureAcceptanceTests+CollectionFixtureGeneric+FixtureSaver1", "FixtureAcceptanceTests+CollectionFixtureGeneric+FixtureSaver2"]);
@@ -657,7 +657,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ClassFixtureOnCollectionDecorationWorks()
+		public static async ValueTask ClassFixtureOnCollectionDecorationWorks()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixtureGeneric+FixtureSpy_ClassFixture");
@@ -669,7 +669,7 @@ public partial class FixtureAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ClassFixtureOnTestClassTakesPrecedenceOverClassFixtureOnCollection()
+		public static async ValueTask ClassFixtureOnTestClassTakesPrecedenceOverClassFixtureOnCollection()
 		{
 #if XUNIT_AOT
 			var messages = await RunAsync<ITestPassed>("FixtureAcceptanceTests+CollectionFixtureGeneric+ClassWithCountedFixture");

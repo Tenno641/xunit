@@ -7,7 +7,7 @@ partial class FixtureAcceptanceTests
 	{
 		// Native AOT reports this in the generator
 		[Fact]
-		public async ValueTask TestClassWithExtraArgumentToConstructorResultsInFailedTest()
+		public static async ValueTask TestClassWithExtraArgumentToConstructorResultsInFailedTest()
 		{
 			var messages = await RunAsync(typeof(ClassWithExtraCtorArg));
 
@@ -52,7 +52,7 @@ partial class FixtureAcceptanceTests
 	{
 		// Native AOT reports these in the generator
 		[Fact]
-		public async ValueTask TestClassCannotBeDecoratedWithICollectionFixture()
+		public static async ValueTask TestClassCannotBeDecoratedWithICollectionFixture()
 		{
 			var messages = await RunAsync<ITestFailed>(typeof(TestClassWithCollectionFixture));
 
@@ -69,7 +69,7 @@ partial class FixtureAcceptanceTests
 
 		// Native AOT does not support generic collection definitions
 		[Fact]
-		public async ValueTask CollectionFixtureOnGenericTestClassAcceptsArgument()
+		public static async ValueTask CollectionFixtureOnGenericTestClassAcceptsArgument()
 		{
 			var messages = await RunAsync<ITestPassed>(typeof(GenericTests));
 
@@ -99,7 +99,7 @@ partial class FixtureAcceptanceTests
 	partial class CollectionFixtureByTypeArgument
 	{
 		[Fact]
-		public async ValueTask TestClassCannotBeDecoratedWithICollectionFixture()
+		public static async ValueTask TestClassCannotBeDecoratedWithICollectionFixture()
 		{
 			var messages = await RunAsync<ITestFailed>(typeof(TestClassWithCollectionFixture));
 
@@ -120,7 +120,7 @@ partial class FixtureAcceptanceTests
 	partial class CollectionFixtureGeneric
 	{
 		[Fact]
-		public async ValueTask TestClassCannotBeDecoratedWithICollectionFixture()
+		public static async ValueTask TestClassCannotBeDecoratedWithICollectionFixture()
 		{
 			var messages = await RunAsync<ITestFailed>(typeof(TestClassWithCollectionFixture));
 
@@ -142,7 +142,7 @@ partial class FixtureAcceptanceTests
 	{
 		// Native AOT reports this in the generator
 		[Fact]
-		public async ValueTask TestClassMustHaveSinglePublicConstructor()
+		public static async ValueTask TestClassMustHaveSinglePublicConstructor()
 		{
 			var messages = await RunAsync(typeof(ClassWithTooManyConstructors));
 

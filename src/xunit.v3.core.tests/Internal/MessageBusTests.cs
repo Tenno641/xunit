@@ -1,7 +1,7 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class MessageBusTests
+public static class MessageBusTests
 {
 	[Fact]
 	public static void QueuedMessageShowUpInMessageSink()

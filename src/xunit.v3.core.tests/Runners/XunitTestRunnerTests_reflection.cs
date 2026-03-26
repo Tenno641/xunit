@@ -3,9 +3,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class XunitTestRunnerTests
+public static class XunitTestRunnerTests
 {
-	public class Guards
+	public static class Guards
 	{
 		[Fact]
 		public static async ValueTask AsyncVoidProhibited()
@@ -64,7 +64,7 @@ public class XunitTestRunnerTests
 		}
 	}
 
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
 		public static async ValueTask Passing()

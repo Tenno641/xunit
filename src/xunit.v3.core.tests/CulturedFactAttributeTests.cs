@@ -4,7 +4,7 @@ using Xunit.Sdk;
 public partial class CulturedFactAttributeTests : AcceptanceTestV3
 {
 	[Fact]
-	public async ValueTask SingleCulture()
+	public static async ValueTask SingleCulture()
 	{
 #if XUNIT_AOT
 		var results = await RunForResultsAsync("CulturedFactAttributeTests+TestClassWithSingleCulture");
@@ -18,7 +18,7 @@ public partial class CulturedFactAttributeTests : AcceptanceTestV3
 	}
 
 	[Fact]
-	public async ValueTask MultipleCultures()
+	public static async ValueTask MultipleCultures()
 	{
 #if XUNIT_AOT
 		var results = await RunForResultsAsync("CulturedFactAttributeTests+TestClassWithMultipleCultures");

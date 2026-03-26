@@ -1,11 +1,6 @@
 #if NETFRAMEWORK
 
-using System;
-using System.Configuration.Assemblies;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;

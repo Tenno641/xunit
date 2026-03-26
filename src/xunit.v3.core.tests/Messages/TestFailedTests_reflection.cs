@@ -7,7 +7,7 @@ partial class TestFailedTests
 	partial class FromException
 	{
 		[Fact]
-		public void CustomAssertionException()
+		public static void CustomAssertionException()
 		{
 			var ex = new MyAssertionException();
 
@@ -23,7 +23,7 @@ partial class TestFailedTests
 		{ }
 
 		[Fact]
-		public void CustomTimeoutException()
+		public static void CustomTimeoutException()
 		{
 			var ex = new MyTimeoutException();
 
@@ -39,7 +39,7 @@ partial class TestFailedTests
 		{ }
 
 		[Fact]
-		public void TimeoutExceptionTrumpsAssertionException()
+		public static void TimeoutExceptionTrumpsAssertionException()
 		{
 			var ex = new MyMultiException();
 

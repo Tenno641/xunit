@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class TestAssemblyRunnerContextTests
+public static class TestAssemblyRunnerContextTests
 {
-	public class CreateMessageBus
+	public static class CreateMessageBus
 	{
 		[Fact]
 		public static async ValueTask GuardClause()

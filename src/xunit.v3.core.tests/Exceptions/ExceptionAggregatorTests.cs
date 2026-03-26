@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.v3;
 
-public class ExceptionAggregatorTests
+public static class ExceptionAggregatorTests
 {
 	[Fact]
-	public void EmptyByDefault()
+	public static void EmptyByDefault()
 	{
 		var aggregator = new ExceptionAggregator();
 
@@ -12,7 +12,7 @@ public class ExceptionAggregatorTests
 	}
 
 	[Fact]
-	public void CanAddOneAggregatorToAnother()
+	public static void CanAddOneAggregatorToAnother()
 	{
 		var aggregator1 = new ExceptionAggregator();
 		aggregator1.Add(new DivideByZeroException());
@@ -31,7 +31,7 @@ public class ExceptionAggregatorTests
 	}
 
 	[Fact]
-	public void CapturesException()
+	public static void CapturesException()
 	{
 		var aggregator = new ExceptionAggregator();
 
@@ -42,7 +42,7 @@ public class ExceptionAggregatorTests
 	}
 
 	[Fact]
-	public async ValueTask CapturesExceptionAsync()
+	public static async ValueTask CapturesExceptionAsync()
 	{
 		var aggregator = new ExceptionAggregator();
 

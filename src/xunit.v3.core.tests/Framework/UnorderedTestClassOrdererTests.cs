@@ -2,7 +2,7 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class UnorderedTestClassOrdererTests
+public static class UnorderedTestClassOrdererTests
 {
 	static readonly ITestClass[] TestClasses =
 	[

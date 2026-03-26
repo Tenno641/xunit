@@ -6,7 +6,7 @@ using Xunit.v3;
 partial class MessageSinkMessageTests
 {
 	[Fact]
-	public void ValidatesAllDerivedTypesAreSupported()
+	public static void ValidatesAllDerivedTypesAreSupported()
 	{
 		var excludedTypes = new HashSet<Type> {
 			typeof(MessageSinkMessage),

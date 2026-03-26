@@ -1,7 +1,7 @@
 using Xunit;
 using Xunit.v3;
 
-public class TestCollectionFactoryBaseTests
+public static class TestCollectionFactoryBaseTests
 {
 	[Theory]
 	[InlineData(typeof(TestClassForByName), null, null, "foo", "ec41e871ca6761e15a5b062a4a39cf6a2f2c6e6e6cb5939681b917eca76a151f")]
@@ -23,7 +23,7 @@ public class TestCollectionFactoryBaseTests
 		"79e637cfea518b2fa38f43d3988bd7a1630308112c312f1ad357bcc0229c76bd"
 #endif
 	)]
-	public void Defaults(
+	public static void Defaults(
 		Type testClass,
 		Type? collectionDefinition,
 		string? testCollectionClassName,
@@ -54,7 +54,7 @@ public class TestCollectionFactoryBaseTests
 	class TestClassForByType { }
 
 	[Fact]
-	public void AcquiresBeforeAfterTestAttributesFromCollectionDefinition_AndMergesThemWithTheAssemblyAttributes()
+	public static void AcquiresBeforeAfterTestAttributesFromCollectionDefinition_AndMergesThemWithTheAssemblyAttributes()
 	{
 		var testAssembly = Mocks.XunitTestAssembly(beforeAfterTestAttributes: [new BeforeAfterTestAttribute1()]);
 		var factory = new TestableTestCollectionFactory(testAssembly);
@@ -78,7 +78,7 @@ public class TestCollectionFactoryBaseTests
 	public class BeforeAfterTestAttribute2 : BeforeAfterTestAttribute { }
 
 	[Fact]
-	public void AcquiresFixtureTypesFromCollectionDefinition()
+	public static void AcquiresFixtureTypesFromCollectionDefinition()
 	{
 		var testAssembly = Mocks.XunitTestAssembly();
 		var factory = new TestableTestCollectionFactory(testAssembly);
@@ -97,7 +97,7 @@ public class TestCollectionFactoryBaseTests
 	class TestClassForFixtures { }
 
 	[Fact]
-	public void ReadsCollectionDefinitionAttributeForParallelization()
+	public static void ReadsCollectionDefinitionAttributeForParallelization()
 	{
 		// Decorated definitions are read and cached by the test assembly
 		var definitions = new Dictionary<string, (Type, CollectionDefinitionAttribute)>

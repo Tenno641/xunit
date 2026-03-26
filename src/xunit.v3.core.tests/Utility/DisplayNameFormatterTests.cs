@@ -2,11 +2,11 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class DisplayNameFormatterTests
+public static class DisplayNameFormatterTests
 {
 	[Theory]
 	[MemberData(nameof(ClassAndMethodWithoutOptions))]
-	public void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithoutAnyOptions(
+	public static void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithoutAnyOptions(
 		string name,
 		string expected)
 	{
@@ -18,7 +18,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(MethodWithoutOptions))]
-	public void FormatShouldReturnExpectedDisplayNameFromMethodWithoutAnyOptions(
+	public static void FormatShouldReturnExpectedDisplayNameFromMethodWithoutAnyOptions(
 		string name,
 		string expected)
 	{
@@ -30,7 +30,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(ClassAndMethodWithAllOptions))]
-	public void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithAllOptions(
+	public static void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithAllOptions(
 		string name,
 		string expected)
 	{
@@ -42,7 +42,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(MethodWithAllOptions))]
-	public void FormatShouldReturnExpectedDisplayNameFromMethodWithAllOptions(
+	public static void FormatShouldReturnExpectedDisplayNameFromMethodWithAllOptions(
 		string name,
 		string expected)
 	{
@@ -54,7 +54,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(ClassAndMethodWithReplaceUnderscoreOption))]
-	public void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithSpacesInsteadOfUnderscores(
+	public static void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithSpacesInsteadOfUnderscores(
 		string name,
 		string expected)
 	{
@@ -66,7 +66,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(MethodWithReplaceUnderscoreOption))]
-	public void FormatShouldReturnExpectedDisplayNameFromMethodWithSpacesInsteadOfUnderscores(
+	public static void FormatShouldReturnExpectedDisplayNameFromMethodWithSpacesInsteadOfUnderscores(
 		string name,
 		string expected)
 	{
@@ -78,7 +78,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(ClassAndMethodWithReplaceUnderscoreAndOperatorOption))]
-	public void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithReplacedSpacesAndOperators(
+	public static void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithReplacedSpacesAndOperators(
 		string name,
 		string expected)
 	{
@@ -90,7 +90,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(MethodWithReplaceUnderscoreAndOperatorOption))]
-	public void FormatShouldReturnExpectedDisplayNameFromMethodWithReplacedSpacesAndOperators(
+	public static void FormatShouldReturnExpectedDisplayNameFromMethodWithReplacedSpacesAndOperators(
 		string name,
 		string expected)
 	{
@@ -102,7 +102,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(ClassAndMethodWithReplaceUnderscoreAndEscapeSequenceOption))]
-	public void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithReplacedSpacesAndEscapeSequences(
+	public static void FormatShouldReturnExpectedDisplayNameFromClassAndMethodWithReplacedSpacesAndEscapeSequences(
 		string name,
 		string expected)
 	{
@@ -114,7 +114,7 @@ public class DisplayNameFormatterTests
 
 	[Theory]
 	[MemberData(nameof(MethodWithReplaceUnderscoreAndEscapeSequenceOption))]
-	public void FormatShouldReturnExpectedDisplayNameFromMethodWithReplacedSpacesAndEscapeSequences(
+	public static void FormatShouldReturnExpectedDisplayNameFromMethodWithReplacedSpacesAndEscapeSequences(
 		string name,
 		string expected)
 	{

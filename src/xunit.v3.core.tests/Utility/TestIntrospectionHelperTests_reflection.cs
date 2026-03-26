@@ -3,7 +3,7 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class TestIntrospectionHelperTests
+public static class TestIntrospectionHelperTests
 {
 	// Simplified signature that auto-looks up the FactAttribute
 	static (

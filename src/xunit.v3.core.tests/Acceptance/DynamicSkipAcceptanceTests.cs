@@ -1,19 +1,21 @@
 using Xunit;
 
-public partial class DynamicSkipAcceptanceTests
+public static partial class DynamicSkipAcceptanceTests
 {
-	static readonly string Ellipsis = new string((char)0x00B7, 3);
+#if XUNIT_AOT
+	static readonly string Ellipsis = new((char)0x00B7, 3);
+#endif
 
 	public partial class Skip : AcceptanceTestV3
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			Assert.Throws<ArgumentNullException>("reason", () => Assert.Skip(null!));
 		}
 
 		[Fact]
-		public async Task AcceptanceTest()
+		public static async Task AcceptanceTest()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("DynamicSkipAcceptanceTests+Skip+ClassUnderTest");
@@ -30,13 +32,13 @@ public partial class DynamicSkipAcceptanceTests
 	public partial class SkipUnless : AcceptanceTestV3
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			Assert.Throws<ArgumentNullException>("reason", () => Assert.SkipUnless(true, null!));
 		}
 
 		[Fact]
-		public async Task AcceptanceTest()
+		public static async Task AcceptanceTest()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("DynamicSkipAcceptanceTests+SkipUnless+ClassUnderTest");
@@ -55,13 +57,13 @@ public partial class DynamicSkipAcceptanceTests
 	public partial class SkipWhen : AcceptanceTestV3
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			Assert.Throws<ArgumentNullException>("reason", () => Assert.SkipWhen(true, null!));
 		}
 
 		[Fact]
-		public async Task AcceptanceTest()
+		public static async Task AcceptanceTest()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("DynamicSkipAcceptanceTests+SkipWhen+ClassUnderTest");
@@ -80,7 +82,7 @@ public partial class DynamicSkipAcceptanceTests
 	public partial class SkipExceptions : AcceptanceTestV3
 	{
 		[Fact]
-		public async Task AcceptanceTest()
+		public static async Task AcceptanceTest()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("DynamicSkipAcceptanceTests+SkipExceptions+ClassUnderTest");

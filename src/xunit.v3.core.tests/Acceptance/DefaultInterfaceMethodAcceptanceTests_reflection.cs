@@ -7,7 +7,7 @@ using Xunit.Sdk;
 public class DefaultInterfaceMethodAcceptanceTests : AcceptanceTestV3
 {
 	[Fact]
-	public async ValueTask AcceptanceTest()
+	public static async ValueTask AcceptanceTest()
 	{
 		var results = await RunForResultsAsync(typeof(ClassUnderTest));
 

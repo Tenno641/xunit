@@ -2,12 +2,12 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public partial class TestFailedTests
+public static partial class TestFailedTests
 {
-	public class Cause
+	public static class Cause
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			var ex = Record.Exception(() => new TestFailed
 			{
@@ -35,10 +35,10 @@ public partial class TestFailedTests
 		}
 	}
 
-	public partial class FromException
+	public static partial class FromException
 	{
 		[Fact]
-		public void NonAssertionException()
+		public static void NonAssertionException()
 		{
 			var ex = new DivideByZeroException();
 
@@ -48,7 +48,7 @@ public partial class TestFailedTests
 		}
 
 		[Fact]
-		public void BuiltInAssertionException()
+		public static void BuiltInAssertionException()
 		{
 			var ex = EqualException.ForMismatchedValues("42", "2112");
 
@@ -58,7 +58,7 @@ public partial class TestFailedTests
 		}
 
 		[Fact]
-		public void BuiltInTimeoutException()
+		public static void BuiltInTimeoutException()
 		{
 			var ex = TestTimeoutException.ForTimedOutTest(2112);
 

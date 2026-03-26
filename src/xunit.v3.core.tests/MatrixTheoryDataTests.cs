@@ -4,7 +4,7 @@ using Xunit.Sdk;
 public partial class MatrixTheoryDataTests : AcceptanceTestV3
 {
 	[Fact]
-	public void GuardClauses()
+	public static void GuardClauses()
 	{
 		var nonEmptyData = new[] { new object() };
 
@@ -18,7 +18,7 @@ public partial class MatrixTheoryDataTests : AcceptanceTestV3
 	}
 
 	[Fact]
-	public async ValueTask InvokesTestsForDataMatrix()
+	public static async ValueTask InvokesTestsForDataMatrix()
 	{
 #if XUNIT_AOT
 		var messages = await RunAsync("MatrixTheoryDataTests+SampleUsage");

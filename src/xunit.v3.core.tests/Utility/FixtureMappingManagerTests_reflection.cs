@@ -6,7 +6,7 @@ partial class FixtureMappingManagerTests
 {
 	// Native AOT reports these in the generator
 	[Fact]
-	public async ValueTask MoreThanOneConstructorThrows()
+	public static async ValueTask MoreThanOneConstructorThrows()
 	{
 		var manager = new TestableFixtureMappingManager();
 

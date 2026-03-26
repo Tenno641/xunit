@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class XunitTestClassRunnerTests
+public static class XunitTestClassRunnerTests
 {
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
 		public static async ValueTask Passing()
@@ -338,7 +338,7 @@ public class XunitTestClassRunnerTests
 		}
 	}
 
-	public class Fixtures
+	public static class Fixtures
 	{
 		[Fact]
 		public static async ValueTask CreatesFixturesFromClassAndCollection()
@@ -627,7 +627,7 @@ public class XunitTestClassRunnerTests
 #pragma warning restore xUnit1041
 	}
 
-	public class Run
+	public static class Run
 	{
 		[Fact]
 		public static async ValueTask OrdererWithThrowingConstructor()

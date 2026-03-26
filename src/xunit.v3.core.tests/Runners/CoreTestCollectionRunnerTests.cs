@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class CoreTestCollectionRunnerTests
+public static class CoreTestCollectionRunnerTests
 {
-	public class Run
+	public static class Run
 	{
 		public static TheoryData<ICoreTestCollection> TestClassOrdererData = new()
 		{
@@ -54,7 +54,7 @@ public class CoreTestCollectionRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask ThrowingOrderer()
+		public static async ValueTask ThrowingOrderer()
 		{
 			var testCollection = Mocks.CoreTestCollection(testClassOrderer: new MyThrowingOrderer());
 			var testClass = Mocks.CoreTestClass(testCollection: testCollection);

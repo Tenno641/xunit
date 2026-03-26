@@ -2,8 +2,10 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class CoreTestAssemblyRunnerTests
+public static class CoreTestAssemblyRunnerTests
 {
+#pragma warning disable CA1822 // Tests in here depend on the constructor to hide diagnostic messages
+
 	[CollectionDefinition(DisableParallelization = true)]
 	[Collection(typeof(Run))]
 	public class Run
@@ -183,6 +185,8 @@ public class CoreTestAssemblyRunnerTests
 			Assert.Equal(secondPreSleep.Replace("pre-", "post-"), messages[3]);
 		}
 	}
+
+#pragma warning restore CA1822
 
 	class TestableCoreTestAssemblyRunner(
 		ICoreTestCase[] testCases,

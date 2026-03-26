@@ -4,7 +4,7 @@ using Xunit.v3;
 partial class TestRunnerBaseTests
 {
 	[Collection(typeof(SpyEventListener))]
-	public class EventSourceLogging
+	public static class EventSourceLogging
 	{
 		// Dynamic skip behavior doesn't exist at this low level, so we only test static skipping.
 		// It could be simulated with a custom context, but we test the actual behavior at layers above,
@@ -19,7 +19,7 @@ partial class TestRunnerBaseTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(EventSourceData))]
-		public async ValueTask LogsEvents(
+		public static async ValueTask LogsEvents(
 			Func<ValueTask<RunSummary>> runner,
 			string expectedResult)
 		{

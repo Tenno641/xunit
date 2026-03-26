@@ -3,10 +3,10 @@ using Xunit;
 partial class TestCaseRunnerBaseTests
 {
 	[Collection(typeof(SpyEventListener))]
-	public class EventSourceLogging
+	public static class EventSourceLogging
 	{
 		[Fact]
-		public async ValueTask LogsEvents()
+		public static async ValueTask LogsEvents()
 		{
 			var listener = new SpyEventListener();
 			var testCase = Mocks.TestCase();

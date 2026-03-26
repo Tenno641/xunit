@@ -4,7 +4,7 @@ partial class CulturedFactAttributeTests
 {
 	// Native AOT reports these in the generator
 	[Fact]
-	public async ValueTask NoCultures()
+	public static async ValueTask NoCultures()
 	{
 		var results = await RunForResultsAsync(typeof(TestClassWithNoCultures));
 

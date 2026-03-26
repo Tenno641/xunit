@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class XunitTestMethodRunnerTests
+public static class XunitTestMethodRunnerTests
 {
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
 		public static async ValueTask Passing()
@@ -230,7 +230,7 @@ public class XunitTestMethodRunnerTests
 		}
 	}
 
-	public class Run
+	public static class Run
 	{
 		[Fact]
 		public static async ValueTask OrdererWithThrowingConstructor()
@@ -279,10 +279,10 @@ public class XunitTestMethodRunnerTests
 		}
 	}
 
-	public class SelfExecution
+	public static class SelfExecution
 	{
 		[Fact]
-		public async ValueTask SupportsSelfExecutingTestCases()
+		public static async ValueTask SupportsSelfExecutingTestCases()
 		{
 			var testMethod = TestData.XunitTestMethod<ClassUnderTest>(nameof(ClassUnderTest.Passing));
 			var testCase = new SelfExecutingTestCase(testMethod);

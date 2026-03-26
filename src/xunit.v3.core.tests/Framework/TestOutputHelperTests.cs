@@ -2,7 +2,7 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class TestOutputHelperTests
+public static class TestOutputHelperTests
 {
 	public static IEnumerable<TheoryDataRow<string, string>> InvalidStrings_TestData =>
 	[
@@ -36,7 +36,7 @@ public class TestOutputHelperTests
 
 	[Theory]
 	[MemberData(nameof(InvalidStrings_TestData))]
-	public void WriteLine(
+	public static void WriteLine(
 		string outputText,
 		string expected)
 	{
@@ -77,7 +77,7 @@ public class TestOutputHelperTests
 	}
 
 	[Fact]
-	public void LinesAreBufferedBasedOnEnvironmentNewLine()
+	public static void LinesAreBufferedBasedOnEnvironmentNewLine()
 	{
 		var output = new TestOutputHelper();
 		var messageBus = new SpyMessageBus();

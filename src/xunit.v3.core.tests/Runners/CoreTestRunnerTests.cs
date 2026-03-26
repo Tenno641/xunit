@@ -2,12 +2,12 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class CoreTestRunnerTests
+public static class CoreTestRunnerTests
 {
-	public class Run
+	public static class Run
 	{
 		[Fact]
-		public async ValueTask StaticallySkipped()
+		public static async ValueTask StaticallySkipped()
 		{
 			var test = Mocks.CoreTest(testCase: Mocks.CoreTestCase(skipReason: "Don't run me"));
 			var runner = new TestableCoreTestRunner(test);
@@ -20,7 +20,7 @@ public class CoreTestRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask DynamicallySkipped_ViaMessageToken()
+		public static async ValueTask DynamicallySkipped_ViaMessageToken()
 		{
 			var runner = new TestableCoreTestRunner() { InvokeTest__Lambda = () => Assert.Skip("Don't run me") };
 
@@ -33,7 +33,7 @@ public class CoreTestRunnerTests
 
 		// The contract for Exception.Message is non-null, but some exceptions break the contract anyway
 		[Fact]
-		public async ValueTask DynamicallySkipped_ViaSkipException_NullMessage()
+		public static async ValueTask DynamicallySkipped_ViaSkipException_NullMessage()
 		{
 			var test = Mocks.CoreTest(testCase: Mocks.CoreTestCase(skipExceptions: [typeof(MySkipException)]));
 			var runner = new TestableCoreTestRunner(test) { InvokeTest__Lambda = () => throw new MySkipException(null) };
@@ -46,7 +46,7 @@ public class CoreTestRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask DynamicallySkipped_ViaSkipException_EmptyMessage()
+		public static async ValueTask DynamicallySkipped_ViaSkipException_EmptyMessage()
 		{
 			var test = Mocks.CoreTest(testCase: Mocks.CoreTestCase(skipExceptions: [typeof(MySkipException)]));
 			var runner = new TestableCoreTestRunner(test) { InvokeTest__Lambda = () => throw new MySkipException(string.Empty) };
@@ -59,7 +59,7 @@ public class CoreTestRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask DynamicallySkipped_ViaSkipException_NonEmptyMessage()
+		public static async ValueTask DynamicallySkipped_ViaSkipException_NonEmptyMessage()
 		{
 			var test = Mocks.CoreTest(testCase: Mocks.CoreTestCase(skipExceptions: [typeof(MySkipException)]));
 			var runner = new TestableCoreTestRunner(test) { InvokeTest__Lambda = () => throw new MySkipException("Don't run me") };
@@ -83,7 +83,7 @@ public class CoreTestRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask CallsBeforeAfterAttributes()
+		public static async ValueTask CallsBeforeAfterAttributes()
 		{
 			var attr = new SpyBeforeAfterAttribute();
 			var runner = new TestableCoreTestRunner(beforeAfterTestAttributes: [attr]);

@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Xunit;
 using Xunit.Sdk;
 
-public partial class Xunit3TheoryAcceptanceTests
+public static partial class Xunit3TheoryAcceptanceTests
 {
 	public partial class ClassDataTests : AcceptanceTestV3
 	{
@@ -88,12 +88,12 @@ public partial class Xunit3TheoryAcceptanceTests
 	{
 #if XUNIT_AOT
 		[Fact]
-		public async ValueTask ExplicitAcceptanceTest_ExplicitOff()
+		public static async ValueTask ExplicitAcceptanceTest_ExplicitOff()
 #else
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public async ValueTask ExplicitAcceptanceTest_ExplicitOff(bool preEnumerateTheories)
+		public static async ValueTask ExplicitAcceptanceTest_ExplicitOff(bool preEnumerateTheories)
 #endif
 		{
 #if XUNIT_AOT
@@ -126,12 +126,12 @@ public partial class Xunit3TheoryAcceptanceTests
 
 #if XUNIT_AOT
 		[Fact]
-		public async ValueTask ExplicitAcceptanceTest_ExplicitOn()
+		public static async ValueTask ExplicitAcceptanceTest_ExplicitOn()
 #else
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public async ValueTask ExplicitAcceptanceTest_ExplicitOn(bool preEnumerateTheories)
+		public static async ValueTask ExplicitAcceptanceTest_ExplicitOn(bool preEnumerateTheories)
 #endif
 		{
 #if XUNIT_AOT
@@ -164,12 +164,12 @@ public partial class Xunit3TheoryAcceptanceTests
 
 #if XUNIT_AOT
 		[Fact]
-		public async ValueTask ExplicitAcceptanceTest_ExplicitOnly()
+		public static async ValueTask ExplicitAcceptanceTest_ExplicitOnly()
 #else
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public async ValueTask ExplicitAcceptanceTest_ExplicitOnly(bool preEnumerateTheories)
+		public static async ValueTask ExplicitAcceptanceTest_ExplicitOnly(bool preEnumerateTheories)
 #endif
 		{
 #if XUNIT_AOT
@@ -204,12 +204,12 @@ public partial class Xunit3TheoryAcceptanceTests
 
 #if XUNIT_AOT
 		[Fact]
-		public async ValueTask LabelAcceptanceTests()
+		public static async ValueTask LabelAcceptanceTests()
 #else
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public async ValueTask LabelAcceptanceTests(bool preEnumerateTheories)
+		public static async ValueTask LabelAcceptanceTests(bool preEnumerateTheories)
 #endif
 		{
 #if XUNIT_AOT
@@ -239,12 +239,12 @@ public partial class Xunit3TheoryAcceptanceTests
 
 #if XUNIT_AOT
 		[Fact]
-		public async ValueTask SkipAcceptanceTest()
+		public static async ValueTask SkipAcceptanceTest()
 #else
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public async ValueTask SkipAcceptanceTest(bool preEnumerateTheories)
+		public static async ValueTask SkipAcceptanceTest(bool preEnumerateTheories)
 #endif
 		{
 #if XUNIT_AOT
@@ -301,12 +301,12 @@ public partial class Xunit3TheoryAcceptanceTests
 
 #if XUNIT_AOT
 		[Fact]
-		public async ValueTask TestDisplayNameAcceptanceTest()
+		public static async ValueTask TestDisplayNameAcceptanceTest()
 #else
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public async ValueTask TestDisplayNameAcceptanceTest(bool preEnumerateTheories)
+		public static async ValueTask TestDisplayNameAcceptanceTest(bool preEnumerateTheories)
 #endif
 		{
 #if XUNIT_AOT
@@ -330,12 +330,12 @@ public partial class Xunit3TheoryAcceptanceTests
 
 #if XUNIT_AOT
 		[Fact]
-		public async ValueTask TraitsAcceptanceTest()
+		public static async ValueTask TraitsAcceptanceTest()
 #else
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public async ValueTask TraitsAcceptanceTest(bool preEnumerateTheories)
+		public static async ValueTask TraitsAcceptanceTest(bool preEnumerateTheories)
 #endif
 		{
 #if XUNIT_AOT
@@ -369,19 +369,19 @@ public partial class Xunit3TheoryAcceptanceTests
 	}
 
 	[CollectionDefinition("Timeout Tests", DisableParallelization = true)]
-	public class TimeoutTestsCollection { }
+	public static class TimeoutTestsCollection { }
 
 	[Collection("Timeout Tests")]
 	public partial class DataAttributeTimeoutTests : AcceptanceTestV3
 	{
 #if XUNIT_AOT
 		[Fact(Skip = "Cannot run under a debugger", SkipWhen = nameof(Debugger.IsAttached), SkipType = typeof(Debugger))]
-		public async ValueTask TimeoutAcceptanceTest()
+		public static async ValueTask TimeoutAcceptanceTest()
 #else
 		[Theory(Skip = "Cannot run under a debugger", SkipWhen = nameof(Debugger.IsAttached), SkipType = typeof(Debugger))]
 		[InlineData(true)]
 		[InlineData(false)]
-		public async ValueTask TimeoutAcceptanceTest(bool preEnumerateTheories)
+		public static async ValueTask TimeoutAcceptanceTest(bool preEnumerateTheories)
 #endif
 		{
 			var stopwatch = Stopwatch.StartNew();
@@ -418,7 +418,7 @@ public partial class Xunit3TheoryAcceptanceTests
 	public partial class DataConversionTests : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask IncompatibleDataThrows()
+		public static async ValueTask IncompatibleDataThrows()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+DataConversionTests+ClassWithIncompatibleData");
@@ -438,7 +438,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ImplicitlyConvertibleDataPasses()
+		public static async ValueTask ImplicitlyConvertibleDataPasses()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+DataConversionTests+ClassWithImplicitlyConvertibleData");
@@ -451,7 +451,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask IConvertibleDataPasses()
+		public static async ValueTask IConvertibleDataPasses()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+DataConversionTests+ClassWithIConvertibleData");
@@ -471,7 +471,7 @@ public partial class Xunit3TheoryAcceptanceTests
 	public partial class ErrorAggregation : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask EachTheoryHasIndividualExceptionMessage()
+		public static async ValueTask EachTheoryHasIndividualExceptionMessage()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+ErrorAggregation+ClassUnderTest");
@@ -502,7 +502,7 @@ public partial class Xunit3TheoryAcceptanceTests
 	public partial class InlineDataTests : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask RunsForEachDataElement()
+		public static async ValueTask RunsForEachDataElement()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassUnderTest");
@@ -517,7 +517,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask SingleNullValuesWork()
+		public static async ValueTask SingleNullValuesWork()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassUnderTestForNullValues");
@@ -530,7 +530,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ArraysWork()
+		public static async ValueTask ArraysWork()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassUnderTestForArrays");
@@ -543,7 +543,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ValueArraysWithObjectParameterInjectCorrectType()
+		public static async ValueTask ValueArraysWithObjectParameterInjectCorrectType()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassUnderTestForValueArraysWithObjectParameter");
@@ -556,7 +556,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask AsyncTaskMethod_MultipleInlineDataAttributes()
+		public static async ValueTask AsyncTaskMethod_MultipleInlineDataAttributes()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassWithAsyncTaskMethod");
@@ -572,7 +572,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 	}
 
-	public class LabelTests
+	public static class LabelTests
 	{
 		[Theory(DisableDiscoveryEnumeration = false)]
 		[InlineData(null)]
@@ -611,7 +611,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		[InlineData("Xunit3TheoryAcceptanceTests+MemberDataTests+ClassUnderTest_TaskOfIEnumerable")]
 		[InlineData("Xunit3TheoryAcceptanceTests+MemberDataTests+ClassUnderTest_ValueTaskOfIAsyncEnumerable")]
 		[InlineData("Xunit3TheoryAcceptanceTests+MemberDataTests+ClassUnderTest_ValueTaskOfIEnumerable")]
-		public async ValueTask AcceptanceTest(string className)
+		public static async ValueTask AcceptanceTest(string className)
 #else
 		[InlineData(typeof(ClassUnderTest_IAsyncEnumerable))]
 		[InlineData(typeof(ClassUnderTest_IEnumerable))]
@@ -619,7 +619,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		[InlineData(typeof(ClassUnderTest_TaskOfIEnumerable))]
 		[InlineData(typeof(ClassUnderTest_ValueTaskOfIAsyncEnumerable))]
 		[InlineData(typeof(ClassUnderTest_ValueTaskOfIEnumerable))]
-		public async ValueTask AcceptanceTest(Type classUnderTest)
+		public static async ValueTask AcceptanceTest(Type classUnderTest)
 #endif
 		{
 #if XUNIT_AOT
@@ -671,7 +671,7 @@ public partial class Xunit3TheoryAcceptanceTests
 	public partial class MethodDataTests : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask NonMatchingMethodInputDataThrows()
+		public static async ValueTask NonMatchingMethodInputDataThrows()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+MethodDataTests+ClassWithMismatchedMethodData");
@@ -691,7 +691,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask SubTypeInheritsTestsFromBaseType()
+		public static async ValueTask SubTypeInheritsTestsFromBaseType()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+MethodDataTests+SubClassWithNoTests");
@@ -704,7 +704,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask CanPassParametersToDataMethod()
+		public static async ValueTask CanPassParametersToDataMethod()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+MethodDataTests+ClassWithParameterizedMethodData");
@@ -720,7 +720,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask CanDowncastMethodData()
+		public static async ValueTask CanDowncastMethodData()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunAsync("Xunit3TheoryAcceptanceTests+MethodDataTests+ClassWithDowncastedMethodData");
@@ -734,7 +734,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async Task OptionalParametersSupported()
+		public static async Task OptionalParametersSupported()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+MethodDataTests+ClassWithDataMethodsWithOptionalParameters");
@@ -748,7 +748,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async Task CanProvideAsyncData()
+		public static async Task CanProvideAsyncData()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+MethodDataTests+ClassWithAsyncDataSources");
@@ -771,7 +771,7 @@ public partial class Xunit3TheoryAcceptanceTests
 	public partial class TheoryTests : AcceptanceTestV3
 	{
 		[Fact]
-		public async ValueTask OptionalParameters_Valid()
+		public static async ValueTask OptionalParameters_Valid()
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+ClassWithOptionalParameters");
@@ -800,7 +800,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask Skipped()
+		public static async ValueTask Skipped()
 		{
 #if XUNIT_AOT
 			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+ClassWithSkips");
