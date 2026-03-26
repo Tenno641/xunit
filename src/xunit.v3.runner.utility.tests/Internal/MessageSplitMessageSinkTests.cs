@@ -2,7 +2,7 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class MessageSplitMessageSinkTests
+public static class MessageSplitMessageSinkTests
 {
 	public static IEnumerable<TheoryDataRow<IMessageSinkMessage>> DiagnosticMessageData =
 	[
@@ -12,7 +12,7 @@ public class MessageSplitMessageSinkTests
 
 	[Theory(DisableDiscoveryEnumeration = true)]
 	[MemberData(nameof(DiagnosticMessageData))]
-	public void DiagnosticMessages(IMessageSinkMessage message)
+	public static void DiagnosticMessages(IMessageSinkMessage message)
 	{
 		var spySink = SpyMessageSink.Capture();
 		var spyDiagnosticSink = SpyMessageSink.Capture();
@@ -32,7 +32,7 @@ public class MessageSplitMessageSinkTests
 
 	[Theory(DisableDiscoveryEnumeration = true)]
 	[MemberData(nameof(NonDiagnosticMessageData))]
-	public void NonDiagnosticMessages(IMessageSinkMessage message)
+	public static void NonDiagnosticMessages(IMessageSinkMessage message)
 	{
 		var spySink = SpyMessageSink.Capture();
 		var spyDiagnosticSink = SpyMessageSink.Capture();

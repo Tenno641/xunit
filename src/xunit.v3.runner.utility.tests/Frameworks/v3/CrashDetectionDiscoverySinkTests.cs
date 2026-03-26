@@ -3,7 +3,7 @@ using Xunit.Runner.Common;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class CrashDetectionDiscoverySinkTests
+public static class CrashDetectionDiscoverySinkTests
 {
 	static readonly string assemblyFileName;
 	static readonly XunitProjectAssembly projectAssembly;

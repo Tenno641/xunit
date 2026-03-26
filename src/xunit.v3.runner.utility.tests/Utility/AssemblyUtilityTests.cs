@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.Runner.Common;
 
-public class AssemblyUtilityTests
+public static class AssemblyUtilityTests
 {
 	[Fact]
-	public void GetAssemblyMetadata()
+	public static void GetAssemblyMetadata()
 	{
 #if XUNIT_AOT
 		var assemblyFileName = Path.Combine(AppContext.BaseDirectory, typeof(AssemblyUtilityTests).Assembly.GetName().Name + ".dll").FindTestAssembly();

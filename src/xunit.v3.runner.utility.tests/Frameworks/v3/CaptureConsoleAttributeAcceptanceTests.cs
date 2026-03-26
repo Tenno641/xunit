@@ -1,16 +1,13 @@
 #if NETFRAMEWORK
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class CaptureConsoleAttributeAcceptanceTests
+public static class CaptureConsoleAttributeAcceptanceTests
 {
 	[Fact]
-	public async ValueTask CaptureAvailableInConstructor()
+	public static async ValueTask CaptureAvailableInConstructor()
 	{
 		var code = /* lang=c#-test */ """
 			using System;

@@ -1,16 +1,13 @@
 #if NETFRAMEWORK
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class CaptureTraceAttributeAcceptanceTests
+public static class CaptureTraceAttributeAcceptanceTests
 {
 	[Fact]
-	public async ValueTask CaptureAvailableInConstructor()
+	public static async ValueTask CaptureAvailableInConstructor()
 	{
 		// We use Debug rather than Trace, because we're making a Debug build. Using Trace requires
 		// setting the TRACE symbol.

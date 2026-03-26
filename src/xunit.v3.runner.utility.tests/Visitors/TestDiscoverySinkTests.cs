@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.Runner.Common;
 
-public class TestDiscoverySinkTests
+public static class TestDiscoverySinkTests
 {
 	[Fact]
-	public void CollectsTestCases()
+	public static void CollectsTestCases()
 	{
 		var visitor = new TestDiscoverySink();
 		var testCase1 = TestData.TestCaseDiscovered();

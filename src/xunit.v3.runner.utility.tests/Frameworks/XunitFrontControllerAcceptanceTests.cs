@@ -2,7 +2,7 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class XunitFrontControllerAcceptanceTests
+public static class XunitFrontControllerAcceptanceTests
 {
 #if NETFRAMEWORK
 
@@ -10,10 +10,10 @@ public class XunitFrontControllerAcceptanceTests
 	public class CrashDetectionCollection { }
 
 	[Collection(typeof(CrashDetectionCollection))]
-	public class CrashDetection
+	public static class CrashDetection
 	{
 		[Fact]
-		public async ValueTask CrashingTestStillReportsCompletion()
+		public static async ValueTask CrashingTestStillReportsCompletion()
 		{
 			var code = /* lang=c#-test */ """
 				using System;
@@ -62,14 +62,14 @@ public class XunitFrontControllerAcceptanceTests
 
 #endif  // NETFRAMEWORK
 
-	public class SourceInformation
+	public static class SourceInformation
 	{
 #if NETFRAMEWORK
 
 		// v1 only supports back-filling source information via Cecil during discovery
 
 		[Fact]
-		public void Discovery_v1()
+		public static void Discovery_v1()
 		{
 			var assemblyFileName = Path.GetFullPath(Path.Combine(
 				typeof(XunitFrontControllerAcceptanceTests).Assembly.Location,
@@ -117,7 +117,7 @@ public class XunitFrontControllerAcceptanceTests
 		// v2 only supports back-filling source information via Cecil during discovery
 
 		[Fact]
-		public void Discovery_v2()
+		public static void Discovery_v2()
 		{
 			var assemblyFileName = Path.GetFullPath(Path.Combine(
 				typeof(XunitFrontControllerAcceptanceTests).Assembly.Location,
@@ -165,7 +165,7 @@ public class XunitFrontControllerAcceptanceTests
 #endif  // NETFRAMEWORK
 
 		[Fact]
-		public void v3_Fact()
+		public static void v3_Fact()
 		{
 #if XUNIT_AOT
 			var assemblyFileName = Path.Combine(AppContext.BaseDirectory, typeof(DiscoveryStartingCompleteMessageSinkTests).Assembly.GetName().Name + ".dll").FindTestAssembly();
@@ -262,7 +262,7 @@ public class XunitFrontControllerAcceptanceTests
 		}
 
 		[Fact]
-		public void v3_Theory()
+		public static void v3_Theory()
 		{
 #if XUNIT_AOT
 			var assemblyFileName = Path.Combine(AppContext.BaseDirectory, typeof(DiscoveryStartingCompleteMessageSinkTests).Assembly.GetName().Name + ".dll").FindTestAssembly();

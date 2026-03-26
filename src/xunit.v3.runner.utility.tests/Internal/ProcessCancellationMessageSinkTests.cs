@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.v3;
 
-public class ProcessCancellationMessageSinkTests
+public static class ProcessCancellationMessageSinkTests
 {
 	[Fact]
-	public void True_NoCancellation()
+	public static void True_NoCancellation()
 	{
 		var callCounter = 0;
 		var process = new SpyTestProcessBase { OnCancel = _ => callCounter++ };
@@ -17,7 +17,7 @@ public class ProcessCancellationMessageSinkTests
 	}
 
 	[Fact]
-	public void False_Cancellation()
+	public static void False_Cancellation()
 	{
 		var callCounter = 0;
 		var process = new SpyTestProcessBase { OnCancel = _ => callCounter++ };

@@ -6,7 +6,7 @@ using Xunit.Sdk;
 using System.Reflection;
 #endif
 
-public class ConfigReaderTests
+public static class ConfigReaderTests
 {
 	static readonly string AssemblyFileName;
 	static readonly string AssemblyPath;

@@ -1,14 +1,12 @@
 #if NETFRAMEWORK
 
-using System;
-using System.Collections.Generic;
 using Xunit;
 using Xunit.Runner.v1;
 using Xunit.Sdk;
 
-public class Xunit1TestCaseTests
+public static class Xunit1TestCaseTests
 {
-	public class Serialization
+	public static class Serialization
 	{
 		[Fact]
 		public static void CanRoundTrip_PublicClass_PublicTestMethod()
@@ -68,7 +66,7 @@ public class Xunit1TestCaseTests
 		}
 
 		[Fact]
-		void PrivateTestMethod() { }
+		static void PrivateTestMethod() { }
 
 		class PrivateClass
 		{
@@ -80,22 +78,10 @@ public class Xunit1TestCaseTests
 		}
 	}
 
-	public class Traits
+	public static class Traits
 	{
-		//[Fact]
-		//public void TraitNamesAreCaseInsensitive_AddedAfter()
-		//{
-		//	var testCase = Create(typeof(Traits), "TraitNamesAreCaseInsensitive_AddedAfter");
-		//	testCase.Traits.Add("FOO", new List<string> { "BAR" });
-
-		//	var fooTraitValues = testCase.Traits["foo"];
-
-		//	var fooTraitValue = Assert.Single(fooTraitValues);
-		//	Assert.Equal("BAR", fooTraitValue);
-		//}
-
 		[Fact]
-		public void TraitNamesAreCaseInsensitive_PreSeeded()
+		public static void TraitNamesAreCaseInsensitive_PreSeeded()
 		{
 			var traits = new Dictionary<string, IReadOnlyCollection<string>> { { "FOO", new List<string> { "BAR" } } };
 			var testCase = Create(typeof(Traits), "TraitNamesAreCaseInsensitive_PreSeeded", traits: traits);

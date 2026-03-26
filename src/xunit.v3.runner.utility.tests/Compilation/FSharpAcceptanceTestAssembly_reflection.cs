@@ -1,11 +1,5 @@
 #if NETFRAMEWORK
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using FSharp.Compiler.CodeAnalysis;
 using Microsoft.FSharp.Control;
 using Microsoft.FSharp.Core;

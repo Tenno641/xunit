@@ -1,20 +1,14 @@
 #if NETFRAMEWORK
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Web.UI;
 using NSubstitute;
 using Xunit;
-using Xunit.Internal;
 using Xunit.Runner.Common;
 using Xunit.Runner.v1;
 using Xunit.Sdk;
 
-public class Xunit1Tests
+public static class Xunit1Tests
 {
 	static readonly string OsSpecificAssemblyPath;
 
@@ -26,10 +20,10 @@ public class Xunit1Tests
 			OsSpecificAssemblyPath = "/home/bradwilson/assembly.dll";
 	}
 
-	public class Constructor
+	public static class Constructor
 	{
 		[Fact]
-		public void UsesConstructorArgumentsToCreateExecutor()
+		public static void UsesConstructorArgumentsToCreateExecutor()
 		{
 			var folder = Path.GetDirectoryName(OsSpecificAssemblyPath);
 
@@ -42,10 +36,10 @@ public class Xunit1Tests
 		}
 	}
 
-	public class DisposeAsync
+	public static class DisposeAsync
 	{
 		[Fact]
-		public async ValueTask DisposesExecutor()
+		public static async ValueTask DisposesExecutor()
 		{
 			var xunit1 = new TestableXunit1();
 			_ = xunit1.TestFrameworkDisplayName;  // Ensure the executor gets created
@@ -56,10 +50,10 @@ public class Xunit1Tests
 		}
 	}
 
-	public class TestFrameworkDisplayName
+	public static class TestFrameworkDisplayName
 	{
 		[Fact]
-		public void ReturnsDisplayNameFromExecutor()
+		public static void ReturnsDisplayNameFromExecutor()
 		{
 			var xunit1 = new TestableXunit1();
 			xunit1.Executor.TestFrameworkDisplayName.Returns("Test Framework Display Name");
@@ -70,10 +64,10 @@ public class Xunit1Tests
 		}
 	}
 
-	public class Find
+	public static class Find
 	{
 		[Fact]
-		public void FindWithoutFilterReturnsAllTestMethodsFromExecutorXml()
+		public static void FindWithoutFilterReturnsAllTestMethodsFromExecutorXml()
 		{
 			var xml = @"
 <assembly>
@@ -169,7 +163,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void FindWithFilterOnlyReturnsFilteredTestCases()
+		public static void FindWithFilterOnlyReturnsFilteredTestCases()
 		{
 			var xml = @"
 <assembly>
@@ -202,7 +196,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void TestCasesUseInformationFromSourceInformationProvider()
+		public static void TestCasesUseInformationFromSourceInformationProvider()
 		{
 			var xml = @"
 <assembly>
@@ -233,7 +227,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void IncludesSerializationOfTestCase()
+		public static void IncludesSerializationOfTestCase()
 		{
 			var xml = @"
 <assembly>
@@ -261,7 +255,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void DiscoveryIncludesStartMessage()
+		public static void DiscoveryIncludesStartMessage()
 		{
 			var xml = @"<assembly />";
 
@@ -279,12 +273,12 @@ public class Xunit1Tests
 		}
 	}
 
-	public class Run
+	public static class Run
 	{
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
-		public void RunWithTestCases(bool serializeTestCases)
+		public static void RunWithTestCases(bool serializeTestCases)
 		{
 			var testCases = new[] {
 				CreateTestCase("assembly.dll", "config", "type1", "passing", "type1.passing"),
@@ -650,7 +644,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void MarkAllAsNotRun()  // Identical to RunWithTestCases() above, except everything is marked as not-run
+		public static void MarkAllAsNotRun()  // Identical to RunWithTestCases() above, except everything is marked as not-run
 		{
 			var testCases = new[] {
 				CreateTestCase("assembly.dll", "config", "type1", "passing", "type1.passing"),
@@ -833,7 +827,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void ExceptionThrownDuringRunTests_ResultsInErrorMessage()
+		public static void ExceptionThrownDuringRunTests_ResultsInErrorMessage()
 		{
 			var xunit1 = new TestableXunit1("AssemblyName.dll", "ConfigFile.config");
 			var testCases = new[] { CreateTestCase("assembly", "config", "type1", "passing", "type1.passing") };
@@ -858,7 +852,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void NestedExceptionsThrownDuringRunTests_ResultsInErrorMessage()
+		public static void NestedExceptionsThrownDuringRunTests_ResultsInErrorMessage()
 		{
 			var xunit1 = new TestableXunit1("AssemblyName.dll", "ConfigFile.config");
 			var testCases = new[] { CreateTestCase("assembly", "config", "type1", "passing", "type1.passing") };
@@ -887,7 +881,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void NestedExceptionResultFromTests_ResultsInErrorMessage()
+		public static void NestedExceptionResultFromTests_ResultsInErrorMessage()
 		{
 			var xunit1 = new TestableXunit1("AssemblyName.dll", "ConfigFile.config");
 			var testCases = new[] { CreateTestCase("assembly", "config", "type1", "failing", "type1.failing") };
@@ -922,7 +916,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void ExceptionThrownDuringClassStart_ResultsInErrorMessage()
+		public static void ExceptionThrownDuringClassStart_ResultsInErrorMessage()
 		{
 			var xunit1 = new TestableXunit1("AssemblyName.dll", "ConfigFile.config");
 			var testCases = new[] { CreateTestCase("assembly", "config", "type1", "failingclass", "type1.failingclass") };
@@ -957,7 +951,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void ExceptionThrownDuringClassFinish_ResultsInErrorMessage()
+		public static void ExceptionThrownDuringClassFinish_ResultsInErrorMessage()
 		{
 			var xunit1 = new TestableXunit1("AssemblyName.dll", "ConfigFile.config");
 			var testCases = new[] { CreateTestCase("assembly", "config", "failingtype", "passingmethod", "failingtype.passingmethod") };
@@ -994,7 +988,7 @@ public class Xunit1Tests
 		}
 
 		[Fact]
-		public void NestedExceptionsThrownDuringClassStart_ResultsInErrorMessage()
+		public static void NestedExceptionsThrownDuringClassStart_ResultsInErrorMessage()
 		{
 			var xunit1 = new TestableXunit1("AssemblyName.dll", "ConfigFile.config");
 			var testCases = new[] { CreateTestCase("assembly", "config", "failingtype", "passingmethod", "failingtype.passingmethod") };
@@ -1028,7 +1022,7 @@ public class Xunit1Tests
 			Assert.Equal(exception.InnerException.StackTrace, errorMessage.StackTraces[1], ignoreLineEndingDifferences: true);
 		}
 
-		Exception GetNestedExceptions()
+		static Exception GetNestedExceptions()
 		{
 			try
 			{
@@ -1041,7 +1035,7 @@ public class Xunit1Tests
 			}
 		}
 
-		void ThrowOuterException()
+		static void ThrowOuterException()
 		{
 			try
 			{
@@ -1053,7 +1047,7 @@ public class Xunit1Tests
 			}
 		}
 
-		void ThrowInnerException()
+		static void ThrowInnerException()
 		{
 			throw new DivideByZeroException();
 		}
@@ -1104,10 +1098,10 @@ public class Xunit1Tests
 		}
 	}
 
-	public class AcceptanceTests
+	public static class AcceptanceTests
 	{
 		[Fact]
-		public async ValueTask AmbiguouslyNamedTestMethods_StillReturnAllMessages()
+		public static async ValueTask AmbiguouslyNamedTestMethods_StillReturnAllMessages()
 		{
 			var code = @"
 using Xunit;

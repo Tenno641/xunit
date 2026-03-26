@@ -1,11 +1,5 @@
 #if NETFRAMEWORK
 
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit.Internal;
-
 public class FSharpAcceptanceTestV3Assembly(string? basePath = null) :
 	FSharpAcceptanceTestAssembly(basePath)
 {
