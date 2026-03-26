@@ -19,7 +19,6 @@ namespace Xunit.MicrosoftTestingPlatform;
 /// <param name="outputDevice">The output device to write messages to</param>
 /// <param name="showLiveOutput">A flag to indicate whether live output should be shown</param>
 /// <param name="serverMode">A flag to indicate if we're running in server mode (inside Test Explorer)</param>
-/// <param name="cancellationToken">The cancellation token provided by MTP</param>
 /// <remarks>
 /// This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
 /// Use this class at your own risk, as breaking changes may occur as needed.
@@ -32,8 +31,7 @@ public class TestPlatformExecutionMessageSink(
 	XunitTrxCapability trxCapability,
 	IOutputDevice outputDevice,
 	bool showLiveOutput,
-	bool serverMode,
-	CancellationToken cancellationToken) :
+	bool serverMode) :
 		OutputDeviceDataProducerBase("execution message sink", "fa7e6681-c892-4741-9980-724bd818f1f1"), IMessageSink, IDataProducer
 {
 	readonly MessageMetadataCache metadataCache = new();
@@ -78,8 +76,7 @@ public class TestPlatformExecutionMessageSink(
 			message.DispatchWhen<ITestSkipped>(args => SendTestNodeUpdate(args.Message)) &&
 			message.DispatchWhen<ITestStarting>(args => OnTestStarting(args.Message)) &&
 			message.DispatchWhen<ITestOutput>(args => OnLiveOutput(args.Message)) &&
-			result &&
-			!cancellationToken.IsCancellationRequested;
+			result;
 	}
 
 	void OnLiveOutput(ITestOutput testOutput)
@@ -89,7 +86,19 @@ public class TestPlatformExecutionMessageSink(
 
 		var testMetadata = metadataCache.TryGetTestMetadata(testOutput);
 
-		outputDevice.DisplayAsync(this, ToMessageWithColor(string.Format(CultureInfo.CurrentCulture, "OUTPUT: [{0}] {1}", testMetadata?.TestDisplayName ?? "<unknown test>", testOutput.Output.TrimEnd()), ConsoleColor.DarkGray)).SpinWait();
+		outputDevice.DisplayAsync(
+			this,
+			ToMessageWithColor(
+				string.Format(
+					CultureInfo.CurrentCulture,
+					"OUTPUT: [{0}] {1}",
+					testMetadata?.TestDisplayName ?? "<unknown test>",
+					testOutput.Output.TrimEnd()
+				),
+				ConsoleColor.DarkGray
+			),
+			TestContext.Current.CancellationToken
+		).SpinWait();
 	}
 
 	void OnTestAssemblyCleanupFailure(ITestAssemblyCleanupFailure failure)
@@ -155,20 +164,59 @@ public class TestPlatformExecutionMessageSink(
 								File.WriteAllBytes(localFilePath, byteArray);
 							}
 							else
-								outputDevice.DisplayAsync(this, ToMessageWithColor(string.Format(CultureInfo.CurrentCulture, "[{0}] Unknown test attachment type '{1}' for attachment '{2}'", testNode.DisplayName, attachmentType, kvp.Key), ConsoleColor.Yellow)).SpinWait();
+								outputDevice.DisplayAsync(
+									this,
+									ToMessageWithColor(
+										string.Format(
+											CultureInfo.CurrentCulture,
+											"[{0}] Unknown test attachment type '{1}' for attachment '{2}'",
+											testNode.DisplayName,
+											attachmentType,
+											kvp.Key
+										),
+										ConsoleColor.Yellow
+									),
+									TestContext.Current.CancellationToken
+								).SpinWait();
 
 							if (localFilePath is not null)
 								testNode.Properties.Add(new FileArtifactProperty(new FileInfo(localFilePath), kvp.Key));
 						}
 						catch (Exception ex)
 						{
-							outputDevice.DisplayAsync(this, ToMessageWithColor(string.Format(CultureInfo.CurrentCulture, "[{0}] Exception while adding attachment '{1}' in '{2}': {3}", testNode.DisplayName, kvp.Key, localFilePath, ex), ConsoleColor.Yellow)).SpinWait();
+							outputDevice.DisplayAsync(
+								this,
+								ToMessageWithColor(
+									string.Format(
+										CultureInfo.CurrentCulture,
+										"[{0}] Exception while adding attachment '{1}' in '{2}': {3}",
+										testNode.DisplayName,
+										kvp.Key,
+										localFilePath,
+										ex
+									),
+									ConsoleColor.Yellow
+								),
+								TestContext.Current.CancellationToken
+							).SpinWait();
 						}
 					}
 				}
 				catch (Exception ex)
 				{
-					outputDevice.DisplayAsync(this, ToMessageWithColor(string.Format(CultureInfo.CurrentCulture, "[{0}] Exception while adding attachments: {1}", testNode.DisplayName, ex), ConsoleColor.Yellow)).SpinWait();
+					outputDevice.DisplayAsync(
+						this,
+						ToMessageWithColor(
+							string.Format(
+								CultureInfo.CurrentCulture,
+								"[{0}] Exception while adding attachments: {1}",
+								testNode.DisplayName,
+								ex
+							),
+							ConsoleColor.Yellow
+						),
+						TestContext.Current.CancellationToken
+					).SpinWait();
 				}
 
 			testNode.SendUpdate(this, sessionUid, testNodeMessageBus);
@@ -257,7 +305,19 @@ public class TestPlatformExecutionMessageSink(
 
 			if (testResult.Warnings is not null)
 				foreach (var warning in testResult.Warnings)
-					outputDevice.DisplayAsync(this, ToMessageWithColor(string.Format(CultureInfo.CurrentCulture, "WARNING: [{0}] {1}", testStarting.TestDisplayName, warning), ConsoleColor.Yellow)).SpinWait();
+					outputDevice.DisplayAsync(
+						this,
+						ToMessageWithColor(
+							string.Format(
+								CultureInfo.CurrentCulture,
+								"WARNING: [{0}] {1}",
+								testStarting.TestDisplayName,
+								warning
+							),
+							ConsoleColor.Yellow
+						),
+						TestContext.Current.CancellationToken
+					).SpinWait();
 		}
 
 		var testAssemblyMetadata = metadataCache.TryGetAssemblyMetadata(testMessage);
