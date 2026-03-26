@@ -4,7 +4,7 @@ using Xunit.Sdk;
 public partial class CulturedTheoryAttributeTests : AcceptanceTestV3
 {
 	[Fact]
-	public async ValueTask SingleCulture()
+	public static async ValueTask SingleCulture()
 	{
 #if XUNIT_AOT
 		var results = await RunForResultsAsync("CulturedTheoryAttributeTests+TestClassWithSingleCulture");
@@ -18,7 +18,7 @@ public partial class CulturedTheoryAttributeTests : AcceptanceTestV3
 	}
 
 	[Fact]
-	public async ValueTask IndexedSingleCulture()
+	public static async ValueTask IndexedSingleCulture()
 	{
 #if XUNIT_AOT
 		var results = await RunForResultsAsync("CulturedTheoryAttributeTests+IndexedTestClassWithSingleCulture");
@@ -32,7 +32,7 @@ public partial class CulturedTheoryAttributeTests : AcceptanceTestV3
 	}
 
 	[Fact]
-	public async ValueTask MultipleCultures()
+	public static async ValueTask MultipleCultures()
 	{
 #if XUNIT_AOT
 		var results = await RunForResultsAsync("CulturedTheoryAttributeTests+TestClassWithMultipleCultures");
@@ -61,7 +61,7 @@ public partial class CulturedTheoryAttributeTests : AcceptanceTestV3
 	}
 
 	[Fact]
-	public async ValueTask IndexedMultipleCultures()
+	public static async ValueTask IndexedMultipleCultures()
 	{
 #if XUNIT_AOT
 		var results = await RunForResultsAsync("CulturedTheoryAttributeTests+IndexedTestClassWithMultipleCultures");
