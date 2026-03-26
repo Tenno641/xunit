@@ -6,7 +6,7 @@ using Xunit.Sdk;
 
 [Collection(typeof(CleanEnvironmentAttribute))]
 [CleanEnvironment("COMPUTERNAME", "HOSTNAME", "NAME", "HOST", "USERNAME", "LOGNAME", "USER")]
-public class TrxResultWriterMessageHandlerTests
+public static class TrxResultWriterMessageHandlerTests
 {
 	static readonly XNamespace ns = XNamespace.Get("http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
 
@@ -111,7 +111,7 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestPassed()
+	public static async ValueTask TestPassed()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 0, testsNotRun: 0, testsSkipped: 0, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -140,7 +140,7 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestFailed()
+	public static async ValueTask TestFailed()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 1, testsNotRun: 0, testsSkipped: 0, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -185,7 +185,7 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestFailed_NullStackTrace()
+	public static async ValueTask TestFailed_NullStackTrace()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 1, testsNotRun: 0, testsSkipped: 0, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -223,7 +223,7 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestSkipped()
+	public static async ValueTask TestSkipped()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 0, testsNotRun: 0, testsSkipped: 1, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -258,7 +258,7 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestNotRun()
+	public static async ValueTask TestNotRun()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 0, testsNotRun: 1, testsSkipped: 0, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -288,7 +288,7 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestResult_EmptyOutput()
+	public static async ValueTask TestResult_EmptyOutput()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -317,7 +317,7 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestResult_OutputIsSplitOnCRLFs()
+	public static async ValueTask TestResult_OutputIsSplitOnCRLFs()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -351,7 +351,7 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestResult_WithAttachments()
+	public static async ValueTask TestResult_WithAttachments()
 	{
 		var attachments = new Dictionary<string, TestAttachment>
 		{

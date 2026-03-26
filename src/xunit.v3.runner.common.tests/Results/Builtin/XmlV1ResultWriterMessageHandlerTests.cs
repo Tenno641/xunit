@@ -4,10 +4,10 @@ using System.Xml.XPath;
 using Xunit;
 using Xunit.Runner.Common;
 
-public class XmlV1ResultWriterMessageHandlerTests
+public static class XmlV1ResultWriterMessageHandlerTests
 {
 	[Fact]
-	public async ValueTask AssemblyStarting()
+	public static async ValueTask AssemblyStarting()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting(
 			assemblyPath: "/path/to/assembly.dll",
@@ -30,7 +30,7 @@ public class XmlV1ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask AssemblyStartingDoesNotIncludeOptionalValue()
+	public static async ValueTask AssemblyStartingDoesNotIncludeOptionalValue()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting(assemblyPath: "/path/to/assembly.dll", configFilePath: null);
 		await using var handler = TestableXmlV1ResultWriterMessageHandler.Create();
@@ -90,7 +90,7 @@ public class XmlV1ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestPassed()
+	public static async ValueTask TestPassed()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -124,7 +124,7 @@ public class XmlV1ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestFailed()
+	public static async ValueTask TestFailed()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -166,7 +166,7 @@ public class XmlV1ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestFailed_NullStackTrace()
+	public static async ValueTask TestFailed_NullStackTrace()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -201,7 +201,7 @@ public class XmlV1ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestSkipped()
+	public static async ValueTask TestSkipped()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -236,7 +236,7 @@ public class XmlV1ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestResult_WithTraits()
+	public static async ValueTask TestResult_WithTraits()
 	{
 		var traits = new Dictionary<string, IReadOnlyCollection<string>>
 		{
@@ -290,7 +290,7 @@ public class XmlV1ResultWriterMessageHandlerTests
 
 	[Theory]
 	[MemberData(nameof(IllegalXmlTestData))]
-	public async ValueTask TestResult_WithIllegalStringValue(
+	public static async ValueTask TestResult_WithIllegalStringValue(
 		string inputName,
 		string outputName)
 	{

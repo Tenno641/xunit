@@ -5,7 +5,7 @@ using Xunit.Sdk;
 
 [Collection(typeof(CleanEnvironmentAttribute))]
 [CleanEnvironment("COMPUTERNAME", "HOSTNAME", "NAME", "HOST", "USERNAME", "LOGNAME", "USER")]
-public class CtrfResultWriterMessageHandlerTests
+public static class CtrfResultWriterMessageHandlerTests
 {
 	static readonly string CurrentOsPlatform;
 
@@ -76,7 +76,7 @@ public class CtrfResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask CoreDataDoesNotIncludeOptionalValues()
+	public static async ValueTask CoreDataDoesNotIncludeOptionalValues()
 	{
 		await using var handler = TestableCtrfResultWriterMessageHandler.Create();
 
@@ -92,7 +92,7 @@ public class CtrfResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestAssemblies()
+	public static async ValueTask TestAssemblies()
 	{
 		var assembly1Starting = TestData.TestAssemblyStarting(assemblyUniqueID: "asm1", assemblyPath: "asm1.dll");
 		var assembly2Starting = TestData.TestAssemblyStarting(assemblyUniqueID: "asm2", assemblyPath: "asm2.dll", startTime: TestData.DefaultStartTime.AddSeconds(1));
@@ -140,7 +140,7 @@ public class CtrfResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestPassed()
+	public static async ValueTask TestPassed()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var collectionStarting = TestData.TestCollectionStarting();
@@ -180,7 +180,7 @@ public class CtrfResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestFailed()
+	public static async ValueTask TestFailed()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var collectionStarting = TestData.TestCollectionStarting();
@@ -220,7 +220,7 @@ public class CtrfResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestSkipped()
+	public static async ValueTask TestSkipped()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var collectionStarting = TestData.TestCollectionStarting();
@@ -260,7 +260,7 @@ public class CtrfResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestNotRun()
+	public static async ValueTask TestNotRun()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var collectionStarting = TestData.TestCollectionStarting();

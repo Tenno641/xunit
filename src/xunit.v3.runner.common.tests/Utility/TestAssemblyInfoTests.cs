@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.Runner.Common;
 
-public class TestAssemblyInfoTests
+public static class TestAssemblyInfoTests
 {
 	[Fact]
-	public void CanRoundTripSerialize()
+	public static void CanRoundTripSerialize()
 	{
 		var expected = new TestAssemblyInfo(new Version(1, 2, 3), "core-framework-informational", "target-framework", "test-framework");
 

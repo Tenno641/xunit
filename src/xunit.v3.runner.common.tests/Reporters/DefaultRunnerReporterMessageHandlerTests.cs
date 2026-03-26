@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class DefaultRunnerReporterMessageHandlerTests
+public static class DefaultRunnerReporterMessageHandlerTests
 {
-	public class FailureMessages
+	public static class FailureMessages
 	{
 		internal static readonly int[] exceptionParentIndices = [-1];
 		internal static readonly string[] exceptionTypes = ["ExceptionType"];
@@ -12,7 +12,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		internal static readonly string[] stackTraces = [$"Line 1{Environment.NewLine}at SomeClass.SomeMethod() in SomeFolder\\SomeClass.cs:line 18{Environment.NewLine}Line 3"];
 
 		[Fact]
-		public void ErrorMessage()
+		public static void ErrorMessage()
 		{
 			var errorMessage = new ErrorMessage
 			{
@@ -30,7 +30,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestAssemblyCleanupFailure()
+		public static void TestAssemblyCleanupFailure()
 		{
 			var assemblyStarting = TestData.TestAssemblyStarting(assemblyPath: @"C:\Foo\bar.dll");
 			var assemblyCleanupFailure = TestData.TestAssemblyCleanupFailure(
@@ -48,7 +48,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestCaseCleanupFailure()
+		public static void TestCaseCleanupFailure()
 		{
 			var caseStarting = TestData.TestCaseStarting(testCaseDisplayName: "MyTestCase");
 			var caseCleanupFailure = TestData.TestCaseCleanupFailure(
@@ -66,7 +66,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestClassCleanupFailure()
+		public static void TestClassCleanupFailure()
 		{
 			var classStarting = TestData.TestClassStarting(testClassName: "MyType");
 			var classCleanupFailure = TestData.TestClassCleanupFailure(
@@ -84,7 +84,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestCleanupFailure()
+		public static void TestCleanupFailure()
 		{
 			var testStarting = TestData.TestStarting(testDisplayName: "MyTest");
 			var testCleanupFailure = TestData.TestCleanupFailure(
@@ -102,7 +102,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestCollectionCleanupFailure()
+		public static void TestCollectionCleanupFailure()
 		{
 			var collectionStarting = TestData.TestCollectionStarting(testCollectionDisplayName: "FooBar");
 			var collectionCleanupFailure = TestData.TestCollectionCleanupFailure(
@@ -120,7 +120,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestMethodCleanupFailure()
+		public static void TestMethodCleanupFailure()
 		{
 			var methodStarting = TestData.TestMethodStarting(methodName: "MyMethod");
 			var methodCleanupFailure = TestData.TestMethodCleanupFailure(
@@ -156,7 +156,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestAssemblyDiscoveryFinished
+	public static class OnMessage_TestAssemblyDiscoveryFinished
 	{
 		[Theory]
 		[InlineData(false, 0, "[Imp] =>   Discovered:  test-assembly")]
@@ -178,7 +178,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestAssemblyDiscoveryStarting
+	public static class OnMessage_TestAssemblyDiscoveryStarting
 	{
 		[Theory]
 		// If diagnostics messages are off, then it doesn't matter what app domain options we pass
@@ -206,7 +206,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestAssemblyExecutionFinished
+	public static class OnMessage_TestAssemblyExecutionFinished
 	{
 		[Fact]
 		public static void LogsMessage_V3()
@@ -235,7 +235,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestAssemblyExecutionStarting
+	public static class OnMessage_TestAssemblyExecutionStarting
 	{
 		[Theory]
 		[InlineData(false, null, null, null, null, null, null, "[Imp] =>   Starting:    test-assembly")]
@@ -278,10 +278,10 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_ITestExecutionSummary
+	public static class OnMessage_ITestExecutionSummary
 	{
 		[CulturedFact(["en-US", "fr-FR"])]
-		public void SingleAssembly()
+		public static void SingleAssembly()
 		{
 			var clockTime = TimeSpan.FromSeconds(12.3456);
 			var summary = new ExecutionSummary { Total = 2112, Errors = 6, Failed = 42, Skipped = 8, NotRun = 3, Time = 1.2345M };
@@ -299,7 +299,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 
 		[CulturedFact(["en-US", "fr-FR"])]
-		public void MultipleAssemblies()
+		public static void MultipleAssemblies()
 		{
 			var clockTime = TimeSpan.FromSeconds(12.3456);
 			var @short = new ExecutionSummary { Total = 2112, Errors = 6, Failed = 42, Skipped = 8, NotRun = 3, Time = 1.2345M };
@@ -328,7 +328,8 @@ public class DefaultRunnerReporterMessageHandlerTests
 	}
 
 #if NETCOREAPP  // Stack frame parsing appears to be broken outside of en-US culture on .NET Framework
-	public class OnMessage_TestFailed : DefaultRunnerReporterMessageHandlerTests
+
+	public class OnMessage_TestFailed
 	{
 		readonly ITestFailed failedMessage = TestData.TestFailed(
 			exceptionParentIndices: FailureMessages.exceptionParentIndices,
@@ -367,7 +368,8 @@ public class DefaultRunnerReporterMessageHandlerTests
 			);
 		}
 	}
-#endif
+
+#endif  // NETCOREAPP
 
 	public class OnMessage_TestOutput
 	{
@@ -487,7 +489,7 @@ public class DefaultRunnerReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestSkipped
+	public static class OnMessage_TestSkipped
 	{
 		[Theory]
 		[InlineData("\r\n")]

@@ -2,7 +2,9 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
+#pragma warning disable CA1052  // This class is used as a type argument
 public class XunitProjectAssemblyTests
+#pragma warning restore CA1052
 {
 	public class WithSettings
 	{

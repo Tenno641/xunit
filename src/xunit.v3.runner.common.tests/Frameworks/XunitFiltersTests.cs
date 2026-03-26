@@ -2,7 +2,7 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class XunitFiltersTests
+public static class XunitFiltersTests
 {
 	static readonly ITestCaseDiscovered InnerClassOne_NameOne = TestData.TestCaseDiscovered(
 		testClassName: "NamespaceOne.ClassInNamespace1+InnerClassOne",
@@ -130,7 +130,7 @@ public class XunitFiltersTests
 		Assert.StartsWith("Cannot add simple filter; query filters already exist", argEx.Message);
 	}
 
-	public class QueryFilters
+	public static class QueryFilters
 	{
 		// These tests aren't meant to be comprehensive tests against the query language; those exist
 		// in GraphQueryFilterParserTests.
@@ -165,7 +165,7 @@ public class XunitFiltersTests
 		}
 	}
 
-	public class SimpleFilters
+	public static class SimpleFilters
 	{
 		public static IEnumerable<TheoryDataRow<string>> ClassNameData()
 		{

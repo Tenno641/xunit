@@ -7,7 +7,7 @@ using Xunit.Sdk;
 
 [Collection(typeof(CleanEnvironmentAttribute))]
 [CleanEnvironment("COMPUTERNAME", "HOSTNAME", "NAME", "HOST")]
-public class JUnitResultWriterMessageHandlerTests
+public static class JUnitResultWriterMessageHandlerTests
 {
 	[CulturedFact(["en-US", "fr-FR"])]
 	public static async ValueTask TestSuitesElement()
@@ -287,7 +287,7 @@ public class JUnitResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestResult_WithOutput()
+	public static async ValueTask TestResult_WithOutput()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var testStarting = TestData.TestStarting();
@@ -316,7 +316,7 @@ public class JUnitResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestResult_WithWarnings()
+	public static async ValueTask TestResult_WithWarnings()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var testStarting = TestData.TestStarting();
@@ -348,7 +348,7 @@ public class JUnitResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestResult_WithOutputAndWarnings()
+	public static async ValueTask TestResult_WithOutputAndWarnings()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var testStarting = TestData.TestStarting();

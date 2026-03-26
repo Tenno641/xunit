@@ -7,7 +7,7 @@ using Xunit.Sdk;
 
 [Collection(typeof(CleanEnvironmentAttribute))]
 [CleanEnvironment("COMPUTERNAME", "HOSTNAME", "NAME", "HOST", "USERNAME", "LOGNAME", "USER")]
-public class XmlV2ResultWriterMessageHandlerTests
+public static class XmlV2ResultWriterMessageHandlerTests
 {
 	[Theory]
 	// Windows
@@ -37,7 +37,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask AssembliesElementDoesNotIncludeOptionalValues()
+	public static async ValueTask AssembliesElementDoesNotIncludeOptionalValues()
 	{
 		await using var handler = TestableXmlV2ResultWriterMessageHandler.Create();
 
@@ -47,7 +47,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask AssemblyStarting()
+	public static async ValueTask AssemblyStarting()
 	{
 		var startTime = new DateTimeOffset(2013, 7, 6, 16, 24, 32, TimeSpan.Zero);
 		var assemblyStarting = TestData.TestAssemblyStarting(
@@ -75,7 +75,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask AssemblyStartingDoesNotIncludeOptionalValues()
+	public static async ValueTask AssemblyStartingDoesNotIncludeOptionalValues()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting(assemblyPath: "/path/to/assembly.dll", configFilePath: null, targetFramework: null);
 		await using var handler = TestableXmlV2ResultWriterMessageHandler.Create();
@@ -150,7 +150,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestPassed()
+	public static async ValueTask TestPassed()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -187,7 +187,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestFailed()
+	public static async ValueTask TestFailed()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -231,7 +231,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestFailed_NullStackTrace()
+	public static async ValueTask TestFailed_NullStackTrace()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -266,7 +266,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestSkipped()
+	public static async ValueTask TestSkipped()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -300,7 +300,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestNotRun()
+	public static async ValueTask TestNotRun()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -332,7 +332,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestResult_EmptyOutput()
+	public static async ValueTask TestResult_EmptyOutput()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -369,7 +369,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
-	public async ValueTask TestResult_OutputIsEscaped()
+	public static async ValueTask TestResult_OutputIsEscaped()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -406,7 +406,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestResult_WithSourceInformation()
+	public static async ValueTask TestResult_WithSourceInformation()
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -434,7 +434,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestResult_WithTraits()
+	public static async ValueTask TestResult_WithTraits()
 	{
 		var traits = new Dictionary<string, IReadOnlyCollection<string>>
 		{
@@ -469,7 +469,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestResult_WithAttachments()
+	public static async ValueTask TestResult_WithAttachments()
 	{
 		var attachments = new Dictionary<string, TestAttachment>
 		{
@@ -536,7 +536,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 
 	[Theory]
 	[MemberData(nameof(IllegalXmlTestData))]
-	public async ValueTask TestResult_WithIllegalStringValue(
+	public static async ValueTask TestResult_WithIllegalStringValue(
 		string inputName,
 		string outputName)
 	{
@@ -570,7 +570,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask ErrorMessage()
+	public static async ValueTask ErrorMessage()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var errorMessage = TestData.ErrorMessage(
@@ -589,7 +589,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestAssemblyCleanupFailure()
+	public static async ValueTask TestAssemblyCleanupFailure()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting(
 			assemblyUniqueID: assemblyID,
@@ -618,7 +618,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestCollectionCleanupFailure()
+	public static async ValueTask TestCollectionCleanupFailure()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var collectionStarting = TestData.TestCollectionStarting(
@@ -645,7 +645,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestClassCleanupFailure()
+	public static async ValueTask TestClassCleanupFailure()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var classStarting = TestData.TestClassStarting(
@@ -674,7 +674,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestMethodCleanupFailure()
+	public static async ValueTask TestMethodCleanupFailure()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var methodStarting = TestData.TestMethodStarting(
@@ -705,7 +705,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestCaseCleanupFailure()
+	public static async ValueTask TestCaseCleanupFailure()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var caseStarting = TestData.TestCaseStarting(
@@ -738,7 +738,7 @@ public class XmlV2ResultWriterMessageHandlerTests
 	}
 
 	[Fact]
-	public async ValueTask TestCleanupFailure()
+	public static async ValueTask TestCleanupFailure()
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var testStarting = TestData.TestStarting(
@@ -778,16 +778,16 @@ public class XmlV2ResultWriterMessageHandlerTests
 		public async ValueTask TestMethod() { }
 	}
 
-	readonly string assemblyID = "assembly-id";
-	readonly string classID = "test-class-id";
-	readonly string collectionID = "test-collection-id";
-	readonly int[] exceptionParentIndices = [-1];
-	readonly string[] exceptionTypes = ["ExceptionType"];
-	readonly string[] messages = ["This is\t\r\nmy message"];
-	readonly string methodID = "test-method-id";
-	readonly string[] stackTraces = ["Line 1\r\nLine 2\r\nLine 3"];
-	readonly string testCaseID = "test-case-id";
-	readonly string testID = "test-id";
+	static readonly string assemblyID = "assembly-id";
+	static readonly string classID = "test-class-id";
+	static readonly string collectionID = "test-collection-id";
+	static readonly int[] exceptionParentIndices = [-1];
+	static readonly string[] exceptionTypes = ["ExceptionType"];
+	static readonly string[] messages = ["This is\t\r\nmy message"];
+	static readonly string methodID = "test-method-id";
+	static readonly string[] stackTraces = ["Line 1\r\nLine 2\r\nLine 3"];
+	static readonly string testCaseID = "test-case-id";
+	static readonly string testID = "test-id";
 
 	static void AssertFailureElement(
 		XElement assemblyElement,
