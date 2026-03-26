@@ -1271,5 +1271,83 @@ public partial class Xunit3TheoryAcceptanceTests
 				yield return new TheoryDataRow<int, string?>(0, null) { Skip = "Don't run this!" };
 			}
 		}
+		
+#if XUNIT_AOT
+		public 
+#endif
+		class IndexedTheoryClassWithoutIndex
+        	{
+        		[Theory(IncludeTestCaseIndex = false)]
+        		[InlineData(1)]
+        		[InlineData(2)]
+        		[InlineData(3)]
+        		public void DisabledTestCaseIndex(int _) { }
+        	}
+#if XUNIT_AOT
+		public 
+#endif
+		class IndexedTheoryClassWithIndex
+		{
+			[Theory(IncludeTestCaseIndex = true)]
+			[InlineData(1)]
+			[InlineData(2)]
+			[InlineData(3)]
+			public void EnabledTestCaseIndex(int _) { }
+		}
+		
+#if XUNIT_AOT
+		public 
+#endif
+		class IndexedTheoryClassWithLargeDataSet
+		{
+			public static IEnumerable<ITheoryDataRow> Data =>
+				Enumerable.Range(1, 100).Select(i => new TheoryDataRow<int>(i));
+
+			[Theory(IncludeTestCaseIndex = true)]
+			[MemberData(nameof(Data))]
+			public void IndexedTestCases(int _) { }
+		}
+		
+#if XUNIT_AOT
+		public 
+#endif
+		class IndexedTheoryClassWithLabel
+		{
+			public static IEnumerable<ITheoryDataRow> Data =>
+				[new TheoryDataRow<int>(1) { Label = "smoke" }, new TheoryDataRow<int>(2) { Label = "smoke" }];
+
+			[Theory(IncludeTestCaseIndex = true)]
+			[MemberData(nameof(Data))]
+			public void IndexedMemberDataWithLabel(int _) { }
+		}
+		
+#if XUNIT_AOT
+		public 
+#endif
+		class IndexedTheoryClassWithTestDisplayName
+		{
+			public static IEnumerable<ITheoryDataRow> Data =>
+				[new TheoryDataRow<int>(1) { TestDisplayName = "first case" }, new TheoryDataRow<int>(2) { TestDisplayName = "second case" }];
+
+			[Theory(IncludeTestCaseIndex = true)]
+			[MemberData(nameof(Data))]
+			public void TheoryMethod(int _) { }
+		}
+		
+#if XUNIT_AOT
+		public 
+#endif
+		class IndexedTheoryClassWithLabelAndTestDisplayName
+		{
+			public static IEnumerable<ITheoryDataRow> Data =>
+			[
+				new TheoryDataRow<int>(1) { TestDisplayName = "my custom name", Label = "smoke" },
+				new TheoryDataRow<int>(2) { TestDisplayName = "my custom name", Label = "smoke" },
+			];
+
+			[Theory(IncludeTestCaseIndex = true)]
+			[MemberData(nameof(Data))]
+			public void TheoryMethod(int _) { }
+		}
 	}
 }
