@@ -6,12 +6,12 @@ using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Sdk;
 
-public class TestPlatformExecutionMessageSinkTests
+public static class TestPlatformExecutionMessageSinkTests
 {
 	[Theory]
 	[InlineData(true)]
 	[InlineData(false)]
-	public void DelegatesMessages(bool returnValue)
+	public static void DelegatesMessages(bool returnValue)
 	{
 		var message = TestData.DiagnosticMessage();
 		var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
@@ -25,7 +25,7 @@ public class TestPlatformExecutionMessageSinkTests
 	}
 
 	[Fact]
-	public void ReturnsFalseWhenCancellationTokenIsCancelled()
+	public static void ReturnsFalseWhenCancellationTokenIsCancelled()
 	{
 		var message = TestData.DiagnosticMessage();
 		var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
@@ -37,10 +37,10 @@ public class TestPlatformExecutionMessageSinkTests
 		Assert.False(result);
 	}
 
-	public class MessageMapping
+	public static class MessageMapping
 	{
 		[Fact]
-		public void ITestAssemblyCleanupFailure()
+		public static void ITestAssemblyCleanupFailure()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -51,7 +51,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestCaseCleanupFailure()
+		public static void ITestCaseCleanupFailure()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -62,7 +62,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestClassCleanupFailure()
+		public static void ITestClassCleanupFailure()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -73,7 +73,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestCleanupFailure()
+		public static void ITestCleanupFailure()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -84,7 +84,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestCollectionCleanupFailure()
+		public static void ITestCollectionCleanupFailure()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -97,7 +97,7 @@ public class TestPlatformExecutionMessageSinkTests
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
-		public void ITestFailed_Assertion(bool trxEnabled)
+		public static void ITestFailed_Assertion(bool trxEnabled)
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create(trxEnabled: trxEnabled);
 			SendStartingMessages(classUnderTest, traits: trxEnabled ? TestData.DefaultTraitsWithCategory : TestData.DefaultTraits);
@@ -119,7 +119,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestFailed_Timeout()
+		public static void ITestFailed_Timeout()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -144,7 +144,7 @@ public class TestPlatformExecutionMessageSinkTests
 		[InlineData(FailureCause.Exception)]
 		[InlineData(FailureCause.Other)]
 		[InlineData(FailureCause.Unknown)]
-		public void ITestFailed_Error(FailureCause failureCause)
+		public static void ITestFailed_Error(FailureCause failureCause)
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -166,7 +166,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestMethodCleanupFailure()
+		public static void ITestMethodCleanupFailure()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -177,7 +177,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestNotRun_ServerModeTrue()
+		public static void ITestNotRun_ServerModeTrue()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create(serverMode: true);
 			SendStartingMessages(classUnderTest);
@@ -189,7 +189,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestNotRun_ServerModeFalse()
+		public static void ITestNotRun_ServerModeFalse()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create(serverMode: false);
 			SendStartingMessages(classUnderTest);
@@ -205,7 +205,7 @@ public class TestPlatformExecutionMessageSinkTests
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
-		public void ITestPassed(bool trxEnabled)
+		public static void ITestPassed(bool trxEnabled)
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create(trxEnabled: trxEnabled);
 			SendStartingMessages(classUnderTest, traits: trxEnabled ? TestData.DefaultTraitsWithCategory : TestData.DefaultTraits);
@@ -219,7 +219,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestSkipped()
+		public static void ITestSkipped()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);
@@ -233,7 +233,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestStarting()
+		public static void ITestStarting()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest, includeTestStarting: false);
@@ -246,7 +246,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestOutput_Off()
+		public static void ITestOutput_Off()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create(showLiveOutput: false);
 
@@ -256,7 +256,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void ITestOutput_On()
+		public static void ITestOutput_On()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create(showLiveOutput: true);
 			SendStartingMessages(classUnderTest);
@@ -268,7 +268,7 @@ public class TestPlatformExecutionMessageSinkTests
 		}
 
 		[Fact]
-		public void Warnings()
+		public static void Warnings()
 		{
 			var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
 			SendStartingMessages(classUnderTest);

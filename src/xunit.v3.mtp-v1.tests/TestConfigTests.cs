@@ -5,10 +5,12 @@ using Xunit.MicrosoftTestingPlatform;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
+#pragma warning disable CA1052  // This class is used as a type argument
 public class TestConfigTests
+#pragma warning restore CA1052
 {
 	[Fact]
-	public void DefaultValues()
+	public static void DefaultValues()
 	{
 		var config = new StubConfiguration();
 		var projectAssembly = TestData.XunitProjectAssembly<TestConfigTests>();
@@ -42,7 +44,7 @@ public class TestConfigTests
 	[InlineData("default", null)]
 	[InlineData("invariant", "")]
 	[InlineData("foo", "foo")]
-	public void Culture(
+	public static void Culture(
 		string? value,
 		string? expected)
 	{
@@ -81,7 +83,7 @@ public class TestConfigTests
 
 	[Theory]
 	[MemberData(nameof(MaxThreadsData))]
-	public void MaxParallelThreads(
+	public static void MaxParallelThreads(
 		string value,
 		int? expected)
 	{
@@ -98,7 +100,7 @@ public class TestConfigTests
 	[InlineData("unknownValue", null)]
 	[InlineData("classAndMethod", TestMethodDisplay.ClassAndMethod)]
 	[InlineData("method", TestMethodDisplay.Method)]
-	public void MethodDisplay(
+	public static void MethodDisplay(
 		string value,
 		TestMethodDisplay? expected)
 	{
@@ -115,7 +117,7 @@ public class TestConfigTests
 	[InlineData("none", TestMethodDisplayOptions.None)]
 	[InlineData("all", TestMethodDisplayOptions.All)]
 	[InlineData("UseOperatorMonikers, UseEscapeSequences", TestMethodDisplayOptions.UseOperatorMonikers | TestMethodDisplayOptions.UseEscapeSequences)]
-	public void MethodDisplayOptions(
+	public static void MethodDisplayOptions(
 		string value,
 		TestMethodDisplayOptions? expected)
 	{
@@ -131,7 +133,7 @@ public class TestConfigTests
 	[InlineData("unknownValue", null)]
 	[InlineData("aggressive", ParallelAlgorithm.Aggressive)]
 	[InlineData("conservative", ParallelAlgorithm.Conservative)]
-	public void ParallelAlgorithms(
+	public static void ParallelAlgorithms(
 		string value,
 		ParallelAlgorithm? expected)
 	{
@@ -143,7 +145,7 @@ public class TestConfigTests
 		Assert.Equal(expected, projectAssembly.Configuration.ParallelAlgorithm);
 	}
 
-	public class Booleans
+	public static class Booleans
 	{
 		static readonly (string, Expression<Func<XunitProjectAssembly, bool?>>)[] booleanOptions =
 		[
@@ -166,7 +168,7 @@ public class TestConfigTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(ValidValues))]
-		public void ValidValue(
+		public static void ValidValue(
 			string key,
 			string value,
 			Expression<Func<XunitProjectAssembly, bool?>> accessor,
@@ -186,7 +188,7 @@ public class TestConfigTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(InvalidValues))]
-		public void InvalidValue(
+		public static void InvalidValue(
 			string key,
 			string value,
 			Expression<Func<XunitProjectAssembly, bool?>> accessor)
@@ -201,7 +203,7 @@ public class TestConfigTests
 		}
 	}
 
-	public class Integers
+	public static class Integers
 	{
 		static readonly (string, Expression<Func<XunitProjectAssembly, int?>>, int)[] integerOptions =
 		[
@@ -227,7 +229,7 @@ public class TestConfigTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(ValidValues))]
-		public void ValidValue(
+		public static void ValidValue(
 			string key,
 			string value,
 			Expression<Func<XunitProjectAssembly, int?>> accessor,
@@ -253,7 +255,7 @@ public class TestConfigTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(InvalidValues))]
-		public void InvalidValue(
+		public static void InvalidValue(
 			string key,
 			string value,
 			Expression<Func<XunitProjectAssembly, int?>> accessor)

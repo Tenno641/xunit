@@ -4,14 +4,14 @@ using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Sdk;
 
-public class TestPlatformDiscoveryMessageSinkTests
+public static class TestPlatformDiscoveryMessageSinkTests
 {
 	public static readonly string AssemblyFullName = Guard.NotNull("Invalid assembly FullName", typeof(TestPlatformDiscoveryMessageSinkTests).Assembly.FullName);
 
 	[Theory]
 	[InlineData(true)]
 	[InlineData(false)]
-	public void DelegatesMessages(bool returnValue)
+	public static void DelegatesMessages(bool returnValue)
 	{
 		var message = TestData.DiagnosticMessage();
 		var classUnderTest = TestableTestPlatformDiscoveryMessageSink.Create();
@@ -25,7 +25,7 @@ public class TestPlatformDiscoveryMessageSinkTests
 	}
 
 	[Fact]
-	public void ReturnsFalseWhenCancellationTokenIsCancelled()
+	public static void ReturnsFalseWhenCancellationTokenIsCancelled()
 	{
 		var message = TestData.DiagnosticMessage();
 		var classUnderTest = TestableTestPlatformDiscoveryMessageSink.Create();
@@ -37,10 +37,10 @@ public class TestPlatformDiscoveryMessageSinkTests
 		Assert.False(result);
 	}
 
-	public class MessageMapping
+	public static class MessageMapping
 	{
 		[Fact]
-		public void ITestCaseDiscovered()
+		public static void ITestCaseDiscovered()
 		{
 			var discovered = TestData.TestCaseDiscovered(
 				sourceFilePath: "/path/to/file.cs",
@@ -87,7 +87,7 @@ public class TestPlatformDiscoveryMessageSinkTests
 		}
 
 		[Fact]
-		public void Unfiltered()
+		public static void Unfiltered()
 		{
 			var discovered = TestData.TestCaseDiscovered();
 			var classUnderTest = TestableTestPlatformDiscoveryMessageSink.Create(_ => true);
@@ -100,7 +100,7 @@ public class TestPlatformDiscoveryMessageSinkTests
 		}
 
 		[Fact]
-		public void Filtered()
+		public static void Filtered()
 		{
 			var message = TestData.TestCaseDiscovered();
 			var classUnderTest = TestableTestPlatformDiscoveryMessageSink.Create(_ => false);

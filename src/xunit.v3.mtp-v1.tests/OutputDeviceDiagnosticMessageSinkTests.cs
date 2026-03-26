@@ -3,9 +3,9 @@ using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Sdk;
 
-public class OutputDeviceDiagnosticMessageSinkTests
+public static class OutputDeviceDiagnosticMessageSinkTests
 {
-	public class OnMessage
+	public static class OnMessage
 	{
 		public static IEnumerable<TheoryDataRow<IMessageSinkMessage, string?, ConsoleColor?>> MessageData =
 		[
@@ -28,7 +28,7 @@ public class OutputDeviceDiagnosticMessageSinkTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(MessageData))]
-		public void ForwardsDiagnosticMessages(
+		public static void ForwardsDiagnosticMessages(
 			IMessageSinkMessage message,
 			string? expectedLog,
 			ConsoleColor? expectedColor)
@@ -55,7 +55,7 @@ public class OutputDeviceDiagnosticMessageSinkTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(MessageData))]
-		public void DoesNotForwardMessagesWhenDisabled(
+		public static void DoesNotForwardMessagesWhenDisabled(
 			IMessageSinkMessage message,
 			string? _1,
 			ConsoleColor? _2)
@@ -69,14 +69,14 @@ public class OutputDeviceDiagnosticMessageSinkTests
 		}
 	}
 
-	public class TryCreate
+	public static class TryCreate
 	{
 		[Theory]
 		[InlineData(false, false, false)]
 		[InlineData(false, true, true)]
 		[InlineData(true, false, true)]
 		[InlineData(true, true, true)]
-		public void Creation(
+		public static void Creation(
 			bool diagnosticMessages,
 			bool internalDiagnosticMessages,
 			bool objectShouldBeCreated)

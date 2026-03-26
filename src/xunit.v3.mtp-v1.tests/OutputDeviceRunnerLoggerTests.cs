@@ -3,7 +3,7 @@ using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Runner.Common;
 
-public class OutputDeviceRunnerLoggerTests
+public static class OutputDeviceRunnerLoggerTests
 {
 	public static IEnumerable<TheoryDataRow<Action<IRunnerLogger>, string, string, ConsoleColor?>> LogData =
 	[
@@ -41,7 +41,7 @@ public class OutputDeviceRunnerLoggerTests
 
 	[Theory(DisableDiscoveryEnumeration = true)]
 	[MemberData(nameof(LogData))]
-	public void ForwardsMessages(
+	public static void ForwardsMessages(
 		Action<IRunnerLogger> action,
 		string level,
 		string expectedLog,
