@@ -68,7 +68,7 @@ public partial class CulturedTheoryAttributeTests : AcceptanceTestV3
 #else
 		var results = await RunForResultsAsync(typeof(IndexedTestClassWithMultipleCultures));
 #endif
-		
+
 		Assert.Collection(
 			results.OfType<TestPassedWithMetadata>().OrderBy(passed => passed.Test.TestDisplayName),
 			passed => Assert.Equal("CulturedTheoryAttributeTests+IndexedTestClassWithMultipleCultures.TestMethod_001(_: 42)[fr-FR]", passed.Test.TestDisplayName),
