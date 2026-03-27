@@ -6,7 +6,7 @@ using Xunit.Sdk;
 // in use by default. It is instantiated very early in the lifecycle of ConsoleRunner.EntryPoint
 // or TestPlatformTestFramework.RunAsync in xunit.v3.runner.inproc.console
 
-public class TraceAssertOverrideListenerTests
+public static class TraceAssertOverrideListenerTests
 {
 	public static IEnumerable<TheoryDataRow<string?, string?, string>> MessageData = [
 		new(null, null, "Trace/Debug.Assert() Failure"),
@@ -17,7 +17,7 @@ public class TraceAssertOverrideListenerTests
 
 	[Theory]
 	[MemberData(nameof(MessageData))]
-	public void ConvertsTraceAssertIntoFailureException(
+	public static void ConvertsTraceAssertIntoFailureException(
 		string? message,
 		string? detailMessage,
 		string exceptedAssertMessage)
@@ -32,7 +32,7 @@ public class TraceAssertOverrideListenerTests
 
 	[Theory]
 	[MemberData(nameof(MessageData))]
-	public void ConvertsDebugAssertIntoFailureException(
+	public static void ConvertsDebugAssertIntoFailureException(
 		string? message,
 		string? detailMessage,
 		string exceptedAssertMessage)
@@ -47,7 +47,7 @@ public class TraceAssertOverrideListenerTests
 
 	[Theory]
 	[MemberData(nameof(MessageData))]
-	public void DoesNotConvertDebugAssertIntoFailureException(
+	public static void DoesNotConvertDebugAssertIntoFailureException(
 		string? message,
 		string? detailMessage,
 		string _)

@@ -1,6 +1,7 @@
 using Xunit;
 using Xunit.Sdk;
 
+<<<<<<< HEAD
 public partial class Xunit3AcceptanceTests
 {
 	public partial class AsyncLifetime : AcceptanceTestV3
@@ -172,11 +173,187 @@ public partial class Xunit3AcceptanceTests
 	}
 
 	public partial class EndToEndMessageInspection : AcceptanceTestV3
+=======
+public static partial class Xunit3AcceptanceTests
+{
+	public partial class AsyncLifetime : AcceptanceTestV3
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		[Fact]
-		public async ValueTask NoTests()
+		public static async ValueTask AsyncLifetimeAcceptanceTest()
 		{
 #if XUNIT_AOT
+<<<<<<< HEAD
+=======
+			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime");
+#else
+			var messages = await RunForResultsAsync(typeof(ClassWithAsyncLifetime));
+#endif
+
+			var message = Assert.Single(messages.OfType<TestPassedWithMetadata>());
+			AssertOperations(message, "Constructor", "InitializeAsync", "Run Test", "DisposeAsync");
+		}
+
+		[Fact]
+		public static async ValueTask AsyncDisposableAcceptanceTest()
+		{
+#if XUNIT_AOT
+			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncDisposable");
+#else
+			var messages = await RunForResultsAsync(typeof(ClassWithAsyncDisposable));
+#endif
+
+			var message = Assert.Single(messages.OfType<TestPassedWithMetadata>());
+			// We prefer DisposeAsync over Dispose, so Dispose won't be in the call list
+			AssertOperations(message, "Constructor", "Run Test", "DisposeAsync");
+		}
+
+		[Fact]
+		public static async ValueTask DisposableAcceptanceTest()
+		{
+#if XUNIT_AOT
+			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithDisposable");
+#else
+			var messages = await RunForResultsAsync(typeof(ClassWithDisposable));
+#endif
+
+			var message = Assert.Single(messages.OfType<TestPassedWithMetadata>());
+			AssertOperations(message, "Constructor", "Run Test", "Dispose");
+		}
+
+		[Fact]
+		public static async ValueTask ThrowingConstructor()
+		{
+#if XUNIT_AOT
+			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime_ThrowingCtor");
+#else
+			var messages = await RunForResultsAsync(typeof(ClassWithAsyncLifetime_ThrowingCtor));
+#endif
+
+			var message = Assert.Single(messages.OfType<TestFailedWithMetadata>());
+			AssertOperations(message, "Constructor");
+		}
+
+		[Fact]
+		public static async ValueTask ThrowingInitializeAsync()
+		{
+#if XUNIT_AOT
+			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime_ThrowingInitializeAsync");
+#else
+			var messages = await RunForResultsAsync(typeof(ClassWithAsyncLifetime_ThrowingInitializeAsync));
+#endif
+
+			var message = Assert.Single(messages.OfType<TestFailedWithMetadata>());
+			AssertOperations(message, "Constructor", "InitializeAsync");
+		}
+
+		[Fact]
+		public static async ValueTask ThrowingDisposeAsync()
+		{
+#if XUNIT_AOT
+			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime_ThrowingDisposeAsync");
+#else
+			var messages = await RunForResultsAsync(typeof(ClassWithAsyncLifetime_ThrowingDisposeAsync));
+#endif
+
+			var message = Assert.Single(messages.OfType<TestFailedWithMetadata>());
+			AssertOperations(message, "Constructor", "InitializeAsync", "Run Test", "DisposeAsync");
+		}
+
+		[Fact]
+		public static async ValueTask ThrowingDisposeAsync_Disposable()
+		{
+#if XUNIT_AOT
+			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncDisposable_ThrowingDisposeAsync");
+#else
+			var messages = await RunForResultsAsync(typeof(ClassWithAsyncDisposable_ThrowingDisposeAsync));
+#endif
+
+			var message = Assert.Single(messages.OfType<TestFailedWithMetadata>());
+			AssertOperations(message, "Constructor", "Run Test", "DisposeAsync");
+		}
+
+		[Fact]
+		public static async ValueTask FailingTest()
+		{
+#if XUNIT_AOT
+			var messages = await RunForResultsAsync("Xunit3AcceptanceTests+AsyncLifetime+ClassWithAsyncLifetime_FailingTest");
+#else
+			var messages = await RunForResultsAsync(typeof(ClassWithAsyncLifetime_FailingTest));
+#endif
+
+			var message = Assert.Single(messages.OfType<TestFailedWithMetadata>());
+			AssertOperations(message, "Constructor", "InitializeAsync", "Run Test", "DisposeAsync");
+		}
+
+		static void AssertOperations(
+			ITestResultMessage result,
+			params string[] operations)
+		{
+			Assert.Collection(
+				result.Output.Split([Environment.NewLine], StringSplitOptions.RemoveEmptyEntries),
+				operations.Select<string, Action<string>>(expected => actual => Assert.Equal(expected, actual)).ToArray()
+			);
+		}
+	}
+
+	public partial class ClassFailures : AcceptanceTestV3
+	{
+		[Fact]
+		public static async ValueTask TestFailureResultsFromThrowingCtorInTestClass()
+		{
+#if XUNIT_AOT
+			var messages = await RunAsync<ITestFailed>("Xunit3AcceptanceTests+ClassFailures+ClassUnderTest_CtorFailure");
+#else
+			var messages = await RunAsync<ITestFailed>(typeof(ClassUnderTest_CtorFailure));
+#endif
+
+			var msg = Assert.Single(messages);
+			Assert.Equal(typeof(DivideByZeroException).FullName, msg.ExceptionTypes.Single());
+		}
+
+		[Fact]
+		public static async ValueTask TestFailureResultsFromThrowingDisposeInTestClass()
+		{
+#if XUNIT_AOT
+			var messages = await RunAsync<ITestFailed>("Xunit3AcceptanceTests+ClassFailures+ClassUnderTest_DisposeFailure");
+#else
+			var messages = await RunAsync<ITestFailed>(typeof(ClassUnderTest_DisposeFailure));
+#endif
+
+			var msg = Assert.Single(messages);
+			Assert.Equal(typeof(DivideByZeroException).FullName, msg.ExceptionTypes.Single());
+		}
+
+		[Fact]
+		public static async ValueTask CompositeTestFailureResultsFromFailingTestsPlusThrowingDisposeInTestClass()
+		{
+#if XUNIT_AOT
+			var messages = await RunAsync<ITestFailed>("Xunit3AcceptanceTests+ClassFailures+ClassUnderTest_FailingTestAndDisposeFailure");
+#else
+			var messages = await RunAsync<ITestFailed>(typeof(ClassUnderTest_FailingTestAndDisposeFailure));
+#endif
+
+			var msg = Assert.Single(messages);
+			var combinedMessage = ExceptionUtility.CombineMessages(msg);
+			Assert.StartsWith("System.AggregateException : One or more errors occurred.", combinedMessage);
+			Assert.EndsWith(
+				"---- Assert.Equal() Failure: Values differ" + Environment.NewLine +
+				"Expected: 2" + Environment.NewLine +
+				"Actual:   3" + Environment.NewLine +
+				"---- System.DivideByZeroException : Attempted to divide by zero.",
+				combinedMessage
+			);
+		}
+	}
+
+	public partial class EndToEndMessageInspection : AcceptanceTestV3
+	{
+		[Fact]
+		public static async ValueTask NoTests()
+		{
+#if XUNIT_AOT
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 			var results = await RunAsync("Xunit3AcceptanceTests+EndToEndMessageInspection+NoTestsClass");
 #else
 			var results = await RunAsync(typeof(NoTestsClass));
@@ -201,7 +378,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask SinglePassingTest()
+		public static async ValueTask SinglePassingTest()
 		{
 			string? observedAssemblyID = default;
 			string? observedCollectionID = default;
@@ -397,7 +574,11 @@ public partial class Xunit3AcceptanceTests
 	public partial class ErrorAggregation : AcceptanceTestV3
 	{
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask EachTestMethodHasIndividualExceptionMessage()
+=======
+		public static async ValueTask EachTestMethodHasIndividualExceptionMessage()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var testMessages = await RunAsync("Xunit3AcceptanceTests+ErrorAggregation+ClassUnderTest");
@@ -420,7 +601,11 @@ public partial class Xunit3AcceptanceTests
 		[Theory]
 		[InlineData(null)]
 		[InlineData(ExplicitOption.Off)]
+<<<<<<< HEAD
 		public async ValueTask OnlyRunNonExplicit(ExplicitOption? @explicit)
+=======
+		public static async ValueTask OnlyRunNonExplicit(ExplicitOption? @explicit)
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3AcceptanceTests+ExplicitTests+ClassWithExplicitTest", explicitOption: @explicit);
@@ -436,7 +621,11 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask OnlyRunExplicit()
+=======
+		public static async ValueTask OnlyRunExplicit()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3AcceptanceTests+ExplicitTests+ClassWithExplicitTest", explicitOption: ExplicitOption.Only);
@@ -452,7 +641,11 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask RunEverything()
+=======
+		public static async ValueTask RunEverything()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3AcceptanceTests+ExplicitTests+ClassWithExplicitTest", explicitOption: ExplicitOption.On);
@@ -469,6 +662,7 @@ public partial class Xunit3AcceptanceTests
 	}
 
 	public partial class FailingTests : AcceptanceTestV3
+<<<<<<< HEAD
 	{
 		[Fact]
 		public async ValueTask SingleFailingTest()
@@ -529,11 +723,76 @@ public partial class Xunit3AcceptanceTests
 	}
 
 	public partial class SkippedTests : AcceptanceTestV3
+=======
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		[Fact]
-		public async ValueTask SingleSkippedTest()
+		public static async ValueTask SingleFailingTest()
 		{
 #if XUNIT_AOT
+<<<<<<< HEAD
+=======
+			var results = await RunAsync("Xunit3AcceptanceTests+FailingTests+SingleFailingTestClass");
+#else
+			var results = await RunAsync(typeof(SingleFailingTestClass));
+#endif
+
+			var failedMessage = Assert.Single(results.OfType<ITestFailed>());
+			Assert.Equal(typeof(TrueException).FullName, failedMessage.ExceptionTypes.Single());
+
+			var classFinishedMessage = Assert.Single(results.OfType<ITestClassFinished>());
+			Assert.Equal(1, classFinishedMessage.TestsFailed);
+
+			var collectionFinishedMessage = Assert.Single(results.OfType<ITestCollectionFinished>());
+			Assert.Equal(1, collectionFinishedMessage.TestsFailed);
+		}
+
+		[Fact]
+		public static async ValueTask SingleFailingTestReturningValueTask()
+		{
+#if XUNIT_AOT
+			var results = await RunAsync("Xunit3AcceptanceTests+FailingTests+SingleFailingValueTaskTestClass");
+#else
+			var results = await RunAsync(typeof(SingleFailingValueTaskTestClass));
+#endif
+
+			var failedMessage = Assert.Single(results.OfType<ITestFailed>());
+			Assert.Equal(typeof(TrueException).FullName, failedMessage.ExceptionTypes.Single());
+
+			var classFinishedMessage = Assert.Single(results.OfType<ITestClassFinished>());
+			Assert.Equal(1, classFinishedMessage.TestsFailed);
+
+			var collectionFinishedMessage = Assert.Single(results.OfType<ITestCollectionFinished>());
+			Assert.Equal(1, collectionFinishedMessage.TestsFailed);
+		}
+	}
+
+	public partial class NonStartedTasks : AcceptanceTestV3
+	{
+		[Fact]
+		public static async ValueTask TestWithUnstartedTaskThrows()
+		{
+#if XUNIT_AOT
+			//Assert.Skip("This test is not running successfully in AOT yet");
+			var results = await RunAsync("Xunit3AcceptanceTests+NonStartedTasks+ClassUnderTest");
+#else
+			var results = await RunAsync(typeof(ClassUnderTest));
+#endif
+
+			var failedMessage = Assert.Single(results.OfType<ITestFailed>());
+			var failedStarting = results.OfType<ITestStarting>().Single(s => s.TestUniqueID == failedMessage.TestUniqueID);
+			Assert.Equal("Xunit3AcceptanceTests+NonStartedTasks+ClassUnderTest.NonStartedTask", failedStarting.TestDisplayName);
+			Assert.Equal("Test method returned a non-started Task (tasks must be started before being returned)", failedMessage.Messages.Single());
+		}
+	}
+
+	public partial class SkippedTests : AcceptanceTestV3
+	{
+		[Fact]
+		public static async ValueTask SingleSkippedTest()
+		{
+#if XUNIT_AOT
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 			var results = await RunAsync("Xunit3AcceptanceTests+SkippedTests+SingleSkippedTestClass");
 #else
 			var results = await RunAsync(typeof(SingleSkippedTestClass));
@@ -554,7 +813,11 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask ConditionallySkippedTests()
+=======
+		public static async ValueTask ConditionallySkippedTests()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var results = await RunAsync("Xunit3AcceptanceTests+SkippedTests+ConditionallySkippedTestClass");
@@ -588,7 +851,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask ConditionallySkippedTests_UsingSkipType()
+		public static async ValueTask ConditionallySkippedTests_UsingSkipType()
 		{
 #if XUNIT_AOT
 			var results = await RunAsync("Xunit3AcceptanceTests+SkippedTests+ConditionallySkippedTestsClass_UsingSkipType");
@@ -618,7 +881,11 @@ public partial class Xunit3AcceptanceTests
 	public partial class StaticClassSupport : AcceptanceTestV3
 	{
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask TestsCanBeInStaticClasses()
+=======
+		public static async ValueTask TestsCanBeInStaticClasses()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var testMessages = await RunAsync("Xunit3AcceptanceTests+StaticClassSupport+StaticClassUnderTest");
@@ -635,7 +902,11 @@ public partial class Xunit3AcceptanceTests
 	public partial class TestContextAccessor : AcceptanceTestV3
 	{
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask CanInjectTestContextAccessor()
+=======
+		public static async ValueTask CanInjectTestContextAccessor()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var msgs = await RunAsync("Xunit3AcceptanceTests+TestContextAccessor+ClassUnderTest");
@@ -655,7 +926,11 @@ public partial class Xunit3AcceptanceTests
 	public partial class TestNonParallelOrdering : AcceptanceTestV3
 	{
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask NonParallelCollectionsRunLast()
+=======
+		public static async ValueTask NonParallelCollectionsRunLast()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var testMessages = await RunAsync(["Xunit3AcceptanceTests+TestNonParallelOrdering+TestClassNonParallelCollection", "Xunit3AcceptanceTests+TestNonParallelOrdering+TestClassParallelCollection"]);
@@ -674,6 +949,7 @@ public partial class Xunit3AcceptanceTests
 	}
 
 	public partial class TestOrdering : AcceptanceTestV3
+<<<<<<< HEAD
 	{
 		[Fact]
 		public async ValueTask OverrideOfOrderingAtCollectionLevel()
@@ -711,11 +987,53 @@ public partial class Xunit3AcceptanceTests
 	}
 
 	public partial class TestOutput : AcceptanceTestV3
+=======
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		[Fact]
-		public async ValueTask SendOutputMessages()
+		public static async ValueTask OverrideOfOrderingAtCollectionLevel()
 		{
 #if XUNIT_AOT
+<<<<<<< HEAD
+=======
+			var testMessages = await RunAsync("Xunit3AcceptanceTests+TestOrdering+TestClassUsingCollection");
+#else
+			var testMessages = await RunAsync(typeof(TestClassUsingCollection));
+#endif
+
+			Assert.Collection(
+				testMessages.OfType<ITestPassed>().Select(p => testMessages.OfType<ITestMethodStarting>().Where(s => s.TestMethodUniqueID == p.TestMethodUniqueID).Single().MethodName),
+				methodName => Assert.Equal("Test1", methodName),
+				methodName => Assert.Equal("Test2", methodName),
+				methodName => Assert.Equal("Test3", methodName)
+			);
+		}
+
+		[Fact]
+		public static async ValueTask OverrideOfOrderingAtClassLevel()
+		{
+#if XUNIT_AOT
+			var testMessages = await RunForResultsAsync("Xunit3AcceptanceTests+TestOrdering+TestClassWithoutCollection");
+#else
+			var testMessages = await RunForResultsAsync(typeof(TestClassWithoutCollection));
+#endif
+
+			Assert.Collection(
+				testMessages.OfType<TestPassedWithMetadata>().Select(p => p.TestMethod?.MethodName).OrderBy(x => x),
+				methodName => Assert.Equal("Test1", methodName),
+				methodName => Assert.Equal("Test2", methodName),
+				methodName => Assert.Equal("Test3", methodName)
+			);
+		}
+	}
+
+	public partial class TestOutput : AcceptanceTestV3
+	{
+		[Fact]
+		public static async ValueTask SendOutputMessages()
+		{
+#if XUNIT_AOT
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 			var msgs = await RunAsync("Xunit3AcceptanceTests+TestOutput+ClassUnderTest");
 #else
 			var msgs = await RunAsync(typeof(ClassUnderTest));
@@ -752,7 +1070,11 @@ public partial class Xunit3AcceptanceTests
 	public partial class Warnings : AcceptanceTestV3
 	{
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask LegalWarnings()
+=======
+		public static async ValueTask LegalWarnings()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("Xunit3AcceptanceTests+Warnings+ClassWithLegalWarnings");
@@ -808,7 +1130,7 @@ public partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
-		public async ValueTask IllegalWarning()
+		public static async ValueTask IllegalWarning()
 		{
 			var diagnosticSink = SpyMessageSink.Capture();
 

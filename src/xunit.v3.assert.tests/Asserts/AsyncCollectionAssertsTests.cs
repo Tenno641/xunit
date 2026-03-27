@@ -1,18 +1,12 @@
 #if NET8_0_OR_GREATER
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Sdk;
 
-public class AsyncCollectionAssertsTests
+public static class AsyncCollectionAssertsTests
 {
-	public class All
+	public static class All
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -64,7 +58,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class AllAsync
+	public static class AllAsync
 	{
 		[Fact]
 		public static async Task GuardClauses()
@@ -116,7 +110,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Collection
+	public static class Collection
 	{
 		[Fact]
 		public static void EmptyCollection()
@@ -188,7 +182,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class CollectionAsync
+	public static class CollectionAsync
 	{
 		[Fact]
 		public static async Task EmptyCollection()
@@ -277,7 +271,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Contains
+	public static class Contains
 	{
 		[Fact]
 		public static void GuardClause()
@@ -326,7 +320,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Contains_Comparer
+	public static class Contains_Comparer
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -355,7 +349,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Contains_Predicate
+	public static class Contains_Predicate
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -388,7 +382,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Distinct
+	public static class Distinct
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -463,7 +457,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class DoesNotContain
+	public static class DoesNotContain
 	{
 		[Fact]
 		public static void GuardClause()
@@ -513,7 +507,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class DoesNotContain_Comparer
+	public static class DoesNotContain_Comparer
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -542,7 +536,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class DoesNotContain_Predicate
+	public static class DoesNotContain_Predicate
 	{
 		[Fact]
 		public static void GuardClauses()
@@ -576,7 +570,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Empty
+	public static class Empty
 	{
 		[Fact]
 		public static void GuardClause()
@@ -618,9 +612,9 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Equal
+	public static class Equal
 	{
-		public class Null
+		public static class Null
 		{
 			[Fact]
 			public static void BothNull()
@@ -680,7 +674,7 @@ public class AsyncCollectionAssertsTests
 			}
 		}
 
-		public class Collections
+		public static class Collections
 		{
 			[Fact]
 			public static void Equal()
@@ -734,7 +728,7 @@ public class AsyncCollectionAssertsTests
 				new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, "            ↓ (pos 7)", "[$$ELLIPSIS$$, 6, 7, 8, 9, 10, $$ELLIPSIS$$]",
 				new[] { 1, 2, 3, 4, 5, 6, 7 }, "[$$ELLIPSIS$$, 6, 7]", null
 			)]
-			public void NotEqual(
+			public static void NotEqual(
 				int[]? expected,
 				string? expectedPointer,
 				string expectedDisplay,
@@ -781,7 +775,7 @@ public class AsyncCollectionAssertsTests
 			}
 		}
 
-		public class CollectionsWithComparer
+		public static class CollectionsWithComparer
 		{
 			[Fact]
 			public static void AlwaysFalse()
@@ -832,7 +826,7 @@ public class AsyncCollectionAssertsTests
 
 			// https://github.com/xunit/xunit/issues/2795
 			[Fact]
-			public void CollectionItemIsEnumerable()
+			public static void CollectionItemIsEnumerable()
 			{
 				List<EnumerableItem> actual = [new(0), new(2)];
 				List<EnumerableItem> expected = [new(1), new(3)];
@@ -863,7 +857,7 @@ public class AsyncCollectionAssertsTests
 			}
 
 			[Fact]
-			public void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
+			public static void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
 			{
 				static void validateError(
 					Action action,
@@ -901,10 +895,10 @@ public class AsyncCollectionAssertsTests
 			}
 		}
 
-		public class CollectionsWithEquatable
+		public static class CollectionsWithEquatable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new[] { new EquatableObject { Char = 'a' } };
 				var actual = new[] { new EquatableObject { Char = 'a' } }.ToAsyncEnumerable();
@@ -914,7 +908,7 @@ public class AsyncCollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new[] { new EquatableObject { Char = 'a' } };
 				var actual = new[] { new EquatableObject { Char = 'b' } }.ToAsyncEnumerable();
@@ -962,7 +956,7 @@ public class AsyncCollectionAssertsTests
 			}
 		}
 
-		public class CollectionsWithFunc
+		public static class CollectionsWithFunc
 		{
 			[Fact]
 			public static void AlwaysFalse()
@@ -1005,7 +999,7 @@ public class AsyncCollectionAssertsTests
 
 			// https://github.com/xunit/xunit/issues/2795
 			[Fact]
-			public void CollectionItemIsEnumerable()
+			public static void CollectionItemIsEnumerable()
 			{
 				var expected = new List<EnumerableItem> { new(1), new(3) };
 				var actual = new List<EnumerableItem> { new(0), new(2) }.ToAsyncEnumerable();
@@ -1027,7 +1021,7 @@ public class AsyncCollectionAssertsTests
 			}
 
 			[Fact]
-			public void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
+			public static void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
 			{
 				var expected = new[] { 1, 2 };
 				var actual = new[] { 1, 3 }.ToAsyncEnumerable();
@@ -1058,7 +1052,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class NotEmpty
+	public static class NotEmpty
 	{
 		[Fact]
 		public static void EmptyContainer()
@@ -1093,9 +1087,9 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class NotEqual
+	public static class NotEqual
 	{
-		public class Null
+		public static class Null
 		{
 			[Fact]
 			public static void BothNull()
@@ -1139,7 +1133,7 @@ public class AsyncCollectionAssertsTests
 			}
 		}
 
-		public class Collections
+		public static class Collections
 		{
 			[Fact]
 			public static void Equal()
@@ -1179,7 +1173,7 @@ public class AsyncCollectionAssertsTests
 			}
 		}
 
-		public class CollectionsWithComparer
+		public static class CollectionsWithComparer
 		{
 			[Fact]
 			public static void AlwaysFalse()
@@ -1229,7 +1223,7 @@ public class AsyncCollectionAssertsTests
 			}
 
 			[Fact]
-			public void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
+			public static void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
 			{
 				var expected = new[] { 1, 2 };
 				var actual = new[] { 1, 2 }.ToAsyncEnumerable();
@@ -1268,10 +1262,10 @@ public class AsyncCollectionAssertsTests
 			}
 		}
 
-		public class CollectionsWithEquatable
+		public static class CollectionsWithEquatable
 		{
 			[Fact]
-			public void Equal()
+			public static void Equal()
 			{
 				var expected = new[] { new EquatableObject { Char = 'a' } };
 				var actual = new[] { new EquatableObject { Char = 'a' } }.ToAsyncEnumerable();
@@ -1303,7 +1297,7 @@ public class AsyncCollectionAssertsTests
 			}
 
 			[Fact]
-			public void NotEqual()
+			public static void NotEqual()
 			{
 				var expected = new[] { new EquatableObject { Char = 'a' } };
 				var actual = new[] { new EquatableObject { Char = 'b' } }.ToAsyncEnumerable();
@@ -1327,7 +1321,7 @@ public class AsyncCollectionAssertsTests
 			}
 		}
 
-		public class CollectionsWithFunc
+		public static class CollectionsWithFunc
 		{
 			[Fact]
 			public static void AlwaysFalse()
@@ -1367,7 +1361,7 @@ public class AsyncCollectionAssertsTests
 			}
 
 			[Fact]
-			public void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
+			public static void WithThrow_PrintsPointerWhereThrowOccurs_RecordsInnerException()
 			{
 				var expected = new[] { 1, 2 };
 				var actual = new[] { 1, 2 }.ToAsyncEnumerable();
@@ -1398,7 +1392,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Single
+	public static class Single
 	{
 		[Fact]
 		public static void GuardClause()
@@ -1483,7 +1477,7 @@ public class AsyncCollectionAssertsTests
 		}
 	}
 
-	public class Single_WithPredicate
+	public static class Single_WithPredicate
 	{
 		[Fact]
 		public static void GuardClauses()

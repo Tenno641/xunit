@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.Runner.Common;
 
-public class MessageMetadataCacheTests
+public static class MessageMetadataCacheTests
 {
 	[Fact]
-	public void AssemblyTest()
+	public static void AssemblyTest()
 	{
 		var starting = TestData.TestAssemblyStarting();
 		var failure = TestData.TestAssemblyCleanupFailure();
@@ -32,7 +32,7 @@ public class MessageMetadataCacheTests
 	}
 
 	[Fact]
-	public void TestCaseTest()
+	public static void TestCaseTest()
 	{
 		var starting = TestData.TestCaseStarting();
 		var failure = TestData.TestCaseCleanupFailure();
@@ -60,7 +60,7 @@ public class MessageMetadataCacheTests
 	}
 
 	[Fact]
-	public void TestClassTest()
+	public static void TestClassTest()
 	{
 		var starting = TestData.TestClassStarting();
 		var failure = TestData.TestClassCleanupFailure();
@@ -88,7 +88,7 @@ public class MessageMetadataCacheTests
 	}
 
 	[Fact]
-	public void TestCollectionTest()
+	public static void TestCollectionTest()
 	{
 		var starting = TestData.TestCollectionStarting();
 		var failure = TestData.TestCollectionCleanupFailure();
@@ -117,7 +117,7 @@ public class MessageMetadataCacheTests
 
 
 	[Fact]
-	public void TestTest()
+	public static void TestTest()
 	{
 		var starting = TestData.TestStarting();
 		var failure = TestData.TestCleanupFailure();
@@ -146,7 +146,7 @@ public class MessageMetadataCacheTests
 
 
 	[Fact]
-	public void TestMethodTest()
+	public static void TestMethodTest()
 	{
 		var starting = TestData.TestMethodStarting();
 		var failure = TestData.TestMethodCleanupFailure();

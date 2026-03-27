@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class DiscoveryStartingCompleteMessageSinkTests
+public static class DiscoveryStartingCompleteMessageSinkTests
 {
 	[Fact]
-	public void NoTestCases()
+	public static void NoTestCases()
 	{
 		var spySink = SpyMessageSink.Capture();
 		var sink = new DiscoveryStartingCompleteMessageSink("display-name", "assembly-file", "config-file", spySink);
@@ -33,7 +33,7 @@ public class DiscoveryStartingCompleteMessageSinkTests
 	}
 
 	[Fact]
-	public void TwoTestCases()
+	public static void TwoTestCases()
 	{
 		var discovery1 = TestData.TestCaseDiscovered(assemblyUniqueID: "assembly-id-1");
 		var discovery2 = TestData.TestCaseDiscovered(assemblyUniqueID: "assembly-id-2");

@@ -2,10 +2,14 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
+<<<<<<< HEAD
 public partial class MessageSinkMessageTests
+=======
+public static partial class MessageSinkMessageTests
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 {
 	[Fact]
-	public void WithoutJsonTypeID_Throws()
+	public static void WithoutJsonTypeID_Throws()
 	{
 		var msg = new DerivedMessageSinkMessage();
 
@@ -22,7 +26,7 @@ public partial class MessageSinkMessageTests
 	}
 
 	[Fact]
-	public void SerializationExcludesNullValuesAndEmptyTraits()
+	public static void SerializationExcludesNullValuesAndEmptyTraits()
 	{
 		var startTime = new DateTimeOffset(2020, 09, 26, 13, 55, 27, 212, TimeSpan.FromHours(-7));
 		var msg = new TestAssemblyStarting
@@ -56,7 +60,7 @@ public partial class MessageSinkMessageTests
 	}
 
 	[Fact]
-	public void SerializesEnumsAsStringsAndExcludesEmptyOutput()
+	public static void SerializesEnumsAsStringsAndExcludesEmptyOutput()
 	{
 		var finishTime = new DateTimeOffset(2020, 09, 26, 13, 55, 27, 212, TimeSpan.FromHours(-7));
 		var msg = new TestFailed

@@ -1,11 +1,11 @@
 using Xunit;
 
-public class TraitParserTests
+public static class TraitParserTests
 {
-	public class Parse
+	public static class Parse
 	{
 		[Fact]
-		public void ReturnsEmptyWhenNull()
+		public static void ReturnsEmptyWhenNull()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -15,7 +15,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void ReturnsEmptyWhenEmpty()
+		public static void ReturnsEmptyWhenEmpty()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -25,7 +25,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void ReturnsTraits()
+		public static void ReturnsTraits()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -47,7 +47,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void IgnoresExtraTraitSeperatorsAndWhitespace()
+		public static void IgnoresExtraTraitSeperatorsAndWhitespace()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -59,7 +59,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void IncludesExtraKeyValueSeperatorsInValue()
+		public static void IncludesExtraKeyValueSeperatorsInValue()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -71,7 +71,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void IgnoresMissingKeyValueSeperator()
+		public static void IgnoresMissingKeyValueSeperator()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -81,7 +81,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void IgnoresMissingKey()
+		public static void IgnoresMissingKey()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -91,7 +91,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void IgnoresMissingValue()
+		public static void IgnoresMissingValue()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -101,7 +101,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void ContinuesOnError()
+		public static void ContinuesOnError()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -113,7 +113,7 @@ public class TraitParserTests
 		}
 
 		[Fact]
-		public void RaisesWarningOnError()
+		public static void RaisesWarningOnError()
 		{
 			var traits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 			var messages = new List<string>();

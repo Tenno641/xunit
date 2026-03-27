@@ -2,10 +2,10 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class DecodingRunnerLoggerTests
+public static class DecodingRunnerLoggerTests
 {
 	[Fact]
-	public void DiagnosticMessage()
+	public static void DiagnosticMessage()
 	{
 		var spySink = SpyMessageSink.Capture();
 		var spyDiagnosticSink = SpyMessageSink.Capture();
@@ -20,7 +20,7 @@ public class DecodingRunnerLoggerTests
 	}
 
 	[Fact]
-	public void InternalDiagnosticMessage()
+	public static void InternalDiagnosticMessage()
 	{
 		var spySink = SpyMessageSink.Capture();
 		var spyDiagnosticSink = SpyMessageSink.Capture();
@@ -35,7 +35,7 @@ public class DecodingRunnerLoggerTests
 	}
 
 	[Fact]
-	public void StandardMessage()
+	public static void StandardMessage()
 	{
 		var now = DateTimeOffset.UtcNow;
 		var spySink = SpyMessageSink.Capture();
@@ -61,7 +61,7 @@ public class DecodingRunnerLoggerTests
 
 	[Theory]
 	[MemberData(nameof(NonMessageData))]
-	public void NonMessagesReportInternalDiagnostics(
+	public static void NonMessagesReportInternalDiagnostics(
 		string json,
 		string expectedDiagnostic)
 	{

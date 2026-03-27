@@ -6,12 +6,12 @@ using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Runner.Common;
 
-public class TestPlatformTestFrameworkTests
+public static class TestPlatformTestFrameworkTests
 {
-	public class SessionManagement
+	public static class SessionManagement
 	{
 		[Fact]
-		public async ValueTask CanCreateAndCloseSession()
+		public static async ValueTask CanCreateAndCloseSession()
 		{
 			var uid = new SessionUid("abc");
 			var framework = TestableTestPlatformTestFramework.Create();
@@ -29,7 +29,7 @@ public class TestPlatformTestFrameworkTests
 		}
 
 		[Fact]
-		public async ValueTask CreateSession_WithLogo()
+		public static async ValueTask CreateSession_WithLogo()
 		{
 			var uid = new SessionUid("abc");
 			var framework = TestableTestPlatformTestFramework.Create();
@@ -42,7 +42,7 @@ public class TestPlatformTestFrameworkTests
 		}
 
 		[Fact]
-		public async ValueTask CreateSession_WithoutLogo()
+		public static async ValueTask CreateSession_WithoutLogo()
 		{
 			var uid = new SessionUid("abc");
 			var framework = TestableTestPlatformTestFramework.Create();
@@ -54,7 +54,7 @@ public class TestPlatformTestFrameworkTests
 		}
 
 		[Fact]
-		public async ValueTask CannotCreateSameSessionTwice()
+		public static async ValueTask CannotCreateSameSessionTwice()
 		{
 			var uid = new SessionUid("abc");
 			var framework = TestableTestPlatformTestFramework.Create();
@@ -68,7 +68,7 @@ public class TestPlatformTestFrameworkTests
 		}
 
 		[Fact]
-		public async ValueTask CannotCloseUnstartedSession()
+		public static async ValueTask CannotCloseUnstartedSession()
 		{
 			var uid = new SessionUid("abc");
 			var framework = TestableTestPlatformTestFramework.Create();
@@ -80,7 +80,7 @@ public class TestPlatformTestFrameworkTests
 		}
 
 		[Fact]
-		public async ValueTask CannotRecloseSession()
+		public static async ValueTask CannotRecloseSession()
 		{
 			var uid = new SessionUid("abc");
 			var framework = TestableTestPlatformTestFramework.Create();

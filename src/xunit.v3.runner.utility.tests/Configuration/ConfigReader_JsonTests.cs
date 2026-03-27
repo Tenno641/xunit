@@ -2,7 +2,7 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class ConfigReader_JsonTests
+public static class ConfigReader_JsonTests
 {
 	static readonly string AssemblyPath;
 

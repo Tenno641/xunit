@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class SynchronousMessageBusTests
+public static class SynchronousMessageBusTests
 {
 	[Fact]
-	public void MessagesAreDispatchedImmediatelyFromBus()
+	public static void MessagesAreDispatchedImmediatelyFromBus()
 	{
 		var msg1 = TestData.DiagnosticMessage();
 		var dispatchedMessages = new List<IMessageSinkMessage>();
@@ -17,7 +17,7 @@ public class SynchronousMessageBusTests
 	}
 
 	[Fact]
-	public void BusShouldReportShutdownWhenMessageSinkReturnsFalse()
+	public static void BusShouldReportShutdownWhenMessageSinkReturnsFalse()
 	{
 		using var bus = new SynchronousMessageBus(SpyMessageSink.Create(returnResult: false));
 
@@ -25,7 +25,7 @@ public class SynchronousMessageBusTests
 	}
 
 	[Fact]
-	public void WhenStopOnFailIsFalse_WithFailedTest_BusShouldNotReportShutdown()
+	public static void WhenStopOnFailIsFalse_WithFailedTest_BusShouldNotReportShutdown()
 	{
 		var testPassedMessage = TestData.TestPassed();
 		var testFailedMessage = TestData.TestFailed();
@@ -37,7 +37,7 @@ public class SynchronousMessageBusTests
 	}
 
 	[Fact]
-	public void WhenStopOnFailIsTrue_WithFailedTest_BusShouldReportShutdown()
+	public static void WhenStopOnFailIsTrue_WithFailedTest_BusShouldReportShutdown()
 	{
 		var testPassedMessage = TestData.TestPassed();
 		var testFailedMessage = TestData.TestFailed();

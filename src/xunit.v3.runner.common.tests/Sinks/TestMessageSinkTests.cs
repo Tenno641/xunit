@@ -1,7 +1,7 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class TestMessageSinkTests
+public static class TestMessageSinkTests
 {
 	public static IEnumerable<TheoryDataRow<IMessageSinkMessage>> MessageData =
 	[

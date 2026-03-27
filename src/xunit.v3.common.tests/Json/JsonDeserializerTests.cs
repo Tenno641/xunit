@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class JsonDeserializerTests
+public static class JsonDeserializerTests
 {
 	[Fact]
-	public void GuardClause()
+	public static void GuardClause()
 	{
 		Assert.Throws<ArgumentNullException>("json", () => JsonDeserializer.TryDeserialize(null!, out var _));
 	}
@@ -26,7 +26,7 @@ public class JsonDeserializerTests
 	[InlineData("{\"Hello\"}")]             // Key without a value (without a colon)
 	[InlineData("{\"Hello\":}")]            // Key without a value (with a colon)
 	[InlineData("{12 : \"Hello\"}")]        // Non-string key
-	public void IllegalJson_ReturnsFalse(string json)
+	public static void IllegalJson_ReturnsFalse(string json)
 	{
 		var success = JsonDeserializer.TryDeserialize(json, out var result);
 
@@ -58,7 +58,7 @@ public class JsonDeserializerTests
 
 	[Theory]
 	[MemberData(nameof(IntrinsicValueData), DisableDiscoveryEnumeration = true)]
-	public void CanDeserializeIntrinsicValues(
+	public static void CanDeserializeIntrinsicValues(
 		string json,
 		object? expected)
 	{
@@ -70,7 +70,7 @@ public class JsonDeserializerTests
 
 	[Theory]
 	[MemberData(nameof(IntrinsicValueData), DisableDiscoveryEnumeration = true)]
-	public void CanDeserializeArrays(
+	public static void CanDeserializeArrays(
 		string itemJson,
 		object? expectedItem)
 	{
@@ -88,7 +88,7 @@ public class JsonDeserializerTests
 
 	[Theory]
 	[MemberData(nameof(IntrinsicValueData), DisableDiscoveryEnumeration = true)]
-	public void CanDeserializeObjectsAsDictionaries(
+	public static void CanDeserializeObjectsAsDictionaries(
 		string itemJson,
 		object? expectedItem)
 	{

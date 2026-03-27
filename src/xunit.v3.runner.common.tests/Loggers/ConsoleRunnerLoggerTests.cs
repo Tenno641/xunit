@@ -1,64 +1,70 @@
 using Xunit;
 using Xunit.Runner.Common;
 
-public class ConsoleRunnerLoggerTests
+public static class ConsoleRunnerLoggerTests
 {
-	public class LogWithAnsiColors
+	public static class LogWithAnsiColors
 	{
-		readonly ConsoleRunnerLogger sut;
-		readonly StringWriter writer;
-
-		public LogWithAnsiColors()
-		{
-			writer = new StringWriter();
-			sut = new ConsoleRunnerLogger(true, true, new ConsoleHelper(TextReader.Null, writer), waitForAcknowledgment: false);
-		}
-
 		[Fact]
-		public void LogError_InRed()
+		public static void LogError_InRed()
 		{
+			var writer = new StringWriter();
+			var sut = new ConsoleRunnerLogger(true, true, new ConsoleHelper(TextReader.Null, writer), waitForAcknowledgment: false);
+
 			sut.LogError("This is an error message");
 
 			Assert.Equal("\u001b[91mThis is an error message" + Environment.NewLine + "\u001b[0m", writer.ToString());
 		}
 
 		[Fact]
-		public void LogImportantMessage_InGray()
+		public static void LogImportantMessage_InGray()
 		{
+			var writer = new StringWriter();
+			var sut = new ConsoleRunnerLogger(true, true, new ConsoleHelper(TextReader.Null, writer), waitForAcknowledgment: false);
+
 			sut.LogImportantMessage("This is an important message");
 
 			Assert.Equal("\u001b[37mThis is an important message" + Environment.NewLine + "\u001b[0m", writer.ToString());
 		}
 
 		[Fact]
-		public void LogMessage_InDarkGray()
+		public static void LogMessage_InDarkGray()
 		{
+			var writer = new StringWriter();
+			var sut = new ConsoleRunnerLogger(true, true, new ConsoleHelper(TextReader.Null, writer), waitForAcknowledgment: false);
+
 			sut.LogMessage("This is a message");
 
 			Assert.Equal("\u001b[90mThis is a message" + Environment.NewLine + "\u001b[0m", writer.ToString());
 		}
 
 		[Fact]
-		public void LogRaw_NoColor()
+		public static void LogRaw_NoColor()
 		{
+			var writer = new StringWriter();
+			var sut = new ConsoleRunnerLogger(true, true, new ConsoleHelper(TextReader.Null, writer), waitForAcknowledgment: false);
+
 			sut.LogRaw("This is a raw message");
 
 			Assert.Equal("This is a raw message" + Environment.NewLine, writer.ToString());
 		}
 
 		[Fact]
-		public void LogWarning_InYellow()
+		public static void LogWarning_InYellow()
 		{
+			var writer = new StringWriter();
+			var sut = new ConsoleRunnerLogger(true, true, new ConsoleHelper(TextReader.Null, writer), waitForAcknowledgment: false);
+
 			sut.LogWarning("This is a warning message");
 
 			Assert.Equal("\u001b[93mThis is a warning message" + Environment.NewLine + "\u001b[0m", writer.ToString());
 		}
 	}
 
-	public class WaitForAcknowledgment
+	public static class WaitForAcknowledgment
 	{
 		[Fact]
-		public void Disabled_DoesNotConsumesStdIn()
+		public static void Disabled_DoesNotConsumesStdIn()
 		{
 			var reader = new StringReader(Environment.NewLine + "abc");
 			var sut = new ConsoleRunnerLogger(false, false, new ConsoleHelper(reader, TextWriter.Null), waitForAcknowledgment: false);
@@ -69,7 +75,7 @@ public class ConsoleRunnerLoggerTests
 		}
 
 		[Fact]
-		public void Enabled_ConsumesOneLineFromStdIn()
+		public static void Enabled_ConsumesOneLineFromStdIn()
 		{
 			var reader = new StringReader(Environment.NewLine + "abc");
 			var sut = new ConsoleRunnerLogger(false, false, new ConsoleHelper(reader, TextWriter.Null), waitForAcknowledgment: true);
@@ -80,10 +86,10 @@ public class ConsoleRunnerLoggerTests
 		}
 	}
 
-	public class WriteLine
+	public static class WriteLine
 	{
 		[Fact]
-		public void ColorsEnabled_PlainText()
+		public static void ColorsEnabled_PlainText()
 		{
 			var writer = new StringWriter();
 			var message = "foo bar";
@@ -95,7 +101,7 @@ public class ConsoleRunnerLoggerTests
 		}
 
 		[Fact]
-		public void ColorsEnabled_AnsiText()
+		public static void ColorsEnabled_AnsiText()
 		{
 			var writer = new StringWriter();
 			var message = "\x1b[3m\x1b[36mhello world\u001b[0m || \x1b[94;103mbright blue on bright yellow\x1b[m";
@@ -107,7 +113,7 @@ public class ConsoleRunnerLoggerTests
 		}
 
 		[Fact]
-		public void ColorsDisabled_PlainText()
+		public static void ColorsDisabled_PlainText()
 		{
 			var writer = new StringWriter();
 			var message = "foo bar";
@@ -119,7 +125,7 @@ public class ConsoleRunnerLoggerTests
 		}
 
 		[Fact]
-		public void ColorsDisabled_AnsiText()
+		public static void ColorsDisabled_AnsiText()
 		{
 			var writer = new StringWriter();
 			var sut = new ConsoleRunnerLogger(false, false, new ConsoleHelper(TextReader.Null, writer), waitForAcknowledgment: false);

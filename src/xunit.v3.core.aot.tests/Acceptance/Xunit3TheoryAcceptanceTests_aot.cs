@@ -8,7 +8,11 @@ partial class Xunit3TheoryAcceptanceTests
 	{
 		// Implicit/explicit conversion operators are not supported in Native AOT
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask ImplicitExplicitConversions()
+=======
+		public static async ValueTask ImplicitExplicitConversions()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+ClassWithOperatorConversions");
 

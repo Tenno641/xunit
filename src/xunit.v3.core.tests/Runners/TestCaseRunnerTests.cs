@@ -2,12 +2,12 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class TestCaseRunnerTests
+public static class TestCaseRunnerTests
 {
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
-		public async ValueTask NoException()
+		public static async ValueTask NoException()
 		{
 			var runner = new TestableTestCaseRunner();
 
@@ -22,7 +22,7 @@ public class TestCaseRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask WithException_DispatchesFailureMessages()
+		public static async ValueTask WithException_DispatchesFailureMessages()
 		{
 			var runner = new TestableTestCaseRunner();
 			var exception = Record.Exception(ThrowException);

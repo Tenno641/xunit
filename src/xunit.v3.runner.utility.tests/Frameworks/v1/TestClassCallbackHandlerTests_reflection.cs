@@ -1,12 +1,6 @@
 #if NETFRAMEWORK
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 using NSubstitute;
 using Xunit;
@@ -15,7 +9,7 @@ using Xunit.Sdk;
 using Xunit.v3;
 
 [UseCulture("pl-PL")]
-public class TestClassCallbackHandlerTests
+public static class TestClassCallbackHandlerTests
 {
 	[Fact]
 	public static void WithClassNode_ParsesNumbersWithInvariantCulture()

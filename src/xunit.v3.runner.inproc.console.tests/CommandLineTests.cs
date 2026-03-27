@@ -4,7 +4,7 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Runner.InProc.SystemConsole;
 
-public class CommandLineTests
+public static class CommandLineTests
 {
 	public static string? CommandLineTestsLocation { get; }
 
@@ -17,7 +17,11 @@ public class CommandLineTests
 #endif
 	}
 
+<<<<<<< HEAD
 	public class UnknownOption
+=======
+	public static class UnknownOption
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		[Fact]
 		public static void UnknownOptionThrows()
@@ -31,7 +35,7 @@ public class CommandLineTests
 		}
 	}
 
-	public class Project
+	public static class Project
 	{
 		[Fact]
 		public static void DefaultValues()
@@ -88,6 +92,8 @@ public class CommandLineTests
 		}
 	}
 
+#pragma warning disable CA1822  // Tests in this class depend on the instance to set & clean environment
+
 	[Collection("Switches Test Collection")]
 	public sealed class Switches : IDisposable
 	{
@@ -143,7 +149,7 @@ public class CommandLineTests
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(SwitchesLowerCase))]
 		[MemberData(nameof(SwitchesUpperCase))]
-		public void SwitchOverride(
+		public static void SwitchOverride(
 			string @switch,
 			Expression<Func<XunitProjectAssembly, bool>> accessor)
 		{
@@ -169,9 +175,11 @@ public class CommandLineTests
 		}
 	}
 
-	public class OptionsWithArguments
+#pragma warning restore CA1822
+
+	public static class OptionsWithArguments
 	{
-		public class Automated
+		public static class Automated
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -214,7 +222,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class AssertEquivalentMaxDepth
+		public static class AssertEquivalentMaxDepth
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -237,7 +245,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class Culture
+		public static class Culture
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -280,7 +288,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class ID
+		public static class ID
 		{
 			[Fact]
 			public static void DefaultIsEmpty()
@@ -307,7 +315,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class LongRunning
+		public static class LongRunning
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -354,7 +362,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class MaxThreads
+		public static class MaxThreads
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -426,7 +434,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class Parallelization
+		public static class Parallelization
 		{
 			[Fact]
 			public static void ParallelizationOptionsAreNullByDefault()
@@ -467,7 +475,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class PrintMaxEnumerableLength
+		public static class PrintMaxEnumerableLength
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -490,7 +498,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class PrintMaxObjectDepth
+		public static class PrintMaxObjectDepth
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -513,7 +521,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class PrintMaxObjectMemberCount()
+		public static class PrintMaxObjectMemberCount
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -536,7 +544,7 @@ public class CommandLineTests
 			}
 		}
 
-		public class PrintMaxStringLength
+		public static class PrintMaxStringLength
 		{
 			[Fact]
 			public static void DefaultValueIsNull()
@@ -560,7 +568,7 @@ public class CommandLineTests
 		}
 	}
 
-	public class Filters
+	public static class Filters
 	{
 		[Fact]
 		public static void DefaultFilters()
@@ -636,7 +644,7 @@ public class CommandLineTests
 			);
 		}
 
-		public class Traits
+		public static class Traits
 		{
 			static readonly string[] SwitchOptionsList =
 			[
@@ -732,7 +740,11 @@ public class CommandLineTests
 		}
 	}
 
+<<<<<<< HEAD
 	public class ResultWriters
+=======
+	public static class ResultWriters
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		static readonly IReadOnlyDictionary<string, IConsoleResultWriter> ConsoleResultWriters = RegisteredRunnerConfig.GetConsoleResultWriters(typeof(ResultWriters).Assembly);
 

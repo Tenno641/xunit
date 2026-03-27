@@ -1,12 +1,12 @@
 using System.Linq.Expressions;
 using Xunit;
 
-public class AssertHelperTests
+public static class AssertHelperTests
 {
-	public class ParseExclusionExpressions_LambdaExpression
+	public static class ParseExclusionExpressions_LambdaExpression
 	{
 		[Fact]
-		public void NullExpression()
+		public static void NullExpression()
 		{
 			var expression = (Expression<Func<Child, object?>>)null!;
 
@@ -18,7 +18,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void Properties()
+		public static void Properties()
 		{
 			var result = AssertHelper.ParseExclusionExpressions(
 				(Expression<Func<Child, object?>>)(c => c.Property),
@@ -35,7 +35,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void Fields()
+		public static void Fields()
 		{
 			var result = AssertHelper.ParseExclusionExpressions(
 				(Expression<Func<Child, object?>>)(c => c.Field),
@@ -52,7 +52,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void Mixed()
+		public static void Mixed()
 		{
 			var result = AssertHelper.ParseExclusionExpressions(
 				(Expression<Func<Parent, object?>>)(c => c.ParentProperty.Field),
@@ -67,7 +67,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void MethodNotSupported()
+		public static void MethodNotSupported()
 		{
 			var expression = (Expression<Func<Child, object?>>)(c => c.Method());
 
@@ -79,7 +79,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void ChildMethodNotSupported()
+		public static void ChildMethodNotSupported()
 		{
 			var expression = (Expression<Func<Parent, object?>>)(p => p.ParentProperty.Method());
 
@@ -91,7 +91,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void IndexerNotSupported()
+		public static void IndexerNotSupported()
 		{
 			var expression = (Expression<Func<Child, object?>>)(c => c[0]);
 
@@ -103,7 +103,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void ChildIndexerNotSupported()
+		public static void ChildIndexerNotSupported()
 		{
 			var expression = (Expression<Func<Parent, object?>>)(p => p.ParentField[0]);
 
@@ -117,7 +117,7 @@ public class AssertHelperTests
 		static readonly string foo = "Hello world";
 
 		[Fact]
-		public void ExpressionMustOriginateFromParameter()
+		public static void ExpressionMustOriginateFromParameter()
 		{
 			var expression = (Expression<Func<Child, object?>>)(c => foo.Length);
 
@@ -154,10 +154,10 @@ public class AssertHelperTests
 		}
 	}
 
-	public class ParseExclusionExpressions_String
+	public static class ParseExclusionExpressions_String
 	{
 		[Fact]
-		public void NullExpression()
+		public static void NullExpression()
 		{
 			var ex = Record.Exception(() => AssertHelper.ParseExclusionExpressions(default(string)!));
 
@@ -167,7 +167,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void EmptyExpression()
+		public static void EmptyExpression()
 		{
 			var ex = Record.Exception(() => AssertHelper.ParseExclusionExpressions(string.Empty));
 
@@ -177,7 +177,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void StartsWithDot()
+		public static void StartsWithDot()
 		{
 			var ex = Record.Exception(() => AssertHelper.ParseExclusionExpressions(".Foo"));
 
@@ -187,7 +187,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void EndsWithDot()
+		public static void EndsWithDot()
 		{
 			var ex = Record.Exception(() => AssertHelper.ParseExclusionExpressions("Foo."));
 
@@ -197,7 +197,7 @@ public class AssertHelperTests
 		}
 
 		[Fact]
-		public void SuccessCases()
+		public static void SuccessCases()
 		{
 			var result = AssertHelper.ParseExclusionExpressions(
 				"Child",

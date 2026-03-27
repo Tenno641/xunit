@@ -2,12 +2,12 @@ using System.Collections.Immutable;
 using Xunit;
 using Xunit.Sdk;
 
-public class EquivalenceAssertsTests
+public static class EquivalenceAssertsTests
 {
-	public class NullValues
+	public static class NullValues
 	{
 		[Fact]
-		public void TwoNullsAreEquivalent()
+		public static void TwoNullsAreEquivalent()
 		{
 			Assert.Equivalent(null, null);
 		}
@@ -15,7 +15,7 @@ public class EquivalenceAssertsTests
 		[Theory]
 		[InlineData(null, 42)]
 		[InlineData(42, null)]
-		public void NullIsNotEquivalentToNonNull(
+		public static void NullIsNotEquivalentToNonNull(
 			object? expected,
 			object? actual)
 		{
@@ -31,7 +31,7 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ValueTypes
+	public static class ValueTypes
 	{
 		[Theory]
 		[InlineData(42, 42)]
@@ -41,7 +41,7 @@ public class EquivalenceAssertsTests
 		[InlineData(1.1, 1.1)]
 		[InlineData(true, true)]
 		[InlineData(ConsoleKey.A, ConsoleKey.A)]
-		public void SameType_Success(
+		public static void SameType_Success(
 			object? expected,
 			object? actual)
 		{
@@ -49,7 +49,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void SameType_Failure()
+		public static void SameType_Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(12, 13));
 
@@ -63,21 +63,21 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void SameValueFromDifferentIntrinsicTypes_Success()
+		public static void SameValueFromDifferentIntrinsicTypes_Success()
 		{
 			Assert.Equivalent(12, 12L);
 		}
 
 		// https://github.com/xunit/xunit/issues/2913
 		[Fact]
-		public void Decimals_Success()
+		public static void Decimals_Success()
 		{
 			Assert.Equivalent(1m, 1m);
 		}
 
 		// https://github.com/xunit/xunit/issues/2913
 		[Fact]
-		public void Decimals_Failure()
+		public static void Decimals_Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(1m, 2m));
 
@@ -92,7 +92,7 @@ public class EquivalenceAssertsTests
 
 		// https://github.com/xunit/xunit/issues/2913
 		[Fact]
-		public void IntrinsicPlusNonIntrinsic_Failure()
+		public static void IntrinsicPlusNonIntrinsic_Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(1m, new object()));
 
@@ -105,18 +105,18 @@ public class EquivalenceAssertsTests
 			);
 		}
 
-		public class Guids
+		public static class Guids
 		{
 			// https://github.com/xunit/xunit/issues/2974
 			[Fact]
-			public void SameType_Success()
+			public static void SameType_Success()
 			{
 				Assert.Equivalent(new Guid("b727762b-a1c1-49a0-b045-59ba97b17b61"), new Guid("b727762b-a1c1-49a0-b045-59ba97b17b61"));
 			}
 
 			// https://github.com/xunit/xunit/issues/2974
 			[Fact]
-			public void SameType_Failure()
+			public static void SameType_Failure()
 			{
 				var ex = Record.Exception(() => Assert.Equivalent(new Guid("b727762b-a1c1-49a0-b045-59ba97b17b61"), new Guid("963ff9f5-cb83-480e-85ea-7e8950a01f00")));
 
@@ -131,7 +131,7 @@ public class EquivalenceAssertsTests
 
 			// https://github.com/xunit/xunit/issues/2974
 			[Fact]
-			public void IntrinsicPlusNonIntrinsic_Failure()
+			public static void IntrinsicPlusNonIntrinsic_Failure()
 			{
 				var ex = Record.Exception(() => Assert.Equivalent(new Guid("b727762b-a1c1-49a0-b045-59ba97b17b61"), new object()));
 
@@ -146,10 +146,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class NullableValueTypes
+	public static class NullableValueTypes
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			int? expected = 42;
 			int? actual = 42;
@@ -158,7 +158,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			int? expected = 42;
 			int? actual = 2112;
@@ -175,10 +175,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ValueTypes_Identical_Deep
+	public static class ValueTypes_Identical_Deep
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new DeepStruct(new ShallowClass { Value1 = 42, Value2 = "Hello, world!" });
 			var actual = new DeepStruct(new ShallowClass { Value1 = 42, Value2 = "Hello, world!" });
@@ -187,7 +187,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new DeepStruct(new ShallowClass { Value1 = 42, Value2 = "Hello, world!" });
 			var actual = new DeepStruct(new ShallowClass { Value1 = 13, Value2 = "Hello, world!" });
@@ -204,16 +204,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class Strings
+	public static class Strings
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent("Hello", "Hello");
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent("Hello, world", "Hello, world!"));
 
@@ -227,7 +227,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void NullIsNotEquivalentToEmptyString()
+		public static void NullIsNotEquivalentToEmptyString()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(null, string.Empty));
 
@@ -241,16 +241,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class AnonymousTypes_Identical_Shallow
+	public static class AnonymousTypes_Identical_Shallow
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent(new { x = 42 }, new { x = 42 });
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new { x = 42 }, new { x = 2112 }));
 
@@ -264,16 +264,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class AnonymousTypes_Identical_Deep
+	public static class AnonymousTypes_Identical_Deep
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent(new { x = new { y = 42 } }, new { x = new { y = 42 } });
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new { x = new { y = 42 } }, new { x = new { y = 2112 } }));
 
@@ -287,16 +287,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class AnonymousTypes_Compatible_Shallow
+	public static class AnonymousTypes_Compatible_Shallow
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent(new { x = 42, y = 2112 }, new { y = 2112, x = 42 });
 		}
 
 		[Fact]
-		public void Success_IgnorePrivateValue()
+		public static void Success_IgnorePrivateValue()
 		{
 			var expected = new PrivateMembersClass(1, "help");
 			var actual = new PrivateMembersClass(2, "me");
@@ -305,7 +305,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new { x = 42, y = 2600 }, new { y = 2600, x = 2112 }));
 
@@ -319,16 +319,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class AnonymousTypes_Compatible_Deep
+	public static class AnonymousTypes_Compatible_Deep
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent(new { x = new { y = 2112 }, z = 42 }, new { z = 42, x = new { y = 2112 } });
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new { x = new { y = 2600 }, z = 42 }, new { z = 42, x = new { y = 2112 } }));
 
@@ -342,10 +342,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ComplexTypes_Identical_Shallow_NotStructuralEquatable
+	public static class ComplexTypes_Identical_Shallow_NotStructuralEquatable
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" };
 			var actual = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" };
@@ -354,7 +354,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Success_IgnoreStaticValue()
+		public static void Success_IgnoreStaticValue()
 		{
 			try
 			{
@@ -374,7 +374,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" };
 			var actual = new ShallowClass { Value1 = 2112, Value2 = "Hello, world!" };
@@ -391,10 +391,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ComplexTypes_Identical_Deep_NotStructuralEquatable
+	public static class ComplexTypes_Identical_Deep_NotStructuralEquatable
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new DeepClass { Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" }, Value3 = 21.12m };
 			var actual = new DeepClass { Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" }, Value3 = 21.12m };
@@ -403,7 +403,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new DeepClass { Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" }, Value3 = 21.12m };
 			var actual = new DeepClass { Shallow = new ShallowClass { Value1 = 2600, Value2 = "Hello, world!" }, Value3 = 21.12m };
@@ -420,10 +420,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ComplexTypes_Compatible_Shallow_NotStructuralEquatable
+	public static class ComplexTypes_Compatible_Shallow_NotStructuralEquatable
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" };
 			var actual = new ShallowClass2 { Value1 = 42, Value2 = "Hello, world!" };
@@ -432,7 +432,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" };
 			var actual = new ShallowClass2 { Value1 = 2112, Value2 = "Hello, world!" };
@@ -449,10 +449,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ComplexTypes_Compatible_Deep_NotStructuralEquatable
+	public static class ComplexTypes_Compatible_Deep_NotStructuralEquatable
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new DeepClass { Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" }, Value3 = 21.12m };
 			var actual = new DeepClass2 { Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" }, Value3 = 21.12m };
@@ -461,7 +461,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new DeepClass { Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" }, Value3 = 21.12m };
 			var actual = new DeepClass2 { Shallow = new ShallowClass { Value1 = 2600, Value2 = "Hello, world!" }, Value3 = 21.12m };
@@ -478,10 +478,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class MixedComplexAndAnonymousTypes
+	public static class MixedComplexAndAnonymousTypes
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new { Shallow = new { Value1 = 42, Value2 = "Hello, world!" }, Value3 = 21.12m };
 			var actual = new DeepClass { Value3 = 21.12m, Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" } };
@@ -490,7 +490,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new { Shallow = new { Value1 = 42, Value2 = "Hello, world" }, Value3 = 21.12m };
 			var actual = new DeepClass { Value3 = 21.12m, Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello, world!" } };
@@ -507,10 +507,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class MismatchedMembers_NotStrict
+	public static class MismatchedMembers_NotStrict
 	{
 		[Fact]
-		public void Shallow_Success()
+		public static void Shallow_Success()
 		{
 			// Expected can be subset of Actual when strict is false
 			Assert.Equivalent(
@@ -521,7 +521,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Deep_Success()
+		public static void Deep_Success()
 		{
 			// Expected can be subset of Actual when strict is false
 			Assert.Equivalent(
@@ -532,7 +532,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Shallow_Failure()
+		public static void Shallow_Failure()
 		{
 			// Expected can never be superset of Actual
 			var ex = Record.Exception(
@@ -553,7 +553,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Deep_Failure()
+		public static void Deep_Failure()
 		{
 			// Expected can never be superset of Actual
 			var ex = Record.Exception(
@@ -574,10 +574,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class MismatchedMembers_Strict
+	public static class MismatchedMembers_Strict
 	{
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			// Expected cannot be subset of Actual when strict is true
 			var ex = Record.Exception(
@@ -598,16 +598,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ArrayOfValueTypes_NotStrict
+	public static class ArrayOfValueTypes_NotStrict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent(new[] { 1, 4 }, new[] { 9, 4, 1 }, strict: false);
 		}
 
 		[Fact]
-		public void Success_EmbeddedArray()
+		public static void Success_EmbeddedArray()
 		{
 			var expected = new { x = new[] { 1, 4 } };
 			var actual = new { x = new[] { 9, 4, 1 } };
@@ -616,7 +616,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new[] { 1, 6 }, new[] { 9, 4, 1 }, strict: false));
 
@@ -630,7 +630,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray()
+		public static void Failure_EmbeddedArray()
 		{
 			var expected = new { x = new[] { 1, 6 } };
 			var actual = new { x = new[] { 9, 4, 1 } };
@@ -647,16 +647,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ArrayOfValueTypes_Strict
+	public static class ArrayOfValueTypes_Strict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent(new[] { 1, 9, 4 }, new[] { 9, 4, 1 }, strict: true);
 		}
 
 		[Fact]
-		public void Success_EmbeddedArray()
+		public static void Success_EmbeddedArray()
 		{
 			var expected = new { x = new[] { 1, 9, 4 } };
 			var actual = new { x = new[] { 9, 4, 1 } };
@@ -665,7 +665,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ValueNotFoundInActual()
+		public static void Failure_ValueNotFoundInActual()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new[] { 1, 6 }, new[] { 9, 4, 1 }, strict: true));
 
@@ -679,7 +679,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ExtraValueInActual()
+		public static void Failure_ExtraValueInActual()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new[] { 1, 9, 4 }, new[] { 6, 9, 4, 1 }, strict: true));
 
@@ -693,7 +693,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray_ValueNotFoundInActual()
+		public static void Failure_EmbeddedArray_ValueNotFoundInActual()
 		{
 			var expected = new { x = new[] { 1, 6 } };
 			var actual = new { x = new[] { 9, 4, 1 } };
@@ -710,7 +710,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray_ExtraValueInActual()
+		public static void Failure_EmbeddedArray_ExtraValueInActual()
 		{
 			var expected = new { x = new[] { 1, 9, 4 } };
 			var actual = new { x = new[] { 6, 9, 4, 1, 12 } };
@@ -727,16 +727,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ImmutableArrayOfValueTypes_NotStrict
+	public static class ImmutableArrayOfValueTypes_NotStrict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent(new[] { 1, 4 }.ToImmutableArray(), new[] { 9, 4, 1 }.ToImmutableArray(), strict: false);
 		}
 
 		[Fact]
-		public void Success_EmbeddedArray()
+		public static void Success_EmbeddedArray()
 		{
 			var expected = new { x = new[] { 1, 4 }.ToImmutableArray() };
 			var actual = new { x = new[] { 9, 4, 1 }.ToImmutableArray() };
@@ -745,7 +745,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new[] { 1, 6 }.ToImmutableArray(), new[] { 9, 4, 1 }.ToImmutableArray(), strict: false));
 
@@ -759,7 +759,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray()
+		public static void Failure_EmbeddedArray()
 		{
 			var expected = new { x = new[] { 1, 6 }.ToImmutableArray() };
 			var actual = new { x = new[] { 9, 4, 1 }.ToImmutableArray() };
@@ -776,16 +776,16 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ImmutableArrayOfValueTypes_Strict
+	public static class ImmutableArrayOfValueTypes_Strict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.Equivalent(new[] { 1, 9, 4 }.ToImmutableArray(), new[] { 9, 4, 1 }.ToImmutableArray(), strict: true);
 		}
 
 		[Fact]
-		public void Success_EmbeddedArray()
+		public static void Success_EmbeddedArray()
 		{
 			var expected = new { x = new[] { 1, 9, 4 }.ToImmutableArray() };
 			var actual = new { x = new[] { 9, 4, 1 }.ToImmutableArray() };
@@ -794,7 +794,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ValueNotFoundInActual()
+		public static void Failure_ValueNotFoundInActual()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new[] { 1, 6 }.ToImmutableArray(), new[] { 9, 4, 1 }.ToImmutableArray(), strict: true));
 
@@ -808,7 +808,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ExtraValueInActual()
+		public static void Failure_ExtraValueInActual()
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(new[] { 1, 9, 4 }.ToImmutableArray(), new[] { 6, 9, 4, 1 }.ToImmutableArray(), strict: true));
 
@@ -822,7 +822,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray_ValueNotFoundInActual()
+		public static void Failure_EmbeddedArray_ValueNotFoundInActual()
 		{
 			var expected = new { x = new[] { 1, 6 }.ToImmutableArray() };
 			var actual = new { x = new[] { 9, 4, 1 }.ToImmutableArray() };
@@ -839,7 +839,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray_ExtraValueInActual()
+		public static void Failure_EmbeddedArray_ExtraValueInActual()
 		{
 			var expected = new { x = new[] { 1, 9, 4 }.ToImmutableArray() };
 			var actual = new { x = new[] { 6, 9, 4, 1, 12 }.ToImmutableArray() };
@@ -856,10 +856,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ArrayOfObjects_NotStrict
+	public static class ArrayOfObjects_NotStrict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new[] { new { Foo = "Bar" } };
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } };
@@ -868,7 +868,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Success_EmbeddedArray()
+		public static void Success_EmbeddedArray()
 		{
 			var expected = new { x = new[] { new { Foo = "Bar" } } };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } } };
@@ -877,7 +877,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new[] { new { Foo = "Biff" } };
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } };
@@ -894,7 +894,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray()
+		public static void Failure_EmbeddedArray()
 		{
 			var expected = new { x = new[] { new { Foo = "Biff" } } };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } } };
@@ -911,10 +911,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ArrayOfObjects_Strict
+	public static class ArrayOfObjects_Strict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new[] { new { Foo = "Bar" }, new { Foo = "Baz" } };
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } };
@@ -923,7 +923,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Success_EmbeddedArray()
+		public static void Success_EmbeddedArray()
 		{
 			var expected = new { x = new[] { new { Foo = "Bar" }, new { Foo = "Baz" } } };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } } };
@@ -932,7 +932,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ValueNotFoundInActual()
+		public static void Failure_ValueNotFoundInActual()
 		{
 			var expected = new[] { new { Foo = "Biff" } };
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } };
@@ -949,7 +949,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ExtraValueInActual()
+		public static void Failure_ExtraValueInActual()
 		{
 			var expected = new[] { new { Foo = "Bar" } };
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } };
@@ -966,7 +966,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray_ValueNotFoundInActual()
+		public static void Failure_EmbeddedArray_ValueNotFoundInActual()
 		{
 			var expected = new { x = new[] { new { Foo = "Biff" } } };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } } };
@@ -983,7 +983,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray_ExtraValueInActual()
+		public static void Failure_EmbeddedArray_ExtraValueInActual()
 		{
 			var expected = new { x = new[] { new { Foo = "Bar" } } };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } } };
@@ -1000,10 +1000,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ListOfObjects_NotStrict
+	public static class ListOfObjects_NotStrict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new[] { new { Foo = "Bar" } }.ToList();
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList();
@@ -1012,7 +1012,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Success_EmbeddedArray()
+		public static void Success_EmbeddedArray()
 		{
 			var expected = new { x = new[] { new { Foo = "Bar" } }.ToList() };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList() };
@@ -1021,7 +1021,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new[] { new { Foo = "Biff" } }.ToList();
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList();
@@ -1038,7 +1038,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray()
+		public static void Failure_EmbeddedArray()
 		{
 			var expected = new { x = new[] { new { Foo = "Biff" } }.ToList() };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList() };
@@ -1055,10 +1055,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ListOfObjects_Strict
+	public static class ListOfObjects_Strict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new[] { new { Foo = "Bar" }, new { Foo = "Baz" } }.ToList();
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList();
@@ -1067,7 +1067,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Success_EmbeddedList()
+		public static void Success_EmbeddedList()
 		{
 			var expected = new { x = new[] { new { Foo = "Bar" }, new { Foo = "Baz" } }.ToList() };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList() };
@@ -1076,7 +1076,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ValueNotFoundInActual()
+		public static void Failure_ValueNotFoundInActual()
 		{
 			var expected = new[] { new { Foo = "Biff" } }.ToList();
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList();
@@ -1093,7 +1093,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ExtraValueInActual()
+		public static void Failure_ExtraValueInActual()
 		{
 			var expected = new[] { new { Foo = "Bar" } }.ToList();
 			var actual = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList();
@@ -1110,7 +1110,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray_ValueNotFoundInActual()
+		public static void Failure_EmbeddedArray_ValueNotFoundInActual()
 		{
 			var expected = new { x = new[] { new { Foo = "Biff" } }.ToList() };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList() };
@@ -1127,7 +1127,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedArray_ExtraValueInActual()
+		public static void Failure_EmbeddedArray_ExtraValueInActual()
 		{
 			var expected = new { x = new[] { new { Foo = "Bar" } }.ToList() };
 			var actual = new { x = new[] { new { Foo = "Baz" }, new { Foo = "Bar" } }.ToList() };
@@ -1144,43 +1144,43 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class EquivalentCollectionsInDifferentTypes
+	public static class EquivalentCollectionsInDifferentTypes
 	{
 		[Fact]
-		public void ArrayIsEquivalentToList()
+		public static void ArrayIsEquivalentToList()
 		{
 			Assert.Equivalent(new[] { 1, 2, 3 }, new List<int> { 1, 2, 3 });
 		}
 
 		[Fact]
-		public void ListIsEquivalentToArray()
+		public static void ListIsEquivalentToArray()
 		{
 			Assert.Equivalent(new List<int> { 1, 2, 3 }, new[] { 1, 2, 3 });
 		}
 
 		[Fact]
-		public void ArrayIsEquivalentToImmutableArray()
+		public static void ArrayIsEquivalentToImmutableArray()
 		{
 			Assert.Equivalent(new[] { 1, 2, 3 }, new[] { 1, 2, 3 }.ToImmutableArray());
 		}
 
 		[Fact]
-		public void ImmutableArrayIsEquivalentToArray()
+		public static void ImmutableArrayIsEquivalentToArray()
 		{
 			Assert.Equivalent(new[] { 1, 2, 3 }.ToImmutableArray(), new[] { 1, 2, 3 });
 		}
 
 		[Fact]
-		public void ImmutableListIsEquivalentToImmutableSortedSet()
+		public static void ImmutableListIsEquivalentToImmutableSortedSet()
 		{
 			Assert.Equivalent(new[] { 1, 2, 3 }.ToImmutableList(), new[] { 1, 2, 3 }.ToImmutableSortedSet());
 		}
 	}
 
-	public class Dictionaries_NotStrict
+	public static class Dictionaries_NotStrict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new Dictionary<string, int> { ["Foo"] = 42 };
 			var actual = new Dictionary<string, int> { ["Foo"] = 42, ["Bar"] = 2112 };
@@ -1189,7 +1189,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void SuccessWithArrayValues()
+		public static void SuccessWithArrayValues()
 		{
 			var expected = new Dictionary<string, int[]> { ["Foo"] = [42] };
 			var actual = new Dictionary<string, int[]> { ["Foo"] = [42], ["Bar"] = [2112] };
@@ -1198,7 +1198,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void SuccessWithListValues()
+		public static void SuccessWithListValues()
 		{
 			var expected = new Dictionary<string, List<int>> { ["Foo"] = [42] };
 			var actual = new Dictionary<string, List<int>> { ["Foo"] = [42], ["Bar"] = [2112] };
@@ -1207,7 +1207,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Success_EmbeddedDictionary()
+		public static void Success_EmbeddedDictionary()
 		{
 			var expected = new { x = new Dictionary<string, int> { ["Foo"] = 42 } };
 			var actual = new { x = new Dictionary<string, int> { ["Foo"] = 42, ["Bar"] = 2112 } };
@@ -1216,7 +1216,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			var expected = new Dictionary<string, int> { ["Foo"] = 16 };
 			var actual = new Dictionary<string, int> { ["Foo"] = 42, ["Bar"] = 2112 };
@@ -1233,7 +1233,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void FailureWithArrayValues()
+		public static void FailureWithArrayValues()
 		{
 			var expected = new Dictionary<string, int[]> { ["Foo"] = [16] };
 			var actual = new Dictionary<string, int[]> { ["Foo"] = [42], ["Bar"] = [2112] };
@@ -1250,7 +1250,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void FailureWithListValues()
+		public static void FailureWithListValues()
 		{
 			var expected = new Dictionary<string, List<int>> { ["Foo"] = [16] };
 			var actual = new Dictionary<string, List<int>> { ["Foo"] = [42], ["Bar"] = [2112] };
@@ -1267,7 +1267,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedDictionary()
+		public static void Failure_EmbeddedDictionary()
 		{
 			var expected = new { x = new Dictionary<string, int> { ["Foo"] = 16 } };
 			var actual = new { x = new Dictionary<string, int> { ["Foo"] = 42, ["Bar"] = 2112 } };
@@ -1284,10 +1284,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class Dictionaries_Strict
+	public static class Dictionaries_Strict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new Dictionary<string, int> { ["Bar"] = 2112, ["Foo"] = 42 };
 			var actual = new Dictionary<string, int> { ["Foo"] = 42, ["Bar"] = 2112 };
@@ -1296,7 +1296,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Success_EmbeddedDictionary()
+		public static void Success_EmbeddedDictionary()
 		{
 			var expected = new { x = new Dictionary<string, int> { ["Bar"] = 2112, ["Foo"] = 42 } };
 			var actual = new { x = new Dictionary<string, int> { ["Foo"] = 42, ["Bar"] = 2112 } };
@@ -1305,7 +1305,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ValueNotFoundInActual()
+		public static void Failure_ValueNotFoundInActual()
 		{
 			var expected = new Dictionary<string, int> { ["Foo"] = 16 };
 			var actual = new Dictionary<string, int> { ["Foo"] = 42, ["Bar"] = 2112 };
@@ -1322,7 +1322,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_ExtraValueInActual()
+		public static void Failure_ExtraValueInActual()
 		{
 			var expected = new Dictionary<string, int> { ["Bar"] = 2112, ["Foo"] = 42 };
 			var actual = new Dictionary<string, int> { ["Foo"] = 42, ["Biff"] = 2600, ["Bar"] = 2112 };
@@ -1339,7 +1339,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedDictionary_ValueNotFoundInActual()
+		public static void Failure_EmbeddedDictionary_ValueNotFoundInActual()
 		{
 			var expected = new { x = new Dictionary<string, int> { ["Foo"] = 16 } };
 			var actual = new { x = new Dictionary<string, int> { ["Foo"] = 42, ["Bar"] = 2112 } };
@@ -1356,7 +1356,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_EmbeddedDictionary_ExtraValueInActual()
+		public static void Failure_EmbeddedDictionary_ExtraValueInActual()
 		{
 			var expected = new { x = new Dictionary<string, int> { ["Bar"] = 2112, ["Foo"] = 42 } };
 			var actual = new { x = new Dictionary<string, int> { ["Foo"] = 42, ["Biff"] = 2600, ["Bar"] = 2112 } };
@@ -1373,10 +1373,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class KeyValuePairs_NotStrict
+	public static class KeyValuePairs_NotStrict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new KeyValuePair<int, int[]>(42, [1, 4]);
 			var actual = new KeyValuePair<int, int[]>(42, [9, 4, 1]);
@@ -1385,7 +1385,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_Key()
+		public static void Failure_Key()
 		{
 			var expected = new KeyValuePair<int, int[]>(42, [1, 4]);
 			var actual = new KeyValuePair<int, int[]>(41, [9, 4, 1]);
@@ -1402,7 +1402,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_Value()
+		public static void Failure_Value()
 		{
 			var expected = new KeyValuePair<int, int[]>(42, [1, 6]);
 			var actual = new KeyValuePair<int, int[]>(42, [9, 4, 1]);
@@ -1419,10 +1419,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class KeyValuePairs_Strict
+	public static class KeyValuePairs_Strict
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			var expected = new KeyValuePair<int, int[]>(42, [1, 4]);
 			var actual = new KeyValuePair<int, int[]>(42, [4, 1]);
@@ -1431,7 +1431,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_Key()
+		public static void Failure_Key()
 		{
 			var expected = new KeyValuePair<int, int[]>(42, [1, 4]);
 			var actual = new KeyValuePair<int, int[]>(41, [4, 1]);
@@ -1448,7 +1448,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Failure_Value()
+		public static void Failure_Value()
 		{
 			var expected = new KeyValuePair<int, int[]>(42, [1, 6]);
 			var actual = new KeyValuePair<int, int[]>(42, [4, 1]);
@@ -1466,7 +1466,7 @@ public class EquivalenceAssertsTests
 	}
 
 	// https://github.com/xunit/xunit/issues/3028
-	public class Groupings
+	public static class Groupings
 	{
 		[Fact]
 		public static void Success()
@@ -1512,12 +1512,12 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class SpecialCases
+	public static class SpecialCases
 	{
 		// DateTime
 
 		[Fact]
-		public void DateTime_Success()
+		public static void DateTime_Success()
 		{
 			var expected = new DateTime(2022, 12, 1, 1, 3, 1);
 			var actual = new DateTime(2022, 12, 1, 1, 3, 1);
@@ -1526,7 +1526,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void DateTime_Failure()
+		public static void DateTime_Failure()
 		{
 			var expected = new DateTime(2022, 12, 1, 1, 3, 1);
 			var actual = new DateTime(2011, 9, 13, 18, 22, 0);
@@ -1543,7 +1543,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void DateTimeToString_Failure()
+		public static void DateTimeToString_Failure()
 		{
 			var expected = new DateTime(2022, 12, 1, 1, 3, 1);
 			var actual = "2022-12-01T01:03:01.0000000";
@@ -1561,7 +1561,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void StringToDateTime_Success()
+		public static void StringToDateTime_Success()
 		{
 			var expected = "2022-12-01T01:03:01.0000000";
 			var actual = new DateTime(2022, 12, 1, 1, 3, 1);
@@ -1572,7 +1572,7 @@ public class EquivalenceAssertsTests
 		// DateTimeOffset
 
 		[Fact]
-		public void DateTimeOffset_Success()
+		public static void DateTimeOffset_Success()
 		{
 			var expected = new DateTimeOffset(2022, 12, 1, 1, 3, 1, TimeSpan.Zero);
 			var actual = new DateTimeOffset(2022, 12, 1, 1, 3, 1, TimeSpan.Zero);
@@ -1581,7 +1581,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void DateTimeOffset_Failure()
+		public static void DateTimeOffset_Failure()
 		{
 			var expected = new DateTimeOffset(2022, 12, 1, 1, 3, 1, TimeSpan.Zero);
 			var actual = new DateTimeOffset(2011, 9, 13, 18, 22, 0, TimeSpan.Zero);
@@ -1600,7 +1600,7 @@ public class EquivalenceAssertsTests
 		// FileSystemInfo-derived types
 
 		[Fact]
-		public void DirectoryInfo_Success()
+		public static void DirectoryInfo_Success()
 		{
 			var assemblyPath = Path.GetDirectoryName(typeof(SpecialCases).Assembly.Location);
 			Assert.NotNull(assemblyPath);
@@ -1612,7 +1612,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void DirectoryInfo_Failure()
+		public static void DirectoryInfo_Failure()
 		{
 			var assemblyPath = Path.GetDirectoryName(typeof(SpecialCases).Assembly.Location);
 			Assert.NotNull(assemblyPath);
@@ -1630,7 +1630,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void FileInfo_Success()
+		public static void FileInfo_Success()
 		{
 			var assembly = typeof(SpecialCases).Assembly.Location;
 			var expected = new FileInfo(assembly);
@@ -1640,7 +1640,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void FileInfo_Failure()
+		public static void FileInfo_Failure()
 		{
 			var expected = new FileInfo(typeof(SpecialCases).Assembly.Location);
 			var actual = new FileInfo(typeof(Assert).Assembly.Location);
@@ -1652,7 +1652,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void FileInfoToDirectoryInfo_Failure_TopLevel()
+		public static void FileInfoToDirectoryInfo_Failure_TopLevel()
 		{
 			var location = typeof(SpecialCases).Assembly.Location;
 			var expected = new FileInfo(location);
@@ -1670,7 +1670,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void FileInfoToDirectoryInfo_Failure_Embedded()
+		public static void FileInfoToDirectoryInfo_Failure_Embedded()
 		{
 			var location = typeof(SpecialCases).Assembly.Location;
 			var expected = new { Info = new FileInfo(location) };
@@ -1697,14 +1697,14 @@ public class EquivalenceAssertsTests
 
 		[Theory]
 		[MemberData(nameof(UriData))]
-		public void Uri_Success(Uri uri)
+		public static void Uri_Success(Uri uri)
 		{
 			Assert.Equivalent(uri, new Uri(uri.OriginalString, UriKind.RelativeOrAbsolute));
 		}
 
 		[Theory]
 		[MemberData(nameof(UriData))]
-		public void Uri_Failure(Uri uri)
+		public static void Uri_Failure(Uri uri)
 		{
 			var ex = Record.Exception(() => Assert.Equivalent(uri, new Uri("hello/world", UriKind.RelativeOrAbsolute)));
 
@@ -1722,7 +1722,7 @@ public class EquivalenceAssertsTests
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public void Issue2939(bool strict)
+		public static void Issue2939(bool strict)
 		{
 			var expected = new Uri("http://example.com");
 			var actual = new Uri("http://example.com");
@@ -1733,7 +1733,7 @@ public class EquivalenceAssertsTests
 		// Lazy<T>
 
 		[Fact]
-		public void LazyValueEquivalentToValue()
+		public static void LazyValueEquivalentToValue()
 		{
 			var expected = "Hello";
 			var actual = new Lazy<string>(() => "Hello");
@@ -1742,7 +1742,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void ValueEquivalentToLazyValue()
+		public static void ValueEquivalentToLazyValue()
 		{
 			var expected = new Lazy<string>(() => "Hello");
 			var actual = "Hello";
@@ -1751,7 +1751,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void UnretrievedLazyValueEquivalentToRetrievedLazyValue()
+		public static void UnretrievedLazyValueEquivalentToRetrievedLazyValue()
 		{
 			var expected = new Lazy<string>(() => "Hello");
 			var actual = new Lazy<string>(() => "Hello");
@@ -1761,10 +1761,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class Obsolete
+	public static class Obsolete
 	{
 		[Fact]
-		public void SkipsObsoleteProperties()
+		public static void SkipsObsoleteProperties()
 		{
 			var value1 = new ClassWithObsoleteProperty { Value = 42 };
 			var value2 = new ClassWithObsoleteProperty { Value = 42 };
@@ -1781,7 +1781,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void SkipsObsoletePropertyGetters()
+		public static void SkipsObsoletePropertyGetters()
 		{
 			var value1 = new ClassWithObsoletePropertyGetter { Value = 42, ObsoleteProperty = 2112 };
 			var value2 = new ClassWithObsoletePropertyGetter { Value = 42, ObsoleteProperty = 2600 };
@@ -1802,10 +1802,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class CircularReferences
+	public static class CircularReferences
 	{
 		[Fact]
-		public void Expected_Shallow()
+		public static void Expected_Shallow()
 		{
 			var expected = new SelfReferential(circularReference: true);
 			var actual = new SelfReferential(circularReference: false);
@@ -1817,7 +1817,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void Actual_Shallow()
+		public static void Actual_Shallow()
 		{
 			var expected = new SelfReferential(circularReference: false);
 			var actual = new SelfReferential(circularReference: true);
@@ -1829,10 +1829,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class DepthLimit
+	public static class DepthLimit
 	{
 		[Fact]
-		public void PreventArbitrarilyLargeDepthObjectTree()
+		public static void PreventArbitrarilyLargeDepthObjectTree()
 		{
 			var expected = new InfiniteRecursionClass();
 			var actual = new InfiniteRecursionClass();
@@ -1854,10 +1854,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class Indexers
+	public static class Indexers
 	{
 		[Fact]
-		public void Equivalent()
+		public static void Equivalent()
 		{
 			var expected = new ClassWithIndexer { Value = "Hello" };
 			var actual = new ClassWithIndexer { Value = "Hello" };
@@ -1866,7 +1866,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void NotEquivalent()
+		public static void NotEquivalent()
 		{
 			var expected = new ClassWithIndexer { Value = "Hello" };
 			var actual = new ClassWithIndexer { Value = "There" };
@@ -1883,10 +1883,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class Tuples
+	public static class Tuples
 	{
 		[Fact]
-		public void Equivalent()
+		public static void Equivalent()
 		{
 			var expected = Tuple.Create(42, "Hello world");
 			var actual = Tuple.Create(42, "Hello world");
@@ -1895,7 +1895,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void NotEquivalent()
+		public static void NotEquivalent()
 		{
 			var expected = Tuple.Create(42, "Hello world");
 			var actual = Tuple.Create(2112, "Hello world");
@@ -1912,10 +1912,10 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class ValueTuples
+	public static class ValueTuples
 	{
 		[Fact]
-		public void Equivalent()
+		public static void Equivalent()
 		{
 			var expected = (answer: 42, greeting: "Hello world");
 			var actual = (answer: 42, greeting: "Hello world");
@@ -1924,7 +1924,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void NotEquivalent()
+		public static void NotEquivalent()
 		{
 			var expected = (answer: 42, greeting: "Hello world");
 			var actual = (answer: 2112, greeting: "Hello world");
@@ -1941,7 +1941,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void ValueTupleInsideClass_Equivalent()
+		public static void ValueTupleInsideClass_Equivalent()
 		{
 			var expected = new Person { ID = 42, Relationships = (parent: new Person { ID = 2112 }, child: null) };
 			var actual = new Person { ID = 42, Relationships = (parent: new Person { ID = 2112 }, child: null) };
@@ -1957,12 +1957,12 @@ public class EquivalenceAssertsTests
 		}
 	}
 
-	public class WithExclusions
+	public static class WithExclusions
 	{
-		public class ByExpression
+		public static class ByExpression
 		{
 			[Fact]
-			public void Shallow()
+			public static void Shallow()
 			{
 				Assert.EquivalentWithExclusions(
 					new ShallowClass { Value1 = 42, Value2 = "Hello" },
@@ -1972,7 +1972,7 @@ public class EquivalenceAssertsTests
 			}
 
 			[Fact]
-			public void MixedShallowAndDeep()
+			public static void MixedShallowAndDeep()
 			{
 				Assert.EquivalentWithExclusions(
 					new DeepClass { Value3 = 21.12m, Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello" } },
@@ -1985,7 +1985,7 @@ public class EquivalenceAssertsTests
 			// https://github.com/xunit/xunit/issues/3338
 			// https://github.com/xunit/xunit/issues/3347
 			[Fact]
-			public void PartialDeepComparisonBug()
+			public static void PartialDeepComparisonBug()
 			{
 				var ex = Record.Exception(() =>
 					Assert.EquivalentWithExclusions(
@@ -2007,10 +2007,10 @@ public class EquivalenceAssertsTests
 			}
 		}
 
-		public class ByString
+		public static class ByString
 		{
 			[Fact]
-			public void Shallow()
+			public static void Shallow()
 			{
 				Assert.EquivalentWithExclusions(
 					new ShallowClass { Value1 = 42, Value2 = "Hello" },
@@ -2020,7 +2020,7 @@ public class EquivalenceAssertsTests
 			}
 
 			[Fact]
-			public void MixedShallowAndDeep()
+			public static void MixedShallowAndDeep()
 			{
 				Assert.EquivalentWithExclusions(
 					new DeepClass { Value3 = 21.12m, Shallow = new ShallowClass { Value1 = 42, Value2 = "Hello" } },
@@ -2033,7 +2033,7 @@ public class EquivalenceAssertsTests
 			// https://github.com/xunit/xunit/issues/3338
 			// https://github.com/xunit/xunit/issues/3347
 			[Fact]
-			public void PartialDeepComparisonBug()
+			public static void PartialDeepComparisonBug()
 			{
 				var ex = Record.Exception(() =>
 					Assert.EquivalentWithExclusions(
@@ -2056,7 +2056,7 @@ public class EquivalenceAssertsTests
 
 			// https://github.com/xunit/xunit/issues/3394
 			[Fact]
-			public void Collections()
+			public static void Collections()
 			{
 				var expected = new DeepRecord()
 				{
@@ -2079,7 +2079,7 @@ public class EquivalenceAssertsTests
 
 			// https://github.com/xunit/xunit/issues/3394
 			[Fact]
-			public void Collections_Strict()
+			public static void Collections_Strict()
 			{
 				var expected = new DeepRecord()
 				{
@@ -2128,7 +2128,7 @@ public class EquivalenceAssertsTests
 	public sealed class ByRefLikeParameters
 	{
 		[Fact]
-		public void Equivalent()
+		public static void Equivalent()
 		{
 			var expected = new RefParameterClass(42.ToString());
 			var actual = new RefParameterClass(42.ToString());
@@ -2137,7 +2137,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void NotEquivalent()
+		public static void NotEquivalent()
 		{
 			var expected = new RefParameterClass2(42.ToString());
 			var actual = new RefParameterClass2(2112.ToString());
@@ -2172,7 +2172,7 @@ public class EquivalenceAssertsTests
 	public sealed class ClassWithNewOverrides
 	{
 		[Fact]
-		public void ExpectedOverridden()
+		public static void ExpectedOverridden()
 		{
 			var expected = new DerivedClass { ID = "123" };
 			var actual = new BaseClass { ID = "123" };
@@ -2181,7 +2181,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void ActualOverridden()
+		public static void ActualOverridden()
 		{
 			var expected = new BaseClass { ID = "123" };
 			var actual = new DerivedClass { ID = "123" };
@@ -2190,7 +2190,7 @@ public class EquivalenceAssertsTests
 		}
 
 		[Fact]
-		public void BothPropertiesOverridden()
+		public static void BothPropertiesOverridden()
 		{
 			var expected = new DerivedClass { ID = "123" };
 			var actual = new DerivedClass { ID = "123" };

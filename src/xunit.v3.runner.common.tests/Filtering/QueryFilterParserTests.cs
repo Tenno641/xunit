@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class QueryFilterParserTests
+public static class QueryFilterParserTests
 {
-	public class Parse
+	public static class Parse
 	{
 		[Theory]
 		[InlineData("/")]
@@ -16,7 +16,7 @@ public class QueryFilterParserTests
 		[InlineData("/*/*/*/")]
 		[InlineData("/*/*/*/*")]
 		[InlineData("/*/*/*/*/")]
-		public void EmptyFilter(string query)
+		public static void EmptyFilter(string query)
 		{
 			var filter = QueryFilterParser.Parse(query);
 
@@ -60,7 +60,7 @@ public class QueryFilterParserTests
 		[InlineData("/[!=value]", "Trait expression '!=value' is not valid: negate a trait expression with 'name!=value'")]
 		[InlineData("/[!foo=bar]", "Trait expression '!foo=bar' is not valid: negate a trait expression with 'name!=value'")]
 		[InlineData("/[(!foo=bar)]", "Trait expression '!foo=bar' is not valid: negate a trait expression with 'name!=value'")]
-		public void MalformedQueries(
+		public static void MalformedQueries(
 			string query,
 			string expectedMessage)
 		{
@@ -83,7 +83,7 @@ public class QueryFilterParserTests
 
 		[Theory]
 		[MemberData(nameof(AssemblyDataSource))]
-		public void AssemblyFilter(
+		public static void AssemblyFilter(
 			string query,
 			bool negated)
 		{
@@ -108,7 +108,7 @@ public class QueryFilterParserTests
 
 		[Theory]
 		[MemberData(nameof(NamespaceDataSource))]
-		public void NamespaceFilter(
+		public static void NamespaceFilter(
 			string query,
 			bool negated)
 		{
@@ -131,7 +131,7 @@ public class QueryFilterParserTests
 
 		[Theory]
 		[MemberData(nameof(ClassDataSource))]
-		public void ClassFilter(
+		public static void ClassFilter(
 			string query,
 			bool negated)
 		{
@@ -153,7 +153,7 @@ public class QueryFilterParserTests
 
 		[Theory]
 		[MemberData(nameof(MethodDataSource))]
-		public void MethodFilter(
+		public static void MethodFilter(
 			string query,
 			bool negated)
 		{
@@ -176,7 +176,7 @@ public class QueryFilterParserTests
 
 		[Theory]
 		[MemberData(nameof(TraitDataSource))]
-		public void TraitFilter(
+		public static void TraitFilter(
 			string query,
 			bool negated)
 		{
@@ -193,7 +193,7 @@ public class QueryFilterParserTests
 		[InlineData("/((asm1)|(asm2))&(!asm5)", false)]
 		[InlineData("/(!asm1)&(!asm2)", true)]
 		[InlineData("/((!asm1)&(!asm2))|(asm5)", true)]
-		public void CompositeSegmentFilter(
+		public static void CompositeSegmentFilter(
 			string query,
 			bool negated)
 		{
@@ -211,7 +211,7 @@ public class QueryFilterParserTests
 		[InlineData("/[((foo=bar)|(foo=baz))&(yes!=no)]", false)]
 		[InlineData("/[(foo!=bar)&(foo!=baz)]", true)]
 		[InlineData("/[((foo!=bar)&(foo!=baz))|(yes==no)]", true)]
-		public void CompositTraitFilter(
+		public static void CompositTraitFilter(
 			string query,
 			bool negated)
 		{
@@ -223,7 +223,7 @@ public class QueryFilterParserTests
 		}
 
 		[Fact]
-		public void EscapedSegmentCharacters()
+		public static void EscapedSegmentCharacters()
 		{
 			var filter = QueryFilterParser.Parse("/a&#x28;b&#x29;c");
 
@@ -231,7 +231,7 @@ public class QueryFilterParserTests
 		}
 
 		[Fact]
-		public void EscapedTraitCharacters()
+		public static void EscapedTraitCharacters()
 		{
 			var filter = QueryFilterParser.Parse("/[&#x5b;&#x3d;=&#x3d;&#x5d;]");
 

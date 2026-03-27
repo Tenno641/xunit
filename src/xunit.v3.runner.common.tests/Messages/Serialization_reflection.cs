@@ -2,11 +2,11 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class Serialization
+public static class Serialization
 {
 	[Theory]
 	[MemberData(nameof(Messages), DisableDiscoveryEnumeration = true)]
-	public void MessageCanSerializeAndDeserialize(IMessageSinkMessage original)
+	public static void MessageCanSerializeAndDeserialize(IMessageSinkMessage original)
 	{
 		// Serialize
 		var serialized = original.ToJson();

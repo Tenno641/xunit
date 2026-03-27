@@ -2,10 +2,10 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class SourceInformationMessageSinkTests
+public static class SourceInformationMessageSinkTests
 {
 	[Fact]
-	public void TestCaseDiscovered_WhenNull_Overwrites()
+	public static void TestCaseDiscovered_WhenNull_Overwrites()
 	{
 		var provider = new SpySourceInformationProvider { OnGetSourceInformation = (c, m) => new SourceInformation("file-path", 42) };
 		var message = TestData.TestCaseDiscovered();
@@ -20,7 +20,7 @@ public class SourceInformationMessageSinkTests
 	}
 
 	[Fact]
-	public void TestCaseStarting_WhenNull_Overwrites()
+	public static void TestCaseStarting_WhenNull_Overwrites()
 	{
 		var provider = new SpySourceInformationProvider { OnGetSourceInformation = (c, m) => new SourceInformation("file-path", 42) };
 		var message = TestData.TestCaseStarting();
@@ -35,7 +35,7 @@ public class SourceInformationMessageSinkTests
 	}
 
 	[Fact]
-	public void TestCaseDiscovered_WhenNonNull_DoesNotOverwrite()
+	public static void TestCaseDiscovered_WhenNonNull_DoesNotOverwrite()
 	{
 		var provider = new SpySourceInformationProvider { OnGetSourceInformation = (c, m) => new SourceInformation("file-path", 42) };
 		var message = TestData.TestCaseDiscovered(sourceFilePath: "other-path", sourceLineNumber: 2112);
@@ -50,7 +50,7 @@ public class SourceInformationMessageSinkTests
 	}
 
 	[Fact]
-	public void TestCaseStarting_WhenNonNull_DoesNotOverwrite()
+	public static void TestCaseStarting_WhenNonNull_DoesNotOverwrite()
 	{
 		var provider = new SpySourceInformationProvider { OnGetSourceInformation = (c, m) => new SourceInformation("file-path", 42) };
 		var message = TestData.TestCaseStarting(sourceFilePath: "other-path", sourceLineNumber: 2112);

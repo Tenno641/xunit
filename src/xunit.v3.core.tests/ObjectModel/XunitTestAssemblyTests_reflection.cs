@@ -1,11 +1,13 @@
 #if NETFRAMEWORK
 
+<<<<<<< HEAD
 using System;
 using System.Configuration.Assemblies;
 using System.IO;
 using System.Linq;
+=======
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 using System.Reflection;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;

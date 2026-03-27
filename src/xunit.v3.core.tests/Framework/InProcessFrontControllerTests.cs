@@ -3,14 +3,14 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class InProcessFrontControllerTests
+public static class InProcessFrontControllerTests
 {
 	static readonly Assembly thisAssembly = typeof(InProcessFrontControllerTests).Assembly;
 
-	public class Ctor
+	public static class Ctor
 	{
 		[Fact]
-		public void GuardClauses()
+		public static void GuardClauses()
 		{
 			var testFramework = Mocks.TestFramework();
 
@@ -19,7 +19,7 @@ public class InProcessFrontControllerTests
 		}
 
 		[Fact]
-		public void PropertiesReturnValuesFromDiscoverer()
+		public static void PropertiesReturnValuesFromDiscoverer()
 		{
 			var frontController = TestableInProcessFrontController.Create();
 
@@ -27,10 +27,10 @@ public class InProcessFrontControllerTests
 		}
 	}
 
-	public class Find
+	public static class Find
 	{
 		[Fact]
-		public async ValueTask GuardClauses()
+		public static async ValueTask GuardClauses()
 		{
 			static bool filter(ITestCase testCase) => true;
 
@@ -44,7 +44,7 @@ public class InProcessFrontControllerTests
 		}
 
 		[Fact]
-		public async ValueTask SendsStartingAndCompleteMessages()
+		public static async ValueTask SendsStartingAndCompleteMessages()
 		{
 			static bool filter(ITestCase testCase) => true;
 
@@ -91,7 +91,7 @@ public class InProcessFrontControllerTests
 		}
 
 		[Fact]
-		public async ValueTask ReportsDiscoveredTestCasesAndCountsTestCasesWhichPassFilter()
+		public static async ValueTask ReportsDiscoveredTestCasesAndCountsTestCasesWhichPassFilter()
 		{
 			var messageSink = SpyMessageSink.Capture();
 			var options = TestData.TestFrameworkDiscoveryOptions();
@@ -136,10 +136,10 @@ public class InProcessFrontControllerTests
 		}
 	}
 
-	public class FindAndRun
+	public static class FindAndRun
 	{
 		[Fact]
-		public async ValueTask GuardClauses()
+		public static async ValueTask GuardClauses()
 		{
 			static bool filter(ITestCase testCase) => true;
 
@@ -157,7 +157,7 @@ public class InProcessFrontControllerTests
 		}
 
 		[Fact]
-		public async ValueTask RunsTestCasesWhichPassFilter()
+		public static async ValueTask RunsTestCasesWhichPassFilter()
 		{
 			var messageSink = SpyMessageSink.Capture();
 			var discoveryOptions = TestData.TestFrameworkDiscoveryOptions();
@@ -184,7 +184,7 @@ public class InProcessFrontControllerTests
 		}
 
 		[Fact]
-		public async ValueTask DisposesOfTestCases()
+		public static async ValueTask DisposesOfTestCases()
 		{
 			var asyncDisposeCalled = false;
 			var disposeCalled = false;

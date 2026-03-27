@@ -1,10 +1,17 @@
 using Xunit;
 using Xunit.v3;
 
+<<<<<<< HEAD
 public class BeforeAfterAttributeAcceptanceTests
 {
 	[Fact]
 	public void TestCollectionComesAfterTestAssembly()
+=======
+public static class BeforeAfterAttributeAcceptanceTests
+{
+	[Fact]
+	public static void TestCollectionComesAfterTestAssembly()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyAttributes = new[] { new AssemblyBeforeAfter() };
 
@@ -18,7 +25,11 @@ public class BeforeAfterAttributeAcceptanceTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public void TestClassComesAfterTestCollection()
+=======
+	public static void TestClassComesAfterTestCollection()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var collectionAttributes = new[] { new CollectionBeforeAfter() };
 
@@ -32,7 +43,11 @@ public class BeforeAfterAttributeAcceptanceTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public void TestMethodComesAfterTestClass()
+=======
+	public static void TestMethodComesAfterTestClass()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var classAttributes = new[] { new ClassBeforeAfter() };
 		var methodInfo = typeof(MyTestClass).GetMethod(nameof(MyTestClass.TestMethod));

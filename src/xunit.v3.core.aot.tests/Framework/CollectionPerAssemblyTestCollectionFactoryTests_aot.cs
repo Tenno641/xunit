@@ -1,10 +1,17 @@
 using Xunit;
 using Xunit.v3;
 
+<<<<<<< HEAD
 public class CollectionPerAssemblyTestCollectionFactoryTests
 {
 	[Fact]
 	public void DefaultCollectionIsAssemblyCollection()
+=======
+public static class CollectionPerAssemblyTestCollectionFactoryTests
+{
+	[Fact]
+	public static void DefaultCollectionIsAssemblyCollection()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var testAssembly = Mocks.CodeGenTestAssembly(assemblyName: "my-test-assembly");
 		var factory = new CollectionPerAssemblyTestCollectionFactory(testAssembly);

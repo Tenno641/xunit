@@ -2,7 +2,7 @@ using System.Collections;
 using Xunit;
 using Xunit.Sdk;
 
-public class ExceptionUtilityTests
+public static class ExceptionUtilityTests
 {
 	class ErrorMetadata : IErrorMetadata, IEnumerable
 	{
@@ -64,10 +64,10 @@ public class ExceptionUtilityTests
 		}
 	}
 
-	public class CombineMessages
+	public static class CombineMessages
 	{
 		[Fact]
-		public void XunitException()
+		public static void XunitException()
 		{
 			var errorMetadata = new ErrorMetadata { new XunitException("This is the message") };
 
@@ -77,7 +77,7 @@ public class ExceptionUtilityTests
 		}
 
 		[Fact]
-		public void NonXunitException()
+		public static void NonXunitException()
 		{
 			var errorMetadata = new ErrorMetadata { new Exception("This is the message") };
 
@@ -87,7 +87,7 @@ public class ExceptionUtilityTests
 		}
 
 		[Fact]
-		public void NonXunitExceptionWithInnerExceptions()
+		public static void NonXunitExceptionWithInnerExceptions()
 		{
 			var errorMetadata = new ErrorMetadata {
 				{ new Exception("outer exception"), -1 },
@@ -106,7 +106,7 @@ public class ExceptionUtilityTests
 		}
 
 		[Fact]
-		public void AggregateException()
+		public static void AggregateException()
 		{
 			var errorMetadata = new ErrorMetadata {
 				{ new AggregateException(), -1 },
@@ -127,7 +127,7 @@ public class ExceptionUtilityTests
 		}
 
 		[Fact]
-		public void MissingExceptionTypes()
+		public static void MissingExceptionTypes()
 		{
 			var errorMetadata = new ErrorMetadata();
 			errorMetadata.AddMessage("Message 1");
@@ -150,14 +150,14 @@ public class ExceptionUtilityTests
 		}
 	}
 
-	public class CombineStackTraces
+	public static class CombineStackTraces
 	{
 #if DEBUG
 		[Fact(Skip = "Stack trace filtering is disabled in DEBUG builds")]
 #else
 		[Fact]
 #endif
-		public void XunitException()
+		public static void XunitException()
 		{
 			static void testCode()
 			{
@@ -178,7 +178,7 @@ public class ExceptionUtilityTests
 #else
 		[Fact]
 #endif
-		public void NonXunitException()
+		public static void NonXunitException()
 		{
 			static void testCode()
 			{
@@ -199,7 +199,7 @@ public class ExceptionUtilityTests
 #else
 		[Fact]
 #endif
-		public void NonXunitExceptionWithInnerExceptions()
+		public static void NonXunitExceptionWithInnerExceptions()
 		{
 			static void innerTestCode()
 			{
@@ -229,7 +229,7 @@ public class ExceptionUtilityTests
 #else
 		[Fact]
 #endif
-		public void HandlesAggregateException()
+		public static void HandlesAggregateException()
 		{
 			static void inner1TestCode()
 			{
@@ -269,7 +269,7 @@ public class ExceptionUtilityTests
 		}
 
 		[Fact]
-		public void MissingStackTracesAndExceptionTypes()
+		public static void MissingStackTracesAndExceptionTypes()
 		{
 			var errorMetadata = new ErrorMetadata();
 			errorMetadata.AddMessage("Message 1");

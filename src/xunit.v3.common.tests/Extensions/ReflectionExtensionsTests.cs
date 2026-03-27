@@ -3,10 +3,14 @@ using System.Reflection;
 using Xunit;
 using Xunit.Sdk;
 
+<<<<<<< HEAD
 public class ReflectionExtensionsTests
+=======
+public static class ReflectionExtensionsTests
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 {
 	[Fact]
-	public void GetDefaultValue()
+	public static void GetDefaultValue()
 	{
 		Assert.Null(typeof(object).GetDefaultValue());
 		Assert.Equal(0, typeof(int).GetDefaultValue());
@@ -32,7 +36,7 @@ public class ReflectionExtensionsTests
 	// Optional parameter
 	[InlineData(nameof(DisplayNameClass.Optional), new object?[] { 42 }, null, "Optional(x: 42)")]  // match
 	[InlineData(nameof(DisplayNameClass.Optional), new object?[0], null, "Optional(x: 2112)")]      // default value
-	public void GetDisplayNameWithArguments(
+	public static void GetDisplayNameWithArguments(
 		string methodName,
 		object?[]? arguments,
 		Type[]? genericTypes,
@@ -61,7 +65,11 @@ public class ReflectionExtensionsTests
 #pragma warning restore CA1822 // Mark members as static
 
 	[Fact]
+<<<<<<< HEAD
 	public void IsFromLocalAssembly()
+=======
+	public static void IsFromLocalAssembly()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		Assert.True(typeof(MyEnum).IsFromLocalAssembly());
 #if NETFRAMEWORK
@@ -72,7 +80,7 @@ public class ReflectionExtensionsTests
 	enum MyEnum { }
 
 	[Fact]
-	public void IsNullable()
+	public static void IsNullable()
 	{
 		Assert.True(typeof(object).IsNullable());
 		Assert.True(typeof(string).IsNullable());
@@ -82,7 +90,7 @@ public class ReflectionExtensionsTests
 	}
 
 	[Fact]
-	public void IsNullableEnum()
+	public static void IsNullableEnum()
 	{
 		Assert.True(typeof(MyEnum?).IsNullableEnum());
 		Assert.False(typeof(MyEnum).IsNullableEnum());
@@ -92,7 +100,7 @@ public class ReflectionExtensionsTests
 	static void GenericMethod<T>(T _) { }
 
 	[Fact]
-	public void SafeName()
+	public static void SafeName()
 	{
 		Assert.Equal("System.Object", typeof(object).SafeName());
 
@@ -104,13 +112,17 @@ public class ReflectionExtensionsTests
 	}
 
 	[Fact]
-	public void ToCommaSeparatedList()
+	public static void ToCommaSeparatedList()
 	{
 		Assert.Equal("'System.Object', 'System.Int32'", new[] { typeof(object), typeof(int) }.ToCommaSeparatedList());
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public void ToSimpleName()
+=======
+	public static void ToSimpleName()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		// Without namespace
 		Assert.Equal("ReflectionExtensionsTests", typeof(ReflectionExtensionsTests).ToSimpleName());
@@ -122,7 +134,7 @@ public class ReflectionExtensionsTests
 	}
 
 	[Fact]
-	public void UnwrapNullable()
+	public static void UnwrapNullable()
 	{
 		Assert.Equal(typeof(object), typeof(object).UnwrapNullable());
 		Assert.Equal(typeof(int), typeof(int).UnwrapNullable());
@@ -132,8 +144,8 @@ public class ReflectionExtensionsTests
 
 namespace NS1
 {
-	public class ParentClass
+	public static class ParentClass
 	{
-		public class ChildClass { }
+		public static class ChildClass { }
 	}
 }

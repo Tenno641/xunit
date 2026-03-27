@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class XunitTestFrameworkDiscovererTests
+public static class XunitTestFrameworkDiscovererTests
 {
-	public class Construction
+	public static class Construction
 	{
 		[Fact]
 		public static void GuardClause()
@@ -13,7 +13,7 @@ public class XunitTestFrameworkDiscovererTests
 		}
 	}
 
-	public class CreateTestClass
+	public static class CreateTestClass
 	{
 		class ClassWithNoCollection
 		{
@@ -84,7 +84,7 @@ public class XunitTestFrameworkDiscovererTests
 		}
 	}
 
-	public class FindTestsForType
+	public static class FindTestsForType
 	{
 		[Fact]
 		public static async ValueTask CanFindNonPublicTestMethods()

@@ -4,7 +4,7 @@ using Xunit.Sdk;
 public partial class CollectionAcceptanceTests : AcceptanceTestV3
 {
 	[Fact]
-	public async ValueTask TwoClasses_OneInExplicitCollection_OneInDefaultCollection()
+	public static async ValueTask TwoClasses_OneInExplicitCollection_OneInDefaultCollection()
 	{
 #if XUNIT_AOT
 		var results = await RunAsync(["CollectionAcceptanceTests+ClassInExplicitCollection", "CollectionAcceptanceTests+ClassInDefaultCollection"]);

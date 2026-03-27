@@ -192,7 +192,14 @@ public class TestPlatformTestFramework :
 		return OnRequest(session.OperationCounter, operationComplete, async (projectRunner, pipelineStartup) =>
 		{
 			if (Debugger.IsAttached)
-				await outputDevice.DisplayAsync(this, ToMessageWithColor("* Note: Long running test detection and test timeouts are disabled due to an attached debugger *" + Environment.NewLine, ConsoleColor.Yellow));
+				await outputDevice.DisplayAsync(
+					this,
+					ToMessageWithColor(
+						"* Note: Long running test detection and test timeouts are disabled due to an attached debugger *" + Environment.NewLine,
+						ConsoleColor.Yellow
+					),
+					cancellationToken
+				);
 
 			var testCaseIDsToRun = filter switch
 			{
@@ -217,7 +224,11 @@ public class TestPlatformTestFramework :
 			var showLiveOutput = projectAssembly.Configuration.ShowLiveOutputOrDefault;
 			projectAssembly.Configuration.ShowLiveOutput = false;
 
+<<<<<<< HEAD
 			var messageHandler = new TestPlatformExecutionMessageSink(session.MessageHandler, sessionUid, messageBus, trxCapability, outputDevice, showLiveOutput, serverMode, cancellationToken);
+=======
+			var messageHandler = new TestPlatformExecutionMessageSink(session.MessageHandler, sessionUid, messageBus, trxCapability, outputDevice, showLiveOutput, serverMode);
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 			await projectRunner.Run(projectAssembly, messageHandler, diagnosticMessageSink, runnerLogger, resultWriters, pipelineStartup, testCaseIDsToRun);
 
 			foreach (var output in projectAssembly.Project.Configuration.Output)

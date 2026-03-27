@@ -2,12 +2,12 @@ using System.Text;
 using Xunit;
 using Xunit.Sdk;
 
-public class XunitSerializationInfoTests
+public static class XunitSerializationInfoTests
 {
-	public class Ctor
+	public static class Ctor
 	{
 		[Fact]
-		public void GuardClause()
+		public static void GuardClause()
 		{
 			var ex = Record.Exception(() => new XunitSerializationInfo(SerializationHelper.Instance, default(IXunitSerializable)!));
 
@@ -18,7 +18,7 @@ public class XunitSerializationInfoTests
 		[Theory]
 		[InlineData(default(string))]
 		[InlineData("")]
-		public void EmptySerializedValueResultsInEmptySerialization(string? serialization)
+		public static void EmptySerializedValueResultsInEmptySerialization(string? serialization)
 		{
 			var info = new XunitSerializationInfo(SerializationHelper.Instance, serialization!);
 
@@ -26,7 +26,7 @@ public class XunitSerializationInfoTests
 		}
 
 		[Fact]
-		public void InitializedWithSerializedValue()
+		public static void InitializedWithSerializedValue()
 		{
 			var info = new XunitSerializationInfo(SerializationHelper.Instance, $"ch:1:97\nst:0:{ToBase64("Hello world")}\ndec:12:21.12");
 
@@ -36,7 +36,7 @@ public class XunitSerializationInfoTests
 		}
 
 		[Fact]
-		public void EntryMissingDataThrowsDuringConstructor()
+		public static void EntryMissingDataThrowsDuringConstructor()
 		{
 			var serialization = "ch:1:97\nst\ndec:12:21.12";
 
@@ -48,10 +48,10 @@ public class XunitSerializationInfoTests
 		}
 	}
 
-	public class ToSerializedString
+	public static class ToSerializedString
 	{
 		[Fact]
-		public void EmptyInfo()
+		public static void EmptyInfo()
 		{
 			var info = new XunitSerializationInfo(SerializationHelper.Instance);
 
@@ -154,7 +154,7 @@ public class XunitSerializationInfoTests
 
 		[Theory]
 		[MemberData(nameof(SuccessData), DisableDiscoveryEnumeration = true)]
-		public void SuccessCases(
+		public static void SuccessCases(
 			object? value,
 			Type valueType)
 		{
@@ -169,7 +169,7 @@ public class XunitSerializationInfoTests
 
 		[Theory]
 		[MemberData(nameof(SuccessData), DisableDiscoveryEnumeration = true)]
-		public void SuccessCasesAsArrays(
+		public static void SuccessCasesAsArrays(
 			object? value,
 			Type valueType)
 		{

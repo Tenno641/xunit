@@ -3,15 +3,15 @@ using Xunit.Runner.Common;
 using Xunit.Runner.v3;
 using Xunit.Sdk;
 
-public class Xunit3ArgumentFactoryTests
+public static class Xunit3ArgumentFactoryTests
 {
 	public static readonly Version Version_0_2_999 = new(0, 2, 999);
 	public static readonly Version Version_0_3_0 = new(0, 3, 0);
 
-	public class ForFind
+	public static class ForFind
 	{
 		[Fact]
-		public void DefaultOptions()
+		public static void DefaultOptions()
 		{
 			var options = TestData.TestFrameworkDiscoveryOptions();
 
@@ -24,7 +24,7 @@ public class Xunit3ArgumentFactoryTests
 		[Theory]
 		[InlineData("", "invariant")]
 		[InlineData("en-US", "en-US")]
-		public void FullOptions(
+		public static void FullOptions(
 			string culture,
 			string expectedCulture)
 		{
@@ -71,7 +71,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void IntValuesOutOfRange()
+		public static void IntValuesOutOfRange()
 		{
 			var options = TestData.TestFrameworkDiscoveryOptions(
 				printMaxEnumerableLength: -1,
@@ -87,7 +87,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void DoesNotSendSyncParameterToAutomatedForOlderTestProjects()
+		public static void DoesNotSendSyncParameterToAutomatedForOlderTestProjects()
 		{
 			var options = TestData.TestFrameworkDiscoveryOptions(synchronousMessageReporting: true);
 
@@ -98,7 +98,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void AddConfigFile()
+		public static void AddConfigFile()
 		{
 			var options = TestData.TestFrameworkDiscoveryOptions();
 
@@ -112,7 +112,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void AddFilters()
+		public static void AddFilters()
 		{
 			var options = TestData.TestFrameworkDiscoveryOptions();
 			var filters = new XunitFilters();
@@ -199,7 +199,7 @@ public class Xunit3ArgumentFactoryTests
 		[InlineData(ListOption.Methods)]
 		[InlineData(ListOption.Tests)]
 		[InlineData(ListOption.Traits)]
-		public void AddListOption(ListOption listOption)
+		public static void AddListOption(ListOption listOption)
 		{
 			var options = TestData.TestFrameworkDiscoveryOptions();
 
@@ -214,7 +214,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void AddWaitForDebugger()
+		public static void AddWaitForDebugger()
 		{
 			var options = TestData.TestFrameworkDiscoveryOptions();
 
@@ -228,10 +228,10 @@ public class Xunit3ArgumentFactoryTests
 		}
 	}
 
-	public class ForFindAndRun
+	public static class ForFindAndRun
 	{
 		[Fact]
-		public void DefaultOptions()
+		public static void DefaultOptions()
 		{
 			var discoveryOptions = TestData.TestFrameworkDiscoveryOptions();
 			var executionOptions = TestData.TestFrameworkExecutionOptions();
@@ -245,7 +245,7 @@ public class Xunit3ArgumentFactoryTests
 		[Theory]
 		[InlineData("", "invariant")]
 		[InlineData("en-US", "en-US")]
-		public void FullOptions(
+		public static void FullOptions(
 			string culture,
 			string expectedCulture)
 		{
@@ -317,7 +317,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void IntValuesOutOfRange()
+		public static void IntValuesOutOfRange()
 		{
 			var discoveryOptions = TestData.TestFrameworkDiscoveryOptions();
 			var executionOptions = TestData.TestFrameworkExecutionOptions(
@@ -337,7 +337,7 @@ public class Xunit3ArgumentFactoryTests
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
-		public void DoesNotSendSyncParameterToAutomatedForOlderTestProjects(bool discoverySynchronous)
+		public static void DoesNotSendSyncParameterToAutomatedForOlderTestProjects(bool discoverySynchronous)
 		{
 			// Either one turns it on, so test it both ways
 			var discoveryOptions = TestData.TestFrameworkDiscoveryOptions(synchronousMessageReporting: discoverySynchronous);
@@ -350,7 +350,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void AddConfigFile()
+		public static void AddConfigFile()
 		{
 			var discoveryOptions = TestData.TestFrameworkDiscoveryOptions();
 			var executionOptions = TestData.TestFrameworkExecutionOptions();
@@ -365,7 +365,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void AddFilters()
+		public static void AddFilters()
 		{
 			var discoveryOptions = TestData.TestFrameworkDiscoveryOptions();
 			var executionOptions = TestData.TestFrameworkExecutionOptions();
@@ -448,7 +448,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void AddWaitForDebugger()
+		public static void AddWaitForDebugger()
 		{
 			var discoveryOptions = TestData.TestFrameworkDiscoveryOptions();
 			var executionOptions = TestData.TestFrameworkExecutionOptions();
@@ -463,10 +463,10 @@ public class Xunit3ArgumentFactoryTests
 		}
 	}
 
-	public class ForRun
+	public static class ForRun
 	{
 		[Fact]
-		public void DefaultOptions()
+		public static void DefaultOptions()
 		{
 			var options = TestData.TestFrameworkExecutionOptions();
 
@@ -489,7 +489,7 @@ public class Xunit3ArgumentFactoryTests
 		[Theory]
 		[InlineData("", "invariant")]
 		[InlineData("en-US", "en-US")]
-		public void FullOptions(
+		public static void FullOptions(
 			string culture,
 			string expectedCulture)
 		{
@@ -554,7 +554,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void IntValuesOutOfRange()
+		public static void IntValuesOutOfRange()
 		{
 			var options = TestData.TestFrameworkExecutionOptions(
 				assertEquivalentMaxDepth: 0,
@@ -582,7 +582,7 @@ public class Xunit3ArgumentFactoryTests
 		[InlineData(0, "default")]
 		[InlineData(-1, "unlimited")]
 		[InlineData(-42, "unlimited")]
-		public void MaxParallelThreads(
+		public static void MaxParallelThreads(
 			int maxParallelThreadsValue,
 			string expectedArgumentValue)
 		{
@@ -603,7 +603,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void DoesNotSendSyncParameterToAutomatedForOlderTestProjects()
+		public static void DoesNotSendSyncParameterToAutomatedForOlderTestProjects()
 		{
 			var options = TestData.TestFrameworkExecutionOptions(synchronousMessageReporting: true);
 
@@ -620,7 +620,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void AddConfigFile()
+		public static void AddConfigFile()
 		{
 			var options = TestData.TestFrameworkExecutionOptions();
 
@@ -638,7 +638,7 @@ public class Xunit3ArgumentFactoryTests
 		}
 
 		[Fact]
-		public void AddWaitForDebugger()
+		public static void AddWaitForDebugger()
 		{
 			var options = TestData.TestFrameworkExecutionOptions();
 

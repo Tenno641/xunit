@@ -6,10 +6,10 @@ using Xunit.v3;
 
 public static partial class TestAssemblyRunnerTests
 {
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
-		public async ValueTask OnError()
+		public static async ValueTask OnError()
 		{
 			var runner = new TestableTestAssemblyRunner();
 			var ex = Record.Exception(ThrowException);
@@ -26,7 +26,7 @@ public static partial class TestAssemblyRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask OnTestAssemblyCleanupFailure()
+		public static async ValueTask OnTestAssemblyCleanupFailure()
 		{
 			var runner = new TestableTestAssemblyRunner();
 			var ex = Record.Exception(ThrowException);
@@ -44,7 +44,7 @@ public static partial class TestAssemblyRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask OnTestAssemblyFinished()
+		public static async ValueTask OnTestAssemblyFinished()
 		{
 			var runner = new TestableTestAssemblyRunner();
 			var summary = new RunSummary { Total = 2112, Failed = 42, Skipped = 21, NotRun = 9, Time = 123.45m };
@@ -64,7 +64,7 @@ public static partial class TestAssemblyRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask OnTestAssemblyStarting()
+		public static async ValueTask OnTestAssemblyStarting()
 		{
 			var runner = new TestableTestAssemblyRunner();
 
@@ -92,7 +92,7 @@ public static partial class TestAssemblyRunnerTests
 			Assert.Equal("assembly-id", message.AssemblyUniqueID);
 	}
 
-	public class Cancellation
+	public static class Cancellation
 	{
 		[Fact]
 		public static async ValueTask OnError()
@@ -187,7 +187,7 @@ public static partial class TestAssemblyRunnerTests
 		}
 	}
 
-	public class ExceptionHandling
+	public static class ExceptionHandling
 	{
 		[Fact]
 		public static async ValueTask NoExceptions()
@@ -278,7 +278,11 @@ public static partial class TestAssemblyRunnerTests
 		}
 	}
 
+<<<<<<< HEAD
 	public class Run
+=======
+	public static class Run
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		[Fact]
 		public static async ValueTask DefaultTestCollectionOrdering()

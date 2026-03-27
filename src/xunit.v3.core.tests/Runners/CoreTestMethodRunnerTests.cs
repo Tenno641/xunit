@@ -2,9 +2,15 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
+<<<<<<< HEAD
 public class CoreTestMethodRunnerTests
 {
 	public class Run
+=======
+public static class CoreTestMethodRunnerTests
+{
+	public static class Run
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		public static TheoryData<ICoreTestMethod> TestMethodOrdererData = new()
 		{
@@ -38,7 +44,11 @@ public class CoreTestMethodRunnerTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask ThrowingOrderer()
+=======
+		public static async ValueTask ThrowingOrderer()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMethod = Mocks.CoreTestMethod(testCaseOrderer: new MyThrowingOrderer());
 			var testCase = Mocks.CoreTestCase(testMethod: testMethod);

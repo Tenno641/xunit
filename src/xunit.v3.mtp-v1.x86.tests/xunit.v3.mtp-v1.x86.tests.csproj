@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Include="..\xunit.v3.mtp-v1.tests\**\*.cs" Exclude="**\obj\**\*.cs" />
+    <Compile Include="..\xunit.v3.mtp-v2.tests\**\*.cs" Exclude="**\obj\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

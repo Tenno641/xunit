@@ -2,9 +2,9 @@ using System.Collections.Immutable;
 using Xunit;
 using Xunit.Sdk;
 
-public class SetAssertsTests
+public static class SetAssertsTests
 {
-	public class Contains
+	public static class Contains
 	{
 		[Fact]
 		public static void ValueInSet()
@@ -50,7 +50,7 @@ public class SetAssertsTests
 		}
 	}
 
-	public class DoesNotContain
+	public static class DoesNotContain
 	{
 		[Fact]
 		public static void ValueNotInSet()
@@ -96,7 +96,7 @@ public class SetAssertsTests
 		}
 	}
 
-	public class ProperSubset
+	public static class ProperSubset
 	{
 		[Fact]
 		public static void GuardClause()
@@ -162,7 +162,7 @@ public class SetAssertsTests
 		}
 	}
 
-	public class ProperSuperset
+	public static class ProperSuperset
 	{
 		[Fact]
 		public static void GuardClause()
@@ -214,7 +214,7 @@ public class SetAssertsTests
 		}
 
 		[Fact]
-		public void NullActual()
+		public static void NullActual()
 		{
 			var ex = Record.Exception(() => Assert.ProperSuperset(new HashSet<int>(), null));
 
@@ -228,7 +228,7 @@ public class SetAssertsTests
 		}
 	}
 
-	public class Subset
+	public static class Subset
 	{
 		[Fact]
 		public static void GuardClause()
@@ -286,7 +286,7 @@ public class SetAssertsTests
 		}
 	}
 
-	public class Superset
+	public static class Superset
 	{
 		[Fact]
 		public static void GuardClause()
@@ -329,7 +329,7 @@ public class SetAssertsTests
 		}
 
 		[Fact]
-		public void NullActual()
+		public static void NullActual()
 		{
 			var ex = Record.Exception(() => Assert.Superset(new HashSet<int>(), null));
 

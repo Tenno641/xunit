@@ -8,7 +8,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 	readonly ITestFrameworkDiscoveryOptions discoveryOptions = TestData.TestFrameworkDiscoveryOptions(preEnumerateTheories: true);
 
 	[Fact]
-	public async ValueTask NoDataAttributes()
+	public static async ValueTask NoDataAttributes()
 	{
 		var failures = await RunAsync<ITestFailed>(typeof(NoDataAttributesClass));
 
@@ -28,7 +28,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 #pragma warning restore xUnit1003 // Theory methods must have test data
 
 	[Fact]
-	public async ValueTask NullMemberData_ThrowsInvalidOperationException()
+	public static async ValueTask NullMemberData_ThrowsInvalidOperationException()
 	{
 		var results = await RunAsync<ITestFailed>(typeof(NullDataClass));
 
@@ -60,7 +60,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 	[Theory]
 	[InlineData(true)]
 	[InlineData(false)]
-	public async ValueTask EmptyTheoryData_Fail(bool preEnumerateTheories)
+	public static async ValueTask EmptyTheoryData_Fail(bool preEnumerateTheories)
 	{
 		var failures = await RunAsync<ITestFailed>(typeof(EmptyTheoryDataClass), preEnumerateTheories);
 
@@ -88,7 +88,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 	[Theory]
 	[InlineData(true)]
 	[InlineData(false)]
-	public async ValueTask EmptyTheoryData_Skip(bool preEnumerateTheories)
+	public static async ValueTask EmptyTheoryData_Skip(bool preEnumerateTheories)
 	{
 		var messages = await RunAsync(typeof(EmptyTheoryDataClass_Skip), preEnumerateTheories);
 
@@ -393,7 +393,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 #pragma warning restore xUnit1042 // The member referenced by the MemberData attribute returns untyped data rows
 
 	[Fact]
-	public async ValueTask SkippedTheoryWithNoData()
+	public static async ValueTask SkippedTheoryWithNoData()
 	{
 		var msgs = await RunAsync(typeof(SkippedWithNoData));
 
@@ -414,7 +414,7 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 #pragma warning restore xUnit1003 // Theory methods must have test data
 
 	[Fact]
-	public async ValueTask SkippedTheoryWithData()
+	public static async ValueTask SkippedTheoryWithData()
 	{
 		var msgs = await RunAsync(typeof(SkippedWithData));
 

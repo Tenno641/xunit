@@ -6,9 +6,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class XunitTestAssemblyRunnerTests
+public static class XunitTestAssemblyRunnerTests
 {
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
 		public static async ValueTask Passing()
@@ -382,7 +382,11 @@ public class XunitTestAssemblyRunnerTests
 		}
 	}
 
+<<<<<<< HEAD
 	public class Run
+=======
+	public static class Run
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		[Fact]
 		public static async ValueTask OrdererWithThrowingConstructor()

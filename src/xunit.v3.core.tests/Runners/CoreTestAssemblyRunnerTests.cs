@@ -2,8 +2,15 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
+<<<<<<< HEAD
 public class CoreTestAssemblyRunnerTests
 {
+=======
+public static class CoreTestAssemblyRunnerTests
+{
+#pragma warning disable CA1822 // Tests in here depend on the constructor to hide diagnostic messages
+
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	[CollectionDefinition(DisableParallelization = true)]
 	[Collection(typeof(Run))]
 	public class Run
@@ -184,6 +191,11 @@ public class CoreTestAssemblyRunnerTests
 		}
 	}
 
+<<<<<<< HEAD
+=======
+#pragma warning restore CA1822
+
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	class TestableCoreTestAssemblyRunner(
 		ICoreTestCase[] testCases,
 		ITestFrameworkExecutionOptions? executionOptions = null,

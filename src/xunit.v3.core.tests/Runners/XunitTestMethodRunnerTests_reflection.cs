@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class XunitTestMethodRunnerTests
+public static class XunitTestMethodRunnerTests
 {
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
 		public static async ValueTask Passing()
@@ -230,6 +230,7 @@ public class XunitTestMethodRunnerTests
 		}
 	}
 
+<<<<<<< HEAD
 	public class Run
 	{
 		[Fact]
@@ -280,9 +281,61 @@ public class XunitTestMethodRunnerTests
 	}
 
 	public class SelfExecution
+=======
+	public static class Run
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		[Fact]
-		public async ValueTask SupportsSelfExecutingTestCases()
+		public static async ValueTask OrdererWithThrowingConstructor()
+		{
+			var testCase = TestData.XunitTestCase<TestClassWithCtorThrowingOrderer>(nameof(TestClassWithCtorThrowingOrderer.Passing));
+			var runner = new TestableXunitTestMethodRunner(testCase);
+
+			await runner.RunAsync();
+
+			Assert.Collection(
+				runner.MessageBus.Messages,
+				msg => Assert.IsType<ITestMethodStarting>(msg, exactMatch: false),
+				msg =>
+				{
+					var failure = Assert.IsType<ITestMethodCleanupFailure>(msg, exactMatch: false);
+					Assert.Collection(
+						failure.ExceptionTypes,
+						type => Assert.Equal(typeof(TestPipelineException).SafeName(), type),
+						type => Assert.Equal(typeof(DivideByZeroException).SafeName(), type)
+					);
+					Assert.Collection(
+						failure.Messages,
+						msg => Assert.Equal($"Method-level test case orderer '{typeof(MyCtorThrowingOrderer).FullName}' for test method '{typeof(TestClassWithCtorThrowingOrderer).FullName}.{nameof(TestClassWithCtorThrowingOrderer.Passing)}' threw during construction", msg),
+						msg => Assert.Equal("Attempted to divide by zero.", msg)
+					);
+				},
+				msg => Assert.IsType<ITestMethodFinished>(msg, exactMatch: false)
+			);
+		}
+
+		class TestClassWithCtorThrowingOrderer
+		{
+			[Fact]
+			[TestCaseOrderer(typeof(MyCtorThrowingOrderer))]
+			public void Passing() { }
+		}
+
+		class MyCtorThrowingOrderer : ITestCaseOrderer
+		{
+			public MyCtorThrowingOrderer() =>
+				throw new DivideByZeroException();
+
+			public IReadOnlyCollection<TTestCase> OrderTestCases<TTestCase>(IReadOnlyCollection<TTestCase> testCases)
+				where TTestCase : notnull, ITestCase =>
+					[];
+		}
+	}
+
+	public static class SelfExecution
+	{
+		[Fact]
+		public static async ValueTask SupportsSelfExecutingTestCases()
 		{
 			var testMethod = TestData.XunitTestMethod<ClassUnderTest>(nameof(ClassUnderTest.Passing));
 			var testCase = new SelfExecutingTestCase(testMethod);

@@ -2,7 +2,7 @@ using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Runner.Common;
 
-public class LoggerRunnerLoggerTests
+public static class LoggerRunnerLoggerTests
 {
 	public static IEnumerable<TheoryDataRow<Action<IRunnerLogger>, string>> LogData =
 	[
@@ -30,7 +30,7 @@ public class LoggerRunnerLoggerTests
 
 	[Theory(DisableDiscoveryEnumeration = true)]
 	[MemberData(nameof(LogData))]
-	public void ForwardsMessages(
+	public static void ForwardsMessages(
 		Action<IRunnerLogger> action,
 		string expectedLog)
 	{

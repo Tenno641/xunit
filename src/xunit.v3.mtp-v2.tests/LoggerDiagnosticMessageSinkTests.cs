@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Sdk;
 
-public class LoggerDiagnosticMessageSinkTests
+public static class LoggerDiagnosticMessageSinkTests
 {
-	public class OnMessage
+	public static class OnMessage
 	{
 		public static IEnumerable<TheoryDataRow<IMessageSinkMessage, string?>> MessageData =
 		[
@@ -24,7 +24,7 @@ public class LoggerDiagnosticMessageSinkTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(MessageData))]
-		public void ForwardsDiagnosticMessages(
+		public static void ForwardsDiagnosticMessages(
 			IMessageSinkMessage message,
 			string? expectedLog)
 		{
@@ -44,7 +44,7 @@ public class LoggerDiagnosticMessageSinkTests
 
 		[Theory(DisableDiscoveryEnumeration = true)]
 		[MemberData(nameof(MessageData))]
-		public void DoesNotForwardMessagesWhenDisabled(
+		public static void DoesNotForwardMessagesWhenDisabled(
 			IMessageSinkMessage message,
 			string? _)
 		{
@@ -57,14 +57,14 @@ public class LoggerDiagnosticMessageSinkTests
 		}
 	}
 
-	public class TryCreate
+	public static class TryCreate
 	{
 		[Theory]
 		[InlineData(false, false, false)]
 		[InlineData(false, true, true)]
 		[InlineData(true, false, true)]
 		[InlineData(true, true, true)]
-		public void Creation(
+		public static void Creation(
 			bool diagnosticMessages,
 			bool internalDiagnosticMessages,
 			bool objectShouldBeCreated)

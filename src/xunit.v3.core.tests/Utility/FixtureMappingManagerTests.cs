@@ -1,10 +1,14 @@
 using Xunit;
 using Xunit.Sdk;
 
+<<<<<<< HEAD
 public partial class FixtureMappingManagerTests
+=======
+public static partial class FixtureMappingManagerTests
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 {
 	[Fact]
-	public async ValueTask ReturnsNullForUnregisteredType()
+	public static async ValueTask ReturnsNullForUnregisteredType()
 	{
 		var manager = new TestableFixtureMappingManager();
 
@@ -14,7 +18,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask ReturnsCachedValue()
+	public static async ValueTask ReturnsCachedValue()
 	{
 		var manager = new TestableFixtureMappingManager(12);
 
@@ -24,7 +28,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask ReturnsValueFromParentWhenNotPresentLocally()
+	public static async ValueTask ReturnsValueFromParentWhenNotPresentLocally()
 	{
 		var parent = new TestableFixtureMappingManager(12);
 		var manager = new TestableFixtureMappingManager(parent);
@@ -35,7 +39,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask ConstructsRegisteredType()
+	public static async ValueTask ConstructsRegisteredType()
 	{
 		var manager = new TestableFixtureMappingManager();
 #if XUNIT_AOT
@@ -50,7 +54,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask FixtureWithThrowingCtorThrows()
+	public static async ValueTask FixtureWithThrowingCtorThrows()
 	{
 		var manager = new TestableFixtureMappingManager();
 
@@ -71,7 +75,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask FixtureWithThrowingInitializeAsyncThrows()
+	public static async ValueTask FixtureWithThrowingInitializeAsyncThrows()
 	{
 		var manager = new TestableFixtureMappingManager();
 
@@ -93,7 +97,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask MissingDependencyThrows()
+	public static async ValueTask MissingDependencyThrows()
 	{
 		var manager = new TestableFixtureMappingManager();
 
@@ -113,7 +117,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask CanProvideParentCtorArgs()
+	public static async ValueTask CanProvideParentCtorArgs()
 	{
 		var parent = new TestableFixtureMappingManager();
 		var manager = new TestableFixtureMappingManager(parent);
@@ -132,7 +136,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask CanProvideMessageSinkAndTestContextAccessorCtorArgs()
+	public static async ValueTask CanProvideMessageSinkAndTestContextAccessorCtorArgs()
 	{
 		var manager = new TestableFixtureMappingManager();
 #if XUNIT_AOT
@@ -158,7 +162,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask CallsDispose()
+	public static async ValueTask CallsDispose()
 	{
 		var manager = new TestableFixtureMappingManager();
 #if XUNIT_AOT
@@ -185,7 +189,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask FixtureWithThrowingDisposeThrows()
+	public static async ValueTask FixtureWithThrowingDisposeThrows()
 	{
 		var manager = new TestableFixtureMappingManager();
 #if XUNIT_AOT
@@ -208,7 +212,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask CallsDisposeAsync()
+	public static async ValueTask CallsDisposeAsync()
 	{
 		var manager = new TestableFixtureMappingManager();
 #if XUNIT_AOT
@@ -239,7 +243,7 @@ public partial class FixtureMappingManagerTests
 	}
 
 	[Fact]
-	public async ValueTask FixtureWithThrowingDisposeAsyncThrows()
+	public static async ValueTask FixtureWithThrowingDisposeAsyncThrows()
 	{
 		var manager = new TestableFixtureMappingManager();
 #if XUNIT_AOT

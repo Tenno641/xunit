@@ -2,9 +2,13 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
+<<<<<<< HEAD
 public partial class TestRunnerBaseTests
+=======
+public static partial class TestRunnerBaseTests
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 {
-	public class InvocationsAndMessages
+	public static class InvocationsAndMessages
 	{
 		[Theory]
 		[InlineData(false)]
@@ -225,7 +229,7 @@ public partial class TestRunnerBaseTests
 		}
 	}
 
-	public class ExceptionHandling
+	public static class ExceptionHandling
 	{
 		[Fact]
 		public static async ValueTask GetAttachments()
@@ -521,7 +525,7 @@ public partial class TestRunnerBaseTests
 
 	// We test the standard handlers (OnTestPassed, OnTestFailed, etc.) via theory in Invocations above
 	// so these tests are the ancillary cancellable handlers (starting, finished, and cleanup failure).
-	public class Cancellation
+	public static class Cancellation
 	{
 		[Fact]
 		public static async ValueTask OnError()

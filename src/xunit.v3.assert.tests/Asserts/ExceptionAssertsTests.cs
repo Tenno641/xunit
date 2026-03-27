@@ -1,14 +1,16 @@
+#pragma warning disable CA2263  // Prefer generic overload when type is known
+
 using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class ExceptionAssertsTests
+public static class ExceptionAssertsTests
 {
 #pragma warning disable xUnit2015 // Do not use typeof expression to check the exception type
 
-	public class Throws_NonGeneric
+	public static class Throws_NonGeneric
 	{
-		public class WithAction
+		public static class WithAction
 		{
 			[Fact]
 			public static void GuardClauses()
@@ -96,7 +98,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithActionAndInspector
+		public static class WithActionAndInspector
 		{
 			[Fact]
 			public static void GuardClauses()
@@ -212,7 +214,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithFunc
+		public static class WithFunc
 		{
 			[Fact]
 			public static void GuardClauses()
@@ -311,7 +313,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithFuncAndInspector
+		public static class WithFuncAndInspector
 		{
 			[Fact]
 			public static void GuardClauses()
@@ -441,9 +443,9 @@ public class ExceptionAssertsTests
 
 #pragma warning restore xUnit2015 // Do not use typeof expression to check the exception type
 
-	public class Throws_Generic
+	public static class Throws_Generic
 	{
-		public class WithAction
+		public static class WithAction
 		{
 			[Fact]
 			public static void GuardClause()
@@ -528,7 +530,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithActionAndInspector
+		public static class WithActionAndInspector
 		{
 			[Fact]
 			public static void GuardClause()
@@ -640,7 +642,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithFunc
+		public static class WithFunc
 		{
 			[Fact]
 			public static void GuardClause()
@@ -736,7 +738,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithFuncAndInspector
+		public static class WithFuncAndInspector
 		{
 			[Fact]
 			public static void GuardClause()
@@ -858,9 +860,9 @@ public class ExceptionAssertsTests
 		}
 	}
 
-	public class Throws_Generic_ArgumentException
+	public static class Throws_Generic_ArgumentException
 	{
-		public class WithAction
+		public static class WithAction
 		{
 			[Fact]
 			public static void GuardClause()
@@ -946,7 +948,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithFunc
+		public static class WithFunc
 		{
 			[Fact]
 			public static void GuardClause()
@@ -1033,9 +1035,9 @@ public class ExceptionAssertsTests
 		}
 	}
 
-	public class ThrowsAny
+	public static class ThrowsAny
 	{
-		public class WithAction
+		public static class WithAction
 		{
 			[Fact]
 			public static void GuardClause()
@@ -1110,7 +1112,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithActionAndInspector
+		public static class WithActionAndInspector
 		{
 			[Fact]
 			public static void GuardClause()
@@ -1235,7 +1237,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithFunc
+		public static class WithFunc
 		{
 			[Fact]
 			public static void GuardClause()
@@ -1321,7 +1323,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithFuncAndInspector
+		public static class WithFuncAndInspector
 		{
 			[Fact]
 			public static void GuardClause()
@@ -1458,9 +1460,9 @@ public class ExceptionAssertsTests
 		}
 	}
 
-	public class ThrowsAnyAsync
+	public static class ThrowsAnyAsync
 	{
-		public class WithoutInspector
+		public static class WithoutInspector
 		{
 			[Fact]
 			public static async Task GuardClause()
@@ -1535,7 +1537,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithInspector
+		public static class WithInspector
 		{
 			[Fact]
 			public static async Task GuardClause()
@@ -1661,9 +1663,9 @@ public class ExceptionAssertsTests
 		}
 	}
 
-	public class ThrowsAsync
+	public static class ThrowsAsync
 	{
-		public class WithoutInspector
+		public static class WithoutInspector
 		{
 			[Fact]
 			public static async Task GuardClause()
@@ -1748,7 +1750,7 @@ public class ExceptionAssertsTests
 			}
 		}
 
-		public class WithInspector
+		public static class WithInspector
 		{
 			[Fact]
 			public static async Task GuardClause()
@@ -1859,7 +1861,7 @@ public class ExceptionAssertsTests
 		}
 	}
 
-	public class ThrowsAsync_ArgumentException
+	public static class ThrowsAsync_ArgumentException
 	{
 		[Fact]
 		public static async Task GuardClause()

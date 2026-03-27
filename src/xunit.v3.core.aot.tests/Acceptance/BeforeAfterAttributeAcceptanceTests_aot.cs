@@ -39,7 +39,11 @@ public class BeforeAfterAttributeAcceptanceTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public void TestMethodComesAfterTestClass()
+=======
+	public static void TestMethodComesAfterTestClass()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var testAssembly = Mocks.CodeGenTestAssembly();
 		var classRegistration = new CodeGenTestClassRegistration { Class = typeof(MyTestClass) };

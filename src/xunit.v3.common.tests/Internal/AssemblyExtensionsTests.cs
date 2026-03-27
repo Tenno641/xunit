@@ -1,13 +1,13 @@
 using Xunit;
 
-public class AssemblyExtensionsTests
+public static class AssemblyExtensionsTests
 {
-	public class GetLocalCodeBase
+	public static class GetLocalCodeBase
 	{
 #if !XUNIT_AOT
 
 		[Fact]
-		public void NullAssembly_ReturnsNull()
+		public static void NullAssembly_ReturnsNull()
 		{
 			var result = AssemblyExtensions.GetLocalCodeBase(null);
 
@@ -17,7 +17,7 @@ public class AssemblyExtensionsTests
 #endif  // !XUNIT_AOT
 
 		[Fact]
-		public void NullCodeBase_ReturnsNull()
+		public static void NullCodeBase_ReturnsNull()
 		{
 			var result = AssemblyExtensions.GetLocalCodeBase(null, '/');
 
@@ -25,7 +25,7 @@ public class AssemblyExtensionsTests
 		}
 
 		[Fact]
-		public void UnsupportedCodeBaseFormat_Throws()
+		public static void UnsupportedCodeBaseFormat_Throws()
 		{
 			var ex = Record.Exception(() => AssemblyExtensions.GetLocalCodeBase("http://host/path", '/'));
 
@@ -35,7 +35,7 @@ public class AssemblyExtensionsTests
 		}
 
 		[Fact]
-		public void UnsupportedDirectorySeparator_Throws()
+		public static void UnsupportedDirectorySeparator_Throws()
 		{
 			var ex = Record.Exception(() => AssemblyExtensions.GetLocalCodeBase("file:///path", 'a'));
 
@@ -45,7 +45,7 @@ public class AssemblyExtensionsTests
 		}
 
 		[Fact]
-		public void PosixSystem_LocalPath()
+		public static void PosixSystem_LocalPath()
 		{
 			var result = AssemblyExtensions.GetLocalCodeBase("file:///path/to/file.dll", '/');
 
@@ -53,7 +53,7 @@ public class AssemblyExtensionsTests
 		}
 
 		[Fact]
-		public void PosixSystem_UNCPath_Throws()
+		public static void PosixSystem_UNCPath_Throws()
 		{
 			var ex = Record.Exception(() => AssemblyExtensions.GetLocalCodeBase("file://server/path", '/'));
 
@@ -63,7 +63,7 @@ public class AssemblyExtensionsTests
 		}
 
 		[Fact]
-		public void WindowsSystem_LocalPath()
+		public static void WindowsSystem_LocalPath()
 		{
 			var result = AssemblyExtensions.GetLocalCodeBase("file:///C:/path/to/file.dll", '\\');
 
@@ -71,7 +71,7 @@ public class AssemblyExtensionsTests
 		}
 
 		[Fact]
-		public void WindowsSystem_UNCPath()
+		public static void WindowsSystem_UNCPath()
 		{
 			var result = AssemblyExtensions.GetLocalCodeBase("file://server/path/to/file.dll", '\\');
 
@@ -80,7 +80,7 @@ public class AssemblyExtensionsTests
 	}
 
 	[Fact]
-	public void GetTargetFramework()
+	public static void GetTargetFramework()
 	{
 #if NET472
 		var expected = ".NETFramework,Version=v4.7.2";

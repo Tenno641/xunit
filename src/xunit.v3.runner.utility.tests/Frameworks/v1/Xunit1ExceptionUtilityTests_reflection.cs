@@ -1,10 +1,9 @@
 #if NETFRAMEWORK
 
-using System;
 using Xunit;
 using Xunit.Runner.v1;
 
-public class Xunit1ExceptionUtilityTests
+public static class Xunit1ExceptionUtilityTests
 {
 	[Fact]
 	public static void CanParseEmbeddedExceptions()

@@ -3,18 +3,18 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class NullAssertsTests
+public static class NullAssertsTests
 {
-	public class NotNull
+	public static class NotNull
 	{
 		[Fact]
-		public void Success_Reference()
+		public static void Success_Reference()
 		{
 			Assert.NotNull(new object());
 		}
 
 		[Fact]
-		public void Success_NullableStruct()
+		public static void Success_NullableStruct()
 		{
 			int? x = 42;
 
@@ -25,7 +25,11 @@ public class NullAssertsTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public unsafe void Success_Pointer()
+=======
+		public unsafe static void Success_Pointer()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var x = 42;
 			Assert.NotNull(&x);
@@ -35,7 +39,7 @@ public class NullAssertsTests
 		}
 
 		[Fact]
-		public void Failure_Reference()
+		public static void Failure_Reference()
 		{
 			var ex = Record.Exception(() => Assert.NotNull(null));
 
@@ -44,7 +48,7 @@ public class NullAssertsTests
 		}
 
 		[Fact]
-		public void Failure_NullableStruct()
+		public static void Failure_NullableStruct()
 		{
 			int? value = null;
 
@@ -55,7 +59,7 @@ public class NullAssertsTests
 		}
 
 		[Fact]
-		public unsafe void Failure_Pointer()
+		public unsafe static void Failure_Pointer()
 		{
 			var ex = Record.Exception(() => Assert.NotNull((object*)null));
 
@@ -64,16 +68,16 @@ public class NullAssertsTests
 		}
 	}
 
-	public class Null
+	public static class Null
 	{
 		[Fact]
-		public void Success_Reference()
+		public static void Success_Reference()
 		{
 			Assert.Null(null);
 		}
 
 		[Fact]
-		public void Success_NullableStruct()
+		public static void Success_NullableStruct()
 		{
 			int? x = null;
 
@@ -81,13 +85,13 @@ public class NullAssertsTests
 		}
 
 		[Fact]
-		public unsafe void Success_Pointer()
+		public unsafe static void Success_Pointer()
 		{
 			Assert.Null((object*)null);
 		}
 
 		[Fact]
-		public void Failure_Reference()
+		public static void Failure_Reference()
 		{
 			var ex = Record.Exception(() => Assert.Null(new object()));
 
@@ -105,7 +109,7 @@ public class NullAssertsTests
 		}
 
 		[Fact]
-		public void Failure_NullableStruct()
+		public static void Failure_NullableStruct()
 		{
 			int? x = 42;
 
@@ -121,7 +125,11 @@ public class NullAssertsTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public void Failure_Pointer()
+=======
+		public static void Failure_Pointer()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			verifyFailure(42);
 			verifyFailure("Hello world");

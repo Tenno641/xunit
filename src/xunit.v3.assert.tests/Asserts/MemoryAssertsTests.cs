@@ -1,26 +1,26 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class MemoryAssertsTests
+public static class MemoryAssertsTests
 {
-	public class Contains
+	public static class Contains
 	{
-		public class Strings
+		public static class Strings
 		{
 			[Fact]
-			public void ReadOnlyMemory_Success()
+			public static void ReadOnlyMemory_Success()
 			{
 				Assert.Contains("wor".AsMemory(), "Hello, world!".AsMemory());
 			}
 
 			[Fact]
-			public void ReadWriteMemory_Success()
+			public static void ReadWriteMemory_Success()
 			{
 				Assert.Contains("wor".Memoryify(), "Hello, world!".Memoryify());
 			}
 
 			[Fact]
-			public void ReadOnlyMemory_CaseSensitiveByDefault()
+			public static void ReadOnlyMemory_CaseSensitiveByDefault()
 			{
 				var ex = Record.Exception(() => Assert.Contains("WORLD".AsMemory(), "Hello, world!".AsMemory()));
 
@@ -34,7 +34,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteMemory_CaseSensitiveByDefault()
+			public static void ReadWriteMemory_CaseSensitiveByDefault()
 			{
 				var ex = Record.Exception(() => Assert.Contains("WORLD".Memoryify(), "Hello, world!".Memoryify()));
 
@@ -48,19 +48,19 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadOnlyMemory_CanSpecifyComparisonType()
+			public static void ReadOnlyMemory_CanSpecifyComparisonType()
 			{
 				Assert.Contains("WORLD".AsMemory(), "Hello, world!".AsMemory(), StringComparison.OrdinalIgnoreCase);
 			}
 
 			[Fact]
-			public void ReadWriteMemory_CanSpecifyComparisonType()
+			public static void ReadWriteMemory_CanSpecifyComparisonType()
 			{
 				Assert.Contains("WORLD".Memoryify(), "Hello, world!".Memoryify(), StringComparison.OrdinalIgnoreCase);
 			}
 
 			[Fact]
-			public void ReadOnlyMemory_NullStringIsEmpty()
+			public static void ReadOnlyMemory_NullStringIsEmpty()
 			{
 				var ex = Record.Exception(() => Assert.Contains("foo".AsMemory(), default(string).AsMemory()));
 
@@ -74,7 +74,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteMemory_NullStringIsEmpty()
+			public static void ReadWriteMemory_NullStringIsEmpty()
 			{
 				var ex = Record.Exception(() => Assert.Contains("foo".Memoryify(), default(string).Memoryify()));
 
@@ -88,7 +88,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void VeryLongStrings()
+			public static void VeryLongStrings()
 			{
 				var ex = Record.Exception(
 					() => Assert.Contains(
@@ -107,34 +107,34 @@ public class MemoryAssertsTests
 			}
 		}
 
-		public class NonStrings
+		public static class NonStrings
 		{
 			[Fact]
-			public void ReadOnlyMemoryOfInts_Success()
+			public static void ReadOnlyMemoryOfInts_Success()
 			{
 				Assert.Contains(new int[] { 3, 4 }.AsMemory(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.AsMemory());
 			}
 
 			[Fact]
-			public void ReadOnlyMemoryOfStrings_Success()
+			public static void ReadOnlyMemoryOfStrings_Success()
 			{
 				Assert.Contains(new string[] { "test", "it" }.AsMemory(), new string[] { "something", "interesting", "test", "it", "out" }.AsMemory());
 			}
 
 			[Fact]
-			public void ReadWriteMemoryOfInts_Success()
+			public static void ReadWriteMemoryOfInts_Success()
 			{
 				Assert.Contains(new int[] { 3, 4 }.Memoryify(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.Memoryify());
 			}
 
 			[Fact]
-			public void ReadWriteMemoryOfStrings_Success()
+			public static void ReadWriteMemoryOfStrings_Success()
 			{
 				Assert.Contains(new string[] { "test", "it" }.Memoryify(), new string[] { "something", "interesting", "test", "it", "out" }.Memoryify());
 			}
 
 			[Fact]
-			public void ReadOnlyMemoryOfInts_Failure()
+			public static void ReadOnlyMemoryOfInts_Failure()
 			{
 				var ex = Record.Exception(() => Assert.Contains(new int[] { 13, 14 }.AsMemory(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.AsMemory()));
 
@@ -148,7 +148,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteMemoryOfInts_Failure()
+			public static void ReadWriteMemoryOfInts_Failure()
 			{
 				var ex = Record.Exception(() => Assert.Contains(new int[] { 13, 14 }.Memoryify(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.Memoryify()));
 
@@ -162,7 +162,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void FindingNonEmptyMemoryInsideEmptyMemoryFails()
+			public static void FindingNonEmptyMemoryInsideEmptyMemoryFails()
 			{
 				var ex = Record.Exception(() => Assert.Contains(new int[] { 3, 4 }.Memoryify(), Memory<int>.Empty));
 
@@ -176,7 +176,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void FindingEmptyMemoryInsideAnyMemorySucceeds()
+			public static void FindingEmptyMemoryInsideAnyMemorySucceeds()
 			{
 				Assert.Contains(Memory<int>.Empty, new int[] { 3, 4 }.Memoryify());
 				Assert.Contains(Memory<int>.Empty, Memory<int>.Empty);
@@ -184,36 +184,36 @@ public class MemoryAssertsTests
 		}
 	}
 
-	public class DoesNotContain
+	public static class DoesNotContain
 	{
-		public class Strings
+		public static class Strings
 		{
 			[Fact]
-			public void ReadOnlyMemory_Success()
+			public static void ReadOnlyMemory_Success()
 			{
 				Assert.DoesNotContain("hey".AsMemory(), "Hello, world!".AsMemory());
 			}
 
 			[Fact]
-			public void ReadWriteMemory_Success()
+			public static void ReadWriteMemory_Success()
 			{
 				Assert.DoesNotContain("hey".Memoryify(), "Hello, world!".Memoryify());
 			}
 
 			[Fact]
-			public void ReadOnlyMemory_CaseSensitiveByDefault()
+			public static void ReadOnlyMemory_CaseSensitiveByDefault()
 			{
 				Assert.DoesNotContain("WORLD".AsMemory(), "Hello, world!".AsMemory());
 			}
 
 			[Fact]
-			public void ReadWriteMemory_CaseSensitiveByDefault()
+			public static void ReadWriteMemory_CaseSensitiveByDefault()
 			{
 				Assert.DoesNotContain("WORLD".Memoryify(), "Hello, world!".Memoryify());
 			}
 
 			[Fact]
-			public void ReadOnlyMemory_CanSpecifyComparisonType()
+			public static void ReadOnlyMemory_CanSpecifyComparisonType()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("WORLD".AsMemory(), "Hello, world!".AsMemory(), StringComparison.OrdinalIgnoreCase));
 
@@ -228,7 +228,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteMemory_CanSpecifyComparisonType()
+			public static void ReadWriteMemory_CanSpecifyComparisonType()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("WORLD".Memoryify(), "Hello, world!".Memoryify(), StringComparison.OrdinalIgnoreCase));
 
@@ -243,7 +243,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadOnlyMemory_Failure()
+			public static void ReadOnlyMemory_Failure()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".AsMemory(), "Hello, world!".AsMemory()));
 
@@ -258,7 +258,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteMemory_Failure()
+			public static void ReadWriteMemory_Failure()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".Memoryify(), "Hello, world!".Memoryify()));
 
@@ -273,19 +273,19 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadOnlyMemory_NullStringIsEmpty()
+			public static void ReadOnlyMemory_NullStringIsEmpty()
 			{
 				Assert.DoesNotContain("foo".AsMemory(), default(string).AsMemory());
 			}
 
 			[Fact]
-			public void ReadWriteMemory_NullStringIsEmpty()
+			public static void ReadWriteMemory_NullStringIsEmpty()
 			{
 				Assert.DoesNotContain("foo".Memoryify(), default(string).Memoryify());
 			}
 
 			[Fact]
-			public void VeryLongString_FoundAtFront()
+			public static void VeryLongString_FoundAtFront()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".Memoryify(), "Hello, world from a very long string that will end up being truncated".Memoryify()));
 
@@ -300,7 +300,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void VeryLongString_FoundInMiddle()
+			public static void VeryLongString_FoundInMiddle()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".Memoryify(), "This is a relatively long string that has 'Hello, world' placed in the middle so that we can dual trunaction".Memoryify()));
 
@@ -315,7 +315,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void VeryLongString_FoundAtEnd()
+			public static void VeryLongString_FoundAtEnd()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain("world".Memoryify(), "This is a relatively long string that will from the front truncated, just to say 'Hello, world'".Memoryify()));
 
@@ -330,34 +330,34 @@ public class MemoryAssertsTests
 			}
 		}
 
-		public class NonStrings
+		public static class NonStrings
 		{
 			[Fact]
-			public void ReadOnlyMemoryOfInts_Success()
+			public static void ReadOnlyMemoryOfInts_Success()
 			{
 				Assert.DoesNotContain(new int[] { 13, 14 }.AsMemory(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.AsMemory());
 			}
 
 			[Fact]
-			public void ReadOnlyMemoryOfStrings_Success()
+			public static void ReadOnlyMemoryOfStrings_Success()
 			{
 				Assert.DoesNotContain(new string[] { "it", "test" }.AsMemory(), new string[] { "something", "interesting", "test", "it", "out" }.AsMemory());
 			}
 
 			[Fact]
-			public void ReadWriteMemoryOfInts_Success()
+			public static void ReadWriteMemoryOfInts_Success()
 			{
 				Assert.DoesNotContain(new int[] { 13, 14 }.Memoryify(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.Memoryify());
 			}
 
 			[Fact]
-			public void ReadWriteMemoryOfStrings_Success()
+			public static void ReadWriteMemoryOfStrings_Success()
 			{
 				Assert.DoesNotContain(new string[] { "it", "test" }.Memoryify(), new string[] { "something", "interesting", "test", "it", "out" }.Memoryify());
 			}
 
 			[Fact]
-			public void ReadOnlyMemoryOfInts_Failure()
+			public static void ReadOnlyMemoryOfInts_Failure()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain(new int[] { 3, 4 }.AsMemory(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.AsMemory()));
 
@@ -372,7 +372,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void ReadWriteMemoryOfInts_Failure()
+			public static void ReadWriteMemoryOfInts_Failure()
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain(new int[] { 3, 4 }.Memoryify(), new int[] { 1, 2, 3, 4, 5, 6, 7 }.Memoryify()));
 
@@ -387,7 +387,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void SearchingForNonEmptyMemoryInsideEmptyMemorySucceeds()
+			public static void SearchingForNonEmptyMemoryInsideEmptyMemorySucceeds()
 			{
 				Assert.DoesNotContain(new int[] { 3, 4 }.Memoryify(), Memory<int>.Empty);
 			}
@@ -395,7 +395,7 @@ public class MemoryAssertsTests
 			[Theory]
 			[InlineData(new[] { 3, 4 })]
 			[InlineData(new int[0])]
-			public void SearchForEmptyMemoryInsideAnyMemoryFails(IEnumerable<int> data)
+			public static void SearchForEmptyMemoryInsideAnyMemoryFails(IEnumerable<int> data)
 			{
 				var ex = Record.Exception(() => Assert.DoesNotContain(Memory<int>.Empty, data.ToArray().Memoryify()));
 
@@ -411,10 +411,10 @@ public class MemoryAssertsTests
 		}
 	}
 
-	public class EndsWith
+	public static class EndsWith
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.EndsWith("world!".AsMemory(), "Hello, world!".AsMemory());
 			Assert.EndsWith("world!".AsMemory(), "Hello, world!".Memoryify());
@@ -423,7 +423,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			static void assertFailure(Action action)
 			{
@@ -445,7 +445,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void CaseSensitiveByDefault()
+		public static void CaseSensitiveByDefault()
 		{
 			static void assertFailure(Action action)
 			{
@@ -467,7 +467,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void CanSpecifyComparisonType()
+		public static void CanSpecifyComparisonType()
 		{
 			Assert.EndsWith("WORLD!".AsMemory(), "Hello, world!".AsMemory(), StringComparison.OrdinalIgnoreCase);
 			Assert.EndsWith("WORLD!".AsMemory(), "Hello, world!".Memoryify(), StringComparison.OrdinalIgnoreCase);
@@ -476,7 +476,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void NullStringIsEmpty()
+		public static void NullStringIsEmpty()
 		{
 			static void assertFailure(Action action)
 			{
@@ -496,7 +496,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void Truncation()
+		public static void Truncation()
 		{
 			var expected = "This is a long string that we're looking for at the end";
 			var actual = "This is the long string that we expected to find this ending inside";
@@ -521,9 +521,9 @@ public class MemoryAssertsTests
 		}
 	}
 
-	public class Equal
+	public static class Equal
 	{
-		public class Chars_TreatedLikeStrings
+		public static class Chars_TreatedLikeStrings
 		{
 			[Theory]
 			// Null values
@@ -565,7 +565,7 @@ public class MemoryAssertsTests
 			[InlineData("", "  ", false, false, true, true)]
 			[InlineData("", "\t", false, false, true, true)]
 			[InlineData("foobar", "foo bar", false, false, true, true)]
-			public void Success(
+			public static void Success(
 				string? value1,
 				string? value2,
 				bool ignoreCase,
@@ -607,7 +607,7 @@ public class MemoryAssertsTests
 			[InlineData("foo bar", "foo  Bar", false, false, true, false, "    ↓ (pos 4)", "     ↑ (pos 5)")]
 			// Ignore all white space differences
 			[InlineData("foobar", "foo Bar", false, false, false, true, "   ↓ (pos 3)", "    ↑ (pos 4)")]
-			public void Failure(
+			public static void Failure(
 				string expected,
 				string actual,
 				bool ignoreCase,
@@ -647,7 +647,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void Truncation()
+			public static void Truncation()
 			{
 				static void assertFailure(Action action)
 				{
@@ -691,7 +691,7 @@ public class MemoryAssertsTests
 			}
 		}
 
-		public class Ints
+		public static class Ints
 		{
 			[Theory]
 			// Null values
@@ -700,7 +700,7 @@ public class MemoryAssertsTests
 			[InlineData(new int[] { }, null)]
 			// Identical values
 			[InlineData(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })]
-			public void Success(
+			public static void Success(
 				int[]? value1,
 				int[]? value2)
 			{
@@ -724,7 +724,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void Failure_MidCollection()
+			public static void Failure_MidCollection()
 			{
 				static void assertFailure(Action action)
 				{
@@ -748,7 +748,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void Failure_BeyondEnd()
+			public static void Failure_BeyondEnd()
 			{
 				static void assertFailure(Action action)
 				{
@@ -771,7 +771,7 @@ public class MemoryAssertsTests
 			}
 		}
 
-		public class Strings
+		public static class Strings
 		{
 			[Theory]
 			// Null values
@@ -780,7 +780,7 @@ public class MemoryAssertsTests
 			[InlineData(new string[] { }, null)]
 			// Identical values
 			[InlineData(new string[] { "yes", "no", "maybe" }, new string[] { "yes", "no", "maybe" })]
-			public void Success(
+			public static void Success(
 				string[]? value1,
 				string[]? value2)
 			{
@@ -804,7 +804,7 @@ public class MemoryAssertsTests
 			}
 
 			[Fact]
-			public void Failure()
+			public static void Failure()
 			{
 				static void assertFailure(Action action)
 				{
@@ -828,10 +828,10 @@ public class MemoryAssertsTests
 		}
 	}
 
-	public class StartsWith
+	public static class StartsWith
 	{
 		[Fact]
-		public void Success()
+		public static void Success()
 		{
 			Assert.StartsWith("Hello".AsMemory(), "Hello, world!".AsMemory());
 			Assert.StartsWith("Hello".AsMemory(), "Hello, world!".Memoryify());
@@ -840,7 +840,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void Failure()
+		public static void Failure()
 		{
 			static void assertFailure(Action action)
 			{
@@ -862,7 +862,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void CaseSensitiveByDefault()
+		public static void CaseSensitiveByDefault()
 		{
 			static void assertFailure(Action action)
 			{
@@ -884,7 +884,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void CanSpecifyComparisonType()
+		public static void CanSpecifyComparisonType()
 		{
 			Assert.StartsWith("HELLO".AsMemory(), "Hello, world!".AsMemory(), StringComparison.OrdinalIgnoreCase);
 			Assert.StartsWith("HELLO".AsMemory(), "Hello, world!".Memoryify(), StringComparison.OrdinalIgnoreCase);
@@ -893,7 +893,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void NullStringIsEmpty()
+		public static void NullStringIsEmpty()
 		{
 			static void assertFailure(Action action)
 			{
@@ -913,7 +913,7 @@ public class MemoryAssertsTests
 		}
 
 		[Fact]
-		public void Truncation()
+		public static void Truncation()
 		{
 			var expected = "This is a long string that we're looking for at the start";
 			var actual = "This is the long string that we expected to find this starting inside";

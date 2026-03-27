@@ -7,7 +7,11 @@ using Xunit.v3;
 using System.Reflection;
 #endif
 
+<<<<<<< HEAD
 public partial class AsyncAcceptanceTests
+=======
+public static partial class AsyncAcceptanceTests
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 {
 	public class AsyncLocalUsage
 	{
@@ -46,10 +50,10 @@ public partial class AsyncAcceptanceTests
 	}
 
 	[PrincipalBeforeAfter]
-	public class PrincipalUsage
+	public static class PrincipalUsage
 	{
 		[Fact]
-		public void Test() =>
+		public static void Test() =>
 			Assert.Equal("xUnit", Thread.CurrentPrincipal?.Identity?.Name);
 
 		public class PrincipalBeforeAfterAttribute : BeforeAfterTestAttribute
@@ -91,11 +95,19 @@ public partial class AsyncAcceptanceTests
 #if XUNIT_AOT
 		[InlineData("AsyncAcceptanceTests+Tasks+ClassWithAsyncValueTask")]
 		[InlineData("AsyncAcceptanceTests+Tasks+ClassWithAsyncTask")]
+<<<<<<< HEAD
 		public async ValueTask AsyncTestsRunCorrectly(string classUnderTest)
 #else
 		[InlineData(typeof(ClassWithAsyncValueTask))]
 		[InlineData(typeof(ClassWithAsyncTask))]
 		public async ValueTask AsyncTestsRunCorrectly(Type classUnderTest)
+=======
+		public static async ValueTask AsyncTestsRunCorrectly(string classUnderTest)
+#else
+		[InlineData(typeof(ClassWithAsyncValueTask))]
+		[InlineData(typeof(ClassWithAsyncTask))]
+		public static async ValueTask AsyncTestsRunCorrectly(Type classUnderTest)
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 #endif
 		{
 			var results = await RunAsync<ITestFailed>(classUnderTest);
@@ -106,7 +118,11 @@ public partial class AsyncAcceptanceTests
 
 		// https://github.com/xunit/xunit/issues/3153
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask AsyncMethodWhichThrowsTaskCancelledException()
+=======
+		public static async ValueTask AsyncMethodWhichThrowsTaskCancelledException()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 #if XUNIT_AOT
 			var results = await RunForResultsAsync("AsyncAcceptanceTests+Tasks+ClassWithTaskCancelledException");

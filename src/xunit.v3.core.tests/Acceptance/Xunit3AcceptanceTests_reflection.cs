@@ -9,7 +9,11 @@ partial class Xunit3AcceptanceTests
 	public class CustomFacts : AcceptanceTestV3
 	{
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask CanUseCustomFactAttribute()
+=======
+		public static async ValueTask CanUseCustomFactAttribute()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(ClassWithCustomFact));
 
@@ -30,7 +34,11 @@ partial class Xunit3AcceptanceTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask CanUseCustomFactWithArrayParameters()
+=======
+		public static async ValueTask CanUseCustomFactWithArrayParameters()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(ClassWithCustomArrayFact));
 
@@ -54,7 +62,11 @@ partial class Xunit3AcceptanceTests
 
 		// https://github.com/xunit/xunit/issues/2719
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask ClassWithThrowingSkipGetterShouldReportThatAsFailure()
+=======
+		public static async ValueTask ClassWithThrowingSkipGetterShouldReportThatAsFailure()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var msgs = await RunForResultsAsync(typeof(ClassWithThrowingSkip));
 
@@ -95,7 +107,11 @@ partial class Xunit3AcceptanceTests
 	public class Guards : AcceptanceTestV3
 	{
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask AsyncVoidTestsAreFastFailed()
+=======
+		public static async ValueTask AsyncVoidTestsAreFastFailed()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(ClassWithAsyncVoidTest));
 
@@ -119,7 +135,11 @@ partial class Xunit3AcceptanceTests
 #pragma warning restore xUnit1049 // Do not use 'async void' for test methods as it is no longer supported
 
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask CannotMixMultipleFactDerivedAttributes()
+=======
+		public static async ValueTask CannotMixMultipleFactDerivedAttributes()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(ClassWithMultipleFacts));
 

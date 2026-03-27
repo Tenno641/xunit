@@ -1,10 +1,10 @@
 using Xunit;
 using Xunit.v3;
 
-public class TokenSourceCancellationMessageSinkTests
+public static class TokenSourceCancellationMessageSinkTests
 {
 	[Fact]
-	public void True_NoCancellation()
+	public static void True_NoCancellation()
 	{
 		var cts = new CancellationTokenSource();
 		var spySink = SpyMessageSink.Create(returnResult: true);
@@ -16,7 +16,7 @@ public class TokenSourceCancellationMessageSinkTests
 	}
 
 	[Fact]
-	public void False_Cancellation()
+	public static void False_Cancellation()
 	{
 		var cts = new CancellationTokenSource();
 		var spySink = SpyMessageSink.Create(returnResult: false);

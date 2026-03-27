@@ -4,10 +4,10 @@ using Xunit.v3;
 
 public static partial class TestCollectionRunnerTests
 {
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
-		public async ValueTask OnError()
+		public static async ValueTask OnError()
 		{
 			var runner = new TestableTestCollectionRunner();
 			var ex = Record.Exception(ThrowException);
@@ -24,7 +24,7 @@ public static partial class TestCollectionRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask OnTestCollectionCleanupFailure()
+		public static async ValueTask OnTestCollectionCleanupFailure()
 		{
 			var runner = new TestableTestCollectionRunner();
 			var ex = Record.Exception(ThrowException);
@@ -42,7 +42,7 @@ public static partial class TestCollectionRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask OnTestCollectionFinished()
+		public static async ValueTask OnTestCollectionFinished()
 		{
 			var runner = new TestableTestCollectionRunner();
 			var summary = new RunSummary { Total = 2112, Failed = 42, Skipped = 21, NotRun = 9, Time = 123.45m };
@@ -61,7 +61,7 @@ public static partial class TestCollectionRunnerTests
 		}
 
 		[Fact]
-		public async ValueTask OnTestCollectionStarting()
+		public static async ValueTask OnTestCollectionStarting()
 		{
 			var runner = new TestableTestCollectionRunner();
 
@@ -86,7 +86,7 @@ public static partial class TestCollectionRunnerTests
 		}
 	}
 
-	public class Cancellation
+	public static class Cancellation
 	{
 		[Fact]
 		public static async ValueTask OnError()
@@ -176,7 +176,7 @@ public static partial class TestCollectionRunnerTests
 		}
 	}
 
-	public class ExceptionHandling
+	public static class ExceptionHandling
 	{
 		[Fact]
 		public static async ValueTask NoExceptions()
@@ -259,7 +259,11 @@ public static partial class TestCollectionRunnerTests
 		}
 	}
 
+<<<<<<< HEAD
 	public class Run
+=======
+	public static class Run
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		[Fact]
 		public static async ValueTask DefaultTestClassOrdering()

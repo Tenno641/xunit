@@ -13,7 +13,11 @@ partial class Xunit3TheoryAcceptanceTests
 	{
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask IncompatibleDataReturnType_Throws()
+=======
+		public static async ValueTask IncompatibleDataReturnType_Throws()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_IncompatibleReturnType));
 
@@ -43,7 +47,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask IncompatibleDataValueType_Throws()
+=======
+		public static async ValueTask IncompatibleDataValueType_Throws()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_IncomptableValueData));
 
@@ -77,7 +85,11 @@ partial class Xunit3TheoryAcceptanceTests
 	{
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask IncompatibleDataReturnType_Throws()
+=======
+		public static async ValueTask IncompatibleDataReturnType_Throws()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_IncompatibleReturnType));
 
@@ -107,7 +119,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask IncompatibleDataValueType_Throws()
+=======
+		public static async ValueTask IncompatibleDataValueType_Throws()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_IncomptableValueData));
 
@@ -141,7 +157,11 @@ partial class Xunit3TheoryAcceptanceTests
 	public class CustomDataTests : AcceptanceTestV3
 	{
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask TestDataWithInternalConstructor_ReturnsTwoPassingTheories()
+=======
+		public static async ValueTask TestDataWithInternalConstructor_ReturnsTwoPassingTheories()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassWithCustomDataWithInternalDataCtor));
 
@@ -174,7 +194,11 @@ partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask CanSupportConstructorOverloadingWithDataAttribute()  // https://github.com/xunit/xunit/issues/1711
+=======
+		public static async ValueTask CanSupportConstructorOverloadingWithDataAttribute()  // https://github.com/xunit/xunit/issues/1711
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunAsync(typeof(DataConstructorOverloadExample));
 
@@ -210,7 +234,11 @@ partial class Xunit3TheoryAcceptanceTests
 		}
 
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask MemberDataAttributeBaseSubclass_Success()
+=======
+		public static async ValueTask MemberDataAttributeBaseSubclass_Success()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(ClassWithMemberDataAttributeBase));
 
@@ -267,7 +295,11 @@ partial class Xunit3TheoryAcceptanceTests
 	{
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask NonStaticData_Throws()
+=======
+		public static async ValueTask NonStaticData_Throws()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassWithNonStaticData));
 
@@ -323,7 +355,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask IncompatibleDataReturnType_Throws()
+=======
+		public static async ValueTask IncompatibleDataReturnType_Throws()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassWithIncompatibleReturnType));
 			var exceptionEpilogue =
@@ -403,7 +439,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask IncompatibleDataValueType_Throws()
+=======
+		public static async ValueTask IncompatibleDataValueType_Throws()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassWithIncompatibleValueData));
 
@@ -479,7 +519,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT does not support static interface members
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask MemberData_ReferencingStaticInterfaceData_Succeeds()
+=======
+		public static async ValueTask MemberData_ReferencingStaticInterfaceData_Succeeds()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_StaticInterfaceMethod));
 
@@ -498,7 +542,11 @@ partial class Xunit3TheoryAcceptanceTests
 	{
 		// TODO: Native AOT's generator triggers on the MemberData for the same reason that xUnit1015 currently triggers
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask CanUseMethodDataInSubTypeFromTestInBaseType()
+=======
+		public static async ValueTask CanUseMethodDataInSubTypeFromTestInBaseType()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(SubClassWithTestData));
 
@@ -528,7 +576,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// TODO: Non-ambiguous overloaded member data is not currently supported by Native AOT
 		[Fact]
+<<<<<<< HEAD
 		public async Task MultipleMethodsButOnlyOneNonOptionalSupported()
+=======
+		public static async Task MultipleMethodsButOnlyOneNonOptionalSupported()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassWithMultipleMethodsButOneWithoutOptionalParameters));
 
@@ -562,7 +614,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async Task MultipleMethodsWithAmbiguousOptionalParameters()
+=======
+		public static async Task MultipleMethodsWithAmbiguousOptionalParameters()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassWithMultipleMethodsAndAmbiguousOptionalParameters));
 
@@ -597,7 +653,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT does not support generic test methods
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask GenericParameter_Func_Valid()
+=======
+		public static async ValueTask GenericParameter_Func_Valid()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(ClassWithFuncMethod));
 
@@ -641,7 +701,11 @@ partial class Xunit3TheoryAcceptanceTests
 	{
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask MissingDataThrows()
+=======
+		public static async ValueTask MissingDataThrows()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunForResultsAsync(typeof(ClassWithMissingData));
 
@@ -665,7 +729,11 @@ partial class Xunit3TheoryAcceptanceTests
 	{
 		// Native AOT reports these in the generator
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask TestMethodMessagesOnlySentOnce()
+=======
+		public static async ValueTask TestMethodMessagesOnlySentOnce()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var testMessages = await RunAsync(typeof(ClassUnderTest));
 
@@ -697,7 +765,11 @@ partial class Xunit3TheoryAcceptanceTests
 	{
 		// Native AOT does not support params parameters for theory methods
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask ParamsParameters_Valid()
+=======
+		public static async ValueTask ParamsParameters_Valid()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(ClassWithParamsParameters));
 
@@ -851,7 +923,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT does not support generic test methods
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask GenericTheoryWithSerializableData()
+=======
+		public static async ValueTask GenericTheoryWithSerializableData()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(GenericWithSerializableData), preEnumerateTheories: false);
 
@@ -900,7 +976,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// Native AOT does not support generic test methods
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask GenericTheoryWithNonSerializableData()
+=======
+		public static async ValueTask GenericTheoryWithNonSerializableData()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(GenericWithNonSerializableData));
 
@@ -924,7 +1004,11 @@ partial class Xunit3TheoryAcceptanceTests
 
 		// These conversions are only supported via reflection
 		[Fact]
+<<<<<<< HEAD
 		public async ValueTask ImplicitExplicitConversions()
+=======
+		public static async ValueTask ImplicitExplicitConversions()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var results = await RunForResultsAsync(typeof(ClassWithOperatorConversions));
 

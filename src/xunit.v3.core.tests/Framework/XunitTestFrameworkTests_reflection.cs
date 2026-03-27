@@ -1,9 +1,9 @@
 using Xunit;
 using Xunit.v3;
 
-public class XunitTestFrameworkTests
+public static class XunitTestFrameworkTests
 {
-	public class TestFrameworkDisplayName
+	public static class TestFrameworkDisplayName
 	{
 		[Fact]
 		public static void Defaults()

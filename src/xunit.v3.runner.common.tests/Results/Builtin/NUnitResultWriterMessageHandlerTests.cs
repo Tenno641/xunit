@@ -8,7 +8,11 @@ using Xunit.Sdk;
 
 [Collection(typeof(CleanEnvironmentAttribute))]
 [CleanEnvironment("COMPUTERNAME", "HOSTNAME", "NAME", "HOST", "USERNAME", "LOGNAME", "USER", "USERDOMAIN")]
+<<<<<<< HEAD
 public class NUnitResultWriterMessageHandlerTests
+=======
+public static class NUnitResultWriterMessageHandlerTests
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 {
 	[CulturedFact(["en-US", "fr-FR"])]
 	public static async ValueTask TestRunElement()
@@ -899,7 +903,11 @@ public class NUnitResultWriterMessageHandlerTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public async ValueTask MultipleAssemblyErrors()
+=======
+	public static async ValueTask MultipleAssemblyErrors()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var errorMessage1 = TestData.ErrorMessage();
 		var errorMessage2 = TestData.TestAssemblyCleanupFailure();
@@ -923,7 +931,11 @@ public class NUnitResultWriterMessageHandlerTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public async ValueTask TestSuiteError()
+=======
+	public static async ValueTask TestSuiteError()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var collectionStarting = TestData.TestCollectionStarting();

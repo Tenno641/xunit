@@ -2,14 +2,14 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class TestFrameworkOptionsTests
+public static class TestFrameworkOptionsTests
 {
-	public class DiscoveryOptions
+	public static class DiscoveryOptions
 	{
-		public class Serialization
+		public static class Serialization
 		{
 			[Fact]
-			public void DefaultOptions_EmptyJson()
+			public static void DefaultOptions_EmptyJson()
 			{
 				ITestFrameworkDiscoveryOptions options = TestFrameworkOptions.Empty();
 
@@ -19,7 +19,7 @@ public class TestFrameworkOptionsTests
 			}
 
 			[Fact]
-			public void EmptyJson_DeserializesToDefaultValues()
+			public static void EmptyJson_DeserializesToDefaultValues()
 			{
 				var result = TestFrameworkOptions.ForDiscoveryFromSerialization("{}");
 
@@ -38,7 +38,7 @@ public class TestFrameworkOptionsTests
 			}
 
 			[Fact]
-			public void SettingValue_RoundTripsValue()
+			public static void SettingValue_RoundTripsValue()
 			{
 				// Set one of each known supported CLR type
 				var overrideEnumValue = TestMethodDisplayOptions.ReplaceUnderscoreWithSpace | TestMethodDisplayOptions.UseEscapeSequences;
@@ -59,12 +59,12 @@ public class TestFrameworkOptionsTests
 		}
 	}
 
-	public class ExecutionOptions
+	public static class ExecutionOptions
 	{
-		public class Serialization
+		public static class Serialization
 		{
 			[Fact]
-			public void DefaultOptions_EmptyJson()
+			public static void DefaultOptions_EmptyJson()
 			{
 				ITestFrameworkExecutionOptions options = TestFrameworkOptions.Empty();
 
@@ -74,7 +74,7 @@ public class TestFrameworkOptionsTests
 			}
 
 			[Fact]
-			public void EmptyJson_DeserializesToDefaultValues()
+			public static void EmptyJson_DeserializesToDefaultValues()
 			{
 				var result = TestFrameworkOptions.ForExecutionFromSerialization("{}");
 
@@ -92,7 +92,7 @@ public class TestFrameworkOptionsTests
 			}
 
 			[Fact]
-			public void SettingValue_RoundTripsValue()
+			public static void SettingValue_RoundTripsValue()
 			{
 				// Set one of each known supported CLR type
 				ITestFrameworkExecutionOptions options = TestFrameworkOptions.Empty();

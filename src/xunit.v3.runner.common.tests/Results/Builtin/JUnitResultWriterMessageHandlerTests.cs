@@ -7,7 +7,11 @@ using Xunit.Sdk;
 
 [Collection(typeof(CleanEnvironmentAttribute))]
 [CleanEnvironment("COMPUTERNAME", "HOSTNAME", "NAME", "HOST")]
+<<<<<<< HEAD
 public class JUnitResultWriterMessageHandlerTests
+=======
+public static class JUnitResultWriterMessageHandlerTests
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 {
 	[CulturedFact(["en-US", "fr-FR"])]
 	public static async ValueTask TestSuitesElement()
@@ -287,7 +291,11 @@ public class JUnitResultWriterMessageHandlerTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public async ValueTask TestResult_WithOutput()
+=======
+	public static async ValueTask TestResult_WithOutput()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var testStarting = TestData.TestStarting();
@@ -316,7 +324,11 @@ public class JUnitResultWriterMessageHandlerTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public async ValueTask TestResult_WithWarnings()
+=======
+	public static async ValueTask TestResult_WithWarnings()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var testStarting = TestData.TestStarting();
@@ -348,7 +360,11 @@ public class JUnitResultWriterMessageHandlerTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public async ValueTask TestResult_WithOutputAndWarnings()
+=======
+	public static async ValueTask TestResult_WithOutputAndWarnings()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyStarting = TestData.TestAssemblyStarting();
 		var testStarting = TestData.TestStarting();

@@ -3,9 +3,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class TestRunnerTests
+public static class TestRunnerTests
 {
-	public class Run
+	public static class Run
 	{
 		[Fact]
 		public static async ValueTask NoPreExistingError_NotCancelled()
@@ -74,7 +74,7 @@ public class TestRunnerTests
 		}
 	}
 
-	public class InvocationsAndMessages
+	public static class InvocationsAndMessages
 	{
 		[Fact]
 		public static async ValueTask Passed()
@@ -262,7 +262,7 @@ public class TestRunnerTests
 		}
 	}
 
-	public class HandlerExceptions
+	public static class HandlerExceptions
 	{
 		[Fact]
 		public static async ValueTask CreateTestClassInstance()

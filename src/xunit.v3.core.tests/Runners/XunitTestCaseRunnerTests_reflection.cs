@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class XunitTestCaseRunnerTests
+public static class XunitTestCaseRunnerTests
 {
-	public class Messages
+	public static class Messages
 	{
 		[Fact]
 		public static async ValueTask Passing()

@@ -2,9 +2,9 @@ using Xunit;
 using Xunit.Sdk;
 using Xunit.v3;
 
-public class TestFrameworkDiscovererTests
+public static class TestFrameworkDiscovererTests
 {
-	public class Find
+	public static class Find
 	{
 		[Fact]
 		public static async ValueTask GuardClauses()
@@ -16,7 +16,7 @@ public class TestFrameworkDiscovererTests
 		}
 
 		[Fact]
-		public async ValueTask ExceptionDuringFindTestsForType_ReportsExceptionAsDiagnosticMessage()
+		public static async ValueTask ExceptionDuringFindTestsForType_ReportsExceptionAsDiagnosticMessage()
 		{
 			var spy = SpyMessageSink.Capture();
 			TestContextInternal.Current.DiagnosticMessageSink = spy;
@@ -31,7 +31,7 @@ public class TestFrameworkDiscovererTests
 		}
 
 		[Fact]
-		public async ValueTask TestContextVisibility()
+		public static async ValueTask TestContextVisibility()
 		{
 			var discoverer = TestableTestFrameworkDiscoverer.Create();
 
@@ -43,7 +43,7 @@ public class TestFrameworkDiscovererTests
 			Assert.Equal(TestPipelineStage.Discovery, context.PipelineStage);
 		}
 
-		public class ByAssembly
+		public static class ByAssembly
 		{
 			[Fact]
 			public static async ValueTask IncludesNonAbstractTypes()
@@ -70,7 +70,7 @@ public class TestFrameworkDiscovererTests
 			}
 		}
 
-		public class ByTypes
+		public static class ByTypes
 		{
 			[Fact]
 			public static async ValueTask IncludesNonAbstractTypes()
@@ -94,10 +94,10 @@ public class TestFrameworkDiscovererTests
 			}
 		}
 
-		public class WithCulture
+		public static class WithCulture
 		{
 			[Fact]
-			public async ValueTask DefaultCultureIsCurrentCulture()
+			public static async ValueTask DefaultCultureIsCurrentCulture()
 			{
 				CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
 				var discoverer = TestableTestFrameworkDiscoverer.Create();
@@ -110,7 +110,7 @@ public class TestFrameworkDiscovererTests
 			}
 
 			[Fact]
-			public async ValueTask EmptyStringIsInvariantCulture()
+			public static async ValueTask EmptyStringIsInvariantCulture()
 			{
 				CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
 				var discoverer = TestableTestFrameworkDiscoverer.Create();
@@ -123,7 +123,7 @@ public class TestFrameworkDiscovererTests
 			}
 
 			[Fact]
-			public async ValueTask CustomCultureViaDiscoveryOptions()
+			public static async ValueTask CustomCultureViaDiscoveryOptions()
 			{
 				CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
 				var discoverer = TestableTestFrameworkDiscoverer.Create();

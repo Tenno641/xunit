@@ -1,12 +1,12 @@
 using Xunit;
 using Xunit.Sdk;
 
-public class IAssemblyMetadataExtensionsTests
+public static class IAssemblyMetadataExtensionsTests
 {
-	public class SimpleAssemblyName
+	public static class SimpleAssemblyName
 	{
 		[Fact]
-		public void GuardClauses()
+		public static void GuardClauses()
 		{
 			Assert.Throws<ArgumentNullException>("assemblyMetadata", () => IAssemblyMetadataExtensions.SimpleAssemblyName(null!));
 
@@ -15,7 +15,7 @@ public class IAssemblyMetadataExtensionsTests
 		}
 
 		[Fact]
-		public void ReturnsSimpleName()
+		public static void ReturnsSimpleName()
 		{
 			var metadata = TestData.AssemblyMetadata(assemblyName: "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
 

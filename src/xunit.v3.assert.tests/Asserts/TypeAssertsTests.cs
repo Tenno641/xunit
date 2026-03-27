@@ -1,3 +1,5 @@
+#pragma warning disable CA2263  // Prefer generic overload when type is known
+
 using Xunit;
 using Xunit.Sdk;
 
@@ -6,15 +8,15 @@ using System.Reflection;
 using System.Xml;
 #endif
 
-public class TypeAssertsTests
+public static class TypeAssertsTests
 {
 
 #pragma warning disable xUnit2032 // Type assertions based on 'assignable from' are confusingly named
 
-	public class IsAssignableFrom_Generic
+	public static class IsAssignableFrom_Generic
 	{
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			var result = Record.Exception(() => Assert.IsAssignableFrom<object>(null));
 
@@ -28,7 +30,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void SameType()
+		public static void SameType()
 		{
 			var ex = new InvalidCastException();
 
@@ -36,7 +38,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void BaseType()
+		public static void BaseType()
 		{
 			var ex = new InvalidCastException();
 
@@ -44,7 +46,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void Interface()
+		public static void Interface()
 		{
 			var ex = new DisposableClass();
 
@@ -52,7 +54,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void ReturnsCastObject()
+		public static void ReturnsCastObject()
 		{
 			var ex = new InvalidCastException();
 
@@ -62,7 +64,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void IncompatibleType()
+		public static void IncompatibleType()
 		{
 			var result =
 				Record.Exception(
@@ -81,10 +83,10 @@ public class TypeAssertsTests
 
 #pragma warning disable xUnit2007 // Do not use typeof expression to check the type
 
-	public class IsAssignableFrom_NonGeneric
+	public static class IsAssignableFrom_NonGeneric
 	{
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			var result = Record.Exception(() => Assert.IsAssignableFrom(typeof(object), null));
 
@@ -98,7 +100,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void SameType()
+		public static void SameType()
 		{
 			var ex = new InvalidCastException();
 
@@ -106,7 +108,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void BaseType()
+		public static void BaseType()
 		{
 			var ex = new InvalidCastException();
 
@@ -114,7 +116,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void Interface()
+		public static void Interface()
 		{
 			var ex = new DisposableClass();
 
@@ -122,7 +124,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void ReturnsCastObject()
+		public static void ReturnsCastObject()
 		{
 			var ex = new InvalidCastException();
 
@@ -132,7 +134,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void IncompatibleType()
+		public static void IncompatibleType()
 		{
 			var result =
 				Record.Exception(
@@ -151,16 +153,16 @@ public class TypeAssertsTests
 
 #pragma warning restore xUnit2007 // Do not use typeof expression to check the type
 
-	public class IsNotAssignableFrom_Generic
+	public static class IsNotAssignableFrom_Generic
 	{
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			Assert.IsNotAssignableFrom<object>(null);
 		}
 
 		[Fact]
-		public void SameType()
+		public static void SameType()
 		{
 			var ex = new InvalidCastException();
 
@@ -176,7 +178,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void BaseType()
+		public static void BaseType()
 		{
 			var ex = new InvalidCastException();
 
@@ -192,7 +194,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void Interface()
+		public static void Interface()
 		{
 			var ex = new DisposableClass();
 
@@ -208,22 +210,22 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void IncompatibleType()
+		public static void IncompatibleType()
 		{
 			Assert.IsNotAssignableFrom<InvalidCastException>(new InvalidOperationException());
 		}
 	}
 
-	public class IsNotAssignableFrom_NonGeneric
+	public static class IsNotAssignableFrom_NonGeneric
 	{
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			Assert.IsNotAssignableFrom(typeof(object), null);
 		}
 
 		[Fact]
-		public void SameType()
+		public static void SameType()
 		{
 			var ex = new InvalidCastException();
 
@@ -239,7 +241,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void BaseType()
+		public static void BaseType()
 		{
 			var ex = new InvalidCastException();
 
@@ -255,7 +257,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void Interface()
+		public static void Interface()
 		{
 			var ex = new DisposableClass();
 
@@ -271,7 +273,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void IncompatibleType()
+		public static void IncompatibleType()
 		{
 			Assert.IsNotAssignableFrom(typeof(InvalidCastException), new InvalidOperationException());
 		}
@@ -279,10 +281,10 @@ public class TypeAssertsTests
 
 #pragma warning restore xUnit2032 // Type assertions based on 'assignable from' are confusingly named
 
-	public class IsNotType_Generic
+	public static class IsNotType_Generic
 	{
 		[Fact]
-		public void UnmatchedType()
+		public static void UnmatchedType()
 		{
 			var ex = new InvalidCastException();
 
@@ -290,7 +292,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void MatchedType()
+		public static void MatchedType()
 		{
 			var result = Record.Exception(() => Assert.IsNotType<InvalidCastException>(new InvalidCastException()));
 
@@ -304,22 +306,22 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			Assert.IsNotType<object>(null);
 		}
 	}
 
-	public class IsNotType_Generic_InexactMatch
+	public static class IsNotType_Generic_InexactMatch
 	{
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			Assert.IsNotType<object>(null, exactMatch: false);
 		}
 
 		[Fact]
-		public void SameType()
+		public static void SameType()
 		{
 			var ex = new InvalidCastException();
 
@@ -335,7 +337,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void BaseType()
+		public static void BaseType()
 		{
 			var ex = new InvalidCastException();
 
@@ -351,7 +353,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void Interface()
+		public static void Interface()
 		{
 			var ex = new DisposableClass();
 
@@ -369,7 +371,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void IncompatibleType()
+		public static void IncompatibleType()
 		{
 			Assert.IsNotType<InvalidCastException>(new InvalidOperationException(), exactMatch: false);
 		}
@@ -377,10 +379,10 @@ public class TypeAssertsTests
 
 #pragma warning disable xUnit2007 // Do not use typeof expression to check the type
 
-	public class IsNotType_NonGeneric
+	public static class IsNotType_NonGeneric
 	{
 		[Fact]
-		public void UnmatchedType()
+		public static void UnmatchedType()
 		{
 			var ex = new InvalidCastException();
 
@@ -388,7 +390,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void MatchedType()
+		public static void MatchedType()
 		{
 			var result = Record.Exception(() => Assert.IsNotType(typeof(InvalidCastException), new InvalidCastException()));
 
@@ -402,22 +404,22 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			Assert.IsNotType(typeof(object), null);
 		}
 	}
 
-	public class IsNotType_NonGeneric_InexactMatch
+	public static class IsNotType_NonGeneric_InexactMatch
 	{
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			Assert.IsNotType(typeof(object), null, exactMatch: false);
 		}
 
 		[Fact]
-		public void SameType()
+		public static void SameType()
 		{
 			var ex = new InvalidCastException();
 
@@ -433,7 +435,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void BaseType()
+		public static void BaseType()
 		{
 			var ex = new InvalidCastException();
 
@@ -449,7 +451,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void Interface()
+		public static void Interface()
 		{
 			var ex = new DisposableClass();
 
@@ -465,7 +467,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void IncompatibleType()
+		public static void IncompatibleType()
 		{
 			Assert.IsNotType(typeof(InvalidCastException), new InvalidOperationException(), exactMatch: false);
 		}
@@ -473,10 +475,10 @@ public class TypeAssertsTests
 
 #pragma warning restore xUnit2007 // Do not use typeof expression to check the type
 
-	public class IsType_Generic : TypeAssertsTests
+	public static class IsType_Generic
 	{
 		[Fact]
-		public void MatchingType()
+		public static void MatchingType()
 		{
 			var ex = new InvalidCastException();
 
@@ -484,7 +486,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void ReturnsCastObject()
+		public static void ReturnsCastObject()
 		{
 			var ex = new InvalidCastException();
 
@@ -494,7 +496,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void UnmatchedType()
+		public static void UnmatchedType()
 		{
 			var result = Record.Exception(() => Assert.IsType<InvalidCastException>(new InvalidOperationException()));
 
@@ -508,8 +510,9 @@ public class TypeAssertsTests
 		}
 
 #if NETFRAMEWORK
+
 		[Fact]
-		public async Task UnmatchedTypesWithIdenticalNamesShowAssemblies()
+		public static async Task UnmatchedTypesWithIdenticalNamesShowAssemblies()
 		{
 			var dynamicAssembly = await CSharpDynamicAssembly.Create("namespace System.Xml { public class XmlException: Exception { } }");
 			var assembly = Assembly.LoadFile(dynamicAssembly.FileName);
@@ -527,10 +530,11 @@ public class TypeAssertsTests
 				result.Message
 			);
 		}
-#endif
+
+#endif  // NETFRAMEWORK
 
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			var result = Record.Exception(() => Assert.IsType<object>(null));
 
@@ -544,10 +548,10 @@ public class TypeAssertsTests
 		}
 	}
 
-	public class IsType_Generic_InexactMatch
+	public static class IsType_Generic_InexactMatch
 	{
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			var result = Record.Exception(() => Assert.IsType<object>(null, exactMatch: false));
 
@@ -561,7 +565,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void SameType()
+		public static void SameType()
 		{
 			var ex = new InvalidCastException();
 
@@ -569,7 +573,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void BaseType()
+		public static void BaseType()
 		{
 			var ex = new InvalidCastException();
 
@@ -577,7 +581,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void Interface()
+		public static void Interface()
 		{
 			var ex = new DisposableClass();
 
@@ -587,7 +591,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void ReturnsCastObject()
+		public static void ReturnsCastObject()
 		{
 			var ex = new InvalidCastException();
 
@@ -597,7 +601,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void IncompatibleType()
+		public static void IncompatibleType()
 		{
 			var result =
 				Record.Exception(
@@ -616,10 +620,10 @@ public class TypeAssertsTests
 
 #pragma warning disable xUnit2007 // Do not use typeof expression to check the type
 
-	public class IsType_NonGeneric : TypeAssertsTests
+	public static class IsType_NonGeneric
 	{
 		[Fact]
-		public void MatchingType()
+		public static void MatchingType()
 		{
 			var ex = new InvalidCastException();
 
@@ -627,7 +631,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void UnmatchedTypeThrows()
+		public static void UnmatchedTypeThrows()
 		{
 			var result = Record.Exception(() => Assert.IsType(typeof(InvalidCastException), new InvalidOperationException()));
 
@@ -643,7 +647,7 @@ public class TypeAssertsTests
 #if NETFRAMEWORK
 
 		[Fact]
-		public async Task UnmatchedTypesWithIdenticalNamesShowAssemblies()
+		public  static async Task UnmatchedTypesWithIdenticalNamesShowAssemblies()
 		{
 			var dynamicAssembly = await CSharpDynamicAssembly.Create("namespace System.Xml { public class XmlException: Exception { } }");
 			var assembly = Assembly.LoadFile(dynamicAssembly.FileName);
@@ -662,10 +666,10 @@ public class TypeAssertsTests
 			);
 		}
 
-#endif
+#endif  // NETFRAMEWORK
 
 		[Fact]
-		public void NullObjectThrows()
+		public static void NullObjectThrows()
 		{
 			var result = Record.Exception(() => Assert.IsType(typeof(object), null));
 
@@ -679,10 +683,10 @@ public class TypeAssertsTests
 		}
 	}
 
-	public class IsType_NonGeneric_InexactMatch
+	public static class IsType_NonGeneric_InexactMatch
 	{
 		[Fact]
-		public void NullObject()
+		public static void NullObject()
 		{
 			var result = Record.Exception(() => Assert.IsType(typeof(object), null, exactMatch: false));
 
@@ -696,7 +700,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void SameType()
+		public static void SameType()
 		{
 			var ex = new InvalidCastException();
 
@@ -704,7 +708,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void BaseType()
+		public static void BaseType()
 		{
 			var ex = new InvalidCastException();
 
@@ -712,7 +716,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void Interface()
+		public static void Interface()
 		{
 			var ex = new DisposableClass();
 
@@ -720,7 +724,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void ReturnsCastObject()
+		public static void ReturnsCastObject()
 		{
 			var ex = new InvalidCastException();
 
@@ -730,7 +734,7 @@ public class TypeAssertsTests
 		}
 
 		[Fact]
-		public void IncompatibleType()
+		public static void IncompatibleType()
 		{
 			var result =
 				Record.Exception(

@@ -1,19 +1,19 @@
 using Xunit;
 using Xunit.Runner.Common;
 
-public class TeamCityReporterMessageHandlerTests
+public static class TeamCityReporterMessageHandlerTests
 {
-	public class FailureMessages
+	public static class FailureMessages
 	{
-		readonly string assemblyID = "assembly-id\t\r\n";
-		readonly string collectionID = "test-collection-id\t\r\n";
-		readonly int[] exceptionParentIndices = [-1];
-		readonly string[] exceptionTypes = ["\x2018ExceptionType\x2019"];
-		readonly string[] messages = ["This is my message \x2020\t\r\n"];
-		readonly string[] stackTraces = ["Line 1 \x0d60\r\nLine 2 \x1f64\r\nLine 3 \x999f"];
+		static readonly string assemblyID = "assembly-id\t\r\n";
+		static readonly string collectionID = "test-collection-id\t\r\n";
+		static readonly int[] exceptionParentIndices = [-1];
+		static readonly string[] exceptionTypes = ["\x2018ExceptionType\x2019"];
+		static readonly string[] messages = ["This is my message \x2020\t\r\n"];
+		static readonly string[] stackTraces = ["Line 1 \x0d60\r\nLine 2 \x1f64\r\nLine 3 \x999f"];
 
 		[Fact]
-		public void ErrorMessage()
+		public static void ErrorMessage()
 		{
 			var errorMessage = new ErrorMessage
 			{
@@ -31,7 +31,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestAssemblyCleanupFailure()
+		public static void TestAssemblyCleanupFailure()
 		{
 			var collectionStarting = TestData.TestAssemblyStarting(assemblyUniqueID: assemblyID, assemblyPath: @"C:\Foo\Bar.dll");
 			var collectionCleanupFailure = TestData.TestAssemblyCleanupFailure(
@@ -50,7 +50,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestCaseCleanupFailure()
+		public static void TestCaseCleanupFailure()
 		{
 			var caseStarting = TestData.TestCaseStarting(testCollectionUniqueID: collectionID, testCaseDisplayName: "MyTestCase\t\r\n");
 			var caseCleanupFailure = TestData.TestCaseCleanupFailure(
@@ -69,7 +69,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestClassCleanupFailure()
+		public static void TestClassCleanupFailure()
 		{
 			var classStarting = TestData.TestClassStarting(testCollectionUniqueID: collectionID, testClassName: "MyType\t\r\n");
 			var classCleanupFailure = TestData.TestClassCleanupFailure(
@@ -88,7 +88,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestCleanupFailure()
+		public static void TestCleanupFailure()
 		{
 			var testStarting = TestData.TestStarting(testCollectionUniqueID: collectionID, testDisplayName: "MyTest\t\r\n");
 			var testCleanupFailure = TestData.TestCleanupFailure(
@@ -107,7 +107,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestCollectionCleanupFailure()
+		public static void TestCollectionCleanupFailure()
 		{
 			var collectionStarting = TestData.TestCollectionStarting(testCollectionUniqueID: collectionID, testCollectionDisplayName: "FooBar\t\r\n");
 			var collectionCleanupFailure = TestData.TestCollectionCleanupFailure(
@@ -126,7 +126,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 
 		[Fact]
-		public void TestMethodCleanupFailure()
+		public static void TestMethodCleanupFailure()
 		{
 			var methodStarting = TestData.TestMethodStarting(testCollectionUniqueID: collectionID, methodName: "MyMethod\t\r\n");
 			var methodCleanupFailure = TestData.TestMethodCleanupFailure(
@@ -158,7 +158,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestAssemblyStarting_TestAssemblyFinished
+	public static class OnMessage_TestAssemblyStarting_TestAssemblyFinished
 	{
 		[Fact]
 		public static void StartsAndEndsFlowAndSuite()
@@ -194,7 +194,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestCollectionStarting_TestCollectionFinished
+	public static class OnMessage_TestCollectionStarting_TestCollectionFinished
 	{
 		[Fact]
 		public static void StartsAndEndsFlowAndSuite()
@@ -216,7 +216,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestFailed
+	public static class OnMessage_TestFailed
 	{
 		[Fact]
 		public static void LogsTestFailed()
@@ -244,7 +244,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestFinished
+	public static class OnMessage_TestFinished
 	{
 		[Fact]
 		public static void WithoutOutput()
@@ -284,7 +284,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestSkipped
+	public static class OnMessage_TestSkipped
 	{
 		[Fact]
 		public static void LogsTestIgnored()
@@ -304,7 +304,7 @@ public class TeamCityReporterMessageHandlerTests
 		}
 	}
 
-	public class OnMessage_TestStarting
+	public static class OnMessage_TestStarting
 	{
 		[Fact]
 		public static void LogsTestName()

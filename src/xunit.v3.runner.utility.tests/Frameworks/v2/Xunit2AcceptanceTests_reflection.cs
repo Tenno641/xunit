@@ -6,12 +6,12 @@ using Xunit.Runner.Common;
 using Xunit.Runner.v2;
 using Xunit.Sdk;
 
-public class Xunit2AcceptanceTests
+public static class Xunit2AcceptanceTests
 {
-	public class Find
+	public static class Find
 	{
 		[Fact]
-		public async ValueTask NoTestMethods()
+		public static async ValueTask NoTestMethods()
 		{
 			using var assm = await CSharpAcceptanceTestV2Assembly.Create(code: "");
 			var controller = TestableXunit2.Create(assm.FileName, null, true);
@@ -25,10 +25,10 @@ public class Xunit2AcceptanceTests
 			Assert.DoesNotContain(sink.Messages, msg => msg is ITestCaseDiscovered);
 		}
 
-		public class CSharp
+		public static class CSharp
 		{
 			[Fact]
-			public async ValueTask FactAcceptanceTest()
+			public static async ValueTask FactAcceptanceTest()
 			{
 				var code = @"
 using System;
@@ -104,7 +104,7 @@ namespace Namespace2
 			}
 
 			[Fact]
-			public async ValueTask TheoryAcceptanceTest()
+			public static async ValueTask TheoryAcceptanceTest()
 			{
 				var code = @"
 using System;
@@ -136,10 +136,10 @@ public class TestClass
 			}
 		}
 
-		public class FSharp
+		public static class FSharp
 		{
 			[Fact]
-			public async ValueTask FactAcceptanceTest()
+			public static async ValueTask FactAcceptanceTest()
 			{
 				var code = @"
 module FSharpTests
@@ -188,7 +188,7 @@ let CustomName() =
 			}
 
 			[Fact]
-			public async ValueTask TheoryAcceptanceTest()
+			public static async ValueTask TheoryAcceptanceTest()
 			{
 				var code = @"
 module FSharpTests
@@ -222,7 +222,7 @@ let TestMethod (x:int) =
 			[Theory]
 			[InlineData("async")]
 			[InlineData("task")]
-			public async ValueTask SupportsAsyncReturningMethods(string blockType)
+			public static async ValueTask SupportsAsyncReturningMethods(string blockType)
 			{
 				string code = @$"
 module FSharpTests
@@ -256,7 +256,7 @@ let AsyncFailing() =
 			[Theory]
 			[InlineData("async")]
 			[InlineData("task")]
-			public async ValueTask SupportsTimeoutOnAsyncReturningMethods(string blockType)
+			public static async ValueTask SupportsTimeoutOnAsyncReturningMethods(string blockType)
 			{
 				string code = @$"
 module FSharpTests
@@ -343,10 +343,10 @@ public class TestClass
 			);
 		}
 
-		public class CSharp
+		public static class CSharp
 		{
 			[Fact]
-			public async ValueTask FactAcceptanceTest()
+			public static async ValueTask FactAcceptanceTest()
 			{
 				var code = @"
 using System;
@@ -374,7 +374,7 @@ public class TestClass
 			}
 
 			[Fact]
-			public async ValueTask TheoryAcceptanceTest()
+			public static async ValueTask TheoryAcceptanceTest()
 			{
 				var code = @"
 using System;
@@ -406,7 +406,7 @@ public class TestClass
 			}
 
 			[Fact]
-			public async ValueTask AsyncAcceptanceTest()
+			public static async ValueTask AsyncAcceptanceTest()
 			{
 				var code = @"
 using System;
@@ -454,10 +454,10 @@ public class TestClass
 			}
 		}
 
-		public class FSharp
+		public static class FSharp
 		{
 			[Fact]
-			public async ValueTask FactAcceptanceTest()
+			public static async ValueTask FactAcceptanceTest()
 			{
 				var code = @"
 module FSharpTests
@@ -485,7 +485,7 @@ let TestMethod() =
 			}
 
 			[Fact]
-			public async ValueTask TheoryAcceptanceTest()
+			public static async ValueTask TheoryAcceptanceTest()
 			{
 				var code = @"
 module FSharpTests
@@ -517,7 +517,7 @@ let TestMethod(x : int) =
 			}
 
 			[Fact]
-			public async ValueTask AsyncAcceptanceTest()
+			public static async ValueTask AsyncAcceptanceTest()
 			{
 				var code = @"
 module FSharpTests
@@ -548,10 +548,10 @@ let AsyncFailing() =
 		}
 	}
 
-	public class Run
+	public static class Run
 	{
 		[Fact]
-		public async ValueTask NoTestMethods()
+		public static async ValueTask NoTestMethods()
 		{
 			using var assembly = await CSharpAcceptanceTestV2Assembly.Create(code: "");
 			var controller = TestableXunit2.Create(assembly.FileName, null, true);
@@ -567,7 +567,7 @@ let AsyncFailing() =
 		}
 
 		[Fact]
-		public async ValueTask DoesNotRunTestsWhenExplicitOnly()
+		public static async ValueTask DoesNotRunTestsWhenExplicitOnly()
 		{
 			var code = @"
 using System;
@@ -609,10 +609,10 @@ public class TestClass
 			);
 		}
 
-		public class CSharp
+		public static class CSharp
 		{
 			[Fact]
-			public async ValueTask FactAcceptanceTest()
+			public static async ValueTask FactAcceptanceTest()
 			{
 				var code = @"
 using System;
@@ -648,7 +648,7 @@ public class TestClass
 			}
 
 			[Fact]
-			public async ValueTask TheoryAcceptanceTest()
+			public static async ValueTask TheoryAcceptanceTest()
 			{
 				var code = @"
 using System;
@@ -688,10 +688,10 @@ public class TestClass
 			}
 		}
 
-		public class FSharp
+		public static class FSharp
 		{
 			[Fact]
-			public async ValueTask FactAcceptanceTest()
+			public static async ValueTask FactAcceptanceTest()
 			{
 				var code = @"
 module FSharpTests
@@ -727,7 +727,7 @@ let TestMethod() =
 			}
 
 			[Fact]
-			public async ValueTask TheoryAcceptanceTest()
+			public static async ValueTask TheoryAcceptanceTest()
 			{
 				var code = @"
 module FSharpTests

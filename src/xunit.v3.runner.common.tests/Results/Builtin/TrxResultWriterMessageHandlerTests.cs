@@ -6,7 +6,11 @@ using Xunit.Sdk;
 
 [Collection(typeof(CleanEnvironmentAttribute))]
 [CleanEnvironment("COMPUTERNAME", "HOSTNAME", "NAME", "HOST", "USERNAME", "LOGNAME", "USER")]
+<<<<<<< HEAD
 public class TrxResultWriterMessageHandlerTests
+=======
+public static class TrxResultWriterMessageHandlerTests
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 {
 	static readonly XNamespace ns = XNamespace.Get("http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
 
@@ -111,7 +115,11 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
+<<<<<<< HEAD
 	public async ValueTask TestPassed()
+=======
+	public static async ValueTask TestPassed()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 0, testsNotRun: 0, testsSkipped: 0, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -140,7 +148,11 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
+<<<<<<< HEAD
 	public async ValueTask TestFailed()
+=======
+	public static async ValueTask TestFailed()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 1, testsNotRun: 0, testsSkipped: 0, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -185,7 +197,11 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public async ValueTask TestFailed_NullStackTrace()
+=======
+	public static async ValueTask TestFailed_NullStackTrace()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 1, testsNotRun: 0, testsSkipped: 0, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -223,7 +239,11 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
+<<<<<<< HEAD
 	public async ValueTask TestSkipped()
+=======
+	public static async ValueTask TestSkipped()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 0, testsNotRun: 0, testsSkipped: 1, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -258,7 +278,11 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
+<<<<<<< HEAD
 	public async ValueTask TestNotRun()
+=======
+	public static async ValueTask TestNotRun()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished(testsFailed: 0, testsNotRun: 1, testsSkipped: 0, testsTotal: 1);
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -288,7 +312,11 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
+<<<<<<< HEAD
 	public async ValueTask TestResult_EmptyOutput()
+=======
+	public static async ValueTask TestResult_EmptyOutput()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -317,7 +345,11 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[CulturedFact(["en-US", "fr-FR"])]
+<<<<<<< HEAD
 	public async ValueTask TestResult_OutputIsSplitOnCRLFs()
+=======
+	public static async ValueTask TestResult_OutputIsSplitOnCRLFs()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var assemblyFinished = TestData.TestAssemblyFinished();
 		var assemblyStarting = TestData.TestAssemblyStarting();
@@ -351,7 +383,11 @@ public class TrxResultWriterMessageHandlerTests
 	}
 
 	[Fact]
+<<<<<<< HEAD
 	public async ValueTask TestResult_WithAttachments()
+=======
+	public static async ValueTask TestResult_WithAttachments()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 	{
 		var attachments = new Dictionary<string, TestAttachment>
 		{

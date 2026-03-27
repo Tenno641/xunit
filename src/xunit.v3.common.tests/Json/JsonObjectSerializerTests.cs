@@ -2,7 +2,7 @@ using System.Text;
 using Xunit;
 using Xunit.Sdk;
 
-public class JsonObjectSerializerTests
+public static class JsonObjectSerializerTests
 {
 	public static IEnumerable<TheoryDataRow<Action<JsonObjectSerializer>, string>> ValueFuncs()
 	{
@@ -81,7 +81,7 @@ public class JsonObjectSerializerTests
 
 	[Theory(DisableDiscoveryEnumeration = true)]
 	[MemberData(nameof(ValueFuncs))]
-	public void SerializeValues(
+	public static void SerializeValues(
 		Action<JsonObjectSerializer> action,
 		string expectedResult)
 	{

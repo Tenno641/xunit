@@ -2,12 +2,12 @@ using Xunit;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
-public class TestFailedTests
+public static class TestFailedTests
 {
-	public class FromException
+	public static class FromException
 	{
 		[Fact]
-		public void NonAssertionException()
+		public static void NonAssertionException()
 		{
 			var ex = new DivideByZeroException();
 
@@ -17,7 +17,7 @@ public class TestFailedTests
 		}
 
 		[Fact]
-		public void BuiltInAssertionException()
+		public static void BuiltInAssertionException()
 		{
 			var ex = EqualException.ForMismatchedValues("42", "2112");
 
@@ -29,7 +29,7 @@ public class TestFailedTests
 #if !XUNIT_AOT  // No custom exception detection since it requires reflection
 
 		[Fact]
-		public void CustomAssertionException()
+		public static void CustomAssertionException()
 		{
 			var ex = new MyAssertionException();
 
@@ -47,7 +47,7 @@ public class TestFailedTests
 		{ }
 
 		[Fact]
-		public void BuiltInTimeoutException()
+		public static void BuiltInTimeoutException()
 		{
 			var ex = TestTimeoutException.ForTimedOutTest(2112);
 
@@ -59,7 +59,7 @@ public class TestFailedTests
 #if !XUNIT_AOT  // No custom exception detection since it requires reflection
 
 		[Fact]
-		public void CustomTimeoutException()
+		public static void CustomTimeoutException()
 		{
 			var ex = new MyTimeoutException();
 
@@ -75,7 +75,11 @@ public class TestFailedTests
 		{ }
 
 		[Fact]
+<<<<<<< HEAD
 		public void TimeoutExceptionTakesPriorityOverAssertionException()
+=======
+		public static void TimeoutExceptionTakesPriorityOverAssertionException()
+>>>>>>> b7f7500bf174aa126fc8f0708a47425cff08f940
 		{
 			var ex = new MyMultiException();
 
