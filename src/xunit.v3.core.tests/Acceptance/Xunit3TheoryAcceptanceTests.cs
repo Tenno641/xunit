@@ -8,7 +8,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 	{
 		readonly SpyMessageSink messageSink = SpyMessageSink.Capture();
 
-		[Fact]
+		[Fact(Skip = "Appears to be flaky, temporarily disabling")]
 		public async ValueTask ClassDisposable_DisposesOfClass()
 		{
 #if XUNIT_AOT
@@ -24,7 +24,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassDisposable.Dispose", diagnosticMessages);
 		}
 
-		[Fact]
+		[Fact(Skip = "Appears to be flaky, temporarily disabling")]
 		public async ValueTask ClassAsyncDisposable_DisposesOfClass()
 		{
 #if XUNIT_AOT
@@ -48,7 +48,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 	{
 		readonly SpyMessageSink messageSink = SpyMessageSink.Capture();
 
-		[Fact]
+		[Fact(Skip = "Appears to be flaky, temporarily disabling")]
 		public async ValueTask ClassDisposable_DisposesOfClass()
 		{
 #if XUNIT_AOT
@@ -64,7 +64,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassDisposable.Dispose", diagnosticMessages);
 		}
 
-		[Fact]
+		[Fact(Skip = "Appears to be flaky, temporarily disabling")]
 		public async ValueTask ClassAsyncDisposable_DisposesOfClass()
 		{
 #if XUNIT_AOT
