@@ -9,6 +9,19 @@ namespace Xunit.v3;
 public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 {
 	/// <summary>
+	/// Please call/override <see cref="CreateTestCasesForDataRow(ITestFrameworkDiscoveryOptions, IXunitTestMethod, ITheoryAttribute, ITheoryDataRow, object?[], string?)"/>.
+	/// This overload will be removed in the next major version.
+	/// </summary>
+	[Obsolete("Please call/override the overload with index. This overload will be removed in the next major version.")]
+	protected ValueTask<IReadOnlyCollection<IXunitTestCase>> CreateTestCasesForDataRow(
+		ITestFrameworkDiscoveryOptions discoveryOptions,
+		IXunitTestMethod testMethod,
+		ITheoryAttribute theoryAttribute,
+		ITheoryDataRow dataRow,
+		object?[] testMethodArguments) =>
+			CreateTestCasesForDataRow(discoveryOptions, testMethod, theoryAttribute, dataRow, testMethodArguments, null);
+
+	/// <summary>
 	/// Creates test cases for a single row of data.
 	/// </summary>
 	/// <param name="discoveryOptions">The discovery options to be used.</param>
@@ -27,7 +40,7 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 		ITheoryAttribute theoryAttribute,
 		ITheoryDataRow dataRow,
 		object?[] testMethodArguments,
-		string? index = null)
+		string? index)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
@@ -132,7 +145,7 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 	/// - If the theory attribute is marked with Skip, or pre-enumeration is off, or any of the test data is non serializable,
 	///   returns the result of <see cref="CreateTestCasesForTheory"/>;<br/>
 	/// - If there is no theory data, returns a single test case of <see cref="ExecutionErrorTestCase"/> with the error in it;<br/>
-	/// - Otherwise, it returns one test case per data row, created by calling <see cref="CreateTestCasesForDataRow"/>.
+	/// - Otherwise, it returns one test case per data row, created by calling <see cref="CreateTestCasesForDataRow(ITestFrameworkDiscoveryOptions, IXunitTestMethod, ITheoryAttribute, ITheoryDataRow, object?[], string?)"/>.
 	/// </remarks>
 	/// <param name="discoveryOptions">The discovery options to be used.</param>
 	/// <param name="testMethod">The test method the test cases belong to.</param>
@@ -165,12 +178,10 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 			try
 			{
 				var results = new List<IXunitTestCase>();
-
-				int? index = null;
-				if (theoryAttribute.IncludeTestCaseIndex)
-				{
-					index = 0;
-				}
+				int? index =
+					theoryAttribute.IncludeTestCaseIndex
+						? 0
+						: null;
 
 				foreach (var dataAttribute in testMethod.DataAttributes)
 				{
@@ -183,7 +194,12 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 
 					if (data is null)
 					{
-						var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, displayNameIndex: StringExtensions.FormatTestCaseIndex(++index));
+						var details = TestIntrospectionHelper.GetTestCaseDetails(
+							discoveryOptions,
+							testMethod,
+							theoryAttribute,
+							displayNameIndex: StringExtensions.FormatTestCaseIndex(++index)
+						);
 
 						results.Add(
 							new ExecutionErrorTestCase(
@@ -237,7 +253,16 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 
 						try
 						{
-							results.AddRange(await CreateTestCasesForDataRow(discoveryOptions, testMethod, theoryAttribute, dataRow, resolvedData, StringExtensions.FormatTestCaseIndex(++index)));
+							results.AddRange(
+								await CreateTestCasesForDataRow(
+									discoveryOptions,
+									testMethod,
+									theoryAttribute,
+									dataRow,
+									resolvedData,
+									StringExtensions.FormatTestCaseIndex(++index)
+								)
+							);
 						}
 						catch (Exception ex)
 						{
@@ -255,7 +280,12 @@ public class TheoryDiscoverer : IXunitTestCaseDiscoverer
 
 				if (results.Count == 0)
 				{
-					var details = TestIntrospectionHelper.GetTestCaseDetails(discoveryOptions, testMethod, theoryAttribute, displayNameIndex: StringExtensions.FormatTestCaseIndex(++index));
+					var details = TestIntrospectionHelper.GetTestCaseDetails(
+						discoveryOptions,
+						testMethod,
+						theoryAttribute,
+						displayNameIndex: StringExtensions.FormatTestCaseIndex(++index)
+					);
 					var message = string.Format(
 						CultureInfo.CurrentCulture,
 						"No data found for {0}.{1}",

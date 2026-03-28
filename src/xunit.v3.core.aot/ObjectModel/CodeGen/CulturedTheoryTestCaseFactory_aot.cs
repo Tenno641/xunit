@@ -85,9 +85,11 @@ public class CulturedTheoryTestCaseFactory : TheoryTestCaseFactoryBase
 				foreach (var dataRow in await dataRowFactory(disposalTracker))
 				{
 					idx++;
-					var displayNameIndex = IncludeTestCaseIndex
-						? StringExtensions.FormatTestCaseIndex(idx)
-						: null;
+
+					var displayNameIndex =
+						IncludeTestCaseIndex
+							? StringExtensions.FormatTestCaseIndex(idx)
+							: null;
 
 					result.Add(
 						CreatePreEnumeratedTestCase(

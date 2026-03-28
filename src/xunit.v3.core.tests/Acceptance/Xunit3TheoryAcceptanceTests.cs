@@ -848,6 +848,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 #else
 			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithoutIndex));
 #endif
+
 			Assert.Collection(
 				testMessages.OfType<TestPassedWithMetadata>().OrderBy(x => x.Test.TestDisplayName),
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithoutIndex.DisabledTestCaseIndex(_: 1)", passed.Test.TestDisplayName),
@@ -863,6 +864,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 #else
 			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithIndex));
 #endif
+
 			Assert.Collection(
 				testMessages.OfType<TestPassedWithMetadata>().OrderBy(x => x.Test.TestDisplayName),
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithIndex.EnabledTestCaseIndex_001(_: 1)", passed.Test.TestDisplayName),
@@ -892,6 +894,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 #else
 			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithLabel));
 #endif
+
 			Assert.Collection(
 				testMessages.OfType<TestPassedWithMetadata>().OrderBy(x => x.Test.TestDisplayName),
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLabel.IndexedMemberDataWithLabel_001 [smoke]", passed.Test.TestDisplayName),
@@ -906,6 +909,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 #else
 			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithTestDisplayName));
 #endif
+
 			Assert.Collection(
 				testMessages.OrderBy(x => x.Test.TestDisplayName),
 				testCase => Assert.Equal("first case_001(_: 1)", testCase.Test.TestDisplayName),
@@ -920,6 +924,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 #else
 			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithLabelAndTestDisplayName));
 #endif
+
 			Assert.Collection(
 				testMessages.OfType<TestPassedWithMetadata>().OrderBy(x => x.Test.TestDisplayName),
 				testCase => Assert.Equal("my custom name_001 [smoke]", testCase.Test.TestDisplayName),

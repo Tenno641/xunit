@@ -912,7 +912,8 @@ public class TheoryDiscovererTests : AcceptanceTestV3
 			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_001(_: 42)[en-US]", testCase.TestCaseDisplayName),
 			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_001(_: 42)[fr-FR]", testCase.TestCaseDisplayName),
 			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_002(_: 2112)[en-US]", testCase.TestCaseDisplayName),
-			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_002(_: 2112)[fr-FR]", testCase.TestCaseDisplayName));
+			testCase => Assert.Equal($"{typeof(IndexedCulturedTheoryClass_WithMultupleCultures).FullName}.{nameof(IndexedCulturedTheoryClass_WithMultupleCultures.TheoryMethod)}_002(_: 2112)[fr-FR]", testCase.TestCaseDisplayName)
+		);
 	}
 
 	class IndexedCulturedTheoryClass_WithMultupleCultures

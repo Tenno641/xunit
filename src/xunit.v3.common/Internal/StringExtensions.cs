@@ -18,6 +18,12 @@ public static class StringExtensions
 #endif
 
 	/// <summary/>
+	public static string? FormatTestCaseIndex(int? index) =>
+		index is null || index.Value == 0
+			? null
+			: $"_{index.Value.ToString("D3", CultureInfo.CurrentCulture)}";
+
+	/// <summary/>
 	public static string Quoted(this string? value) =>
 		value is null ? "null" : '"' + value + '"';
 
@@ -104,10 +110,4 @@ public static class StringExtensions
 
 		return str.Substring(startIndex, endIndex - startIndex);
 	}
-
-	/// <summary/>
-	public static string? FormatTestCaseIndex(int? index) =>
-		index is null || index.Value == 0
-		? null
-		: $"_{index.Value.ToString("D3", CultureInfo.CurrentCulture)}";
 }

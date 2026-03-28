@@ -21,16 +21,16 @@ public interface ITheoryAttribute : IFactAttribute
 	bool DisableDiscoveryEnumeration { get; }
 
 	/// <summary>
-	/// Gets a flag which indicates whether the test should be skipped (rather than failed) for
-	/// a lack of data.
-	/// </summary>
-	bool SkipTestWithoutData { get; }
-
-	/// <summary>
 	/// Gets a flag which indicates whether each test case generated from data sources
 	/// (<see cref="InlineDataAttribute"/>, <see cref="MemberDataAttribute"/>, and
 	/// <see cref="ClassDataAttribute"/>) should include an auto-incremented, zero-padded
 	/// index in its display name.
 	/// </summary>
 	bool IncludeTestCaseIndex { get; }
+
+	/// <summary>
+	/// Gets a flag which indicates whether the test should be skipped (rather than failed) for
+	/// a lack of data.
+	/// </summary>
+	bool SkipTestWithoutData { get; }
 }

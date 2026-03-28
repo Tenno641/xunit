@@ -19,7 +19,7 @@ public class CulturedTheoryAttributeDiscoverer : TheoryDiscoverer
 		ITheoryAttribute theoryAttribute,
 		ITheoryDataRow dataRow,
 		object?[] testMethodArguments,
-		string? index = null)
+		string? index)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);

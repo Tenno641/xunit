@@ -28,8 +28,8 @@ public class TheoryAttribute(
 	public bool DisableDiscoveryEnumeration { get; set; }
 
 	/// <inheritdoc/>
-	public bool SkipTestWithoutData { get; set; }
+	public bool IncludeTestCaseIndex { get; set; }
 
 	/// <inheritdoc/>
-	public bool IncludeTestCaseIndex { get; set; }
+	public bool SkipTestWithoutData { get; set; }
 }

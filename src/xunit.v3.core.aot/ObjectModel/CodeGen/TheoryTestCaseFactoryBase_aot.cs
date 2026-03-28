@@ -16,6 +16,14 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	public bool? DisableDiscoveryEnumeration { get; set; }
 
 	/// <summary>
+	/// Gets a flag which indicates whether each test case generated from data sources
+	/// (<see cref="InlineDataAttribute"/>, <see cref="MemberDataAttribute"/>, and
+	/// <see cref="ClassDataAttribute"/>) should include an auto-incremented, zero-padded
+	/// index in its display name.
+	/// </summary>
+	public bool IncludeTestCaseIndex { get; set; }
+
+	/// <summary>
 	/// Gets the factory method that converts a data row into a method invoker.
 	/// </summary>
 	public required Func<ITheoryDataRow, ValueTask<Func<object?, ValueTask>>> MethodInvokerFactory { get; set; }
@@ -35,14 +43,6 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// a lack of data.
 	/// </summary>
 	public bool SkipTestWithoutData { get; set; }
-
-	/// <summary>
-	/// Gets a flag which indicates whether each test case generated from data sources
-	/// (<see cref="InlineDataAttribute"/>, <see cref="MemberDataAttribute"/>, and
-	/// <see cref="ClassDataAttribute"/>) should include an auto-incremented, zero-padded
-	/// index in its display name.
-	/// </summary>
-	public bool IncludeTestCaseIndex { get; set; }
 
 	/// <summary>
 	/// Creates a <see cref="CodeGenTest"/> attached to a <see cref="ICodeGenTestCase"/> used for delay enumeration.
@@ -130,7 +130,7 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 		Guard.ArgumentNotNull(dataRow);
 		Guard.ArgumentNotNull(testMethod);
 
-		var testDisplayName = GetTestDisplayName(dataRow, displayName, displayNameSuffix, displayNameIndex: displayNameIndex);
+		var testDisplayName = GetTestDisplayName(dataRow, displayName, displayNameSuffix, displayNameIndex);
 		var mergedTraits = MergeTraits(traits, dataRow.Traits);
 
 		var skipReason = SkipReason;
