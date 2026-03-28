@@ -2,6 +2,27 @@ using Xunit;
 
 public static class StringExtensionsTests
 {
+	public static class FormatTestCaseIndex
+	{
+		[Fact]
+		public static void NonNullNonZero()
+		{
+			var zeroIndexResult = StringExtensions.FormatTestCaseIndex(3);
+
+			Assert.Equal("_003", zeroIndexResult);
+		}
+
+		[Fact]
+		public static void NullOrZero()
+		{
+			var zeroIndexResult = StringExtensions.FormatTestCaseIndex(0);
+			var nullIndexResult = StringExtensions.FormatTestCaseIndex(null);
+
+			Assert.Null(zeroIndexResult);
+			Assert.Null(nullIndexResult);
+		}
+	}
+
 	public static class SplitAtOuterCommas
 	{
 		[Fact]

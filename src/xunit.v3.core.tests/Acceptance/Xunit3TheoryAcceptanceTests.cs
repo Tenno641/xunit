@@ -839,5 +839,96 @@ public static partial class Xunit3TheoryAcceptanceTests
 				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+ClassWithSkips.SkippedMemberData(_: 42, y: \"Hello, world!\")", passed.Test.TestDisplayName)
 			);
 		}
+
+		[Fact]
+		public async ValueTask IncludeTestCaseIndex_SetToFalse_YieldsTestCasesWithoutIndex()
+		{
+#if XUNIT_AOT
+			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithoutIndex");
+#else
+			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithoutIndex));
+#endif
+
+			Assert.Collection(
+				testMessages.OfType<TestPassedWithMetadata>().OrderBy(x => x.Test.TestDisplayName),
+				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithoutIndex.DisabledTestCaseIndex(_: 1)", passed.Test.TestDisplayName),
+				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithoutIndex.DisabledTestCaseIndex(_: 2)", passed.Test.TestDisplayName),
+				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithoutIndex.DisabledTestCaseIndex(_: 3)", passed.Test.TestDisplayName));
+		}
+
+		[Fact]
+		public async ValueTask IncludeTestCaseIndex_SetToTrue_YieldsTestCasesWithZeroPaddedIndex()
+		{
+#if XUNIT_AOT
+			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithIndex");
+#else
+			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithIndex));
+#endif
+
+			Assert.Collection(
+				testMessages.OfType<TestPassedWithMetadata>().OrderBy(x => x.Test.TestDisplayName),
+				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithIndex.EnabledTestCaseIndex_001(_: 1)", passed.Test.TestDisplayName),
+				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithIndex.EnabledTestCaseIndex_002(_: 2)", passed.Test.TestDisplayName),
+				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithIndex.EnabledTestCaseIndex_003(_: 3)", passed.Test.TestDisplayName));
+		}
+
+		[Fact]
+		public async ValueTask IncludeTestCaseIndex_SetToTrue_IndexPaddingScalesWithCount()
+		{
+#if XUNIT_AOT
+			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLargeDataSet");
+#else
+			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithLargeDataSet));
+#endif
+
+			testMessages = testMessages.OrderBy(x => x.Test.TestDisplayName).ToList();
+			Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLargeDataSet.IndexedTestCases_001(_: 1)", testMessages.First().Test.TestDisplayName);
+			Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLargeDataSet.IndexedTestCases_100(_: 100)", testMessages.Last().Test.TestDisplayName);
+		}
+
+		[Fact]
+		public async ValueTask IncludeTestCaseIndex_SetToTrueWithLabel_YieldsIndexedDisplayNameWithLabel()
+		{
+#if XUNIT_AOT
+			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLabel");
+#else
+			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithLabel));
+#endif
+
+			Assert.Collection(
+				testMessages.OfType<TestPassedWithMetadata>().OrderBy(x => x.Test.TestDisplayName),
+				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLabel.IndexedMemberDataWithLabel_001 [smoke]", passed.Test.TestDisplayName),
+				passed => Assert.Equal("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLabel.IndexedMemberDataWithLabel_002 [smoke]", passed.Test.TestDisplayName));
+		}
+
+		[Fact]
+		public async ValueTask IncludeTestCaseIndex_SetToTrueWithTestDisplayName_YieldsIndexedCustomDisplayName()
+		{
+#if XUNIT_AOT
+			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithTestDisplayName");
+#else
+			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithTestDisplayName));
+#endif
+
+			Assert.Collection(
+				testMessages.OrderBy(x => x.Test.TestDisplayName),
+				testCase => Assert.Equal("first case_001(_: 1)", testCase.Test.TestDisplayName),
+				testCase => Assert.Equal("second case_002(_: 2)", testCase.Test.TestDisplayName));
+		}
+
+		[Fact]
+		public async ValueTask IncludeTestCaseIndex_SetToTrueWithLabelAndTestDisplayName_TestDisplayNameTakesPrecedence()
+		{
+#if XUNIT_AOT
+			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+TheoryTests+IndexedTheoryClassWithLabelAndTestDisplayName");
+#else
+			var testMessages = await RunForResultsAsync(typeof(IndexedTheoryClassWithLabelAndTestDisplayName));
+#endif
+
+			Assert.Collection(
+				testMessages.OfType<TestPassedWithMetadata>().OrderBy(x => x.Test.TestDisplayName),
+				testCase => Assert.Equal("my custom name_001 [smoke]", testCase.Test.TestDisplayName),
+				testCase => Assert.Equal("my custom name_002 [smoke]", testCase.Test.TestDisplayName));
+		}
 	}
 }

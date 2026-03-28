@@ -130,6 +130,8 @@ public class TheoryMethodDetails : MethodDetailsBase
 
 	public bool? DisableDiscoveryEnumeration { get; set; }
 
+	public bool IncludeTestCaseIndex { get; set; }
+
 	public string MethodInvokerFactory { get; set; }
 
 	public string?[]? ParameterDefaultValues { get; set; }
@@ -146,6 +148,10 @@ public class TheoryMethodDetails : MethodDetailsBase
 		{
 			case Names.Xunit.Internal.TheoryAttributeBase.DisableDiscoveryEnumeration:
 				DisableDiscoveryEnumeration = value.Value is true;
+				break;
+
+			case Names.Xunit.Internal.TheoryAttributeBase.IncludeTestCaseIndex:
+				IncludeTestCaseIndex = value.Value is true;
 				break;
 
 			case Names.Xunit.Internal.TheoryAttributeBase.SkipTestWithoutData:

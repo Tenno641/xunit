@@ -26,6 +26,7 @@ public static class Names
 			public static class TheoryAttributeBase
 			{
 				public const string DisableDiscoveryEnumeration = nameof(DisableDiscoveryEnumeration);
+				public const string IncludeTestCaseIndex = nameof(IncludeTestCaseIndex);
 				public const string SkipTestWithoutData = nameof(SkipTestWithoutData);
 			}
 		}

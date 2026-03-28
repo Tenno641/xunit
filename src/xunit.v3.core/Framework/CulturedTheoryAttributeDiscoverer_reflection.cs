@@ -18,7 +18,8 @@ public class CulturedTheoryAttributeDiscoverer : TheoryDiscoverer
 		IXunitTestMethod testMethod,
 		ITheoryAttribute theoryAttribute,
 		ITheoryDataRow dataRow,
-		object?[] testMethodArguments)
+		object?[] testMethodArguments,
+		string? index)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
@@ -26,7 +27,7 @@ public class CulturedTheoryAttributeDiscoverer : TheoryDiscoverer
 		Guard.ArgumentNotNull(dataRow);
 		Guard.ArgumentNotNull(testMethodArguments);
 
-		var details = TestIntrospectionHelper.GetTestCaseDetailsForTheoryDataRow(discoveryOptions, testMethod, theoryAttribute, dataRow, testMethodArguments);
+		var details = TestIntrospectionHelper.GetTestCaseDetailsForTheoryDataRow(discoveryOptions, testMethod, theoryAttribute, dataRow, testMethodArguments, index);
 
 		if (theoryAttribute is not CulturedTheoryAttribute culturedTheoryAttribute)
 			return Error(

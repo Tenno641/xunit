@@ -16,6 +16,14 @@ public abstract class TheoryAttributeBase : FactAttributeBase
 	public bool DisableDiscoveryEnumeration { get; set; }
 
 	/// <summary>
+	/// Gets a flag which indicates whether each test case generated from data sources
+	/// (<see cref="InlineDataAttribute"/>, <see cref="MemberDataAttribute"/>, and
+	/// <see cref="ClassDataAttribute"/>) should include an auto-incremented, zero-padded
+	/// index in its display name.
+	/// </summary>
+	public bool IncludeTestCaseIndex { get; set; }
+
+	/// <summary>
 	/// Gets a flag which indicates whether the test should be skipped (rather than failed) for
 	/// a lack of data.
 	/// </summary>

@@ -57,7 +57,16 @@ public class TheoryTestCaseFactory : TheoryTestCaseFactoryBase
 
 		foreach (var dataRowFactory in dataRowFactories)
 			foreach (var dataRow in await dataRowFactory(disposalTracker))
-				result.Add(CreatePreEnumeratedTestCase(testMethod, displayName, traits, dataRow, await MethodInvokerFactory(dataRow), ++idx));
+			{
+				idx++;
+
+				var displayNameIndex =
+					IncludeTestCaseIndex
+						? StringExtensions.FormatTestCaseIndex(idx)
+						: null;
+
+				result.Add(CreatePreEnumeratedTestCase(testMethod, displayName, traits, dataRow, await MethodInvokerFactory(dataRow), idx, displayNameIndex: displayNameIndex));
+			}
 
 		return result;
 	}
