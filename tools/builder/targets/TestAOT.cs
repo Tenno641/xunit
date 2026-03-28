@@ -20,7 +20,7 @@ public static class TestAOT
 		var v3TestAssemblies =
 			Directory
 				.GetFiles(context.BaseFolder, "xunit.v3.*.aot.tests" + executableExtension, SearchOption.AllDirectories)
-				.Where(x => x.Contains("publish") && !x.Contains(".acceptance."))
+				.Where(x => !x.Contains(".acceptance.") && Path.GetFileName(Path.GetDirectoryName(x)) == "publish")
 				.OrderBy(x => x)
 				.Select(x => x.Substring(context.BaseFolder.Length + 1));
 
