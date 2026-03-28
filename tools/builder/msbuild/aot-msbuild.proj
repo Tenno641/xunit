@@ -14,9 +14,15 @@
 
 	<Target Name="v3">
 		<ItemGroup>
+			<!-- Windows -->
 			<AotAssemblies Include="$(SolutionDir)src\**\bin\$(Configuration)\net8.0\*\publish\xunit.v3.*.tests.exe" />
 			<AotAssemblies Include="$(SolutionDir)src\**\bin\$(Configuration)\net9.0\*\publish\xunit.v3.*.tests.exe" />
 			<AotAssemblies Include="$(SolutionDir)src\**\bin\$(Configuration)\net10.0\*\publish\xunit.v3.*.tests.exe" />
+
+			<!-- Non-Windows -->
+			<AotAssemblies Include="$(SolutionDir)src\**\bin\$(Configuration)\net8.0\*\publish\xunit.v3.*.tests" />
+			<AotAssemblies Include="$(SolutionDir)src\**\bin\$(Configuration)\net9.0\*\publish\xunit.v3.*.tests" />
+			<AotAssemblies Include="$(SolutionDir)src\**\bin\$(Configuration)\net10.0\*\publish\xunit.v3.*.tests" />
 		</ItemGroup>
 
 		<Message Text=" " Importance="High" />
