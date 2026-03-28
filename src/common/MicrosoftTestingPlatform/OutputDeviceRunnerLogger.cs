@@ -30,7 +30,7 @@ public sealed class OutputDeviceRunnerLogger(
 		string message)
 	{
 		if (!rawOnly)
-			outputDevice.DisplayAsync(this, ToMessageWithColor(message, ConsoleColor.Red)).SpinWait();
+			outputDevice.DisplayAsync(this, ToMessageWithColor(message, ConsoleColor.Red), TestContext.Current.CancellationToken).SpinWait();
 
 		innerLogger?.LogError(stackFrame, message);
 	}
@@ -41,7 +41,7 @@ public sealed class OutputDeviceRunnerLogger(
 		string message)
 	{
 		if (!rawOnly)
-			outputDevice.DisplayAsync(this, new TextOutputDeviceData(message)).SpinWait();
+			outputDevice.DisplayAsync(this, new TextOutputDeviceData(message), TestContext.Current.CancellationToken).SpinWait();
 
 		innerLogger?.LogImportantMessage(stackFrame, message);
 	}
@@ -52,7 +52,7 @@ public sealed class OutputDeviceRunnerLogger(
 		string message)
 	{
 		if (!rawOnly)
-			outputDevice.DisplayAsync(this, ToMessageWithColor(message, ConsoleColor.DarkGray)).SpinWait();
+			outputDevice.DisplayAsync(this, ToMessageWithColor(message, ConsoleColor.DarkGray), TestContext.Current.CancellationToken).SpinWait();
 
 		innerLogger?.LogMessage(stackFrame, message);
 	}
@@ -60,7 +60,7 @@ public sealed class OutputDeviceRunnerLogger(
 	/// <inheritdoc/>
 	public void LogRaw(string message)
 	{
-		outputDevice.DisplayAsync(this, new TextOutputDeviceData(message)).SpinWait();
+		outputDevice.DisplayAsync(this, new TextOutputDeviceData(message), TestContext.Current.CancellationToken).SpinWait();
 		innerLogger?.LogRaw(message);
 	}
 
@@ -70,7 +70,7 @@ public sealed class OutputDeviceRunnerLogger(
 		string message)
 	{
 		if (!rawOnly)
-			outputDevice.DisplayAsync(this, ToMessageWithColor(message, ConsoleColor.Yellow)).SpinWait();
+			outputDevice.DisplayAsync(this, ToMessageWithColor(message, ConsoleColor.Yellow), TestContext.Current.CancellationToken).SpinWait();
 
 		innerLogger?.LogWarning(stackFrame, message);
 	}

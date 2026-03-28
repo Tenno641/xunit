@@ -103,7 +103,6 @@ public sealed class AssemblyRunner :
 	void OnDiscoveryStarting(IDiscoveryStarting discoveryStarting)
 	{
 		options.OnDiscoveryStarting?.Invoke();
-		Cancel();
 	}
 
 	void OnErrorMessage(
@@ -344,7 +343,7 @@ public sealed class AssemblyRunner :
 			if (!finishedEvent.IsSet)
 				throw new InvalidOperationException("The test assembly is already running");
 
-			cancelled = true;
+			cancelled = false;
 			testResults = [];
 			metadataCache = new();
 

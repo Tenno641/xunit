@@ -24,19 +24,6 @@ public static class TestPlatformExecutionMessageSinkTests
 		Assert.Same(message, received);
 	}
 
-	[Fact]
-	public static void ReturnsFalseWhenCancellationTokenIsCancelled()
-	{
-		var message = TestData.DiagnosticMessage();
-		var classUnderTest = TestableTestPlatformExecutionMessageSink.Create();
-		classUnderTest.InnerSink.Callback = _ => true;
-		classUnderTest.CancellationTokenSource.Cancel();
-
-		var result = classUnderTest.OnMessage(message);
-
-		Assert.False(result);
-	}
-
 	public static class MessageMapping
 	{
 		[Fact]
@@ -446,11 +433,9 @@ public static class TestPlatformExecutionMessageSinkTests
 		XunitTrxCapability trxCapability,
 		SpyTestPlatformOutputDevice outputDevice,
 		bool showLiveOutput,
-		bool serverMode,
-		CancellationTokenSource cancellationTokenSource) :
-			TestPlatformExecutionMessageSink(innerSink, sessionUid, testNodeMessageBus, trxCapability, outputDevice, showLiveOutput, serverMode, cancellationTokenSource.Token)
+		bool serverMode) :
+			TestPlatformExecutionMessageSink(innerSink, sessionUid, testNodeMessageBus, trxCapability, outputDevice, showLiveOutput, serverMode)
 	{
-		public CancellationTokenSource CancellationTokenSource { get; } = cancellationTokenSource;
 		public SpyMessageSink InnerSink { get; } = innerSink;
 		public SpyTestPlatformOutputDevice OutputDevice { get; } = outputDevice;
 		public SpyTestPlatformMessageBus TestNodeMessageBus { get; } = testNodeMessageBus;
@@ -459,6 +444,6 @@ public static class TestPlatformExecutionMessageSinkTests
 			bool trxEnabled = false,
 			bool showLiveOutput = false,
 			bool serverMode = false) =>
-				new(SpyMessageSink.Capture(), new(), new(), new(trxEnabled), new(), showLiveOutput, serverMode, new());
+				new(SpyMessageSink.Capture(), new(), new(), new(trxEnabled), new(), showLiveOutput, serverMode);
 	}
 }
