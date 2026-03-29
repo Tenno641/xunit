@@ -4,11 +4,20 @@ using Xunit.Sdk;
 
 public static partial class Xunit3TheoryAcceptanceTests
 {
+	// Temporary: See if we can catch what's happening if these flaky tests report again
+	static void ReportMessages(string[] messages)
+	{
+		TestContext.Current.TestOutputHelper?.WriteLine("Diagnostic messages (count: {0})", messages.Length);
+
+		for (var idx = 0; idx < messages.Length; ++idx)
+			TestContext.Current.TestOutputHelper?.WriteLine("  {0}: {1}", idx, messages[idx]);
+	}
+
 	public partial class ClassDataTests : AcceptanceTestV3
 	{
 		readonly SpyMessageSink messageSink = SpyMessageSink.Capture();
 
-		[Fact(Skip = "Appears to be flaky, temporarily disabling")]
+		[Fact]
 		public async ValueTask ClassDisposable_DisposesOfClass()
 		{
 #if XUNIT_AOT
@@ -21,10 +30,18 @@ public static partial class Xunit3TheoryAcceptanceTests
 			Assert.Single(testMessages.OfType<TestSkippedWithMetadata>());
 			Assert.Single(testMessages.OfType<TestNotRunWithMetadata>());
 			var diagnosticMessages = messageSink.Messages.OfType<IDiagnosticMessage>().Select(dm => dm.Message).ToArray();
-			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassDisposable.Dispose", diagnosticMessages);
+			try
+			{
+				Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassDisposable.Dispose", diagnosticMessages);
+			}
+			catch
+			{
+				ReportMessages(diagnosticMessages);
+				throw;
+			}
 		}
 
-		[Fact(Skip = "Appears to be flaky, temporarily disabling")]
+		[Fact]
 		public async ValueTask ClassAsyncDisposable_DisposesOfClass()
 		{
 #if XUNIT_AOT
@@ -37,8 +54,16 @@ public static partial class Xunit3TheoryAcceptanceTests
 			Assert.Single(testMessages.OfType<TestSkippedWithMetadata>());
 			Assert.Single(testMessages.OfType<TestNotRunWithMetadata>());
 			var diagnosticMessages = messageSink.Messages.OfType<IDiagnosticMessage>().Select(dm => dm.Message).ToArray();
-			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassAsyncDisposable.InitializeAsync", diagnosticMessages);
-			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassAsyncDisposable.DisposeAsync", diagnosticMessages);
+			try
+			{
+				Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassAsyncDisposable.InitializeAsync", diagnosticMessages);
+				Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassAsyncDisposable.DisposeAsync", diagnosticMessages);
+			}
+			catch
+			{
+				ReportMessages(diagnosticMessages);
+				throw;
+			}
 		}
 	}
 
@@ -48,7 +73,7 @@ public static partial class Xunit3TheoryAcceptanceTests
 	{
 		readonly SpyMessageSink messageSink = SpyMessageSink.Capture();
 
-		[Fact(Skip = "Appears to be flaky, temporarily disabling")]
+		[Fact]
 		public async ValueTask ClassDisposable_DisposesOfClass()
 		{
 #if XUNIT_AOT
@@ -61,10 +86,18 @@ public static partial class Xunit3TheoryAcceptanceTests
 			Assert.Single(testMessages.OfType<TestSkippedWithMetadata>());
 			Assert.Single(testMessages.OfType<TestNotRunWithMetadata>());
 			var diagnosticMessages = messageSink.Messages.OfType<IDiagnosticMessage>().Select(dm => dm.Message).ToArray();
-			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassDisposable.Dispose", diagnosticMessages);
+			try
+			{
+				Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassDisposable.Dispose", diagnosticMessages);
+			}
+			catch
+			{
+				ReportMessages(diagnosticMessages);
+				throw;
+			}
 		}
 
-		[Fact(Skip = "Appears to be flaky, temporarily disabling")]
+		[Fact]
 		public async ValueTask ClassAsyncDisposable_DisposesOfClass()
 		{
 #if XUNIT_AOT
@@ -77,8 +110,16 @@ public static partial class Xunit3TheoryAcceptanceTests
 			Assert.Single(testMessages.OfType<TestSkippedWithMetadata>());
 			Assert.Single(testMessages.OfType<TestNotRunWithMetadata>());
 			var diagnosticMessages = messageSink.Messages.OfType<IDiagnosticMessage>().Select(dm => dm.Message).ToArray();
-			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassAsyncDisposable.InitializeAsync", diagnosticMessages);
-			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassAsyncDisposable.DisposeAsync", diagnosticMessages);
+			try
+			{
+				Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassAsyncDisposable.InitializeAsync", diagnosticMessages);
+				Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassAsyncDisposable.DisposeAsync", diagnosticMessages);
+			}
+			catch
+			{
+				ReportMessages(diagnosticMessages);
+				throw;
+			}
 		}
 	}
 

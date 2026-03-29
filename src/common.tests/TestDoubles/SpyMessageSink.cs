@@ -37,7 +37,10 @@ public class SpyMessageSink : IMessageSink
 	{
 		public bool OnMessage(IMessageSinkMessage message)
 		{
-			messages?.Add(message);
+			if (messages is not null)
+				lock (messages)
+					messages.Add(message);
+
 			return lambda(message);
 		}
 	}
