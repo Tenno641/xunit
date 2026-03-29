@@ -307,7 +307,17 @@ internal static class Extensions
 		if (constant.Kind == TypedConstantKind.Array)
 			return $"new {constant.Type?.ToCSharp()} {{ {string.Join(", ", constant.Values.Select(v => v.ToCSharp()))} }}";
 
-		return constant.ToCSharpString();
+		return constant.Value switch
+		{
+			// These constant values aren't emitted by Roslyn ToCSharpString() correctly, per https://github.com/xunit/xunit/issues/3524
+			float.NaN => "float.NaN",
+			float.PositiveInfinity => "float.PositiveInfinity",
+			float.NegativeInfinity => "float.NegativeInfinity",
+			double.NaN => "double.NaN",
+			double.PositiveInfinity => "double.PositiveInfinity",
+			double.NegativeInfinity => "double.NegativeInfinity",
+			_ => constant.ToCSharpString()
+		};
 	}
 
 	public static string ToCSharp(this ImmutableArray<TypedConstant> constants) =>

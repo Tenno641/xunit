@@ -570,6 +570,29 @@ public static partial class Xunit3TheoryAcceptanceTests
 				displayName => Assert.Equal("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassWithAsyncTaskMethod.TestMethod(_: B)", displayName)
 			);
 		}
+
+		// https://github.com/xunit/xunit/issues/3524
+		[Fact]
+		public static async ValueTask SpecialFloatingPointValuesAreSupported()
+		{
+#if XUNIT_AOT
+			var testMessages = await RunForResultsAsync("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassWithSpecialFloatingPointValues");
+#else
+			var testMessages = await RunForResultsAsync(typeof(ClassWithSpecialFloatingPointValues));
+#endif
+
+			Assert.Collection(
+				testMessages.OfType<TestPassedWithMetadata>().Select(passed => passed.Test.TestDisplayName).OrderBy(x => x),
+#if NETFRAMEWORK  // Unclear why these sort differently in .NET vs. NET Framework
+				displayName => Assert.Equal("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassWithSpecialFloatingPointValues.TestMethod(_1: Infinity, _2: Infinity)", displayName),
+				displayName => Assert.Equal("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassWithSpecialFloatingPointValues.TestMethod(_1: -Infinity, _2: -Infinity)", displayName),
+#else
+				displayName => Assert.Equal("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassWithSpecialFloatingPointValues.TestMethod(_1: -Infinity, _2: -Infinity)", displayName),
+				displayName => Assert.Equal("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassWithSpecialFloatingPointValues.TestMethod(_1: Infinity, _2: Infinity)", displayName),
+#endif
+				displayName => Assert.Equal("Xunit3TheoryAcceptanceTests+InlineDataTests+ClassWithSpecialFloatingPointValues.TestMethod(_1: NaN, _2: NaN)", displayName)
+			);
+		}
 	}
 
 	public static class LabelTests

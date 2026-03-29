@@ -545,6 +545,18 @@ public partial class Xunit3TheoryAcceptanceTests
 				await Task.Run(() => "Any statement, to prevent a C# compiler error");
 			}
 		}
+
+#if XUNIT_AOT
+		public
+#endif
+		static class ClassWithSpecialFloatingPointValues
+		{
+			[Theory]
+			[InlineData(float.NaN, double.NaN)]
+			[InlineData(float.NegativeInfinity, double.NegativeInfinity)]
+			[InlineData(float.PositiveInfinity, double.PositiveInfinity)]
+			public static void TestMethod(float _1, double _2) { }
+		}
 	}
 
 	public partial class MemberDataTests
@@ -1273,7 +1285,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 #if XUNIT_AOT
-		public 
+		public
 #endif
 		class IndexedTheoryClassWithoutIndex
 		{
@@ -1284,7 +1296,7 @@ public partial class Xunit3TheoryAcceptanceTests
 			public void DisabledTestCaseIndex(int _) { }
 		}
 #if XUNIT_AOT
-		public 
+		public
 #endif
 		class IndexedTheoryClassWithIndex
 		{
@@ -1296,7 +1308,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 #if XUNIT_AOT
-		public 
+		public
 #endif
 		class IndexedTheoryClassWithLargeDataSet
 		{
@@ -1309,7 +1321,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 #if XUNIT_AOT
-		public 
+		public
 #endif
 		class IndexedTheoryClassWithLabel
 		{
@@ -1322,7 +1334,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 #if XUNIT_AOT
-		public 
+		public
 #endif
 		class IndexedTheoryClassWithTestDisplayName
 		{
@@ -1335,7 +1347,7 @@ public partial class Xunit3TheoryAcceptanceTests
 		}
 
 #if XUNIT_AOT
-		public 
+		public
 #endif
 		class IndexedTheoryClassWithLabelAndTestDisplayName
 		{
