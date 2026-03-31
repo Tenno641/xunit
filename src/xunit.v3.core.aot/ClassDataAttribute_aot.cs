@@ -16,9 +16,5 @@ sealed partial class ClassDataAttribute
 /// </list>
 /// </summary>
 /// <typeparam name="TClass">The class that provides the data.</typeparam>
-/// <remarks>
-/// .NET Framework does not support generic attributes. Please use the non-generic <see cref="ClassDataAttribute"/>
-/// when targeting .NET Framework.
-/// </remarks>
 public sealed class ClassDataAttribute<TClass>() : DataAttribute
 { }
