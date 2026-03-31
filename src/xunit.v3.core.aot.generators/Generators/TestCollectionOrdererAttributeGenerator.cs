@@ -4,10 +4,7 @@ namespace Xunit.Generators;
 
 [Generator(LanguageNames.CSharp)]
 public class TestCollectionOrdererAttributeGenerator() :
-	AssemblyFactoryAttributeGeneratorBase(
-		Types.Xunit.TestCollectionOrdererAttribute,
-		nameof(Types.Xunit.TestCollectionOrdererAttribute),
-		"RegisterAssemblyTestCollectionOrdererFactory")
+	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.TestCollectionOrdererAttribute, "RegisterAssemblyTestCollectionOrdererFactory")
 {
 	protected override bool ValidateImplementationType(
 		INamedTypeSymbol type,

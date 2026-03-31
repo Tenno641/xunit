@@ -8,7 +8,6 @@ namespace Xunit.Generators;
 /// </summary>
 /// <param name="fullyQualifiedAttributeTypeName">The fully qualified attribute name
 /// (e.g., <c>"Xunit.TestFrameworkAttribute"</c>)</param>
-/// <param name="simpleAttributeName">The simple attribute name (e.g., <c>"TestFrameworkAttribute"</c>)</param>
 /// <param name="factoryRegistrationMethod">The factory registration method name off <c>RegisteredEngineConfig</c>
 /// (e.g., <c>"RegisterTestFrameworkFactory"</c>). This is required if you don't override <see cref="GetRegistration"/>,
 /// but can be omitted if you do.</param>
@@ -19,11 +18,10 @@ namespace Xunit.Generators;
 /// <br />
 /// into an engine initialization attribute that calls:<br />
 /// <br />
-/// <c>RegisteredEngineConfig.FactoryProperty = (parameters) => new Implementation(parameters);</c>
+/// <c>RegisteredEngineConfig.FactoryProperty = () => new Implementation();</c>
 /// </remarks>
 public abstract class AssemblyFactoryAttributeGeneratorBase(
 	string fullyQualifiedAttributeTypeName,
-	string simpleAttributeName,
 	string? factoryRegistrationMethod = null) :
 		XunitAttributeGenerator<AssemblyFactoryAttributeGeneratorBase.GeneratorResult>(fullyQualifiedAttributeTypeName)
 {
@@ -78,21 +76,44 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 		var result = new GeneratorResult(context);
 
 		var attribute = context.Attributes.FirstOrDefault();
-		if (attribute is not null &&
-			attribute.ConstructorArguments.Length == 1 &&
-			attribute.ConstructorArguments[0].Value is INamedTypeSymbol type)
+		if (attribute is not null)
 		{
-			var location = attribute.ApplicationSyntaxReference.Location;
-			var factory = GetFactory(type, location, result);
-			if (factory is not null)
+			var type = GetTypeArgument(attribute);
+			if (type is not null)
 			{
-				result.Type = type.ToCSharp();
-				result.Factory = factory;
+				var location = attribute.ApplicationSyntaxReference.Location;
+				var factory = GetFactory(type, location, result);
+				if (factory is not null)
+				{
+					result.Type = type.ToCSharp();
+					result.Factory = factory;
+				}
 			}
 		}
 
 		return result;
 	}
+
+	protected virtual INamedTypeSymbol? GetTypeArgument(AttributeData attribute) =>
+		FullyQualifiedAttributeTypeName.EndsWith("`1", StringComparison.Ordinal)
+			? GetTypeArgumentGeneric(attribute)
+			: GetTypeArgumentNonGeneric(attribute);
+
+	protected static INamedTypeSymbol? GetTypeArgumentGeneric(AttributeData attribute)
+	{
+		if (attribute?.AttributeClass is not { } attributeType)
+			return null;
+
+		return
+			attributeType.TypeArguments.Length == 1
+				? attributeType.TypeArguments[0] as INamedTypeSymbol
+				: null;
+	}
+
+	protected static INamedTypeSymbol? GetTypeArgumentNonGeneric(AttributeData attribute) =>
+		attribute?.ConstructorArguments.Length == 1
+			? attribute.ConstructorArguments[0].Value as INamedTypeSymbol
+			: null;
 
 	protected virtual bool ValidateImplementationType(
 		INamedTypeSymbol type,

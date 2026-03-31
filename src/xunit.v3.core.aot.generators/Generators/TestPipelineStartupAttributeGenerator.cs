@@ -4,10 +4,7 @@ namespace Xunit.Generators;
 
 [Generator(LanguageNames.CSharp)]
 public class TestPipelineStartupAttributeGenerator() :
-	AssemblyFactoryAttributeGeneratorBase(
-		Types.Xunit.v3.TestPipelineStartupAttribute,
-		nameof(Types.Xunit.v3.TestPipelineStartupAttribute),
-		"RegisterTestPipelineStartupFactory")
+	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.v3.TestPipelineStartupAttribute, "RegisterTestPipelineStartupFactory")
 {
 	protected override bool ValidateImplementationType(
 		INamedTypeSymbol type,

@@ -4,7 +4,7 @@ namespace Xunit.Generators;
 
 [Generator(LanguageNames.CSharp)]
 public class TestFrameworkAttributeGenerator() :
-	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.TestFrameworkAttribute, nameof(Types.Xunit.TestFrameworkAttribute), "RegisterTestFrameworkFactory")
+	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.TestFrameworkAttribute, "RegisterTestFrameworkFactory")
 {
 	static readonly HashSet<string> StringTypes = ["string", "string?"];
 

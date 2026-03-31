@@ -6,6 +6,9 @@ public abstract class XunitAttributeGenerator<TResult>(string fullyQualifiedAttr
 	XunitGenerator
 		where TResult : XunitGeneratorResult
 {
+	protected string FullyQualifiedAttributeTypeName { get; } =
+		Guard.ArgumentNotNull(fullyQualifiedAttributeTypeName);
+
 	protected abstract void CreateSource(
 		SourceProductionContext context,
 		TResult result);
