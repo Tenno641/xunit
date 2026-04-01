@@ -20,3 +20,22 @@ public class RegisterResultWriterAttributeGenerator() :
 		GeneratorResult result) =>
 			EnsureImplementsInterfaces(type, location, result, Types.Xunit.Runner.Common.IConsoleResultWriter, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
 }
+
+[Generator(LanguageNames.CSharp)]
+public class RegisterResultWriterAttributeOfTGenerator() :
+	IDAndTypeGenerator(
+		Types.Xunit.Runner.Common.RegisterResultWriterAttribute + "`1",
+		(id, type) => $$"""
+			{
+				var writer = new {{type}}();
+				global::Xunit.Runner.Common.RegisteredRunnerConfig.RegisterConsoleResultWriter("{{id}}", writer);
+				global::Xunit.Runner.Common.RegisteredRunnerConfig.RegisterMicrosoftTestingPlatformResultWriter("{{id}}", writer);
+			}
+			""")
+{
+	protected override bool ValidateType(
+		INamedTypeSymbol type,
+		Location? location,
+		GeneratorResult result) =>
+			EnsureImplementsInterfaces(type, location, result, Types.Xunit.Runner.Common.IConsoleResultWriter, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
+}
