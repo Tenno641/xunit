@@ -6,7 +6,6 @@ namespace Xunit.Generators;
 public class RegisterResultWriterAttributeGenerator() :
 	IDAndTypeGenerator(
 		Types.Xunit.Runner.Common.RegisterResultWriterAttribute,
-		nameof(Types.Xunit.Runner.Common.RegisterResultWriterAttribute),
 		(id, type) => $$"""
 			{
 				var writer = new {{type}}();
