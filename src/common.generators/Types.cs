@@ -50,6 +50,8 @@ public static class Types
 		const string ns = $"{nameof(Xunit)}.";
 
 		public const string AssemblyFixtureAttribute = ns + nameof(AssemblyFixtureAttribute);
+		public const string CaptureConsoleAttribute = ns + nameof(CaptureConsoleAttribute);
+		public const string CaptureTraceAttribute = ns + nameof(CaptureTraceAttribute);
 		public const string ClassDataAttribute = ns + nameof(ClassDataAttribute);
 		public const string CollectionBehaviorAttribute = ns + nameof(CollectionBehaviorAttribute);
 		public const string CollectionDefinitionAttribute = ns + nameof(CollectionDefinitionAttribute);

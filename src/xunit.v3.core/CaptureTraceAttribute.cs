@@ -1,4 +1,4 @@
-#pragma warning disable CA1812  // CaptureTraceImpl is instantiated dynamically as an assembly fixture
+#pragma warning disable CA1812  // CaptureTraceImpl is instantiated as an assembly fixture
 
 using System.Diagnostics;
 using Xunit.v3;
@@ -10,16 +10,17 @@ namespace Xunit;
 /// test output helper.
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
-public sealed class CaptureTraceAttribute() :
-	AssemblyFixtureAttribute(typeof(CaptureTraceImpl))
+public sealed partial class CaptureTraceAttribute
 {
-	sealed class CaptureTraceImpl : IDisposable
+	sealed partial class CaptureTraceImpl : IDisposable
 	{
 		readonly TraceCaptureTestOutputWriter writer;
 
+		/// <summary/>
 		public CaptureTraceImpl() =>
 			writer = new TraceCaptureTestOutputWriter(TestContextAccessor.Instance);
 
+		/// <summary/>
 		public void Dispose() =>
 			writer.SafeDispose();
 	}

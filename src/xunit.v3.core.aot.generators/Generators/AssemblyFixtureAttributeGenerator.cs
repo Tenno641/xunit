@@ -9,3 +9,11 @@ public class AssemblyFixtureAttributeGenerator() :
 	protected override string GetRegistration(GeneratorResult result) =>
 		$"global::Xunit.v3.RegisteredEngineConfig.RegisterAssemblyFixtureFactory(typeof({Guard.ArgumentNotNull(result).Type}), async () => {result.Factory});";
 }
+
+[Generator(LanguageNames.CSharp)]
+public class AssemblyFixtureAttributeOfTGenerator() :
+	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.AssemblyFixtureAttribute + "`1")
+{
+	protected override string GetRegistration(GeneratorResult result) =>
+		$"global::Xunit.v3.RegisteredEngineConfig.RegisterAssemblyFixtureFactory(typeof({Guard.ArgumentNotNull(result).Type}), async () => {result.Factory});";
+}

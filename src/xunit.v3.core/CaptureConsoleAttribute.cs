@@ -1,4 +1,4 @@
-#pragma warning disable CA1812  // CaptureConsoleImpl is instantiated dynamically as an assembly fixture
+#pragma warning disable CA1812  // CaptureConsoleImpl is instantiated as an assembly fixture
 #pragma warning disable CA1822  // The attribute properties cannot be static, because that's not how attribute properties are supposed to work
 
 using Xunit.v3;
@@ -10,8 +10,7 @@ namespace Xunit;
 /// and reports it to the test output helper.
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
-public sealed class CaptureConsoleAttribute() :
-	AssemblyFixtureAttribute(typeof(CaptureConsoleImpl))
+public sealed partial class CaptureConsoleAttribute
 {
 	static bool captureError = true;
 	static bool captureOut = true;
@@ -35,13 +34,15 @@ public sealed class CaptureConsoleAttribute() :
 		set => captureOut = value;
 	}
 
-	sealed class CaptureConsoleImpl : IDisposable
+	sealed partial class CaptureConsoleImpl : IDisposable
 	{
 		readonly ConsoleCaptureTestOutputWriter writer;
 
+		/// <summary/>
 		public CaptureConsoleImpl() =>
 			writer = new ConsoleCaptureTestOutputWriter(TestContextAccessor.Instance, captureError, captureOut);
 
+		/// <summary/>
 		public void Dispose() =>
 			writer.SafeDispose();
 	}
