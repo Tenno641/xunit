@@ -1,4 +1,3 @@
-using Xunit.Sdk;
 using Xunit.v3;
 
 namespace Xunit;
@@ -7,10 +6,7 @@ namespace Xunit;
 /// Used to declare the default test collection behavior for the assembly.
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-public sealed class CollectionBehaviorAttribute : Attribute
-#if !XUNIT_AOT
-	, ICollectionBehaviorAttribute
-#endif
+public sealed partial class CollectionBehaviorAttribute : Attribute
 {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CollectionBehaviorAttribute" /> class.
@@ -37,23 +33,13 @@ public sealed class CollectionBehaviorAttribute : Attribute
 
 #pragma warning restore CA1019
 
-	/// <summary>
-	/// Initializes a new instance of the <see cref="CollectionBehaviorAttribute" /> class
-	/// with the given custom collection behavior.
-	/// </summary>
-	/// <param name="collectionFactoryType">The factory type</param>
-	public CollectionBehaviorAttribute(Type collectionFactoryType) =>
+	public partial CollectionBehaviorAttribute(Type collectionFactoryType) =>
 		CollectionFactoryType = collectionFactoryType;
-
-	/// <inheritdoc/>
-	public Type? CollectionFactoryType { get; }
-
-	/// <inheritdoc/>
-	public bool DisableTestParallelization { get; set; }
-
-	/// <inheritdoc/>
-	public int MaxParallelThreads { get; set; }
-
-	/// <inheritdoc/>
-	public ParallelAlgorithm ParallelAlgorithm { get; set; } = ParallelAlgorithm.Conservative;
 }
+
+/// <summary>
+/// Used to declare the default test collection behavior for the assembly.
+/// </summary>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
+public sealed partial class CollectionBehaviorAttribute<TCollectionFactory> : Attribute
+{ }

@@ -283,7 +283,7 @@ public static class XunitTestFrameworkDiscovererTests
 		[Theory]
 		[InlineData(CollectionBehavior.CollectionPerAssembly, typeof(CollectionPerAssemblyTestCollectionFactory))]
 		[InlineData(CollectionBehavior.CollectionPerClass, typeof(CollectionPerClassTestCollectionFactory))]
-		public static void AssemblyAttributeOverride(
+		public static void AssemblyAttributeOverride_Interface(
 			CollectionBehavior behavior,
 			Type expectedFactoryType)
 		{
@@ -295,8 +295,23 @@ public static class XunitTestFrameworkDiscovererTests
 			Assert.IsType(expectedFactoryType, discoverer.TestCollectionFactory);
 		}
 
+		[Theory]
+		[InlineData(CollectionBehavior.CollectionPerAssembly, typeof(CollectionPerAssemblyTestCollectionFactory))]
+		[InlineData(CollectionBehavior.CollectionPerClass, typeof(CollectionPerClassTestCollectionFactory))]
+		public static void AssemblyAttributeOverride_Concrete(
+			CollectionBehavior behavior,
+			Type expectedFactoryType)
+		{
+			var behaviorAttribute = TestData.CollectionBehaviorAttribute(behavior);
+			var testAssembly = Mocks.XunitTestAssembly(collectionBehavior: behaviorAttribute);
+
+			var discoverer = TestableXunitTestFrameworkDiscoverer.Create(testAssembly: testAssembly);
+
+			Assert.IsType(expectedFactoryType, discoverer.TestCollectionFactory);
+		}
+
 		[Fact]
-		public static void ValidCustomFactory()
+		public static void ValidCustomFactory_Interface()
 		{
 			var behaviorAttribute = Mocks.CollectionBehaviorAttribute(typeof(CustomTestCollectionFactory));
 			var testAssembly = Mocks.XunitTestAssembly(collectionBehavior: behaviorAttribute);
@@ -307,11 +322,49 @@ public static class XunitTestFrameworkDiscovererTests
 		}
 
 		[Fact]
-		public static void InvalidCustomFactoryFallsBackToDefault()
+		public static void ValidCustomFactory_Concrete()
+		{
+			var behaviorAttribute = TestData.CollectionBehaviorAttribute(typeof(CustomTestCollectionFactory));
+			var testAssembly = Mocks.XunitTestAssembly(collectionBehavior: behaviorAttribute);
+
+			var discoverer = TestableXunitTestFrameworkDiscoverer.Create(testAssembly);
+
+			Assert.IsType<CustomTestCollectionFactory>(discoverer.TestCollectionFactory);
+		}
+
+		[Fact]
+		public static void ValidCustomFactory_ConcreteGeneric()
+		{
+			var behaviorAttribute = TestData.CollectionBehaviorAttribute<CustomTestCollectionFactory>();
+			var testAssembly = Mocks.XunitTestAssembly(collectionBehavior: behaviorAttribute);
+
+			var discoverer = TestableXunitTestFrameworkDiscoverer.Create(testAssembly);
+
+			Assert.IsType<CustomTestCollectionFactory>(discoverer.TestCollectionFactory);
+		}
+
+		[Fact]
+		public static void InvalidCustomFactoryFallsBackToDefault_Interface()
 		{
 			var spyMessageSink = SpyMessageSink.Capture();
 			TestContextInternal.Current.DiagnosticMessageSink = spyMessageSink;
 			var behaviorAttribute = Mocks.CollectionBehaviorAttribute(typeof(object));
+			var testAssembly = Mocks.XunitTestAssembly(collectionBehavior: behaviorAttribute);
+
+			var discoverer = TestableXunitTestFrameworkDiscoverer.Create(testAssembly);
+
+			Assert.IsType<CollectionPerClassTestCollectionFactory>(discoverer.TestCollectionFactory);
+			var message = Assert.Single(spyMessageSink.Messages);
+			var diagMessage = Assert.IsType<IDiagnosticMessage>(message, exactMatch: false);
+			Assert.Equal("Test collection factory type 'System.Object' does not implement IXunitTestCollectionFactory", diagMessage.Message);
+		}
+
+		[Fact]
+		public static void InvalidCustomFactoryFallsBackToDefault_Concrete()
+		{
+			var spyMessageSink = SpyMessageSink.Capture();
+			TestContextInternal.Current.DiagnosticMessageSink = spyMessageSink;
+			var behaviorAttribute = TestData.CollectionBehaviorAttribute(typeof(object));
 			var testAssembly = Mocks.XunitTestAssembly(collectionBehavior: behaviorAttribute);
 
 			var discoverer = TestableXunitTestFrameworkDiscoverer.Create(testAssembly);
