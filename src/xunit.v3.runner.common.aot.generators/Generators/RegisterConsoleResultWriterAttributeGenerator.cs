@@ -14,3 +14,16 @@ public class RegisterResultConsoleWriterAttributeGenerator() :
 		GeneratorResult result) =>
 			EnsureImplementsInterface(type, location, result, Types.Xunit.Runner.Common.IConsoleResultWriter);
 }
+
+[Generator(LanguageNames.CSharp)]
+public class RegisterResultConsoleWriterAttributeOfTGenerator() :
+	IDAndTypeGenerator(
+		Types.Xunit.Runner.Common.RegisterConsoleResultWriterAttribute + "`1",
+		(id, type) => $@"global::Xunit.Runner.Common.RegisteredRunnerConfig.RegisterConsoleResultWriter(""{id}"", new {type}());")
+{
+	protected override bool ValidateType(
+		INamedTypeSymbol type,
+		Location? location,
+		GeneratorResult result) =>
+			EnsureImplementsInterface(type, location, result, Types.Xunit.Runner.Common.IConsoleResultWriter);
+}
