@@ -1,4 +1,3 @@
-using System.Reflection;
 using Xunit.Sdk;
 
 namespace Xunit.v3;
@@ -89,7 +88,7 @@ public class XunitTestFrameworkDiscoverer(
 
 		if (!DiscovererTypeCache.TryGetValue(factAttributeType, out var discovererType))
 		{
-			var testCaseDiscovererAttribute = factAttributeType.GetCustomAttribute<XunitTestCaseDiscovererAttribute>();
+			var testCaseDiscovererAttribute = factAttributeType.GetMatchingCustomAttributes<IXunitTestCaseDiscovererAttribute>().FirstOrDefault();
 			if (testCaseDiscovererAttribute is not null)
 				discovererType = testCaseDiscovererAttribute.Type;
 

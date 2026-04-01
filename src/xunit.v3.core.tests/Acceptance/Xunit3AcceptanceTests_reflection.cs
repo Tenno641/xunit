@@ -74,7 +74,11 @@ partial class Xunit3AcceptanceTests
 			}
 		}
 
+#if NETFRAMEWORK
 		[XunitTestCaseDiscoverer(typeof(FactDiscoverer))]
+#else
+		[XunitTestCaseDiscoverer<FactDiscoverer>]
+#endif
 		[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 		public class ThrowingSkipFactAttribute : Attribute, IFactAttribute
 		{
