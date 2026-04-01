@@ -71,25 +71,29 @@ public class MethodDetailsBase
 
 	public int? SourceLineNumber { get; set; }
 
-	public string? TestCaseOrderer { get; set; }
+	public string? TestCaseOrdererFactory { get; set; }
 
 	public int Timeout { get; set; }
 
 	public Dictionary<string, List<string>> Traits { get; } =
 		new(StringComparer.OrdinalIgnoreCase);
 
-	public virtual void Process()
+	public virtual void Process(XunitGeneratorResult result)
 	{
 		foreach (var kvp in Attribute.NamedArguments)
 			ProcessNamedArgument(kvp.Key, kvp.Value);
 
 		foreach (var methodAttribute in MethodSymbol.GetAttributes())
 		{
-			var attributeTypeName = methodAttribute.AttributeClass?.ToCSharp(includeGlobal: false);
+			var attributeTypeName =
+				methodAttribute.AttributeClass?.IsGenericType == true
+					? methodAttribute.AttributeClass.ConstructUnboundGenericType().ToString()
+					: methodAttribute.AttributeClass?.ToString();
+
 			if (attributeTypeName is null)
 				continue;
 
-			ProcessMethodAttribute(attributeTypeName, methodAttribute);
+			ProcessMethodAttribute(attributeTypeName, methodAttribute, result);
 		}
 
 		if (SkipUnless is not null && SkipWhen is not null)
@@ -110,37 +114,42 @@ public class MethodDetailsBase
 
 	protected virtual void ProcessMethodAttribute(
 		string typeName,
-		AttributeData attribute)
+		AttributeData attribute,
+		XunitGeneratorResult result)
 	{
 		Guard.ArgumentNotNull(typeName);
 		Guard.ArgumentNotNull(attribute);
 
-		if (typeName == Types.Xunit.TraitAttribute)
+		switch (typeName)
 		{
-			if (attribute.ConstructorArguments.Length == 2
-					&& attribute.ConstructorArguments[0].Value is string key
-					&& attribute.ConstructorArguments[1].Value is string value)
-				Traits.AddOrGet(key).Add(value);
-		}
-		else if (typeName == Types.Xunit.TestCaseOrdererAttribute)
-		{
-			if (attribute.ConstructorArguments.Length == 1
-					&& attribute.ConstructorArguments[0].Value is INamedTypeSymbol testCaseOrdererSymbol)
-				TestCaseOrderer = testCaseOrdererSymbol.ToCSharp();
-		}
-		else if (attribute.AttributeClass.InheritsFrom(Types.Xunit.v3.BeforeAfterTestAttribute))
-		{
-			if (attribute.AttributeClass.RecursiveGetNonPublicNonInternalType() is null)
-				BeforeAfterTestAttributes.Add(typeName);
-			else
-				Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X9004_TypeMustBePublicOrInternal,
-						attribute.AttributeClass.Locations.FirstOrDefault(),
-						"Attribute",
-						attribute.AttributeClass.ToDisplayString()
-					)
-				);
+			case Types.Xunit.TraitAttribute:
+				if (attribute.ConstructorArguments.Length == 2
+						&& attribute.ConstructorArguments[0].Value is string key
+						&& attribute.ConstructorArguments[1].Value is string value)
+					Traits.AddOrGet(key).Add(value);
+				break;
+
+			case Types.Xunit.TestCaseOrdererAttribute:
+			case Types.Xunit.TestCaseOrdererAttribute + "<>":
+				TestCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(attribute, Types.Xunit.v3.ITestCaseOrderer, result);
+				break;
+
+			default:
+				if (attribute.AttributeClass.InheritsFrom(Types.Xunit.v3.BeforeAfterTestAttribute))
+				{
+					if (attribute.AttributeClass.RecursiveGetNonPublicNonInternalType() is null)
+						BeforeAfterTestAttributes.Add(typeName);
+					else
+						Diagnostics.Add(
+							Diagnostic.Create(
+								DiagnosticDescriptors.X9004_TypeMustBePublicOrInternal,
+								attribute.AttributeClass.Locations.FirstOrDefault(),
+								"Attribute",
+								attribute.AttributeClass.ToDisplayString()
+							)
+						);
+				}
+				break;
 		}
 	}
 

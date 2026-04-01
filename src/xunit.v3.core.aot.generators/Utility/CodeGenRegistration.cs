@@ -125,6 +125,32 @@ internal static class CodeGenRegistration
 		return null;
 	}
 
+	public static string? ToOrdererFactory(
+		AttributeData attribute,
+		string requiredInterface,
+		XunitGeneratorResult result)
+	{
+		var ordererType = default(INamedTypeSymbol);
+
+		if (attribute.AttributeClass?.TypeArguments.Length == 1)
+			ordererType = attribute.AttributeClass.TypeArguments[0] as INamedTypeSymbol;
+		else if (attribute.ConstructorArguments.Length == 1)
+			ordererType = attribute.ConstructorArguments[0].Value as INamedTypeSymbol;
+
+		if (ordererType is null)
+			return null;
+
+		var location = attribute.ApplicationSyntaxReference.Location;
+		if (!XunitGenerator.EnsureImplementsInterface(ordererType, location, result, requiredInterface))
+			return null;
+
+		var ctor = ordererType.Constructors.FirstOrDefault(c => c.Parameters.Length == 0);
+		if (ctor is null)
+			return null;
+
+		return ToObjectFactory(ordererType, ctor);
+	}
+
 	public static string ToTraits(IReadOnlyDictionary<string, List<string>> traits) =>
 		$$"""
 		new global::System.Collections.Generic.Dictionary<string, global::System.Collections.Generic.IReadOnlyCollection<string>> {

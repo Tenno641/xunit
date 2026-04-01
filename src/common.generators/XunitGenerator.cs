@@ -103,7 +103,7 @@ public abstract class XunitGenerator : IIncrementalGenerator
 		}
 	}
 
-	protected static bool EnsureImplementsInterface(
+	protected internal static bool EnsureImplementsInterface(
 		ITypeSymbol symbol,
 		Location? location,
 		XunitGeneratorResult result,

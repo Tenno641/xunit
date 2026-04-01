@@ -27,9 +27,9 @@ public class FactMethodDetails : MethodDetailsBase
 
 	public string MethodInvoker { get; }
 
-	public override void Process()
+	public override void Process(XunitGeneratorResult result)
 	{
-		base.Process();
+		base.Process(result);
 
 		if (MethodDeclaration.ParameterList.Parameters.Count != 0)
 			Diagnostics.Add(

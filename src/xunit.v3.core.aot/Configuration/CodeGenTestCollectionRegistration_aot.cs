@@ -50,7 +50,7 @@ public sealed class CodeGenTestCollectionRegistration
 	/// Gets the factory for the collection-level test case orderer.
 	/// </summary>
 #if XUNIT_GENERATOR
-	public required string? TestCaseOrdererType { get; set; }
+	public required string? TestCaseOrdererFactory { get; set; }
 #else
 	public Func<ITestCaseOrderer>? TestCaseOrdererFactory { get; init; }
 #endif
@@ -59,7 +59,7 @@ public sealed class CodeGenTestCollectionRegistration
 	/// Gets the factory for the collection-level test class orderer.
 	/// </summary>
 #if XUNIT_GENERATOR
-	public required string? TestClassOrdererType { get; set; }
+	public required string? TestClassOrdererFactory { get; set; }
 #else
 	public Func<ITestClassOrderer>? TestClassOrdererFactory { get; init; }
 #endif
@@ -68,7 +68,7 @@ public sealed class CodeGenTestCollectionRegistration
 	/// Gets the factory for the collection-level test method orderer.
 	/// </summary>
 #if XUNIT_GENERATOR
-	public required string? TestMethodOrdererType { get; set; }
+	public required string? TestMethodOrdererFactory { get; set; }
 #else
 	public Func<ITestMethodOrderer>? TestMethodOrdererFactory { get; init; }
 #endif
@@ -97,12 +97,12 @@ public sealed class CodeGenTestCollectionRegistration
 			initValues.Add($"CollectionFixtureFactories = {CodeGenRegistration.ToFixtureFactories(CollectionFixtures)}");
 		if (DisableParallelization)
 			initValues.Add("DisableParallelization = true");
-		if (TestCaseOrdererType is not null)
-			initValues.Add($"TestCaseOrdererFactory = () => new {TestCaseOrdererType}()");
-		if (TestClassOrdererType is not null)
-			initValues.Add($"TestClassOrdererFactory = () => new {TestClassOrdererType}()");
-		if (TestMethodOrdererType is not null)
-			initValues.Add($"TestMethodOrdererFactory = () => new {TestMethodOrdererType}()");
+		if (TestCaseOrdererFactory is not null)
+			initValues.Add($"TestCaseOrdererFactory = () => {TestCaseOrdererFactory}");
+		if (TestClassOrdererFactory is not null)
+			initValues.Add($"TestClassOrdererFactory = () => {TestClassOrdererFactory}");
+		if (TestMethodOrdererFactory is not null)
+			initValues.Add($"TestMethodOrdererFactory = () => {TestMethodOrdererFactory}");
 		if (Type is not null)
 			initValues.Add($"Type = typeof({Type})");
 

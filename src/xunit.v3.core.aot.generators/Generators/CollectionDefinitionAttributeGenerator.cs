@@ -40,9 +40,9 @@ public class CollectionDefinitionAttributeGenerator() :
 				&& namedArg.Value.Value is true)
 			disableParallelization = true;
 
-		var testCaseOrdererType = default(string);
-		var testClassOrdererType = default(string);
-		var testMethodOrdererType = default(string);
+		var testCaseOrdererFactory = default(string);
+		var testClassOrdererFactory = default(string);
+		var testMethodOrdererFactory = default(string);
 		var result = new GeneratorResult(context)
 		{
 			GeneratorSuffix = context.TargetSymbol.Name + "٠",
@@ -78,20 +78,30 @@ public class CollectionDefinitionAttributeGenerator() :
 		}
 
 		foreach (var classAttribute in context.TargetSymbol.GetAttributes())
-			switch (classAttribute.AttributeClass?.ToString())
+		{
+			var attributeType =
+				classAttribute.AttributeClass?.IsGenericType == true
+					? classAttribute.AttributeClass.ConstructUnboundGenericType().ToString()
+					: classAttribute.AttributeClass?.ToString();
+
+			switch (attributeType)
 			{
 				case Types.Xunit.TestCaseOrdererAttribute:
-					testCaseOrdererType = toOrdererType(classAttribute, Types.Xunit.v3.ITestCaseOrderer);
+				case Types.Xunit.TestCaseOrdererAttribute + "<>":
+					testCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestCaseOrderer, result);
 					break;
 
 				case Types.Xunit.TestClassOrdererAttribute:
-					testClassOrdererType = toOrdererType(classAttribute, Types.Xunit.v3.ITestClassOrderer);
+				case Types.Xunit.TestClassOrdererAttribute + "<>":
+					testClassOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestClassOrderer, result);
 					break;
 
 				case Types.Xunit.TestMethodOrdererAttribute:
-					testMethodOrdererType = toOrdererType(classAttribute, Types.Xunit.v3.ITestMethodOrderer);
+				case Types.Xunit.TestMethodOrdererAttribute + "<>":
+					testMethodOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestMethodOrderer, result);
 					break;
 			}
+		}
 
 		var classFixtures = new List<(string, string)>();
 		var collectionFixtures = new List<(string, string)>();
@@ -114,9 +124,9 @@ public class CollectionDefinitionAttributeGenerator() :
 			ClassFixtures = classFixtures,
 			CollectionFixtures = collectionFixtures,
 			DisableParallelization = disableParallelization,
-			TestCaseOrdererType = testCaseOrdererType,
-			TestClassOrdererType = testClassOrdererType,
-			TestMethodOrdererType = testMethodOrdererType,
+			TestCaseOrdererFactory = testCaseOrdererFactory,
+			TestClassOrdererFactory = testClassOrdererFactory,
+			TestMethodOrdererFactory = testMethodOrdererFactory,
 			Type = type,
 		};
 
@@ -158,20 +168,6 @@ public class CollectionDefinitionAttributeGenerator() :
 
 			if (factory is not null)
 				collection.Add((fixtureType.ToCSharp(), factory));
-		}
-
-		string? toOrdererType(
-			AttributeData attribute,
-			string requiredInterface)
-		{
-			if (attribute.ConstructorArguments.Length != 1 || attribute.ConstructorArguments[0].Value is not INamedTypeSymbol ordererType)
-				return null;
-
-			var location = attribute.ApplicationSyntaxReference.Location;
-			if (!EnsureImplementsInterface(ordererType, location, result, requiredInterface))
-				return null;
-
-			return ordererType.ToCSharp();
 		}
 	}
 

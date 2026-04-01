@@ -41,7 +41,7 @@ static class TheoryRegistrar
 		}
 
 		var details = new TheoryMethodDetails(classSymbol, methodDeclaration, methodSymbol, attribute);
-		details.Process();
+		details.Process(result);
 
 		if (details.Diagnostics.Count != 0)
 		{
@@ -90,7 +90,7 @@ static class TheoryRegistrar
 				IsStatic = details.MethodIsStatic,
 				SourceFilePath = details.SourceFilePath,
 				SourceLineNumber = details.SourceLineNumber,
-				TestCaseOrdererType = details.TestCaseOrderer,
+				TestCaseOrdererFactory = details.TestCaseOrdererFactory,
 				Traits = details.Traits,
 			},
 			$"new global::Xunit.v3.TheoryTestCaseFactory() {{ {string.Join(", ", initValues)} }}"

@@ -45,7 +45,7 @@ public class CodeGenTestClassRegistration
 	/// Gets the factory for the class-level test case orderer.
 	/// </summary>
 #if XUNIT_GENERATOR
-	public required string? TestCaseOrdererType { get; set; }
+	public required string? TestCaseOrdererFactory { get; set; }
 #else
 	public Func<ITestCaseOrderer>? TestCaseOrdererFactory { get; init; }
 #endif
@@ -54,7 +54,7 @@ public class CodeGenTestClassRegistration
 	/// Gets the factory for the class-level test method orderer.
 	/// </summary>
 #if XUNIT_GENERATOR
-	public required string? TestMethodOrdererType { get; set; }
+	public required string? TestMethodOrdererFactory { get; set; }
 #else
 	public Func<ITestMethodOrderer>? TestMethodOrdererFactory { get; init; }
 #endif
@@ -132,10 +132,10 @@ public class CodeGenTestClassRegistration
 			initValues.Add($"ClassFactory = {ClassFactory}");
 		if (ClassFixtures.Count != 0)
 			initValues.Add($"ClassFixtureFactories = {CodeGenRegistration.ToFixtureFactories(ClassFixtures)}");
-		if (TestCaseOrdererType is not null)
-			initValues.Add($"TestCaseOrdererFactory = () => new {TestCaseOrdererType}()");
-		if (TestMethodOrdererType is not null)
-			initValues.Add($"TestMethodOrdererFactory = () => new {TestMethodOrdererType}()");
+		if (TestCaseOrdererFactory is not null)
+			initValues.Add($"TestCaseOrdererFactory = () => {TestCaseOrdererFactory}");
+		if (TestMethodOrdererFactory is not null)
+			initValues.Add($"TestMethodOrdererFactory = () => {TestMethodOrdererFactory}");
 
 		return $"new global::Xunit.v3.CodeGenTestClassRegistration() {{ {string.Join(", ", initValues)} }}";
 	}

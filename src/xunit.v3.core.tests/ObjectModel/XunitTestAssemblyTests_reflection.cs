@@ -77,12 +77,30 @@ public class XunitTestAssemblyTests(XunitTestAssemblyTests.XunitTestAssemblyFixt
 	}
 
 	[Fact]
+	public void TestClassOrderer()
+	{
+		var orderer = testAssembly.TestClassOrderer;
+
+		Assert.NotNull(orderer);
+		Assert.Equal("SomeNamespace.MyTestClassOrderer", orderer.GetType().FullName);
+	}
+
+	[Fact]
 	public void TestCollectionOrderer()
 	{
 		var orderer = testAssembly.TestCollectionOrderer;
 
 		Assert.NotNull(orderer);
 		Assert.Equal("SomeNamespace.MyTestCollectionOrderer", orderer.GetType().FullName);
+	}
+
+	[Fact]
+	public void TestMethodOrderer()
+	{
+		var orderer = testAssembly.TestMethodOrderer;
+
+		Assert.NotNull(orderer);
+		Assert.Equal("SomeNamespace.MyTestMethodOrderer", orderer.GetType().FullName);
 	}
 
 	[Fact]
@@ -145,7 +163,9 @@ using Xunit.v3;
 [assembly: SomeNamespace.BeforeAfterTest1]
 [assembly: CollectionBehavior(DisableTestParallelization = true, MaxParallelThreads = 42)]
 [assembly: TestCaseOrderer(typeof(SomeNamespace.MyTestCaseOrderer))]
+[assembly: TestClassOrderer(typeof(SomeNamespace.MyTestClassOrderer))]
 [assembly: TestCollectionOrderer(typeof(SomeNamespace.MyTestCollectionOrderer))]
+[assembly: TestMethodOrderer(typeof(SomeNamespace.MyTestMethodOrderer))]
 [assembly: Trait(""Hello"", ""World"")]
 
 namespace SomeNamespace
@@ -168,10 +188,28 @@ namespace SomeNamespace
 		}
 	}
 
+	public class MyTestClassOrderer : ITestClassOrderer
+	{
+		public IReadOnlyCollection<TTestClass> OrderTestClasses<TTestClass>(IReadOnlyCollection<TTestClass> testClasses)
+			where TTestClass : ITestClass
+		{
+			throw new NotImplementedException();
+		}
+	}
+
 	public class MyTestCollectionOrderer : ITestCollectionOrderer
 	{
 		public IReadOnlyCollection<TTestCollection> OrderTestCollections<TTestCollection>(IReadOnlyCollection<TTestCollection> testCollections)
 			where TTestCollection : ITestCollection
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class MyTestMethodOrderer : ITestMethodOrderer
+	{
+		public IReadOnlyCollection<TTestMethod> OrderTestMethods<TTestMethod>(IReadOnlyCollection<TTestMethod> testMethods)
+			where TTestMethod : ITestMethod
 		{
 			throw new NotImplementedException();
 		}

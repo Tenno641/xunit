@@ -265,6 +265,30 @@ public class TestClassGenerator : XunitGenerator
 					classFixtures.Add((fixtureType.ToCSharp(), factory));
 			}
 
+		var testCaseOrdererFactory = default(string);
+		var testMethodOrdererFactory = default(string);
+
+		foreach (var classAttribute in classSymbol.GetAttributes())
+		{
+			var attributeType =
+				classAttribute.AttributeClass?.IsGenericType == true
+					? classAttribute.AttributeClass.ConstructUnboundGenericType().ToString()
+					: classAttribute.AttributeClass?.ToString();
+
+			switch (attributeType)
+			{
+				case Types.Xunit.TestCaseOrdererAttribute:
+				case Types.Xunit.TestCaseOrdererAttribute + "<>":
+					testCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestCaseOrderer, result);
+					break;
+
+				case Types.Xunit.TestMethodOrdererAttribute:
+				case Types.Xunit.TestMethodOrdererAttribute + "<>":
+					testMethodOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestMethodOrderer, result);
+					break;
+			}
+		}
+
 		result.TestClass = new CodeGenTestClassRegistration()
 		{
 			Class = classSymbol.ToCSharp(),
@@ -277,8 +301,8 @@ public class TestClassGenerator : XunitGenerator
 				"new global::Xunit.v3.CoreTestClassCreationResult({0})"
 			),
 			ClassFixtures = classFixtures,
-			TestCaseOrdererType = null,
-			TestMethodOrdererType = null,
+			TestCaseOrdererFactory = testCaseOrdererFactory,
+			TestMethodOrdererFactory = testMethodOrdererFactory,
 		};
 
 		return result;

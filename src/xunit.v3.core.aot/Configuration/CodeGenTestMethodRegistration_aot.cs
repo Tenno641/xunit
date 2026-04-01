@@ -76,7 +76,7 @@ public class CodeGenTestMethodRegistration
 	/// Gets the factory for the method-level test case orderer.
 	/// </summary>
 #if XUNIT_GENERATOR
-	public required string? TestCaseOrdererType { get; set; }
+	public required string? TestCaseOrdererFactory { get; set; }
 #else
 	public Func<ITestCaseOrderer>? TestCaseOrdererFactory { get; init; }
 #endif
@@ -171,8 +171,8 @@ public class CodeGenTestMethodRegistration
 			initValues.Add($"SourceFilePath = {SourceFilePath.Quoted()}");
 		if (SourceLineNumber is not null)
 			initValues.Add($"SourceLineNumber = {SourceLineNumber}");
-		if (TestCaseOrdererType is not null)
-			initValues.Add($"TestCaseOrdererFactory = () => new {TestCaseOrdererType}()");
+		if (TestCaseOrdererFactory is not null)
+			initValues.Add($"TestCaseOrdererFactory = () => {TestCaseOrdererFactory}");
 		if (Traits is not null && Traits.Count != 0)
 			initValues.Add($"Traits = {CodeGenRegistration.ToTraits(Traits)}");
 

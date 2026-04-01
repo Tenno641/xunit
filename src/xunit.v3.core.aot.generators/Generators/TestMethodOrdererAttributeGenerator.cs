@@ -12,3 +12,14 @@ public class TestMethodOrdererAttributeGenerator() :
 		GeneratorResult result) =>
 			EnsureImplementsInterface(type, location, result, Types.Xunit.v3.ITestMethodOrderer);
 }
+
+[Generator(LanguageNames.CSharp)]
+public class TestMethodOrdererAttributeOfTGenerator() :
+	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.TestMethodOrdererAttribute + "`1", "RegisterAssemblyTestMethodOrdererFactory")
+{
+	protected override bool ValidateImplementationType(
+		INamedTypeSymbol type,
+		Location? location,
+		GeneratorResult result) =>
+			EnsureImplementsInterface(type, location, result, Types.Xunit.v3.ITestMethodOrderer);
+}

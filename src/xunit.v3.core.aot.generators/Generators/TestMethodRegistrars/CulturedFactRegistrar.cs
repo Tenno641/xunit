@@ -22,7 +22,7 @@ static class CulturedFactRegistrar
 			return null;
 
 		var details = new FactMethodDetails(classSymbol, methodDeclaration, methodSymbol, attribute);
-		details.Process();
+		details.Process(result);
 
 		if (details.Diagnostics.Count != 0)
 		{
@@ -58,7 +58,7 @@ static class CulturedFactRegistrar
 			IsStatic = details.MethodIsStatic,
 			SourceFilePath = details.SourceFilePath,
 			SourceLineNumber = details.SourceLineNumber,
-			TestCaseOrdererType = details.TestCaseOrderer,
+			TestCaseOrdererFactory = details.TestCaseOrdererFactory,
 			Traits = details.Traits,
 		};
 
@@ -95,7 +95,7 @@ static class CulturedFactRegistrar
 				IsStatic = details.MethodIsStatic,
 				SourceFilePath = details.SourceFilePath,
 				SourceLineNumber = details.SourceLineNumber,
-				TestCaseOrdererType = details.TestCaseOrderer,
+				TestCaseOrdererFactory = details.TestCaseOrdererFactory,
 				Traits = details.Traits,
 			},
 			$"new global::Xunit.v3.CulturedFactTestCaseFactory() {{ {string.Join(", ", initValues)} }}"

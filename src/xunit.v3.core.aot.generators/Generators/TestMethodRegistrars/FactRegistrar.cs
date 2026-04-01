@@ -19,7 +19,7 @@ static class FactRegistrar
 		Guard.ArgumentNotNull(result);
 
 		var details = new FactMethodDetails(classSymbol, methodDeclaration, methodSymbol, attribute);
-		details.Process();
+		details.Process(result);
 
 		if (details.Diagnostics.Count != 0)
 		{
@@ -59,7 +59,7 @@ static class FactRegistrar
 				IsStatic = details.MethodIsStatic,
 				SourceFilePath = details.SourceFilePath,
 				SourceLineNumber = details.SourceLineNumber,
-				TestCaseOrdererType = details.TestCaseOrderer,
+				TestCaseOrdererFactory = details.TestCaseOrdererFactory,
 				Traits = details.Traits,
 			},
 			$"new global::Xunit.v3.FactTestCaseFactory() {{ {string.Join(", ", initValues)} }}"
