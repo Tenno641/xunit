@@ -7,11 +7,24 @@ namespace Xunit;
 /// </summary>
 /// <param name="frameworkType">The framework type; must implement <see cref="ITestFramework"/></param>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-public sealed class TestFrameworkAttribute(Type frameworkType) : Attribute
-#if !XUNIT_AOT
-	, ITestFrameworkAttribute
-#endif
+public sealed partial class TestFrameworkAttribute(Type frameworkType) : Attribute
 {
-	/// <inheritdoc/>
-	public Type FrameworkType { get; } = frameworkType;
+	/// <summary>
+	/// Gets the framework type
+	/// </summary>
+	public Type FrameworkType => Guard.ArgumentNotNull(frameworkType);
+}
+
+/// <summary>
+/// Used to decorate an assembly to allow the use of a custom test framework.
+/// </summary>
+/// <typeparam name="TFramework">The framework type</typeparam>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
+public sealed partial class TestFrameworkAttribute<TFramework> : Attribute
+	where TFramework : ITestFramework
+{
+	/// <summary>
+	/// Gets the framework type
+	/// </summary>
+	public Type FrameworkType => typeof(TFramework);
 }
