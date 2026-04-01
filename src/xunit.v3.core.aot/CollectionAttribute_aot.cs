@@ -35,10 +35,6 @@ public sealed class CollectionAttribute : CollectionAttributeBase
 /// Used to declare a specific test collection for a test class. Equivalent to using <see cref="CollectionAttribute"/>
 /// with the <see cref="CollectionAttribute(Type)">type-based constructor</see>.
 /// </summary>
-/// <remarks>
-/// .NET Framework does not support generic attributes. Please use the non-generic <see cref="CollectionAttribute"/>
-/// when targeting .NET Framework.
-/// </remarks>
 /// <typeparam name="TCollectionDefinition">The type for the collection definition.</typeparam>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 public sealed class CollectionAttribute<TCollectionDefinition>() :
