@@ -2,9 +2,8 @@ using Microsoft.CodeAnalysis;
 
 namespace Xunit.Generators;
 
-[Generator(LanguageNames.CSharp)]
-public class RegisterRunnerReporterAttributeGenerator() :
-	XunitAttributeGenerator<RegisterRunnerReporterAttributeGenerator.GeneratorResult>(Types.Xunit.Runner.Common.RegisterRunnerReporterAttribute)
+public abstract class RegisterRunnerReporterAttributeGeneratorBase(string fullyQualifiedAttributeTypeName) :
+	XunitAttributeGenerator<RegisterRunnerReporterAttributeGeneratorBase.GeneratorResult>(fullyQualifiedAttributeTypeName)
 {
 	protected override void CreateSource(
 		SourceProductionContext context,
@@ -25,6 +24,27 @@ public class RegisterRunnerReporterAttributeGenerator() :
 		);
 	}
 
+	protected virtual INamedTypeSymbol? GetTypeArgument(AttributeData attribute) =>
+		FullyQualifiedAttributeTypeName.EndsWith("`1", StringComparison.Ordinal)
+			? GetTypeArgumentGeneric(attribute)
+			: GetTypeArgumentNonGeneric(attribute);
+
+	protected static INamedTypeSymbol? GetTypeArgumentGeneric(AttributeData attribute)
+	{
+		if (attribute?.AttributeClass is not { } attributeType)
+			return null;
+
+		return
+			attributeType.TypeArguments.Length == 1
+				? attributeType.TypeArguments[0] as INamedTypeSymbol
+				: null;
+	}
+
+	protected static INamedTypeSymbol? GetTypeArgumentNonGeneric(AttributeData attribute) =>
+		attribute?.ConstructorArguments.Length == 1
+			? attribute.ConstructorArguments[0].Value as INamedTypeSymbol
+			: null;
+
 	protected override GeneratorResult? Transform(
 		GeneratorAttributeSyntaxContext context,
 		CancellationToken cancellationToken)
@@ -35,14 +55,16 @@ public class RegisterRunnerReporterAttributeGenerator() :
 		var result = new GeneratorResult(context);
 
 		foreach (var attribute in context.Attributes)
-			if (attribute.ConstructorArguments.Length == 1 &&
-				attribute.ConstructorArguments[0].Value is INamedTypeSymbol reporterType)
+		{
+			var reporterType = GetTypeArgument(attribute);
+			if (reporterType is not null)
 			{
 				var location = attribute.ApplicationSyntaxReference.Location;
 				if (EnsureParameterlessPublicCtor(reporterType, location, result, out var _) &&
 					EnsureImplementsInterface(reporterType, location, result, Types.Xunit.Runner.Common.IRunnerReporter))
 					result.RunnerReporters.Add(reporterType.ToString());
 			}
+		}
 
 		return result;
 	}
@@ -53,3 +75,14 @@ public class RegisterRunnerReporterAttributeGenerator() :
 		public List<string?> RunnerReporters = [];
 	}
 }
+
+[Generator(LanguageNames.CSharp)]
+public class RegisterRunnerReporterAttributeGenerator() :
+	RegisterRunnerReporterAttributeGeneratorBase(Types.Xunit.Runner.Common.RegisterRunnerReporterAttribute)
+{ }
+
+
+[Generator(LanguageNames.CSharp)]
+public class RegisterRunnerReporterAttributeOfTGenerator() :
+	RegisterRunnerReporterAttributeGeneratorBase(Types.Xunit.Runner.Common.RegisterRunnerReporterAttribute + "`1")
+{ }
