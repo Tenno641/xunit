@@ -12,15 +12,14 @@ namespace Xunit.Internal;
 public abstract class CommandLineParserBase
 {
 	readonly Dictionary<string, (CommandLineGroup Group, string? ArgumentDisplay, string[] Descriptions, Action<KeyValuePair<string, string?>> Handler)> parsers = new(StringComparer.OrdinalIgnoreCase);
-	IReadOnlyList<IRunnerReporter>? runnerReporters;
 
 	/// <summary/>
 	protected CommandLineParserBase(
 		ConsoleHelper consoleHelper,
-		IReadOnlyList<IRunnerReporter>? runnerReporters,
+		IReadOnlyList<IRunnerReporter> runnerReporters,
 		string[] args)
 	{
-		this.runnerReporters = runnerReporters;
+		RunnerReporters = Guard.ArgumentNotNull(runnerReporters);
 
 		var entryAssembly = Assembly.GetEntryAssembly();
 		ResultWriters =
@@ -268,14 +267,7 @@ public abstract class CommandLineParserBase
 	public IReadOnlyDictionary<string, IConsoleResultWriter> ResultWriters { get; }
 
 	/// <summary/>
-	protected IReadOnlyList<IRunnerReporter> RunnerReporters
-	{
-		get
-		{
-			runnerReporters ??= GetAvailableRunnerReporters();
-			return runnerReporters;
-		}
-	}
+	protected IReadOnlyList<IRunnerReporter> RunnerReporters { get; }
 
 	/// <summary/>
 	protected void AddHiddenParser(
@@ -327,9 +319,6 @@ public abstract class CommandLineParserBase
 
 		return args;
 	}
-
-	/// <summary/>
-	protected abstract IReadOnlyList<IRunnerReporter> GetAvailableRunnerReporters();
 
 	/// <summary/>
 	[return: NotNullIfNotNull(nameof(fileName))]

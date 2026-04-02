@@ -10,18 +10,11 @@ namespace Xunit.Internal;
 public class CommandLine : CommandLineParserBase
 {
 	/// <summary/>
-	protected CommandLine(
-		ConsoleHelper consoleHelper,
-		IReadOnlyList<IRunnerReporter> reporters,
-		string[] args)
-			: base(consoleHelper, reporters, args) =>
-				AddParsers();
-
-	/// <summary/>
 	public CommandLine(
 		ConsoleHelper consoleHelper,
-		string[] args)
-			: base(consoleHelper, null, args) =>
+		string[] args,
+		IReadOnlyList<IRunnerReporter> runnerReporters)
+			: base(consoleHelper, runnerReporters, args) =>
 				AddParsers();
 
 	void AddParsers()
@@ -79,10 +72,6 @@ public class CommandLine : CommandLineParserBase
 
 		Project.Add(projectAssembly);
 	}
-
-	/// <summary/>
-	protected override IReadOnlyList<IRunnerReporter> GetAvailableRunnerReporters() =>
-		RegisteredRunnerConfig.GetRunnerReporters(typeof(CommandLine).Assembly, out _);
 
 	void OnAppDomains(KeyValuePair<string, string?> option)
 	{

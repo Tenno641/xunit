@@ -864,7 +864,7 @@ public static class CommandLineTests
 	class TestableCommandLine : CommandLine
 	{
 		public TestableCommandLine(params string[] arguments)
-			: base(new ConsoleHelper(TextReader.Null, TextWriter.Null), Assembly.GetExecutingAssembly(), arguments)
+			: base(new ConsoleHelper(TextReader.Null, TextWriter.Null), Assembly.GetExecutingAssembly(), arguments, [])
 		{ }
 
 		public TestableCommandLine(

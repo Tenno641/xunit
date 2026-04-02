@@ -13,16 +13,8 @@ public class CommandLine : CommandLineParserBase
 	public CommandLine(
 		ConsoleHelper consoleHelper,
 		Assembly assembly,
-		string[] args) :
-			this(consoleHelper, assembly, args, null)
-	{ }
-
-	/// <summary/>
-	protected CommandLine(
-		ConsoleHelper consoleHelper,
-		Assembly assembly,
 		string[] args,
-		IReadOnlyList<IRunnerReporter>? runnerReporters)
+		IReadOnlyList<IRunnerReporter> runnerReporters)
 			: base(consoleHelper, runnerReporters, args)
 	{
 		this.assembly = assembly;
@@ -87,26 +79,6 @@ public class CommandLine : CommandLineParserBase
 	XunitProjectAssembly GetAssembly() =>
 		Project.Assemblies.FirstOrDefault()
 			?? throw new ArgumentException("no assembly in the project");
-
-	/// <summary/>
-	protected override IReadOnlyList<IRunnerReporter> GetAvailableRunnerReporters()
-	{
-		var result = RegisteredRunnerConfig.GetRunnerReporters(assembly, out var messages);
-
-		if (messages.Count != 0)
-		{
-			if (!Project.Configuration.NoColorOrDefault)
-				ConsoleHelper.SetForegroundColor(ConsoleColor.Yellow);
-
-			foreach (var message in messages)
-				ConsoleHelper.WriteLine(message);
-
-			if (!Project.Configuration.NoColorOrDefault)
-				ConsoleHelper.ResetColor();
-		}
-
-		return result;
-	}
 
 	/// <summary/>
 	public XunitProjectAssembly Parse()

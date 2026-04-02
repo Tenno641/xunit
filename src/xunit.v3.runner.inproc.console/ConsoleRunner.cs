@@ -79,21 +79,27 @@ public class ConsoleRunner(
 
 		var internalDiagnosticMessages = false;
 		var noColor = false;
+		var entryAssembly = Assembly.GetEntryAssembly();
 
 #if XUNIT_AOT
-		await using var runnerInit = await RunnerInitialization.Start(Assembly.GetEntryAssembly());
+		await using var runnerInit = await RunnerInitialization.Start(entryAssembly);
 		if (runnerInit.InitException is not null)
 			ExceptionDispatchInfo.Throw(runnerInit.InitException);
 
-		await using var engineInit = await EngineInitialization.Start(Assembly.GetEntryAssembly());
+		await using var engineInit = await EngineInitialization.Start(entryAssembly);
 		if (engineInit.InitException is not null)
 			ExceptionDispatchInfo.Throw(engineInit.InitException);
 #endif
 
 		try
 		{
-			var commandLine = new CommandLine(consoleHelper, testAssembly, args);
-			var warnings = commandLine.ParseWarnings.ToList();
+			var warnings = new List<string>();
+			var runnerReporters =
+				entryAssembly is not null
+					? RegisteredRunnerConfig.GetRunnerReporters(entryAssembly, out warnings)
+					: [];
+
+			var commandLine = new CommandLine(consoleHelper, testAssembly, args, runnerReporters);
 
 			if (commandLine.HelpRequested)
 			{
@@ -101,9 +107,9 @@ public class ConsoleRunner(
 				consoleHelper.WriteLine("Copyright (C) .NET Foundation.");
 				consoleHelper.WriteLine();
 
-				if (warnings.Count > 0)
+				if (commandLine.ParseWarnings.Count > 0)
 				{
-					foreach (var warning in warnings)
+					foreach (var warning in commandLine.ParseWarnings)
 						consoleHelper.WriteLine("Warning: {0}", warning);
 
 					consoleHelper.WriteLine();
@@ -133,6 +139,8 @@ public class ConsoleRunner(
 			}
 
 			var projectAssembly = commandLine.Parse();
+			warnings.AddRange(commandLine.ParseWarnings);
+
 			automatedMode = (automatedRequested, projectAssembly.Configuration.SynchronousMessageReporting) switch
 			{
 				(true, true) => AutomatedMode.Sync,

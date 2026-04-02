@@ -48,7 +48,9 @@ sealed class ConsoleRunner(string[] args) :
 
 		try
 		{
-			var commandLine = new CommandLine(consoleHelper, args);
+			var warnings = new List<string>();
+			var runnerReporters = RegisteredRunnerConfig.GetRunnerReporters(typeof(ConsoleRunner).Assembly, out warnings);
+			var commandLine = new CommandLine(consoleHelper, args, runnerReporters);
 
 			if (args.Length == 0 || commandLine.HelpRequested)
 			{

@@ -948,13 +948,13 @@ public static class CommandLineTests
 	class TestableCommandLine : CommandLine
 	{
 		public TestableCommandLine(params string[] args)
-			: base(new ConsoleHelper(TextReader.Null, TextWriter.Null), [], args)
+			: base(new ConsoleHelper(TextReader.Null, TextWriter.Null), args, [])
 		{ }
 
 		public TestableCommandLine(
 			IReadOnlyList<IRunnerReporter> reporters,
 			params string[] args)
-				: base(new ConsoleHelper(TextReader.Null, TextWriter.Null), reporters, args)
+				: base(new ConsoleHelper(TextReader.Null, TextWriter.Null), args, reporters)
 		{ }
 
 		protected override bool FileExists(string? path) =>
