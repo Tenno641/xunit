@@ -1,4 +1,4 @@
-namespace Xunit.MicrosoftTestingPlatform;
+namespace Xunit.Internal;
 
 [ExcludeFromCodeCoverage]
 internal static class TaskExtensions
@@ -21,6 +21,16 @@ internal static class TaskExtensions
 			spin.SpinOnce();
 
 		return task.GetAwaiter().GetResult();
+	}
+
+	public static void SpinWait(this ValueTask task)
+	{
+		var spin = default(SpinWait);
+
+		while (!task.IsCompleted)
+			spin.SpinOnce();
+
+		task.GetAwaiter().GetResult();
 	}
 
 	public static T SpinWait<T>(this ValueTask<T> task)

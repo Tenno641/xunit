@@ -44,14 +44,24 @@ public static class ConsoleRunnerInProcess
 	{
 		var testFramework = RegisteredEngineConfig.GetTestFramework(testAssembly, configFileName: null);
 
-		return new(
-			// Technically these next two are the versions of xunit.v3.runner.inproc.console and not xunit.v3.core; however,
-			// since they're all compiled and versioned together, we'll take the path of least resistance.
-			coreFramework: new Version(ThisAssembly.AssemblyVersion),
-			coreFrameworkInformational: ThisAssembly.AssemblyInformationalVersion,
-			targetFramework: testAssembly.GetTargetFramework(),
-			testFramework: testFramework.TestFrameworkDisplayName
-		);
+		try
+		{
+			return new(
+				// Technically these next two are the versions of xunit.v3.runner.inproc.console and not xunit.v3.core; however,
+				// since they're all compiled and versioned together, we'll take the path of least resistance.
+				coreFramework: new Version(ThisAssembly.AssemblyVersion),
+				coreFrameworkInformational: ThisAssembly.AssemblyInformationalVersion,
+				targetFramework: testAssembly.GetTargetFramework(),
+				testFramework: testFramework.TestFrameworkDisplayName
+			);
+		}
+		finally
+		{
+			if (testFramework is IAsyncDisposable asyncDisposable)
+				asyncDisposable.SafeDisposeAsync().SpinWait();
+			else if (testFramework is IDisposable disposable)
+				disposable.SafeDispose();
+		}
 	}
 
 	/// <summary/>

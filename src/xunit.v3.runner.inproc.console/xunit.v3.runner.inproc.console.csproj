@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="..\common\DotNetApiPolyfills.cs" LinkBase="Common" />
+    <Compile Include="..\common\TaskExtensions.cs" LinkBase="Common" />
   </ItemGroup>
 
   <ItemGroup>

@@ -147,7 +147,7 @@ public class ConsoleRunner(
 			if (project.Configuration.AssemblyInfoOrDefault)
 			{
 				noColor = true;
-				PrintAssemblyInfo(projectAssembly.ConfigFileName);
+				await PrintAssemblyInfo(projectAssembly.ConfigFileName);
 				return 0;
 			}
 
@@ -381,19 +381,29 @@ public class ConsoleRunner(
 				logger.WriteMessage(testCase.ToTestCaseDiscovered());
 	}
 
-	void PrintAssemblyInfo(string? configFileName)
+	async ValueTask PrintAssemblyInfo(string? configFileName)
 	{
 		var testFramework = RegisteredEngineConfig.GetTestFramework(testAssembly, configFileName);
-		var assemblyInfo = new TestAssemblyInfo(
-			// Technically these next two are the versions of xunit.v3.runner.inproc.console and not xunit.v3.core; however,
-			// since they're all compiled and versioned together, we'll take the path of least resistance.
-			coreFramework: new Version(ThisAssembly.AssemblyVersion),
-			coreFrameworkInformational: ThisAssembly.AssemblyInformationalVersion,
-			targetFramework: testAssembly.GetTargetFramework(),
-			testFramework: testFramework.TestFrameworkDisplayName
-		);
+		try
+		{
+			var assemblyInfo = new TestAssemblyInfo(
+				// Technically these next two are the versions of xunit.v3.runner.inproc.console and not xunit.v3.core; however,
+				// since they're all compiled and versioned together, we'll take the path of least resistance.
+				coreFramework: new Version(ThisAssembly.AssemblyVersion),
+				coreFrameworkInformational: ThisAssembly.AssemblyInformationalVersion,
+				targetFramework: testAssembly.GetTargetFramework(),
+				testFramework: testFramework.TestFrameworkDisplayName
+			);
 
-		consoleHelper.WriteLine(assemblyInfo.ToJson());
+			consoleHelper.WriteLine(assemblyInfo.ToJson());
+		}
+		finally
+		{
+			if (testFramework is IAsyncDisposable asyncDisposable)
+				await asyncDisposable.SafeDisposeAsync();
+			else if (testFramework is IDisposable disposable)
+				disposable.SafeDispose();
+		}
 	}
 
 	/// <summary>

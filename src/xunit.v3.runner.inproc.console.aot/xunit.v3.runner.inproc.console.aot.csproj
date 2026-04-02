@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="..\common\DotNetApiPolyfills.cs" LinkBase="Common" />
+    <Compile Include="..\common\TaskExtensions.cs" LinkBase="Common" />
     <Compile Include="..\xunit.v3.runner.inproc.console\**\*.cs" Exclude="**\*_reflection.cs;**\obj\**\*.cs" />
   </ItemGroup>
 
