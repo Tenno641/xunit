@@ -9,8 +9,96 @@ using Xunit.v3;
 
 partial class Xunit3TheoryAcceptanceTests
 {
-	partial class ClassDataTests
+	public class ClassDataTests : AcceptanceTestV3
 	{
+		readonly SpyMessageSink messageSink = SpyMessageSink.Capture();
+
+		// This appears to be timing-related flaky on AOT
+		[Fact]
+		public async ValueTask ClassDisposable_DisposesOfClass()
+		{
+			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_ClassDisposable), diagnosticMessageSink: messageSink);
+
+			Assert.Equal(3, testMessages.OfType<TestPassedWithMetadata>().Count());
+			Assert.Single(testMessages.OfType<TestSkippedWithMetadata>());
+			Assert.Single(testMessages.OfType<TestNotRunWithMetadata>());
+			var diagnosticMessages = messageSink.Messages.OfType<IDiagnosticMessage>().Select(dm => dm.Message).ToArray();
+			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassDisposable.Dispose", diagnosticMessages);
+		}
+
+		class ClassDataSource
+		{
+			public static readonly object[] Data =
+			[
+				new object?[] { "Hello from class source", 2600 },
+				Tuple.Create("Hello from Tuple", 42),
+				("Class source will fail", 2112),
+				new TheoryDataRow("Class source would fail if I ran", 96) { Skip = "Do not run" },
+				new TheoryDataRow<string, int>("I only run explicitly", 9600) { Explicit = true },
+			];
+		}
+
+#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
+
+		class ClassUnderTest_ClassDisposable
+		{
+			[Theory]
+			[ClassData(typeof(DataSource_ClassDisposable))]
+			public void TestMethod(string _1, int _2) { }
+		}
+
+		// This is IEnumerable instead of strongly typed because it returns all the various forms of
+		// data that are valid in a data source.
+		public sealed class DataSource_ClassDisposable : IEnumerable, IDisposable
+		{
+			void IDisposable.Dispose() =>
+				TestContext.Current.SendDiagnosticMessage(typeof(DataSource_ClassDisposable).SafeName() + ".Dispose");
+
+			IEnumerator IEnumerable.GetEnumerator() =>
+				ClassDataSource.Data.GetEnumerator();
+		}
+
+#pragma warning restore xUnit1007
+
+		// This appears to be timing-related flaky on AOT
+		[Fact]
+		public async ValueTask ClassAsyncDisposable_DisposesOfClass()
+		{
+			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_ClassAsyncDisposable), diagnosticMessageSink: messageSink);
+
+			Assert.Equal(3, testMessages.OfType<TestPassedWithMetadata>().Count());
+			Assert.Single(testMessages.OfType<TestSkippedWithMetadata>());
+			Assert.Single(testMessages.OfType<TestNotRunWithMetadata>());
+			var diagnosticMessages = messageSink.Messages.OfType<IDiagnosticMessage>().Select(dm => dm.Message).ToArray();
+			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassAsyncDisposable.InitializeAsync", diagnosticMessages);
+			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassAsyncDisposable.DisposeAsync", diagnosticMessages);
+		}
+
+#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
+
+		class ClassUnderTest_ClassAsyncDisposable
+		{
+			[Theory]
+			[ClassData(typeof(DataSource_ClassAsyncDisposable))]
+			public void TestMethod(string _1, int _2) { }
+		}
+
+		// This is IEnumerable instead of strongly typed because it returns all the various forms of
+		// data that are valid in a data source.
+		public sealed class DataSource_ClassAsyncDisposable : IEnumerable, IAsyncLifetime
+		{
+			async ValueTask IAsyncDisposable.DisposeAsync() =>
+				TestContext.Current.SendDiagnosticMessage(typeof(DataSource_ClassAsyncDisposable).SafeName() + ".DisposeAsync");
+
+			async ValueTask IAsyncLifetime.InitializeAsync() =>
+				TestContext.Current.SendDiagnosticMessage(typeof(DataSource_ClassAsyncDisposable).SafeName() + ".InitializeAsync");
+
+			IEnumerator IEnumerable.GetEnumerator() =>
+				ClassDataSource.Data.GetEnumerator();
+		}
+
+#pragma warning restore xUnit1007
+
 		// Native AOT reports these in the generator
 		[Fact]
 		public static async ValueTask IncompatibleDataReturnType_Throws()
@@ -73,8 +161,96 @@ partial class Xunit3TheoryAcceptanceTests
 
 #if !NETFRAMEWORK
 
-	partial class ClassDataTests_Generic
+	public class ClassDataTests_Generic : AcceptanceTestV3
 	{
+		readonly SpyMessageSink messageSink = SpyMessageSink.Capture();
+
+		// This appears to be timing-related flaky on AOT
+		[Fact]
+		public async ValueTask ClassDisposable_DisposesOfClass()
+		{
+			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_ClassDisposable), diagnosticMessageSink: messageSink);
+
+			Assert.Equal(3, testMessages.OfType<TestPassedWithMetadata>().Count());
+			Assert.Single(testMessages.OfType<TestSkippedWithMetadata>());
+			Assert.Single(testMessages.OfType<TestNotRunWithMetadata>());
+			var diagnosticMessages = messageSink.Messages.OfType<IDiagnosticMessage>().Select(dm => dm.Message).ToArray();
+			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassDisposable.Dispose", diagnosticMessages);
+		}
+
+		class ClassDataSource
+		{
+			public static readonly object[] Data =
+			[
+				new object?[] { "Hello from class source", 2600 },
+				Tuple.Create("Hello from Tuple", 42),
+				("Class source will fail", 2112),
+				new TheoryDataRow("Class source would fail if I ran", 96) { Skip = "Do not run" },
+				new TheoryDataRow<string, int>("I only run explicitly", 9600) { Explicit = true },
+			];
+		}
+
+#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
+
+		class ClassUnderTest_ClassDisposable
+		{
+			[Theory]
+			[ClassData<DataSource_ClassDisposable>]
+			public void TestMethod(string _1, int _2) { }
+		}
+
+		// This is IEnumerable instead of strongly typed because it returns all the various forms of
+		// data that are valid in a data source.
+		public sealed class DataSource_ClassDisposable : IEnumerable, IDisposable
+		{
+			void IDisposable.Dispose() =>
+				TestContext.Current.SendDiagnosticMessage(typeof(DataSource_ClassDisposable).SafeName() + ".Dispose");
+
+			IEnumerator IEnumerable.GetEnumerator() =>
+				ClassDataSource.Data.GetEnumerator();
+		}
+
+#pragma warning restore xUnit1007
+
+		// This appears to be timing-related flaky on AOT
+		[Fact]
+		public async ValueTask ClassAsyncDisposable_DisposesOfClass()
+		{
+			var testMessages = await RunForResultsAsync(typeof(ClassUnderTest_ClassAsyncDisposable), diagnosticMessageSink: messageSink);
+
+			Assert.Equal(3, testMessages.OfType<TestPassedWithMetadata>().Count());
+			Assert.Single(testMessages.OfType<TestSkippedWithMetadata>());
+			Assert.Single(testMessages.OfType<TestNotRunWithMetadata>());
+			var diagnosticMessages = messageSink.Messages.OfType<IDiagnosticMessage>().Select(dm => dm.Message).ToArray();
+			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassAsyncDisposable.InitializeAsync", diagnosticMessages);
+			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassAsyncDisposable.DisposeAsync", diagnosticMessages);
+		}
+
+#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
+
+		class ClassUnderTest_ClassAsyncDisposable
+		{
+			[Theory]
+			[ClassData<DataSource_ClassAsyncDisposable>]
+			public void TestMethod(string _1, int _2) { }
+		}
+
+		// This is IEnumerable instead of strongly typed because it returns all the various forms of
+		// data that are valid in a data source.
+		public sealed class DataSource_ClassAsyncDisposable : IEnumerable, IAsyncLifetime
+		{
+			async ValueTask IAsyncDisposable.DisposeAsync() =>
+				TestContext.Current.SendDiagnosticMessage(typeof(DataSource_ClassAsyncDisposable).SafeName() + ".DisposeAsync");
+
+			async ValueTask IAsyncLifetime.InitializeAsync() =>
+				TestContext.Current.SendDiagnosticMessage(typeof(DataSource_ClassAsyncDisposable).SafeName() + ".InitializeAsync");
+
+			IEnumerator IEnumerable.GetEnumerator() =>
+				ClassDataSource.Data.GetEnumerator();
+		}
+
+#pragma warning restore xUnit1007
+
 		// Native AOT reports these in the generator
 		[Fact]
 		public static async ValueTask IncompatibleDataReturnType_Throws()
