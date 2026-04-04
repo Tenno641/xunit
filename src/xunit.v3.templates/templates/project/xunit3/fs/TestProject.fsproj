@@ -29,9 +29,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="XUNIT_RUNNER_VISUALSTUDIO_VERSION" />
     <PackageReference Include="xunit.v3.mtp-off" Version="PACKAGE_VERSION" />
     <!--#endif-->
-    <!--#if (TestRunner == "mtp-v1") -->
-    <PackageReference Include="xunit.v3.mtp-v1" Version="PACKAGE_VERSION" />
-    <!--#endif-->
     <!--#if (TestRunner == "mtp-v2") -->
     <PackageReference Include="xunit.v3.mtp-v2" Version="PACKAGE_VERSION" />
     <!--#endif-->

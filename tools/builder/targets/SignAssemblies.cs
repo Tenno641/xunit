@@ -39,8 +39,6 @@ public static partial class SignAssemblies
 				Path.Combine(context.BaseFolder, "src", "xunit.v3.core.aot.generators",          "bin", context.ConfigurationText, "netstandard2.0",                         "xunit.v3.core.aot.generators.dll"),
 				Path.Combine(context.BaseFolder, "src", "xunit.v3.msbuildtasks",                 "bin", context.ConfigurationText, "net472",                                 "xunit.v3.msbuildtasks.dll"),
 				Path.Combine(context.BaseFolder, "src", "xunit.v3.msbuildtasks",                 "bin", context.ConfigurationText, "net8.0",                                 "xunit.v3.msbuildtasks.dll"),
-				Path.Combine(context.BaseFolder, "src", "xunit.v3.mtp-v1",                       "bin", context.ConfigurationText, "net472",                                 "xunit.v3.mtp-v1.dll"),
-				Path.Combine(context.BaseFolder, "src", "xunit.v3.mtp-v1",                       "bin", context.ConfigurationText, "net8.0",                                 "xunit.v3.mtp-v1.dll"),
 				Path.Combine(context.BaseFolder, "src", "xunit.v3.mtp-v2",                       "bin", context.ConfigurationText, "net472",                                 "xunit.v3.mtp-v2.dll"),
 				Path.Combine(context.BaseFolder, "src", "xunit.v3.mtp-v2",                       "bin", context.ConfigurationText, "net8.0",                                 "xunit.v3.mtp-v2.dll"),
 				Path.Combine(context.BaseFolder, "src", "xunit.v3.mtp-v2.aot",                   "bin", context.ConfigurationText, "net8.0",                                 "xunit.v3.mtp-v2.aot.dll"),

@@ -11,9 +11,6 @@
     <Nerdbank_GitVersioning_Version>3.9.50</Nerdbank_GitVersioning_Version>
     <TunnelVisionLabs_ReferenceAssemblyAnnotator_Version>1.0.0-alpha.160</TunnelVisionLabs_ReferenceAssemblyAnnotator_Version>
 
-    <!-- Used by xunit.v3.mtp-v1 -->
-    <Microsoft_Testing_v1_Version>1.9.1</Microsoft_Testing_v1_Version>
-
     <!-- Used by xunit.v3.mtp-v2 -->
     <Microsoft_Testing_v2_Version>2.1.0</Microsoft_Testing_v2_Version>
 

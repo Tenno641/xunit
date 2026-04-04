@@ -124,11 +124,6 @@
           "description": "Microsoft.Testing.Platform v2"
         },
         {
-          "choice": "mtp-v1",
-          "displayName": "Microsoft.Testing.Platform v1",
-          "description": "Microsoft.Testing.Platform v1"
-        },
-        {
           "choice": "vstest",
           "displayName": "VSTest",
           "description": "VSTest"
