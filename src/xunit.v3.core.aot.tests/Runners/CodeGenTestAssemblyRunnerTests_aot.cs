@@ -28,7 +28,9 @@ public static class CodeGenTestAssemblyRunnerTests
 					Assert.Equal(".NETCoreApp,Version=v9.0", starting.TargetFramework);
 					Assert.Matches($"^{IntPtr.Size * 8}-bit \\({Regex.Escape(RuntimeInformation.ProcessArchitecture.ToDisplayName())}\\) {Regex.Escape(RuntimeInformation.FrameworkDescription)} \\[collection-per-class, parallel \\(\\d+ threads\\)\\]$", starting.TestEnvironment);
 					Assert.Matches("^xUnit.net v3 \\d+.\\d+.\\d+", starting.TestFrameworkDisplayName);
-					Assert.Empty(starting.Traits);
+					var trait = Assert.Single(starting.Traits);
+					Assert.Equal("Location", trait.Key);
+					Assert.Equal(["Assembly"], trait.Value);
 				},
 				msg => Assert.IsType<ITestCollectionStarting>(msg, exactMatch: false),
 				msg => Assert.IsType<ITestClassStarting>(msg, exactMatch: false),

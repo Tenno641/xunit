@@ -77,6 +77,15 @@ public sealed class CodeGenTestCollectionRegistration
 #endif
 
 	/// <summary>
+	/// The traits attached to the test collection
+	/// </summary>
+#if XUNIT_GENERATOR
+	public required IReadOnlyDictionary<string, HashSet<string>>? Traits { get; set; }
+#else
+	public IReadOnlyDictionary<string, IReadOnlyCollection<string>>? Traits { get; init; }
+#endif
+
+	/// <summary>
 	/// Gets the type associated with the collection definition.
 	/// </summary>
 #if XUNIT_GENERATOR
@@ -98,10 +107,19 @@ public sealed class CodeGenTestCollectionRegistration
 		ComparerHelper.Equals(TestCaseOrdererFactory, other.TestCaseOrdererFactory) &&
 		ComparerHelper.Equals(TestClassOrdererFactory, other.TestClassOrdererFactory) &&
 		ComparerHelper.Equals(TestMethodOrdererFactory, other.TestMethodOrdererFactory) &&
+		ComparerHelper.Equals(Traits, other.Traits) &&
 		ComparerHelper.Equals(Type, other.Type);
 
 	public override int GetHashCode() =>
-		Hasher.Start().With(ClassFixtures).With(CollectionFixtures).With(DisableParallelization).With(TestCaseOrdererFactory).With(TestClassOrdererFactory).With(TestMethodOrdererFactory).With(Type);
+		Hasher.Start()
+			.With(ClassFixtures)
+			.With(CollectionFixtures)
+			.With(DisableParallelization)
+			.With(TestCaseOrdererFactory)
+			.With(TestClassOrdererFactory)
+			.With(TestMethodOrdererFactory)
+			.With(Traits)
+			.With(Type);
 
 	/// <summary>
 	/// Gets init values used by the source generator.
@@ -122,6 +140,8 @@ public sealed class CodeGenTestCollectionRegistration
 			initValues.Add($"TestClassOrdererFactory = () => {TestClassOrdererFactory}");
 		if (TestMethodOrdererFactory is not null)
 			initValues.Add($"TestMethodOrdererFactory = () => {TestMethodOrdererFactory}");
+		if (Traits?.Count > 0)
+			initValues.Add($"Traits = {CodeGenRegistration.ToTraits(Traits)}");
 		if (Type is not null)
 			initValues.Add($"Type = typeof({Type})");
 

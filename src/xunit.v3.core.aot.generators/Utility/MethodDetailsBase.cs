@@ -75,7 +75,7 @@ public class MethodDetailsBase
 
 	public int Timeout { get; set; }
 
-	public Dictionary<string, List<string>> Traits { get; } =
+	public Dictionary<string, HashSet<string>> Traits { get; } =
 		new(StringComparer.OrdinalIgnoreCase);
 
 	public virtual bool Process()
@@ -118,9 +118,11 @@ public class MethodDetailsBase
 		{
 			case Types.Xunit.TraitAttribute:
 				if (attribute.ConstructorArguments.Length == 2
+						&& attribute.ConstructorArguments[0].Kind == TypedConstantKind.Primitive
+						&& attribute.ConstructorArguments[1].Kind == TypedConstantKind.Primitive
 						&& attribute.ConstructorArguments[0].Value is string key
 						&& attribute.ConstructorArguments[1].Value is string value)
-					Traits.AddOrGet(key).Add(value);
+					Traits.Add(key, value);
 				break;
 
 			case Types.Xunit.TestCaseOrdererAttribute:

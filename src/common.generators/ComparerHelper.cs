@@ -63,4 +63,31 @@ public static class ComparerHelper
 
 		return true;
 	}
+
+	public static bool Equals<TKey, TValue>(
+		IReadOnlyDictionary<TKey, HashSet<TValue>>? x,
+		IReadOnlyDictionary<TKey, HashSet<TValue>>? y)
+			where TKey : IEquatable<TKey>
+			where TValue : IEquatable<TValue>
+	{
+		if (x is null)
+			return y is null;
+		if (y is null)
+			return false;
+		if (x.Count != y.Count)
+			return false;
+
+		foreach (var xPair in x)
+		{
+			if (y.TryGetValue(xPair.Key, out var yValue) || yValue is null)
+				return false;
+			if (xPair.Value.Count != yValue.Count)
+				return false;
+			foreach (var value in xPair.Value)
+				if (!yValue.Contains(value))
+					return false;
+		}
+
+		return true;
+	}
 }

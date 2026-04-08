@@ -7,6 +7,10 @@ using System.Collections;
 using System.Runtime.InteropServices;
 using Xunit;
 
+#if XUNIT_AOT
+[assembly: Trait("Location", "Assembly")]
+#endif
+
 public partial class Xunit3TheoryAcceptanceTests
 {
 	public partial class DataAttributeTests
@@ -152,7 +156,12 @@ public partial class Xunit3TheoryAcceptanceTests
 			{ }
 		}
 
+		[CollectionDefinition("Trait Collection")]
+		[Trait("Location", "Collection")]
+		public class TraitCollection { }
+
 		[Trait("Location", "Class")]
+		[Collection("Trait Collection")]
 #if XUNIT_AOT
 		public
 #endif

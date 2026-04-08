@@ -33,6 +33,8 @@ internal sealed class CodeGenTestAssemblyRegistration()
 
 	public Func<ITestPipelineStartup>? TestPipelineStartupFactory { get; set; }
 
+	public Dictionary<string, HashSet<string>> Traits { get; } = new(StringComparer.Ordinal);
+
 	public ICodeGenTestAssembly GetTestAssembly(
 		Assembly assembly,
 		string? configFile)
@@ -42,11 +44,6 @@ internal sealed class CodeGenTestAssemblyRegistration()
 			{
 				var name = assembly.GetName();
 				var assemblyName = name.Name ?? throw new ArgumentNullException("assembly.GetName().Name", "Assembly must have a name");
-
-				var traits = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
-				foreach (var traitAttribute in assembly.GetCustomAttributes<TraitAttribute>())
-					traits.AddOrGet(traitAttribute.Name).Add(traitAttribute.Value);
-
 				var assemblyPath = Path.Combine(AppContext.BaseDirectory, assemblyName + ".dll");
 				if (!File.Exists(assemblyPath))
 					assemblyPath = Path.Combine(AppContext.BaseDirectory, assemblyName + CodeGenHelper.ExecutableExtension);
@@ -62,7 +59,7 @@ internal sealed class CodeGenTestAssemblyRegistration()
 					configFile,
 					assembly.Modules.FirstOrDefault()?.ModuleVersionId,
 					assembly.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName,
-					traits.ToReadOnly(),
+					Traits.ToReadOnly(),
 					version: name.Version
 				);
 			}

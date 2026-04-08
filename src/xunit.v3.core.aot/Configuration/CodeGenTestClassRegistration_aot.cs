@@ -62,6 +62,15 @@ public class CodeGenTestClassRegistration
 	public Func<ITestMethodOrderer>? TestMethodOrdererFactory { get; init; }
 #endif
 
+	/// <summary>
+	/// The traits attached to the test collection
+	/// </summary>
+#if XUNIT_GENERATOR
+	public required IReadOnlyDictionary<string, HashSet<string>>? Traits { get; set; }
+#else
+	public IReadOnlyDictionary<string, IReadOnlyCollection<string>>? Traits { get; init; }
+#endif
+
 #if XUNIT_GENERATOR
 
 	public override bool Equals(object? obj) =>
@@ -73,10 +82,11 @@ public class CodeGenTestClassRegistration
 		ComparerHelper.Equals(ClassFactory, other.ClassFactory) &&
 		ComparerHelper.Equals(ClassFixtures, other.ClassFixtures) &&
 		ComparerHelper.Equals(TestCaseOrdererFactory, other.TestCaseOrdererFactory) &&
-		ComparerHelper.Equals(TestMethodOrdererFactory, other.TestMethodOrdererFactory);
+		ComparerHelper.Equals(TestMethodOrdererFactory, other.TestMethodOrdererFactory) &&
+		ComparerHelper.Equals(Traits, other.Traits);
 
 	public override int GetHashCode() =>
-		Hasher.Start().With(Class).With(ClassFactory).With(ClassFixtures).With(TestCaseOrdererFactory).With(TestMethodOrdererFactory);
+		Hasher.Start().With(Class).With(ClassFactory).With(ClassFixtures).With(TestCaseOrdererFactory).With(TestMethodOrdererFactory).With(Traits);
 
 #endif  // XUNIT_GENERATOR
 
@@ -100,9 +110,8 @@ public class CodeGenTestClassRegistration
 				var testCollection = testAssembly.TestCollectionFactory.Get(Class);
 
 				IReadOnlyDictionary<string, IReadOnlyCollection<string>>? traits;
-				var traitAttributes = Class.GetCustomAttributes<TraitAttribute>().CastOrToReadOnlyCollection();
 
-				if (traitAttributes.Count == 0)
+				if (Traits is null || Traits.Count == 0)
 					traits = testCollection.Traits;
 				else
 				{
@@ -111,8 +120,9 @@ public class CodeGenTestClassRegistration
 						foreach (var value in kvp.Value)
 							newTraits.AddOrGet(kvp.Key).Add(value);
 
-					foreach (var traitAttribute in traitAttributes)
-						newTraits.AddOrGet(traitAttribute.Name).Add(traitAttribute.Value);
+					foreach (var kvp in Traits)
+						foreach (var value in kvp.Value)
+							newTraits.AddOrGet(kvp.Key).Add(value);
 
 					traits = newTraits.ToReadOnly();
 				}
@@ -157,6 +167,8 @@ public class CodeGenTestClassRegistration
 			initValues.Add($"TestCaseOrdererFactory = () => {TestCaseOrdererFactory}");
 		if (TestMethodOrdererFactory is not null)
 			initValues.Add($"TestMethodOrdererFactory = () => {TestMethodOrdererFactory}");
+		if (Traits?.Count > 0)
+			initValues.Add($"Traits = {CodeGenRegistration.ToTraits(Traits)}");
 
 		return $"new global::Xunit.v3.CodeGenTestClassRegistration() {{ {string.Join(", ", initValues)} }}";
 	}

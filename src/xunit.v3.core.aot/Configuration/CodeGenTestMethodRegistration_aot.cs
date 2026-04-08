@@ -85,7 +85,7 @@ public class CodeGenTestMethodRegistration
 	/// The traits attached to the test method
 	/// </summary>
 #if XUNIT_GENERATOR
-	public required IReadOnlyDictionary<string, List<string>>? Traits { get; set; }
+	public required IReadOnlyDictionary<string, HashSet<string>>? Traits { get; set; }
 #else
 	public IReadOnlyDictionary<string, IReadOnlyCollection<string>>? Traits { get; init; }
 #endif

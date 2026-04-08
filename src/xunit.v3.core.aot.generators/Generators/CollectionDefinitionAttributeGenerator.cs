@@ -46,6 +46,7 @@ public class CollectionDefinitionAttributeGenerator() :
 		var testCaseOrdererFactory = default(string);
 		var testClassOrdererFactory = default(string);
 		var testMethodOrdererFactory = default(string);
+		var traits = default(Dictionary<string, HashSet<string>>);
 
 		var result = new GeneratorResult(context)
 		{
@@ -83,6 +84,18 @@ public class CollectionDefinitionAttributeGenerator() :
 				case Types.Xunit.TestMethodOrdererAttribute + "<>":
 					testMethodOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestMethodOrderer);
 					break;
+
+				case Types.Xunit.TraitAttribute:
+					if (classAttribute.ConstructorArguments.Length == 2
+							&& classAttribute.ConstructorArguments[0].Kind == TypedConstantKind.Primitive
+							&& classAttribute.ConstructorArguments[1].Kind == TypedConstantKind.Primitive
+							&& classAttribute.ConstructorArguments[0].Value is string traitName
+							&& classAttribute.ConstructorArguments[1].Value is string traitValue)
+					{
+						traits ??= new(StringComparer.Ordinal);
+						traits.Add(traitName, traitValue);
+					}
+					break;
 			}
 		}
 
@@ -110,6 +123,7 @@ public class CollectionDefinitionAttributeGenerator() :
 			TestCaseOrdererFactory = testCaseOrdererFactory,
 			TestClassOrdererFactory = testClassOrdererFactory,
 			TestMethodOrdererFactory = testMethodOrdererFactory,
+			Traits = traits,
 			Type = type,
 		};
 

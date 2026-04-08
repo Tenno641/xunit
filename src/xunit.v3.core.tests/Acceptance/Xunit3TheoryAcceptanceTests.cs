@@ -269,19 +269,31 @@ public static partial class Xunit3TheoryAcceptanceTests
 				starting =>
 				{
 					Assert.Equal("Xunit3TheoryAcceptanceTests+DataAttributeTests+ClassUnderTests_TraitsTests.TestMethod(_: 0)", starting.Test.TestDisplayName);
-					Assert.Equal(["Class", "InlineData", "Method"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#if XUNIT_AOT
+					Assert.Equal(["Assembly", "Class", "Collection", "InlineData", "Method"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#else
+					Assert.Equal(["Class", "Collection", "InlineData", "Method"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#endif
 					Assert.False(starting.Test.Traits.ContainsKey("Discarded"));
 				},
 				starting =>
 				{
 					Assert.Equal("Xunit3TheoryAcceptanceTests+DataAttributeTests+ClassUnderTests_TraitsTests.TestMethod(_: 2112)", starting.Test.TestDisplayName);
-					Assert.Equal(["Class", "MemberData", "Method"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#if XUNIT_AOT
+					Assert.Equal(["Assembly", "Class", "Collection", "MemberData", "Method"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#else
+					Assert.Equal(["Class", "Collection", "MemberData", "Method"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#endif
 					Assert.False(starting.Test.Traits.ContainsKey("Discarded"));
 				},
 				starting =>
 				{
 					Assert.Equal("Xunit3TheoryAcceptanceTests+DataAttributeTests+ClassUnderTests_TraitsTests.TestMethod(_: 42)", starting.Test.TestDisplayName);
-					Assert.Equal(["Class", "MemberData", "Method", "TheoryDataRow"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#if XUNIT_AOT
+					Assert.Equal(["Assembly", "Class", "Collection", "MemberData", "Method", "TheoryDataRow"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#else
+					Assert.Equal(["Class", "Collection", "MemberData", "Method", "TheoryDataRow"], starting.Test.Traits["Location"].OrderBy(x => x).ToArray());
+#endif
 					Assert.False(starting.Test.Traits.ContainsKey("Discarded"));
 				}
 			);

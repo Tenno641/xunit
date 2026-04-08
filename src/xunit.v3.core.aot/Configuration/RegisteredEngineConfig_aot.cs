@@ -295,6 +295,19 @@ public static class RegisteredEngineConfig
 		assemblyRegistration.TestMethodOrdererFactory = factory;
 
 	/// <summary>
+	/// Registers a trait that is attached to the test assembly.
+	/// </summary>
+	/// <param name="name">The trait name</param>
+	/// <param name="value">The trait value</param>
+	/// <remarks>
+	/// This is typically called when <see cref="TraitAttribute"/> is seen at the test assembly level.
+	/// </remarks>
+	public static void RegisterAssemblyTrait(
+		string name,
+		string value) =>
+			assemblyRegistration.Traits.Add(name, value);
+
+	/// <summary>
 	/// Registers the presence of an xUnit.net v3 test case factory via code generation.
 	/// </summary>
 	/// <param name="testClassIndex">The dictionary index of the test class. This is the C# compilation name for

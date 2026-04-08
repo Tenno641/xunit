@@ -27,7 +27,7 @@ public class Hasher
 	public int ToInt32() =>
 		result;
 
-	public Hasher With<T>(IEnumerable<T> collection)
+	public Hasher With<T>(IEnumerable<T>? collection)
 	{
 		if (collection is null)
 			With(null);
@@ -38,7 +38,7 @@ public class Hasher
 		return this;
 	}
 
-	public Hasher With<TKey, TValue>(IDictionary<TKey, TValue> dictionary)
+	public Hasher With<TKey, TValue>(IReadOnlyDictionary<TKey, TValue>? dictionary)
 	{
 		if (dictionary is null)
 			With(null);

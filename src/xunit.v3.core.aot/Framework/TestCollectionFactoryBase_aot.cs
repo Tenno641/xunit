@@ -29,9 +29,8 @@ public abstract class TestCollectionFactoryBase(ICodeGenTestAssembly testAssembl
 			definition = CodeGenTestCollectionRegistration.Empty;
 
 		IReadOnlyDictionary<string, IReadOnlyCollection<string>>? traits;
-		var traitAttributes = definition.Type?.GetCustomAttributes<TraitAttribute>().CastOrToReadOnlyCollection();
 
-		if (traitAttributes is null || traitAttributes.Count == 0)
+		if (definition.Traits is null || definition.Traits.Count == 0)
 			traits = testAssembly.Traits;
 		else
 		{
@@ -40,8 +39,9 @@ public abstract class TestCollectionFactoryBase(ICodeGenTestAssembly testAssembl
 				foreach (var value in kvp.Value)
 					newTraits.AddOrGet(kvp.Key).Add(value);
 
-			foreach (var traitAttribute in traitAttributes)
-				newTraits.AddOrGet(traitAttribute.Name).Add(traitAttribute.Value);
+			foreach (var kvp in definition.Traits)
+				foreach (var value in kvp.Value)
+					newTraits.AddOrGet(kvp.Key).Add(value);
 
 			traits = newTraits.ToReadOnly();
 		}
