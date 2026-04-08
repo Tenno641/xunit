@@ -28,8 +28,8 @@ public class XunitTestCaseTests
 	}
 
 	[Theory]
-	[InlineData(nameof(ArityTestClass<int, long>.ZeroArity), 0)]
-	[InlineData(nameof(ArityTestClass<int, long>.OneArity), 1)]
+	[InlineData(nameof(ArityTestClass<,>.ZeroArity), 0)]
+	[InlineData(nameof(ArityTestClass<,>.OneArity), 1)]
 	public static void TestMethodArity(
 		string methodName,
 		int expectedArity)
@@ -38,6 +38,8 @@ public class XunitTestCaseTests
 
 		Assert.Equal(expectedArity, testMethod.TestMethodArity);
 	}
+
+#pragma warning disable xUnit1063 // Test classes cannot be an open generic type
 
 	class ArityTestClass<X, Y>
 	{
@@ -48,6 +50,8 @@ public class XunitTestCaseTests
 		[InlineData(42)]
 		public void OneArity<T>(T _) { }
 	}
+
+#pragma warning restore xUnit1063 // Test classes cannot be an open generic type
 
 	[Theory]
 	[InlineData(null, null)]
@@ -155,6 +159,7 @@ namespace XunitTestCaseTestsNamespace
 {
 #pragma warning disable xUnit1003 // Theory methods must have test data
 #pragma warning disable xUnit1028 // Test method must have valid return type
+#pragma warning disable xUnit1063 // Test classes cannot be an open generic type
 
 	internal class ParentClass
 	{
@@ -170,6 +175,7 @@ namespace XunitTestCaseTestsNamespace
 		public class MyList<T> : List<T> { }
 	}
 
+#pragma warning restore xUnit1063
 #pragma warning restore xUnit1028
 #pragma warning restore xUnit1003
 }

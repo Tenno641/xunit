@@ -12,6 +12,10 @@ public static class Types
 
 		public static class Collections
 		{
+			const string ns = $"{nameof(System)}.{nameof(Collections)}.";
+
+			public const string IEnumerable = ns + nameof(IEnumerable);
+
 			public static class Generic
 			{
 				const string ns = $"{nameof(System)}.{nameof(Collections)}.{nameof(Generic)}.";

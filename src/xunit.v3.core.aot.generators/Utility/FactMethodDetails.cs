@@ -26,25 +26,4 @@ public class FactMethodDetails : MethodDetailsBase
 	}
 
 	public string MethodInvoker { get; }
-
-	public override void Process(XunitGeneratorResult result)
-	{
-		base.Process(result);
-
-		if (MethodDeclaration.ParameterList.Parameters.Count != 0)
-			Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1001_FactMethodMustNotHaveParameters,
-					MethodDeclaration.ParameterList.GetLocation()
-				)
-			);
-
-		if (MethodDeclaration.TypeParameterList is not null && MethodDeclaration.TypeParameterList.Parameters.Count != 0)
-			Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9009_FactCannotBeGeneric,
-					MethodDeclaration.TypeParameterList.GetLocation()
-				)
-			);
-	}
 }

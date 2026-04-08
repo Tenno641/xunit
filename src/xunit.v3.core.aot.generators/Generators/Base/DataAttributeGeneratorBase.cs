@@ -29,14 +29,11 @@ public abstract class DataAttributeGeneratorBase(string fullyQualifiedAttributeT
 
 	protected static string? GetDataAttributeRegistration(
 		AttributeData attribute,
-		ITypeSymbol classSymbol,
-		List<Diagnostic> diagnostics)
+		ITypeSymbol classSymbol)
 	{
 		Guard.ArgumentNotNull(attribute);
-		Guard.ArgumentNotNull(diagnostics);
 
 		var initializers = new List<string>();
-
 		var skipType = default(ITypeSymbol);
 		var skipUnless = default(string);
 		var skipWhen = default(string);
@@ -111,18 +108,9 @@ public abstract class DataAttributeGeneratorBase(string fullyQualifiedAttributeT
 		}
 
 		if (skipUnless is not null && skipWhen is not null)
-		{
-			diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9006_CannotSetBothSkipUnlessAndSkipWhen,
-					attribute.ApplicationSyntaxReference?.Location
-				)
-			);
 			return null;
-		}
-
-		verifySkipProperty(skipUnless);
-		verifySkipProperty(skipWhen);
+		if (!verifySkipProperty(skipUnless) || !verifySkipProperty(skipWhen))
+			return null;
 
 		if (skipUnless is not null)
 			initializers.Add($"SkipUnless = () => {(skipType ?? classSymbol).ToCSharp()}.{skipUnless}");
@@ -130,16 +118,14 @@ public abstract class DataAttributeGeneratorBase(string fullyQualifiedAttributeT
 			initializers.Add($"SkipWhen = () => {(skipType ?? classSymbol).ToCSharp()}.{skipWhen}");
 
 		return
-			diagnostics.Count != 0
-				? null
-				: initializers.Count == 0
-					? "global::Xunit.v3.DataAttributeRegistration.Empty"
-					: $"new global::Xunit.v3.DataAttributeRegistration() {{ {string.Join(", ", initializers)} }}";
+			initializers.Count == 0
+				? "global::Xunit.v3.DataAttributeRegistration.Empty"
+				: $"new global::Xunit.v3.DataAttributeRegistration() {{ {string.Join(", ", initializers)} }}";
 
-		void verifySkipProperty(string? propertyName)
+		bool verifySkipProperty(string? propertyName)
 		{
 			if (propertyName is null)
-				return;
+				return true;
 
 			var currentSymbol = skipType ?? classSymbol;
 
@@ -152,25 +138,12 @@ public abstract class DataAttributeGeneratorBase(string fullyQualifiedAttributeT
 						.FirstOrDefault(symbol => symbol.Name == propertyName);
 
 				if (property is not null)
-				{
-					if (property.DeclaredAccessibility == Accessibility.Public && property.Type.ToCSharp() == "bool")
-						return;
-
-					break;
-				}
+					return property.IsStatic && property.DeclaredAccessibility == Accessibility.Public && property.Type.ToCSharp() == "bool";
 
 				currentSymbol = currentSymbol.BaseType;
 			}
 
-			diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9002_TypeMustHaveStaticPublicProperty,
-					attribute.ApplicationSyntaxReference?.Location,
-					skipType ?? classSymbol,
-					propertyName,
-					"bool"
-				)
-			);
+			return false;
 		}
 	}
 
@@ -192,22 +165,35 @@ public abstract class DataAttributeGeneratorBase(string fullyQualifiedAttributeT
 		var result = new GeneratorResult(context) { Type = classSymbol.ToCSharp(), MethodName = methodSymbol.Name };
 
 		foreach (var attribute in context.Attributes)
-			if (GetDataAttributeRegistration(attribute, classSymbol, result.Diagnostics) is string dataAttributeRegistration)
+			if (GetDataAttributeRegistration(attribute, classSymbol) is string dataAttributeRegistration)
 				ProcessAttribute(classSymbol, methodSymbol, attribute, dataAttributeRegistration, result, cancellationToken);
 
-		return result.Factories.Count == 0 && result.Diagnostics.Count == 0 ? null : result;
+		return result.Factories.Count == 0 ? null : result;
 	}
 
 	public class GeneratorResult(GeneratorAttributeSyntaxContext context) :
-		XunitGeneratorResult(context.SemanticModel, context.TargetNode)
+		XunitGeneratorResult(context.SemanticModel, context.TargetNode), IEquatable<GeneratorResult?>
 	{
-		public Compilation Compilation { get; } =
-			context.SemanticModel.Compilation;
-
 		public List<string> Factories = [];
 
 		public required string MethodName { get; set; }
 
+		public INamedTypeSymbol ObjectType { get; } =
+			context.SemanticModel.Compilation.GetSpecialType(SpecialType.System_Object);
+
 		public required string Type { get; set; }
+
+		public override bool Equals(object? obj) =>
+			Equals(obj as GeneratorResult);
+
+		public bool Equals(GeneratorResult? other) =>
+			other is not null &&
+			base.Equals(other) &&
+			ComparerHelper.Equals(Factories, other.Factories) &&
+			ComparerHelper.Equals(MethodName, other.MethodName) &&
+			ComparerHelper.Equals(Type, other.Type);
+
+		public override int GetHashCode() =>
+			Hasher.Extend(base.GetHashCode()).With(Factories).With(MethodName).With(Type);
 	}
 }

@@ -29,6 +29,9 @@ public class CollectionDefinitionAttributeGenerator() :
 		if (attribute is null)
 			return null;
 
+		if (context.TargetSymbol.DeclaredAccessibility != Accessibility.Public)
+			return null;
+
 		var type = context.TargetSymbol.ToCSharp();
 
 		var name = default(string);
@@ -43,38 +46,18 @@ public class CollectionDefinitionAttributeGenerator() :
 		var testCaseOrdererFactory = default(string);
 		var testClassOrdererFactory = default(string);
 		var testMethodOrdererFactory = default(string);
+
 		var result = new GeneratorResult(context)
 		{
 			GeneratorSuffix = context.TargetSymbol.Name + "٠",
 			Name = name,
 		};
 
-		if (context.TargetSymbol.DeclaredAccessibility != Accessibility.Public)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1027_CollectionDefinitionClassMustBePublic,
-					context.TargetSymbol.Locations.FirstOrDefault()
-				)
-			);
-
-			return result;
-		}
-
 		if (context.TargetSymbol is ITypeSymbol targetType)
 		{
 			var openGenericTypeParameter = targetType.RecursiveGetOpenGenericTypeParameter();
 			if (openGenericTypeParameter is not null)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X9005_GenericCollectionDefinitionNotSupported,
-						openGenericTypeParameter.Locations.FirstOrDefault()
-					)
-				);
-
-				return result;
-			}
+				return null;
 		}
 
 		foreach (var classAttribute in context.TargetSymbol.GetAttributes())
@@ -88,17 +71,17 @@ public class CollectionDefinitionAttributeGenerator() :
 			{
 				case Types.Xunit.TestCaseOrdererAttribute:
 				case Types.Xunit.TestCaseOrdererAttribute + "<>":
-					testCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestCaseOrderer, result);
+					testCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestCaseOrderer);
 					break;
 
 				case Types.Xunit.TestClassOrdererAttribute:
 				case Types.Xunit.TestClassOrdererAttribute + "<>":
-					testClassOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestClassOrderer, result);
+					testClassOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestClassOrderer);
 					break;
 
 				case Types.Xunit.TestMethodOrdererAttribute:
 				case Types.Xunit.TestMethodOrdererAttribute + "<>":
-					testMethodOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestMethodOrderer, result);
+					testMethodOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestMethodOrderer);
 					break;
 			}
 		}
@@ -146,22 +129,10 @@ public class CollectionDefinitionAttributeGenerator() :
 
 			var nonPublicType = fixtureType.RecursiveGetNonPublicNonInternalType();
 			if (nonPublicType is not null)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X9004_TypeMustBePublicOrInternal,
-						nonPublicType.Locations.FirstOrDefault(),
-						"Fixture",
-						nonPublicType.ToDisplayString()
-					)
-				);
 				return;
-			}
 
-			var factory = CodeGenRegistration.ToFixtureFactory(
+			var factory = CodeGenRegistration.ToObjectFactory(
 				fixtureType,
-				location,
-				result,
 				$"{fixtureCategory} fixture type",
 				"global::Xunit.v3.FixtureMappingManager.TryGetFixtureArgument<{0}>(mappingManager)"
 			);
@@ -172,10 +143,22 @@ public class CollectionDefinitionAttributeGenerator() :
 	}
 
 	public sealed class GeneratorResult(GeneratorAttributeSyntaxContext context) :
-		XunitGeneratorResult(context.SemanticModel, context.TargetNode)
+		XunitGeneratorResult(context.SemanticModel, context.TargetNode), IEquatable<GeneratorResult?>
 	{
 		public string? Name { get; set; }
 
 		public CodeGenTestCollectionRegistration? Registration { get; set; }
+
+		public override bool Equals(object? obj) =>
+			Equals(obj as GeneratorResult);
+
+		public bool Equals(GeneratorResult? other) =>
+			other is not null &&
+			base.Equals(other) &&
+			ComparerHelper.Equals(Name, other.Name) &&
+			ComparerHelper.Equals(Registration, other.Registration);
+
+		public override int GetHashCode() =>
+			Hasher.Extend(base.GetHashCode()).With(Name).With(Registration);
 	}
 }

@@ -12,6 +12,9 @@ namespace Xunit.v3;
 /// Contains information about a test class, as discovered via code generation.
 /// </summary>
 public class CodeGenTestClassRegistration
+#if XUNIT_GENERATOR
+	: IEquatable<CodeGenTestClassRegistration?>
+#endif
 {
 	/// <summary>
 	/// Gets the type of the test class.
@@ -58,6 +61,24 @@ public class CodeGenTestClassRegistration
 #else
 	public Func<ITestMethodOrderer>? TestMethodOrdererFactory { get; init; }
 #endif
+
+#if XUNIT_GENERATOR
+
+	public override bool Equals(object? obj) =>
+		Equals(obj as CodeGenTestClassRegistration);
+
+	public bool Equals(CodeGenTestClassRegistration? other) =>
+		other is not null &&
+		ComparerHelper.Equals(Class, other.Class) &&
+		ComparerHelper.Equals(ClassFactory, other.ClassFactory) &&
+		ComparerHelper.Equals(ClassFixtures, other.ClassFixtures) &&
+		ComparerHelper.Equals(TestCaseOrdererFactory, other.TestCaseOrdererFactory) &&
+		ComparerHelper.Equals(TestMethodOrdererFactory, other.TestMethodOrdererFactory);
+
+	public override int GetHashCode() =>
+		Hasher.Start().With(Class).With(ClassFactory).With(ClassFixtures).With(TestCaseOrdererFactory).With(TestMethodOrdererFactory);
+
+#endif  // XUNIT_GENERATOR
 
 #if !XUNIT_GENERATOR
 

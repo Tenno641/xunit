@@ -8,6 +8,9 @@ namespace Xunit.v3;
 /// Contains information about a test collection, as discovered via code generation.
 /// </summary>
 public sealed class CodeGenTestCollectionRegistration
+#if XUNIT_GENERATOR
+	: IEquatable<CodeGenTestCollectionRegistration?>
+#endif
 {
 	/// <summary>
 	/// Gets the class fixtures associated with the test collection.
@@ -83,6 +86,22 @@ public sealed class CodeGenTestCollectionRegistration
 #endif
 
 #if XUNIT_GENERATOR
+
+	public override bool Equals(object? obj) =>
+		Equals(obj as CodeGenTestCollectionRegistration);
+
+	public bool Equals(CodeGenTestCollectionRegistration? other) =>
+		other is not null &&
+		ComparerHelper.Equals(ClassFixtures, other.ClassFixtures) &&
+		ComparerHelper.Equals(CollectionFixtures, other.CollectionFixtures) &&
+		ComparerHelper.Equals(DisableParallelization, other.DisableParallelization) &&
+		ComparerHelper.Equals(TestCaseOrdererFactory, other.TestCaseOrdererFactory) &&
+		ComparerHelper.Equals(TestClassOrdererFactory, other.TestClassOrdererFactory) &&
+		ComparerHelper.Equals(TestMethodOrdererFactory, other.TestMethodOrdererFactory) &&
+		ComparerHelper.Equals(Type, other.Type);
+
+	public override int GetHashCode() =>
+		Hasher.Start().With(ClassFixtures).With(CollectionFixtures).With(DisableParallelization).With(TestCaseOrdererFactory).With(TestClassOrdererFactory).With(TestMethodOrdererFactory).With(Type);
 
 	/// <summary>
 	/// Gets init values used by the source generator.

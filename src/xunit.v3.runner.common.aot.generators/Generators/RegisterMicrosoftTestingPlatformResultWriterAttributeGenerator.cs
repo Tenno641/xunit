@@ -12,7 +12,7 @@ public class RegisterMicrosoftTestingPlatformResultWriterAttributeGenerator() :
 		INamedTypeSymbol type,
 		Location? location,
 		GeneratorResult result) =>
-			EnsureImplementsInterface(type, location, result, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
+			type.ImplementsInterface(Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
 }
 
 [Generator(LanguageNames.CSharp)]
@@ -25,5 +25,5 @@ public class RegisterMicrosoftTestingPlatformResultWriterAttributeOfTGenerator()
 		INamedTypeSymbol type,
 		Location? location,
 		GeneratorResult result) =>
-			EnsureImplementsInterface(type, location, result, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
+			type.ImplementsInterface(Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
 }

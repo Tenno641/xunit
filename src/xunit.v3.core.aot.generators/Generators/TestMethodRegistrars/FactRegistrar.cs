@@ -9,23 +9,16 @@ static class FactRegistrar
 		INamedTypeSymbol classSymbol,
 		MethodDeclarationSyntax methodDeclaration,
 		IMethodSymbol methodSymbol,
-		AttributeData attribute,
-		TestClassGeneratorResult result)
+		AttributeData attribute)
 	{
 		Guard.ArgumentNotNull(classSymbol);
 		Guard.ArgumentNotNull(methodDeclaration);
 		Guard.ArgumentNotNull(methodSymbol);
 		Guard.ArgumentNotNull(attribute);
-		Guard.ArgumentNotNull(result);
 
 		var details = new FactMethodDetails(classSymbol, methodDeclaration, methodSymbol, attribute);
-		details.Process(result);
-
-		if (details.Diagnostics.Count != 0)
-		{
-			result.Diagnostics.AddRange(details.Diagnostics);
+		if (!details.Process())
 			return null;
-		}
 
 		var initValues = new List<string>
 		{

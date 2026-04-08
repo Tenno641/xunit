@@ -67,8 +67,8 @@ public class BeforeAfterAttributeAcceptanceTests
 
 #pragma warning restore CA1822 // Mark members as static
 
-	class AssemblyBeforeAfter : BeforeAfterTestAttribute { }
-	class CollectionBeforeAfter : BeforeAfterTestAttribute { }
-	class ClassBeforeAfter : BeforeAfterTestAttribute { }
-	class MethodBeforeAfter : BeforeAfterTestAttribute { }
+	internal class AssemblyBeforeAfter : BeforeAfterTestAttribute { }
+	internal class CollectionBeforeAfter : BeforeAfterTestAttribute { }
+	internal class ClassBeforeAfter : BeforeAfterTestAttribute { }
+	internal class MethodBeforeAfter : BeforeAfterTestAttribute { }
 }

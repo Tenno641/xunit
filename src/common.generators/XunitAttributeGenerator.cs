@@ -15,7 +15,8 @@ public abstract class XunitAttributeGenerator<TResult>(string fullyQualifiedAttr
 
 	protected override sealed void Initialize(
 		IncrementalGeneratorInitializationContext context,
-		IncrementalValueProvider<string> projectPath)
+		IncrementalValueProvider<string> projectPath,
+		IncrementalValueProvider<INamedTypeSymbol> objectType)
 	{
 		var result =
 			context
@@ -29,17 +30,7 @@ public abstract class XunitAttributeGenerator<TResult>(string fullyQualifiedAttr
 					return pair.Left;
 				});
 
-		context.RegisterSourceOutput(result, Register);
-	}
-
-	void Register(
-		SourceProductionContext context,
-		TResult result)
-	{
-		foreach (var diagnostic in result.Diagnostics)
-			context.ReportDiagnostic(diagnostic);
-
-		CreateSource(context, result);
+		context.RegisterSourceOutput(result, CreateSource);
 	}
 
 	protected abstract TResult? Transform(

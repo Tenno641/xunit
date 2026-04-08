@@ -55,140 +55,6 @@ public abstract class XunitGenerator : IIncrementalGenerator
 		context.AddSource($"{initAttributeName}.g.cs", SourceText.From(source, Encoding.UTF8));
 	}
 
-	protected static bool EnsureConstructorParameters(
-		INamedTypeSymbol symbol,
-		Location? location,
-		XunitGeneratorResult result,
-		string[] parameterTypes)
-	{
-		if (symbol is null || result is null || parameterTypes is null)
-			return false;
-
-		var ctors =
-			symbol
-				.Constructors
-				.Where(c => !c.IsStatic && c.DeclaredAccessibility == Accessibility.Public && c.Parameters.Length == parameterTypes.Length);
-
-		foreach (var ctor in ctors)
-			if (CtorMatches(ctor, parameterTypes))
-				return true;
-
-		result.Diagnostics.Add(
-			Diagnostic.Create(
-				DiagnosticDescriptors.X9000_TypeMustHaveCorrectPublicConstructor,
-				location,
-				symbol,
-				string.Join(", ", parameterTypes)
-			)
-		);
-
-		return false;
-
-		static bool CtorMatches(
-			IMethodSymbol ctor,
-			string[] parameterTypes)
-		{
-			for (var idx = 0; idx < parameterTypes.Length; ++idx)
-			{
-				var ctorParameter = ctor.Parameters[idx];
-				var expectedType = parameterTypes[idx];
-
-				// TODO: Is it worth the time to look up the inheritance hierarchy of the target type?
-				// This feels like, on balance, expensive, rather than just doing a strict requirement.
-				if (ctorParameter.Type.ToString() != expectedType)
-					return false;
-			}
-
-			return true;
-		}
-	}
-
-	protected internal static bool EnsureImplementsInterface(
-		ITypeSymbol symbol,
-		Location? location,
-		XunitGeneratorResult result,
-		string fullyQualifiedInterfaceName)
-	{
-		if (symbol is null || fullyQualifiedInterfaceName is null || result is null)
-			return false;
-
-		if (symbol.Implements(fullyQualifiedInterfaceName))
-			return true;
-
-		result.Diagnostics.Add(
-			Diagnostic.Create(
-				DiagnosticDescriptors.X9001_TypeMustImplementInterface,
-				location,
-				symbol,
-				fullyQualifiedInterfaceName
-			)
-		);
-
-		return false;
-	}
-
-	protected static bool EnsureImplementsInterfaces(
-		ITypeSymbol symbol,
-		Location? location,
-		XunitGeneratorResult result,
-		params string[] fullyQualifiedInterfaceNames)
-	{
-		if (symbol is null || result is null || fullyQualifiedInterfaceNames is null)
-			return false;
-
-		if (fullyQualifiedInterfaceNames.Length == 0)
-			return true;
-
-		var missingInterfaces = symbol.ImplementsAll(fullyQualifiedInterfaceNames);
-		if (missingInterfaces.Count == 0)
-			return true;
-
-		foreach (var missingInterface in missingInterfaces)
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9001_TypeMustImplementInterface,
-					location,
-					symbol,
-					missingInterface
-				)
-			);
-
-		return false;
-	}
-
-	protected static bool EnsureParameterlessPublicCtor(
-		INamedTypeSymbol symbol,
-		Location? location,
-		XunitGeneratorResult result,
-		[NotNullWhen(true)] out IMethodSymbol? ctor)
-	{
-		ctor = null;
-
-		if (symbol is null || result is null)
-			return false;
-
-		var targetCtor =
-			symbol
-				.Constructors
-				.FirstOrDefault(c => !c.IsStatic && c.DeclaredAccessibility == Accessibility.Public && c.Parameters.All(p => p.IsOptional || p.IsParams));
-
-		if (targetCtor is not null)
-		{
-			ctor = targetCtor;
-			return true;
-		}
-
-		result.Diagnostics.Add(
-			Diagnostic.Create(
-				DiagnosticDescriptors.X9000_TypeMustHaveCorrectPublicConstructor,
-				location,
-				symbol,
-				string.Empty
-			)
-		);
-
-		return false;
-	}
 
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -197,10 +63,16 @@ public abstract class XunitGenerator : IIncrementalGenerator
 				.AnalyzerConfigOptionsProvider
 				.Select((provider, _) => provider.GlobalOptions.TryGetValue("build_property.MSBuildProjectFullPath", out var projectPath) ? projectPath : string.Empty);
 
-		Initialize(context, projectPath);
+		var objectType =
+			context
+				.CompilationProvider
+				.Select((provider, _) => provider.GetSpecialType(SpecialType.System_Object));
+
+		Initialize(context, projectPath, objectType);
 	}
 
 	protected abstract void Initialize(
 		IncrementalGeneratorInitializationContext context,
-		IncrementalValueProvider<string> projectPath);
+		IncrementalValueProvider<string> projectPath,
+		IncrementalValueProvider<INamedTypeSymbol> objectType);
 }

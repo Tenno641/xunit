@@ -15,8 +15,8 @@ public class CollectionBehaviorAttributeGenerator() :
 		Guard.ArgumentNotNull(result);
 
 		return
-			EnsureImplementsInterface(type, location, result, Types.Xunit.v3.ICodeGenTestCollectionFactory) &&
-			EnsureConstructorParameters(type, location, result, [Types.Xunit.v3.ICodeGenTestAssembly])
+			type.ImplementsInterface(Types.Xunit.v3.ICodeGenTestCollectionFactory) &&
+			type.HasConstructorParameters([Types.Xunit.v3.ICodeGenTestAssembly])
 				? $"(assembly) => new {type.ToCSharp()}(assembly)"
 				: null;
 	}
@@ -35,8 +35,8 @@ public class CollectionBehaviorAttributeOfTGenerator() :
 		Guard.ArgumentNotNull(result);
 
 		return
-			EnsureImplementsInterface(type, location, result, Types.Xunit.v3.ICodeGenTestCollectionFactory) &&
-			EnsureConstructorParameters(type, location, result, [Types.Xunit.v3.ICodeGenTestAssembly])
+			type.ImplementsInterface(Types.Xunit.v3.ICodeGenTestCollectionFactory) &&
+			type.HasConstructorParameters([Types.Xunit.v3.ICodeGenTestAssembly])
 				? $"(assembly) => new {type.ToCSharp()}(assembly)"
 				: null;
 	}

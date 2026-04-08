@@ -9,7 +9,8 @@ namespace Xunit.Generators;
 public class TestClassGenerator : XunitGenerator
 {
 	static readonly HashSet<string> validReturnTypes = ["void", Types.System.Threading.Tasks.Task, Types.System.Threading.Tasks.ValueTask];
-	readonly Dictionary<string, Func<INamedTypeSymbol, MethodDeclarationSyntax, IMethodSymbol, AttributeData, TestClassGeneratorResult, FactMethodRegistration?>> registrarsByAttribute = new()
+	// TODO: Remove TestClassGeneratorResult once all the registrars are no longer reporting diagnostics
+	readonly Dictionary<string, Func<INamedTypeSymbol, MethodDeclarationSyntax, IMethodSymbol, AttributeData, FactMethodRegistration?>> registrarsByAttribute = new()
 	{
 		[Types.Xunit.FactAttribute] = FactRegistrar.GetRegistration,
 		[Types.Xunit.CulturedFactAttribute] = CulturedFactRegistrar.GetRegistration,
@@ -19,7 +20,8 @@ public class TestClassGenerator : XunitGenerator
 
 	protected override sealed void Initialize(
 		IncrementalGeneratorInitializationContext context,
-		IncrementalValueProvider<string> projectPath)
+		IncrementalValueProvider<string> projectPath,
+		IncrementalValueProvider<INamedTypeSymbol> objectType)
 	{
 		var result =
 			context
@@ -50,7 +52,7 @@ public class TestClassGenerator : XunitGenerator
 		if (classDeclaration.BaseList is null)
 			return;
 
-		if (classDeclaration.BaseList.Types.FirstOrDefault()?.Type is not IdentifierNameSyntax baseClassIdentifier)
+		if (classDeclaration.BaseList.Types.FirstOrDefault()?.Type is not SimpleNameSyntax baseClassIdentifier)
 			return;
 
 		var baseClassSymbol = default(INamedTypeSymbol);
@@ -96,59 +98,21 @@ public class TestClassGenerator : XunitGenerator
 			.Where(x => x.attr is not null && x.registrar is not null)
 			.ToImmutableArray();
 
-		if (attributes.Length == 0)
+		if (attributes.Length != 1)
 			return;
-
-		if (attributes.Length > 1)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1002_TestMethodMustNotHaveMultipleFactAttributes,
-					methodSymbol.Locations.FirstOrDefault()
-				)
-			);
-			return;
-		}
 
 		var overloads = classSymbol.GetAllMembers(methodSymbol.Name);
 		if (overloads.Length > 1)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1024_TestMethodCannotHaveOverloads,
-					methodSymbol.Locations.FirstOrDefault(),
-					methodSymbol.Name,
-					classSymbol,
-					overloads[1].ContainingSymbol
-				)
-			);
 			return;
-		}
 
 		if (methodSymbol is { ReturnsVoid: true, IsAsync: true })
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1049_DoNotUseAsyncVoidForTestMethods_V3,
-					methodSymbol.Locations.FirstOrDefault()
-				)
-			);
 			return;
-		}
 
 		if (!validReturnTypes.Contains(methodSymbol.ReturnType.ToCSharp(includeGlobal: false)))
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1028_TestMethodHasInvalidReturnType,
-					methodSymbol.Locations.FirstOrDefault()
-				)
-			);
 			return;
-		}
 
 		var (attribute, registrar) = attributes[0];
-		var registration = registrar(classSymbol, methodDeclaration, methodSymbol, attribute, result);
+		var registration = registrar(classSymbol, methodDeclaration, methodSymbol, attribute);
 		if (registration is not null)
 			result
 				.TestMethods
@@ -161,9 +125,6 @@ public class TestClassGenerator : XunitGenerator
 		SourceProductionContext context,
 		TestClassGeneratorResult result)
 	{
-		foreach (var diagnostic in result.Diagnostics)
-			context.ReportDiagnostic(diagnostic);
-
 		if (result.TestClass is null || result.TestMethods.Count == 0)
 			return;
 
@@ -210,59 +171,29 @@ public class TestClassGenerator : XunitGenerator
 
 		ProcessTestClass(context.SemanticModel, classDeclaration, classSymbol, result, cancellationToken);
 
-		if (result.TestMethods.Count == 0)
-			return result.Diagnostics.Count != 0 ? result : null;
-
-		if (classSymbol.DeclaredAccessibility != Accessibility.Public)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1000_TestClassMustBePublic,
-					classSymbol.Locations.FirstOrDefault()
-				)
-			);
-			return result;
-		}
+		if (result.TestMethods.Count == 0 || classSymbol.DeclaredAccessibility != Accessibility.Public)
+			return null;
 
 		for (var containingType = classSymbol.ContainingType; containingType is not null; containingType = containingType.ContainingType)
 			if (containingType.IsGenericType)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X1032_TestClassCannotBeNestedInGenericClass,
-						classSymbol.Locations.FirstOrDefault()
-					)
-				);
-				return result;
-			}
+				return null;
 
 		if (classSymbol.AllInterfaces.Any(i => i.IsGeneric(Types.Xunit.ICollectionFixtureOfT)))
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9007_TestClassCannotImplementICollectionFixture,
-					classSymbol.Locations.FirstOrDefault(),
-					classSymbol.ToDisplayString()
-				)
-			);
-			return result;
-		}
+			return null;
 
 		var classFixtures = new List<(string Type, string Factory)>();
 
 		foreach (var classFixtureInterface in classSymbol.AllInterfaces.Where(i => i.IsGeneric(Types.Xunit.IClassFixtureOfT)))
 			if (classFixtureInterface.TypeArguments[0] is INamedTypeSymbol fixtureType)
 			{
-				var factory = CodeGenRegistration.ToFixtureFactory(
+				var fixtureFactory = CodeGenRegistration.ToObjectFactory(
 					fixtureType,
-					classSymbol.Locations.FirstOrDefault(),
-					result,
 					"Class fixture type",
 					"global::Xunit.v3.FixtureMappingManager.TryGetFixtureArgument<{0}>(mappingManager)"
 				);
 
-				if (factory is not null)
-					classFixtures.Add((fixtureType.ToCSharp(), factory));
+				if (fixtureFactory is not null)
+					classFixtures.Add((fixtureType.ToCSharp(), fixtureFactory));
 			}
 
 		var testCaseOrdererFactory = default(string);
@@ -279,12 +210,12 @@ public class TestClassGenerator : XunitGenerator
 			{
 				case Types.Xunit.TestCaseOrdererAttribute:
 				case Types.Xunit.TestCaseOrdererAttribute + "<>":
-					testCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestCaseOrderer, result);
+					testCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestCaseOrderer);
 					break;
 
 				case Types.Xunit.TestMethodOrdererAttribute:
 				case Types.Xunit.TestMethodOrdererAttribute + "<>":
-					testMethodOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestMethodOrderer, result);
+					testMethodOrdererFactory = CodeGenRegistration.ToOrdererFactory(classAttribute, Types.Xunit.v3.ITestMethodOrderer);
 					break;
 			}
 		}
@@ -292,10 +223,8 @@ public class TestClassGenerator : XunitGenerator
 		result.TestClass = new CodeGenTestClassRegistration()
 		{
 			Class = classSymbol.ToCSharp(),
-			ClassFactory = CodeGenRegistration.ToFixtureFactory(
+			ClassFactory = CodeGenRegistration.ToObjectFactory(
 				classSymbol,
-				classSymbol.Locations.FirstOrDefault(),
-				result,
 				"Test class",
 				"mappingManager.TryGetFixtureArgument<{0}>()",
 				"new global::Xunit.v3.CoreTestClassCreationResult({0})"

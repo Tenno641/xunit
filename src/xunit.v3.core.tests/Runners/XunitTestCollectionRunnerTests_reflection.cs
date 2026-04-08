@@ -464,9 +464,13 @@ public static class XunitTestCollectionRunnerTests
 			public CollectionFixtureWithMultipleConstructors(int _) { }
 		}
 
+#pragma warning disable xUnit1056 // Type must have a single public non-static constructor
+
 		[CollectionDefinition]
 		public class TestCollectionWithMultiCtorFixture : ICollectionFixture<CollectionFixtureWithMultipleConstructors>
 		{ }
+
+#pragma warning restore xUnit1056 // Type must have a single public non-static constructor
 
 		[Collection(typeof(TestCollectionWithMultiCtorFixture))]
 		class TestClassWithMultiCtorClassFixture

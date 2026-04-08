@@ -61,11 +61,15 @@ partial class FixtureAcceptanceTests
 			Assert.Equal("A test class may not be decorated with ICollectionFixture<> (decorate the test collection class instead).", msg.Messages.Single());
 		}
 
+#pragma warning disable xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
+
 		class TestClassWithCollectionFixture : ICollectionFixture<EmptyFixtureData>
 		{
 			[Fact]
 			public void TestMethod() { }
 		}
+
+#pragma warning restore xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
 
 		// Native AOT does not support generic collection definitions
 		[Fact]
@@ -108,11 +112,15 @@ partial class FixtureAcceptanceTests
 			Assert.Equal("A test class may not be decorated with ICollectionFixture<> (decorate the test collection class instead).", msg.Messages.Single());
 		}
 
+#pragma warning disable xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
+
 		class TestClassWithCollectionFixture : ICollectionFixture<EmptyFixtureData>
 		{
 			[Fact]
 			public void TestMethod() { }
 		}
+
+#pragma warning restore xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
 	}
 
 #if !NETFRAMEWORK
@@ -129,11 +137,15 @@ partial class FixtureAcceptanceTests
 			Assert.Equal("A test class may not be decorated with ICollectionFixture<> (decorate the test collection class instead).", msg.Messages.Single());
 		}
 
+#pragma warning disable xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
+
 		class TestClassWithCollectionFixture : ICollectionFixture<EmptyFixtureData>
 		{
 			[Fact]
 			public void TestMethod() { }
 		}
+
+#pragma warning restore xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
 	}
 
 #endif  // !NETFRAMEWORK
@@ -186,6 +198,8 @@ partial class FixtureAcceptanceTests
 			);
 		}
 
+#pragma warning disable xUnit1056 // Type must have a single public non-static constructor
+
 		class ClassWithTooManyConstructors
 		{
 			public ClassWithTooManyConstructors() { }
@@ -198,6 +212,8 @@ partial class FixtureAcceptanceTests
 			[Fact]
 			public void TestMethod2() { }
 		}
+
+#pragma warning restore xUnit1056 // Type must have a single public non-static constructor
 	}
 
 	sealed class GenericFixture<T> : IAsyncLifetime, IDisposable

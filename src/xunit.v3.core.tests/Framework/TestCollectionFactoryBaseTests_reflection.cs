@@ -88,10 +88,12 @@ public static class TestCollectionFactoryBaseTests
 		var collectionFixtureType = Assert.Single(testCollection.CollectionFixtureTypes);
 		Assert.Equal(typeof(object), collectionFixtureType);
 		var classFixtureType = Assert.Single(testCollection.ClassFixtureTypes);
-		Assert.Equal(typeof(string), classFixtureType);
+		Assert.Equal(typeof(MyFixture), classFixtureType);
 	}
 
-	class TestCollectionWithFixtures : ICollectionFixture<object>, IClassFixture<string> { }
+	class MyFixture { }
+
+	class TestCollectionWithFixtures : ICollectionFixture<object>, IClassFixture<MyFixture> { }
 
 	[Collection(typeof(TestCollectionWithFixtures))]
 	class TestClassForFixtures { }

@@ -43,21 +43,12 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 		Guard.ArgumentNotNull(type);
 		Guard.ArgumentNotNull(result);
 
-		if (EnsureParameterlessPublicCtor(type, location, result, out var ctor) &&
-			ValidateImplementationType(type, location, result))
+		if (type.HasParameterlessPublicCtor(out var ctor) &&
+			ValidateImplementationType(type))
 		{
 			var factory = CodeGenRegistration.ToObjectFactory(type, ctor);
 			if (factory is not null)
 				return $"() => {factory}";
-
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9000_TypeMustHaveCorrectPublicConstructor,
-					location,
-					type.ToDisplayString(),
-					string.Empty
-				)
-			);
 		}
 
 		return null;
@@ -115,17 +106,26 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 			? attribute.ConstructorArguments[0].Value as INamedTypeSymbol
 			: null;
 
-	protected virtual bool ValidateImplementationType(
-		INamedTypeSymbol type,
-		Location? location,
-		GeneratorResult result) =>
-			true;
+	protected virtual bool ValidateImplementationType(INamedTypeSymbol type) =>
+		true;
 
 	public sealed class GeneratorResult(GeneratorAttributeSyntaxContext context) :
-		XunitGeneratorResult(context.SemanticModel, context.TargetNode)
+		XunitGeneratorResult(context.SemanticModel, context.TargetNode), IEquatable<GeneratorResult?>
 	{
 		public string? Factory { get; set; }
 
 		public string? Type { get; set; }
+
+		public override bool Equals(object? obj) =>
+			Equals(obj as GeneratorResult);
+
+		public bool Equals(GeneratorResult? other) =>
+			other is not null &&
+			base.Equals(other) &&
+			ComparerHelper.Equals(Factory, other.Factory) &&
+			ComparerHelper.Equals(Type, other.Type);
+
+		public override int GetHashCode() =>
+			Hasher.Extend(base.GetHashCode()).With(Factory).With(Type);
 	}
 }

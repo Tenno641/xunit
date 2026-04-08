@@ -47,70 +47,15 @@ public class MemberDataAttributeGenerator() :
 			var members = currentType.GetMembers().Where(m => m.Name == memberName).ToArray();
 			if (members.Length == 0)
 				continue;
-			if (members.Length > 1)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X9012_MemberDataMemberCannotBeOverloaded,
-						location,
-						currentType.ToDisplayString(),
-						memberName
-					)
-				);
+			if (members.Length > 1 || currentType.DeclaredAccessibility is not Accessibility.Public and not Accessibility.Internal)
 				return;
-			}
-
-			if (currentType.DeclaredAccessibility is not Accessibility.Public and not Accessibility.Internal)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X9013_MemberDataTypeMustBePublicOrInternal,
-						location,
-						currentType.ToDisplayString(),
-						memberName
-					)
-				);
-				return;
-			}
 
 			member = members[0];
 			break;
 		}
 
-		if (member is null)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1015_MemberDataMustReferenceExistingMember,
-					location,
-					memberName,
-					memberType.ToDisplayString()
-				)
-			);
+		if (member is null || member.DeclaredAccessibility != Accessibility.Public || !member.IsStatic)
 			return;
-		}
-
-		if (member.DeclaredAccessibility != Accessibility.Public)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1016_MemberDataMustReferencePublicMember,
-					location
-				)
-			);
-			return;
-		}
-
-		if (!member.IsStatic)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1017_MemberDataMustReferenceStaticMember,
-					location
-				)
-			);
-			return;
-		}
 
 		var returnType = member switch
 		{
@@ -121,40 +66,15 @@ public class MemberDataAttributeGenerator() :
 		};
 
 		if (returnType is null)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1018_MemberDataMustReferenceValidMemberKind,
-					location
-				)
-			);
 			return;
-		}
 
-		var theoryDataInfo = returnType.GetTheoryDataInfo(result.Compilation);
+		var theoryDataInfo = returnType.GetTheoryDataInfo(result.ObjectType);
 		if (theoryDataInfo is null)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1019_MemberDataMustReferenceMemberOfValidType,
-					attribute.ApplicationSyntaxReference.Location,
-					returnType
-				)
-			);
 			return;
-		}
 
 		if (member is IPropertySymbol memberProperty)
 			if (memberProperty.GetMethod is null || memberProperty.GetMethod.DeclaredAccessibility != Accessibility.Public)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X1020_MemberDataPropertyMustHaveGetter,
-						attribute.ApplicationSyntaxReference.Location
-					)
-				);
 				return;
-			}
 
 		var parameters = string.Empty;
 		var parametersInit = new StringBuilder();
@@ -162,48 +82,12 @@ public class MemberDataAttributeGenerator() :
 		{
 			var arguments = attribute.ConstructorArguments[1].Values;
 
-			if (arguments.Length > memberMethod.Parameters.Length)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X1036_MemberDataArgumentsMustMatchMethodParameters_ExtraValue,
-						attribute.ApplicationSyntaxReference.Location,
-						arguments[memberMethod.Parameters.Length].ToCSharp()
-					)
-				);
+			if (arguments.Length > memberMethod.Parameters.Length || memberMethod.Parameters.Any(p => p.IsParams))
 				return;
-			}
-
-			var paramsParameter = memberMethod.Parameters.FirstOrDefault(p => p.IsParams);
-			if (paramsParameter is not null)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X9014_MemberDataParameterCannotBeParams,
-						paramsParameter.Locations.FirstOrDefault(),
-						paramsParameter.Name,
-						memberType,
-						memberName
-					)
-				);
-				return;
-			}
 
 			var requiredParameters = memberMethod.Parameters.Where(p => !p.IsOptional).ToArray();
 			if (arguments.Length < requiredParameters.Length)
-			{
-				result.Diagnostics.Add(
-					Diagnostic.Create(
-						DiagnosticDescriptors.X9015_MemberDataParameterCannotBeParams,
-						attribute.ApplicationSyntaxReference.Location,
-						memberType,
-						memberName,
-						requiredParameters[arguments.Length].Type,
-						requiredParameters[arguments.Length].Name
-					)
-				);
 				return;
-			}
 
 			var parameterNamesInCode = new List<string>();
 

@@ -35,7 +35,7 @@ public abstract class IDAndTypeGenerator(
 			if (type is not null)
 			{
 				var location = attribute.ApplicationSyntaxReference.Location;
-				if (EnsureParameterlessPublicCtor(type, location, result, out var _) && ValidateType(type, location, result))
+				if (type.HasParameterlessPublicCtor(out var _) && ValidateType(type, location, result))
 					result.Entries.Add((id, type.ToString()));
 			}
 		}
@@ -76,8 +76,19 @@ public abstract class IDAndTypeGenerator(
 			true;
 
 	public sealed class GeneratorResult(GeneratorAttributeSyntaxContext context) :
-		XunitGeneratorResult(context.SemanticModel, context.TargetNode)
+		XunitGeneratorResult(context.SemanticModel, context.TargetNode), IEquatable<GeneratorResult?>
 	{
 		public List<(string ID, string? Type)> Entries = [];
+
+		public override bool Equals(object? obj) =>
+			Equals(obj as GeneratorResult);
+
+		public bool Equals(GeneratorResult? other) =>
+			other is not null &&
+			base.Equals(other) &&
+			ComparerHelper.Equals(Entries, other.Entries);
+
+		public override int GetHashCode() =>
+			Hasher.Extend(base.GetHashCode()).With(Entries);
 	}
 }

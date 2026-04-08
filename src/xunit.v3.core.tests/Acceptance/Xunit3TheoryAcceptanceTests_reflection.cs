@@ -764,11 +764,15 @@ partial class Xunit3TheoryAcceptanceTests
 				yield return new object[] { name, int.Parse(scenariosAsString) };
 			}
 
+#pragma warning disable xUnit1065 // MemberData method is ambiguous
+
 			[Theory]
 			[MemberData(nameof(OverloadedDataMethod), "MyFirst")]
 			[MemberData(nameof(OverloadedDataMethod), "MySecond")]
 			public void TestMethod(string _1, int _2)
 			{ }
+
+#pragma warning restore xUnit1065 // MemberData method is ambiguous
 		}
 
 		// Native AOT does not support generic test methods

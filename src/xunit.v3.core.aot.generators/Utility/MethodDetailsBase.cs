@@ -78,8 +78,13 @@ public class MethodDetailsBase
 	public Dictionary<string, List<string>> Traits { get; } =
 		new(StringComparer.OrdinalIgnoreCase);
 
-	public virtual void Process(XunitGeneratorResult result)
+	public virtual bool Process()
 	{
+		if (ClassSymbol.IsAbstract
+				|| (ClassSymbol.IsGenericType && ClassSymbol.TypeArguments.Any(t => t.TypeKind == TypeKind.TypeParameter))
+				|| MethodSymbol.IsGenericMethod)
+			return false;
+
 		foreach (var kvp in Attribute.NamedArguments)
 			ProcessNamedArgument(kvp.Key, kvp.Value);
 
@@ -93,29 +98,18 @@ public class MethodDetailsBase
 			if (attributeTypeName is null)
 				continue;
 
-			ProcessMethodAttribute(attributeTypeName, methodAttribute, result);
+			ProcessMethodAttribute(attributeTypeName, methodAttribute);
 		}
 
 		if (SkipUnless is not null && SkipWhen is not null)
-		{
-			Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9006_CannotSetBothSkipUnlessAndSkipWhen,
-					Attribute.ApplicationSyntaxReference?.Location
-				)
-			);
-		}
-		else
-		{
-			VerifySkipProperty(SkipUnless);
-			VerifySkipProperty(SkipWhen);
-		}
+			return false;
+
+		return VerifySkipProperty(SkipUnless) && VerifySkipProperty(SkipWhen);
 	}
 
 	protected virtual void ProcessMethodAttribute(
 		string typeName,
-		AttributeData attribute,
-		XunitGeneratorResult result)
+		AttributeData attribute)
 	{
 		Guard.ArgumentNotNull(typeName);
 		Guard.ArgumentNotNull(attribute);
@@ -131,24 +125,13 @@ public class MethodDetailsBase
 
 			case Types.Xunit.TestCaseOrdererAttribute:
 			case Types.Xunit.TestCaseOrdererAttribute + "<>":
-				TestCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(attribute, Types.Xunit.v3.ITestCaseOrderer, result);
+				TestCaseOrdererFactory = CodeGenRegistration.ToOrdererFactory(attribute, Types.Xunit.v3.ITestCaseOrderer);
 				break;
 
 			default:
 				if (attribute.AttributeClass.InheritsFrom(Types.Xunit.v3.BeforeAfterTestAttribute))
-				{
 					if (attribute.AttributeClass.RecursiveGetNonPublicNonInternalType() is null)
 						BeforeAfterTestAttributes.Add(typeName);
-					else
-						Diagnostics.Add(
-							Diagnostic.Create(
-								DiagnosticDescriptors.X9004_TypeMustBePublicOrInternal,
-								attribute.AttributeClass.Locations.FirstOrDefault(),
-								"Attribute",
-								attribute.AttributeClass.ToDisplayString()
-							)
-						);
-				}
 				break;
 		}
 	}
@@ -194,27 +177,18 @@ public class MethodDetailsBase
 		}
 	}
 
-	protected IEnumerable<string> ToTypeArray(ImmutableArray<TypedConstant> values)
+	protected static IEnumerable<string> ToTypeArray(ImmutableArray<TypedConstant> values)
 	{
 		foreach (var value in values)
 			if (value.Value is INamedTypeSymbol typeValue)
 				if (typeValue.RecursiveGetNonPublicNonInternalType() is null)
 					yield return typeValue.ToCSharp();
-				else
-					Diagnostics.Add(
-						Diagnostic.Create(
-							DiagnosticDescriptors.X9004_TypeMustBePublicOrInternal,
-							typeValue.Locations.FirstOrDefault(),
-							"SkipExceptions",
-							typeValue.ToDisplayString()
-						)
-					);
 	}
 
-	void VerifySkipProperty(string? propertyName)
+	bool VerifySkipProperty(string? propertyName)
 	{
 		if (propertyName is null)
-			return;
+			return true;
 
 		var currentSymbol = SkipType ?? ClassSymbol;
 
@@ -227,24 +201,11 @@ public class MethodDetailsBase
 					.FirstOrDefault(symbol => symbol.Name == propertyName);
 
 			if (property is not null)
-			{
-				if (property.DeclaredAccessibility == Accessibility.Public && property.Type.ToCSharp() == "bool")
-					return;
-
-				break;
-			}
+				return property.IsStatic && property.DeclaredAccessibility == Accessibility.Public && property.Type.ToCSharp() == "bool";
 
 			currentSymbol = currentSymbol.BaseType;
 		}
 
-		Diagnostics.Add(
-			Diagnostic.Create(
-				DiagnosticDescriptors.X9002_TypeMustHaveStaticPublicProperty,
-				Attribute.ApplicationSyntaxReference?.Location,
-				SkipType ?? ClassSymbol,
-				propertyName,
-				"bool"
-			)
-		);
+		return false;
 	}
 }

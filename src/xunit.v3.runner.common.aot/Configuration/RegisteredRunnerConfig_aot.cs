@@ -100,6 +100,13 @@ public static class RegisteredRunnerConfig
 			runnerReporters.Add(runnerReporter);
 	}
 
+	/// <summary>
+	/// Adds a message to be returned when runner reporters are retrieved.
+	/// </summary>
+	/// <param name="message">The message to be reported</param>
+	public static void RegisterRunnerReporterMessage(string message) =>
+		runnerReporterMessages.Add(message);
+
 	static void RegisterResultWriter<TWriter>(
 		string id,
 		TWriter resultWriter,

@@ -6,20 +6,14 @@ namespace Xunit.Generators;
 public class TestClassOrdererAttributeGenerator() :
 	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.TestClassOrdererAttribute, "RegisterAssemblyTestClassOrdererFactory")
 {
-	protected override bool ValidateImplementationType(
-		INamedTypeSymbol type,
-		Location? location,
-		GeneratorResult result) =>
-			EnsureImplementsInterface(type, location, result, Types.Xunit.v3.ITestClassOrderer);
+	protected override bool ValidateImplementationType(INamedTypeSymbol type) =>
+		type.ImplementsInterface(Types.Xunit.v3.ITestClassOrderer);
 }
 
 [Generator(LanguageNames.CSharp)]
 public class TestClassOrdererAttributeOfTGenerator() :
 	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.TestClassOrdererAttribute + "`1", "RegisterAssemblyTestClassOrdererFactory")
 {
-	protected override bool ValidateImplementationType(
-		INamedTypeSymbol type,
-		Location? location,
-		GeneratorResult result) =>
-			EnsureImplementsInterface(type, location, result, Types.Xunit.v3.ITestClassOrderer);
+	protected override bool ValidateImplementationType(INamedTypeSymbol type) =>
+		type.ImplementsInterface(Types.Xunit.v3.ITestClassOrderer);
 }

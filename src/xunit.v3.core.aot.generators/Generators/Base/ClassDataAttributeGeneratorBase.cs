@@ -21,23 +21,14 @@ public abstract class ClassDataAttributeGeneratorBase(string fullyQualifiedAttri
 		Guard.ArgumentNotNull(result);
 
 		if (classDataType.DeclaredAccessibility != Accessibility.Public || classDataType.IsAbstract)
-		{
-			reportX1007();
 			return;
-		}
 
 		if (!classDataType.Constructors.Any(c => c.DeclaredAccessibility == Accessibility.Public && !c.IsStatic && c.Parameters.Length == 0))
-		{
-			reportX1007();
 			return;
-		}
 
-		var theoryDataInfo = classDataType.GetTheoryDataInfo(result.Compilation);
+		var theoryDataInfo = classDataType.GetTheoryDataInfo(result.ObjectType);
 		if (theoryDataInfo is null)
-		{
-			reportX1007();
 			return;
-		}
 
 		result.GeneratorSuffix = $"{classSymbol.Name}­­­٠{methodSymbol.Name}٠";
 
@@ -60,14 +51,5 @@ public abstract class ClassDataAttributeGeneratorBase(string fullyQualifiedAttri
 				return dataRows;
 			}
 			""");
-
-		void reportX1007() =>
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X1007_ClassDataAttributeMustPointAtValidClass,
-					attribute.ApplicationSyntaxReference.Location,
-					classDataType.ToDisplayString()
-				)
-			);
 	}
 }

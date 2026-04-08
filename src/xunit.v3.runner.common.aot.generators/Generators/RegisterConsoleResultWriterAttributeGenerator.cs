@@ -12,7 +12,7 @@ public class RegisterResultConsoleWriterAttributeGenerator() :
 		INamedTypeSymbol type,
 		Location? location,
 		GeneratorResult result) =>
-			EnsureImplementsInterface(type, location, result, Types.Xunit.Runner.Common.IConsoleResultWriter);
+			type.ImplementsInterface(Types.Xunit.Runner.Common.IConsoleResultWriter);
 }
 
 [Generator(LanguageNames.CSharp)]
@@ -25,5 +25,5 @@ public class RegisterResultConsoleWriterAttributeOfTGenerator() :
 		INamedTypeSymbol type,
 		Location? location,
 		GeneratorResult result) =>
-			EnsureImplementsInterface(type, location, result, Types.Xunit.Runner.Common.IConsoleResultWriter);
+			type.ImplementsInterface(Types.Xunit.Runner.Common.IConsoleResultWriter);
 }

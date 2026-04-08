@@ -272,11 +272,15 @@ public static class XunitTestClassRunnerTests
 			);
 		}
 
+#pragma warning disable xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
+
 		class ClassUnderTestWithCollectionFixture : ICollectionFixture<object>
 		{
 			[Fact]
 			public void Passing() { }
 		}
+
+#pragma warning restore xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
 
 		[Fact]
 		public static async ValueTask ClassWithMultiplePublicConstructors()
@@ -305,6 +309,8 @@ public static class XunitTestClassRunnerTests
 			);
 		}
 
+#pragma warning disable xUnit1056 // Type must have a single public non-static constructor
+
 		class ClassUnderTestWithMultiplePublicConstructors
 		{
 			public ClassUnderTestWithMultiplePublicConstructors() { }
@@ -314,6 +320,8 @@ public static class XunitTestClassRunnerTests
 			[Fact]
 			public void Passing() { }
 		}
+
+#pragma warning restore xUnit1056 // Type must have a single public non-static constructor
 
 		[Fact]
 		public static async ValueTask ClassWithMixedConstructors()
@@ -438,11 +446,15 @@ public static class XunitTestClassRunnerTests
 			public ClassFixtureWithMultipleConstructors(int _) { }
 		}
 
+#pragma warning disable xUnit1056 // Type must have a single public non-static constructor
+
 		class TestClassWithMultiCtorClassFixture : IClassFixture<ClassFixtureWithMultipleConstructors>
 		{
 			[Fact]
 			public void Passing() { }
 		}
+
+#pragma warning restore xUnit1056 // Type must have a single public non-static constructor
 
 		[Fact]
 		public static async ValueTask UnresolvedConstructorParameterOnClassFixture()
@@ -702,11 +714,15 @@ public static class XunitTestClassRunnerTests
 			);
 		}
 
+#pragma warning disable xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
+
 		class TestClassWithCollectionFixture : ICollectionFixture<object>
 		{
 			[Fact]
 			public void Passing() { }
 		}
+
+#pragma warning restore xUnit1059 // Test classes may not be decorated with ICollectionFixture<>
 
 		[Fact]
 		public static async ValueTask TooManyConstructors()
@@ -735,6 +751,8 @@ public static class XunitTestClassRunnerTests
 			);
 		}
 
+#pragma warning disable xUnit1056 // Type must have a single public non-static constructor
+
 		class TestClassWithTooManyConstructors
 		{
 			public TestClassWithTooManyConstructors() { }
@@ -744,6 +762,8 @@ public static class XunitTestClassRunnerTests
 			public void Passing() { }
 		}
 	}
+
+#pragma warning restore xUnit1056 // Type must have a single public non-static constructor
 
 	class TestableXunitTestClassRunner(params IXunitTestCase[] testCases) :
 		XunitTestClassRunner

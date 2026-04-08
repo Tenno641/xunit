@@ -86,13 +86,13 @@ internal static class Extensions
 
 	public static (bool IsAsyncEnumerable, ITypeSymbol EnumerableType)? GetEnumerable(
 		this ITypeSymbol? type,
-		Compilation compilation)
+		INamedTypeSymbol objectType)
 	{
 		if (type is not INamedTypeSymbol namedType)
 			return null;
 
-		if (SymbolEqualityComparer.Default.Equals(type, compilation.GetSpecialType(SpecialType.System_Collections_IEnumerable)))
-			return (false, compilation.GetSpecialType(SpecialType.System_Object));
+		if (namedType.ToCSharp(includeGlobal: false) == Types.System.Collections.IEnumerable)
+			return (false, objectType);
 
 		if (!namedType.IsGenericType || namedType.TypeArguments.Length != 1)
 			return null;
@@ -103,6 +103,75 @@ internal static class Extensions
 			Types.System.Collections.Generic.IEnumerableOfT => (false, namedType.TypeArguments[0]),
 			_ => null,
 		};
+	}
+
+	public static bool HasConstructorParameters(
+		this INamedTypeSymbol symbol,
+		string[] parameterTypes)
+	{
+		if (symbol is null || parameterTypes is null)
+			return false;
+
+		var ctors =
+			symbol
+				.Constructors
+				.Where(c => !c.IsStatic && c.DeclaredAccessibility == Accessibility.Public && c.Parameters.Length == parameterTypes.Length);
+
+		return ctors.Any(ctor => CtorMatches(ctor, parameterTypes));
+
+		static bool CtorMatches(
+			IMethodSymbol ctor,
+			string[] parameterTypes)
+		{
+			for (var idx = 0; idx < parameterTypes.Length; ++idx)
+			{
+				var ctorParameter = ctor.Parameters[idx];
+				var expectedType = parameterTypes[idx];
+
+				// TODO: Is it worth the time to look up the inheritance hierarchy of the target type?
+				// This feels like, on balance, expensive, rather than just doing a strict requirement.
+				if (ctorParameter.Type.ToString() != expectedType)
+					return false;
+			}
+
+			return true;
+		}
+	}
+
+	public static bool HasParameterlessPublicCtor(
+		this INamedTypeSymbol symbol,
+		[NotNullWhen(true)] out IMethodSymbol? ctor)
+	{
+		ctor =
+			symbol
+				?.Constructors
+				.FirstOrDefault(c => !c.IsStatic && c.DeclaredAccessibility == Accessibility.Public && c.Parameters.All(p => p.IsOptional || p.IsParams));
+
+		return ctor is not null;
+	}
+
+	public static bool ImplementsInterface(
+		this ITypeSymbol symbol,
+		string fullyQualifiedInterfaceName)
+	{
+		if (symbol is null || fullyQualifiedInterfaceName is null)
+			return false;
+
+		return symbol.Implements(fullyQualifiedInterfaceName);
+	}
+
+	public static bool ImplementsInterfaces(
+		this ITypeSymbol symbol,
+		params string[] fullyQualifiedInterfaceNames)
+	{
+		if (symbol is null || fullyQualifiedInterfaceNames is null)
+			return false;
+
+		if (fullyQualifiedInterfaceNames.Length == 0)
+			return true;
+
+		var missingInterfaces = symbol.ImplementsAll(fullyQualifiedInterfaceNames);
+		return missingInterfaces.Count == 0;
 	}
 
 	public static ITypeSymbol? RecursiveGetNonPublicNonInternalType(this ITypeSymbol type)
@@ -132,7 +201,7 @@ internal static class Extensions
 
 	public static (bool IsTask, bool IsAsyncEnumerable, ITypeSymbol EnumerableType)? GetTheoryDataInfo(
 		this ITypeSymbol type,
-		Compilation compilation)
+		INamedTypeSymbol objectType)
 	{
 		var taskFreeType = UnwrapTask(type);
 		if (taskFreeType.NullableAnnotation == NullableAnnotation.Annotated)
@@ -142,7 +211,7 @@ internal static class Extensions
 		var isAsyncEnumerable = false;
 		ITypeSymbol? enumerableType = null;
 
-		var enumerable = GetEnumerable(taskFreeType, compilation);
+		var enumerable = GetEnumerable(taskFreeType, objectType);
 		if (enumerable is not null)
 		{
 			isAsyncEnumerable = enumerable.Value.IsAsyncEnumerable;
@@ -152,7 +221,7 @@ internal static class Extensions
 		{
 			foreach (var @interface in taskFreeType.AllInterfaces)
 			{
-				enumerable = GetEnumerable(@interface, compilation);
+				enumerable = GetEnumerable(@interface, objectType);
 				if (enumerable is not null)
 				{
 					isAsyncEnumerable = enumerable.Value.IsAsyncEnumerable;

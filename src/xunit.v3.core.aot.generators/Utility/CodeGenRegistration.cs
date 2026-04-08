@@ -13,10 +13,9 @@ internal static class CodeGenRegistration
 		}
 		""";
 
-	internal static string? ToFixtureFactory(
+	// Use this when you don't know what ctor to call yet, but want to ensure there is only a single public non-static ctor
+	internal static string? ToObjectFactory(
 		INamedTypeSymbol type,
-		Location? location,
-		XunitGeneratorResult result,
 		string typeDescription,
 		string argumentLookupFormat,
 		string objectFactoryFormat = "{0}")
@@ -26,17 +25,7 @@ internal static class CodeGenRegistration
 
 		var publicCtors = type.Constructors.Where(c => c.DeclaredAccessibility == Accessibility.Public && !c.IsStatic).ToImmutableArray();
 		if (publicCtors.Length != 1)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9003_TypeMustHaveSinglePublicConstructor,
-					location,
-					typeDescription,
-					type.ToDisplayString()
-				)
-			);
 			return null;
-		}
 
 		var testClassTypeName = type.ToCSharp();
 		var ctor = publicCtors[0];
@@ -109,6 +98,7 @@ internal static class CodeGenRegistration
 		return factory;
 	}
 
+	// Use this when you already know the ctor you want to call
 	public static string? ToObjectFactory(
 		INamedTypeSymbol type,
 		IMethodSymbol ctor)
@@ -127,8 +117,7 @@ internal static class CodeGenRegistration
 
 	public static string? ToOrdererFactory(
 		AttributeData attribute,
-		string requiredInterface,
-		XunitGeneratorResult result)
+		string requiredInterface)
 	{
 		var ordererType = default(INamedTypeSymbol);
 
@@ -141,7 +130,7 @@ internal static class CodeGenRegistration
 			return null;
 
 		var location = attribute.ApplicationSyntaxReference.Location;
-		if (!XunitGenerator.EnsureImplementsInterface(ordererType, location, result, requiredInterface))
+		if (!ordererType.ImplementsInterface(requiredInterface))
 			return null;
 
 		var ctor = ordererType.Constructors.FirstOrDefault(c => c.Parameters.Length == 0);

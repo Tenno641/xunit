@@ -74,7 +74,11 @@ public class FactDiscovererTests
 
 #pragma warning restore xUnit1001 // Fact methods cannot have parameters
 
+#pragma warning disable xUnit1061 // Fact methods cannot be generic
+
 		[Fact]
 		public void GenericFact<T>() { }
+
+#pragma warning restore xUnit1061 // Fact methods cannot be generic
 	}
 }

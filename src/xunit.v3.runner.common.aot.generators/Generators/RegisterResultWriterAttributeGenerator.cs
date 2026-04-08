@@ -18,7 +18,7 @@ public class RegisterResultWriterAttributeGenerator() :
 		INamedTypeSymbol type,
 		Location? location,
 		GeneratorResult result) =>
-			EnsureImplementsInterfaces(type, location, result, Types.Xunit.Runner.Common.IConsoleResultWriter, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
+			type.ImplementsInterfaces(Types.Xunit.Runner.Common.IConsoleResultWriter, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
 }
 
 [Generator(LanguageNames.CSharp)]
@@ -37,5 +37,5 @@ public class RegisterResultWriterAttributeOfTGenerator() :
 		INamedTypeSymbol type,
 		Location? location,
 		GeneratorResult result) =>
-			EnsureImplementsInterfaces(type, location, result, Types.Xunit.Runner.Common.IConsoleResultWriter, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
+			type.ImplementsInterfaces(Types.Xunit.Runner.Common.IConsoleResultWriter, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
 }

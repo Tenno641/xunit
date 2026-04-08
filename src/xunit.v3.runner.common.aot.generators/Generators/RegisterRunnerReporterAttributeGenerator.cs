@@ -9,19 +9,21 @@ public abstract class RegisterRunnerReporterAttributeGeneratorBase(string fullyQ
 		SourceProductionContext context,
 		GeneratorResult result)
 	{
-		if (result is null || result.RunnerReporters.Count == 0)
+		if (result is null)
 			return;
 
-		AddInitAttribute(
-			context, result,
-			string.Join(
-				"\r\n",
-				result
-					.RunnerReporters
-					.WhereNotNull()
-					.Select(type => $"global::Xunit.Runner.Common.RegisteredRunnerConfig.RegisterRunnerReporter(new {type}());")
-			)
-		);
+		var code = new List<string>();
+
+		foreach (var message in result.Messages)
+			code.Add($"global::Xunit.Runner.Common.RegisteredRunnerConfig.RegisterRunnerReporterMessage({message.Quoted()});");
+
+		foreach (var reporter in result.RunnerReporters.WhereNotNull())
+			code.Add($"global::Xunit.Runner.Common.RegisteredRunnerConfig.RegisterRunnerReporter(new {reporter}());");
+
+		if (code.Count == 0)
+			return;
+
+		AddInitAttribute(context, result, string.Join("\r\n", code));
 	}
 
 	protected virtual INamedTypeSymbol? GetTypeArgument(AttributeData attribute) =>
@@ -59,10 +61,11 @@ public abstract class RegisterRunnerReporterAttributeGeneratorBase(string fullyQ
 			var reporterType = GetTypeArgument(attribute);
 			if (reporterType is not null)
 			{
-				var location = attribute.ApplicationSyntaxReference.Location;
-				if (EnsureParameterlessPublicCtor(reporterType, location, result, out var _) &&
-					EnsureImplementsInterface(reporterType, location, result, Types.Xunit.Runner.Common.IRunnerReporter))
+				if (reporterType.HasParameterlessPublicCtor(out var _)
+						&& reporterType.ImplementsInterface(Types.Xunit.Runner.Common.IRunnerReporter))
 					result.RunnerReporters.Add(reporterType.ToString());
+				else
+					result.Messages.Add($"Runner reporter type '{reporterType.ToDisplayString()}' does not implement 'Xunit.Runner.Common.IRunnerReporter'");
 			}
 		}
 
@@ -70,9 +73,23 @@ public abstract class RegisterRunnerReporterAttributeGeneratorBase(string fullyQ
 	}
 
 	public sealed class GeneratorResult(GeneratorAttributeSyntaxContext context) :
-		XunitGeneratorResult(context.SemanticModel, context.TargetNode)
+		XunitGeneratorResult(context.SemanticModel, context.TargetNode), IEquatable<GeneratorResult?>
 	{
+		public List<string> Messages = [];
+
 		public List<string?> RunnerReporters = [];
+
+		public override bool Equals(object? obj) =>
+			Equals(obj as GeneratorResult);
+
+		public bool Equals(GeneratorResult? other) =>
+			other is not null &&
+			base.Equals(other) &&
+			ComparerHelper.Equals(Messages, other.Messages) &&
+			ComparerHelper.Equals(RunnerReporters, other.RunnerReporters);
+
+		public override int GetHashCode() =>
+			Hasher.Extend(base.GetHashCode()).With(Messages).With(RunnerReporters);
 	}
 }
 

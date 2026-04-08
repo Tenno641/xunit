@@ -9,45 +9,22 @@ static class CulturedTheoryRegistrar
 		INamedTypeSymbol classSymbol,
 		MethodDeclarationSyntax methodDeclaration,
 		IMethodSymbol methodSymbol,
-		AttributeData attribute,
-		TestClassGeneratorResult result)
+		AttributeData attribute)
 	{
 		Guard.ArgumentNotNull(classSymbol);
 		Guard.ArgumentNotNull(methodDeclaration);
 		Guard.ArgumentNotNull(methodSymbol);
 		Guard.ArgumentNotNull(attribute);
-		Guard.ArgumentNotNull(result);
 
 		if (methodSymbol.IsGenericMethod)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9010_TheoryMethodCannotBeGeneric,
-					methodSymbol.Locations.FirstOrDefault()
-				)
-			);
 			return null;
-		}
 
 		if (methodSymbol.Parameters.FirstOrDefault(p => p.IsParams) is { } paramsParameter)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9011_TheoryParameterCannotBeParams,
-					paramsParameter.Locations.FirstOrDefault()
-				)
-			);
 			return null;
-		}
 
 		var details = new TheoryMethodDetails(classSymbol, methodDeclaration, methodSymbol, attribute);
-		details.Process(result);
-
-		if (details.Diagnostics.Count != 0)
-		{
-			result.Diagnostics.AddRange(details.Diagnostics);
+		if (!details.Process())
 			return null;
-		}
 
 		var cultures =
 			details
@@ -59,15 +36,7 @@ static class CulturedTheoryRegistrar
 				.ToArray();
 
 		if (cultures.Length == 0)
-		{
-			result.Diagnostics.Add(
-				Diagnostic.Create(
-					DiagnosticDescriptors.X9008_CulturedTestMustHaveAtLeastOneCulture,
-					details.Attribute.ApplicationSyntaxReference.Location
-				)
-			);
 			return null;
-		}
 
 		var initValues = new List<string>
 		{
