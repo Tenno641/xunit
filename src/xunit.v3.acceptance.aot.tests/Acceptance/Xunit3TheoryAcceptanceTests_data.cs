@@ -156,12 +156,12 @@ public partial class Xunit3TheoryAcceptanceTests
 			{ }
 		}
 
-		[CollectionDefinition("Trait Collection")]
+		[CollectionDefinition]
 		[Trait("Location", "Collection")]
 		public class TraitCollection { }
 
 		[Trait("Location", "Class")]
-		[Collection("Trait Collection")]
+		[Collection(typeof(TraitCollection))]
 #if XUNIT_AOT
 		public
 #endif

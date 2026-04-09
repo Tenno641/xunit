@@ -12,9 +12,11 @@ public interface ICodeGenTestCaseFactory
 	/// </summary>
 	/// <param name="discoveryOptions">The discovery options, which may influence test case metadata</param>
 	/// <param name="testMethod">The test method that this test case belongs to</param>
+	/// <param name="traits">The traits associated with the test case</param>
 	/// <param name="disposalTracker">The disposal tracker (typically used for class data instances and data in test rows)</param>
 	ValueTask<IReadOnlyCollection<ICodeGenTestCase>> Generate(
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		ICodeGenTestMethod testMethod,
+		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		DisposalTracker disposalTracker);
 }

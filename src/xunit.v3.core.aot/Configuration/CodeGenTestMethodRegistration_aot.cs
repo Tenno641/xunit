@@ -81,13 +81,11 @@ public class CodeGenTestMethodRegistration
 	public Func<ITestCaseOrderer>? TestCaseOrdererFactory { get; init; }
 #endif
 
+#if XUNIT_GENERATOR
 	/// <summary>
 	/// The traits attached to the test method
 	/// </summary>
-#if XUNIT_GENERATOR
 	public required IReadOnlyDictionary<string, HashSet<string>>? Traits { get; set; }
-#else
-	public IReadOnlyDictionary<string, IReadOnlyCollection<string>>? Traits { get; init; }
 #endif
 
 #if !XUNIT_GENERATOR
@@ -111,19 +109,19 @@ public class CodeGenTestMethodRegistration
 			if (testMethod is null)
 			{
 				IReadOnlyDictionary<string, IReadOnlyCollection<string>>? traits;
+				var testMethodTraits = RegisteredEngineConfig.GetTestMethodTraits(testClass.Class, methodName);
 
-				if (Traits is null || Traits.Count == 0)
+				if (testMethodTraits is null || testMethodTraits.Count == 0)
 					traits = testClass.Traits;
 				else
 				{
 					var newTraits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
-					foreach (var kvp in testClass.Traits)
-						foreach (var value in kvp.Value)
-							newTraits.AddOrGet(kvp.Key).Add(value);
 
-					foreach (var kvp in Traits)
-						foreach (var value in kvp.Value)
-							newTraits.AddOrGet(kvp.Key).Add(value);
+					foreach (var kvp in testClass.Traits)
+						newTraits.AddOrGet(kvp.Key).AddRange(kvp.Value);
+
+					foreach (var kvp in testMethodTraits)
+						newTraits.AddOrGet(kvp.Key).AddRange(kvp.Value);
 
 					traits = newTraits.ToReadOnly();
 				}
@@ -173,8 +171,6 @@ public class CodeGenTestMethodRegistration
 			initValues.Add($"SourceLineNumber = {SourceLineNumber}");
 		if (TestCaseOrdererFactory is not null)
 			initValues.Add($"TestCaseOrdererFactory = () => {TestCaseOrdererFactory}");
-		if (Traits is not null && Traits.Count != 0)
-			initValues.Add($"Traits = {CodeGenRegistration.ToTraits(Traits)}");
 
 		if (initValues.Count == 0)
 			return "global::Xunit.v3.CodeGenTestMethodRegistration.Empty";

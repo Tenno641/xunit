@@ -76,13 +76,11 @@ public sealed class CodeGenTestCollectionRegistration
 	public Func<ITestMethodOrderer>? TestMethodOrdererFactory { get; init; }
 #endif
 
+#if XUNIT_GENERATOR
 	/// <summary>
 	/// The traits attached to the test collection
 	/// </summary>
-#if XUNIT_GENERATOR
 	public required IReadOnlyDictionary<string, HashSet<string>>? Traits { get; set; }
-#else
-	public IReadOnlyDictionary<string, IReadOnlyCollection<string>>? Traits { get; init; }
 #endif
 
 	/// <summary>
@@ -140,8 +138,6 @@ public sealed class CodeGenTestCollectionRegistration
 			initValues.Add($"TestClassOrdererFactory = () => {TestClassOrdererFactory}");
 		if (TestMethodOrdererFactory is not null)
 			initValues.Add($"TestMethodOrdererFactory = () => {TestMethodOrdererFactory}");
-		if (Traits?.Count > 0)
-			initValues.Add($"Traits = {CodeGenRegistration.ToTraits(Traits)}");
 		if (Type is not null)
 			initValues.Add($"Type = typeof({Type})");
 

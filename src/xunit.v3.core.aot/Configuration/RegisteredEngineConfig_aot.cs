@@ -14,7 +14,10 @@ public static class RegisteredEngineConfig
 	static readonly Dictionary<string, List<Func<ITestFrameworkDiscoveryOptions, ICodeGenTestClass, DisposalTracker, ValueTask<IReadOnlyCollection<ICodeGenTestCase>>>>> testCaseFactories = [];
 	static readonly Dictionary<string, string> testClassIndexByTypeFullName = [];
 	static readonly Dictionary<string, CodeGenTestClassRegistration> testClassRegistrations = [];
+	static readonly Dictionary<string, Dictionary<string, HashSet<string>>> testClassTraits = [];
+	static readonly Dictionary<string, Dictionary<string, HashSet<string>>> testCollectionTraits = [];
 	static readonly Dictionary<(string TestClassIndex, string TestMethodName), CodeGenTestMethodRegistration> testMethodRegistrations = [];
+	static readonly Dictionary<(string TestClassIndex, string TestMethodName), Dictionary<string, HashSet<string>>> testMethodTraits = [];
 	static readonly Dictionary<(string TestClassIndex, string TestMethodName), List<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>>> theoryDataRowFactories = [];
 
 	/// <summary>
@@ -178,8 +181,34 @@ public static class RegisteredEngineConfig
 		return registration.GetTestClass(testAssembly);
 	}
 
+	internal static Dictionary<string, HashSet<string>>? GetTestClassTraits(Type @class)
+	{
+		if (!testClassIndexByTypeFullName.TryGetValue(@class.SafeName(), out var testClassIndex))
+			return null;
+
+		testClassTraits.TryGetValue(testClassIndex, out var traits);
+		return traits;
+	}
+
 	internal static Type[] GetTestClassTypes() =>
 		testClassRegistrations.Select(kvp => kvp.Value.Class).ToArray();
+
+	internal static Dictionary<string, HashSet<string>>? GetTestCollectionTraits(string testCollectionName)
+	{
+		testCollectionTraits.TryGetValue(testCollectionName, out var traits);
+		return traits;
+	}
+
+	internal static Dictionary<string, HashSet<string>>? GetTestMethodTraits(
+		Type @class,
+		string methodName)
+	{
+		if (!testClassIndexByTypeFullName.TryGetValue(@class.SafeName(), out var testClassIndex))
+			return null;
+
+		testMethodTraits.TryGetValue((testClassIndex, methodName), out var traits);
+		return traits;
+	}
 
 	/// <summary>
 	/// Gets an xUnit.net v3 test collection factory.
@@ -343,7 +372,7 @@ public static class RegisteredEngineConfig
 					);
 
 				var testMethod = testMethodRegistration.GetTestMethod(testClass, methodName);
-				return await factory.Generate(discoveryOptions, testMethod, disposalTracker);
+				return await factory.Generate(discoveryOptions, testMethod, testMethod.Traits, disposalTracker);
 			});
 	}
 
@@ -365,6 +394,50 @@ public static class RegisteredEngineConfig
 	}
 
 	/// <summary>
+	/// Register one or more trait values for the given test class and trait name.
+	/// </summary>
+	/// <param name="testClassIndex">The test class index (per <see cref="RegisterCodeGenTestClass"/>)</param>
+	/// <param name="traitName">The name of the trait</param>
+	/// <param name="traitValues">The values associated with the trait name</param>
+	public static void RegisterCodeGenTestClassTrait(
+		string testClassIndex,
+		string traitName,
+		params string[] traitValues) =>
+			testClassTraits
+				.AddOrGet(testClassIndex, () => new(StringComparer.OrdinalIgnoreCase))
+				.AddOrGet(traitName)
+				.AddRange(traitValues);
+
+	/// <summary>
+	/// Register one or more trait values for the given test collection name and trait name.
+	/// </summary>
+	/// <param name="testCollectionName">The optional test collection name</param>
+	/// <param name="testCollectionType">The optional test collection type</param>
+	/// <param name="traitName">The name of the trait</param>
+	/// <param name="traitValues">The values associated with the trait name</param>
+	/// <remarks>
+	/// One of <paramref name="testCollectionName"/> or <paramref name="testCollectionType"/> must be non-<see langword="null"/>.
+	/// </remarks>
+	public static void RegisterCodeGenTestCollectionTrait(
+		string? testCollectionName,
+		Type? testCollectionType,
+		string traitName,
+		params string[] traitValues)
+	{
+		if (testCollectionName is null)
+		{
+			Guard.ArgumentNotNull("Collection definitions must include either a name or a type", testCollectionType);
+
+			testCollectionName = CollectionAttribute.GetCollectionNameForType(testCollectionType);
+		}
+
+		testCollectionTraits
+			.AddOrGet(testCollectionName, () => new(StringComparer.OrdinalIgnoreCase))
+			.AddOrGet(traitName)
+			.AddRange(traitValues);
+	}
+
+	/// <summary>
 	/// Registers the presence of an xUnit.net v3 test class via code generation.
 	/// </summary>
 	/// <param name="testClassIndex">The dictionary index of the test class. This is the C# compilation name for
@@ -379,6 +452,23 @@ public static class RegisteredEngineConfig
 		string methodName,
 		CodeGenTestMethodRegistration registration) =>
 			testMethodRegistrations[(Guard.ArgumentNotNull(testClassIndex), Guard.ArgumentNotNullOrEmpty(methodName))] = Guard.ArgumentNotNull(registration);
+
+	/// <summary>
+	/// Register one or more trait values for the given test class, test method, and trait name.
+	/// </summary>
+	/// <param name="testClassIndex">The test class index (per <see cref="RegisterCodeGenTestMethod"/>)</param>
+	/// <param name="methodName">The test method name (per <see cref="RegisterCodeGenTestMethod"/>)</param>
+	/// <param name="traitName">The name of the trait</param>
+	/// <param name="traitValues">The values associated with the trait name</param>
+	public static void RegisterCodeGenTestMethodTrait(
+		string testClassIndex,
+		string methodName,
+		string traitName,
+		params string[] traitValues) =>
+			testMethodTraits
+				.AddOrGet((testClassIndex, methodName), () => new(StringComparer.OrdinalIgnoreCase))
+				.AddOrGet(traitName)
+				.AddRange(traitValues);
 
 	/// <summary>
 	/// Registers a collection definition.

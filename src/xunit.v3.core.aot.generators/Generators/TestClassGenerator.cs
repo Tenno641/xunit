@@ -133,11 +133,23 @@ public class TestClassGenerator : XunitGenerator
 			global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestClass({{result.TestClassType.Quoted()}}, {{result.TestClass.ToGeneratedInit()}});
 			""");
 
+		if (result.TestClass.Traits is not null)
+			foreach (var trait in result.TestClass.Traits)
+				initialization.AppendLine($$"""
+					global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestClassTrait({{result.TestClassType.Quoted()}}, {{trait.Key.Quoted()}}, {{string.Join(", ", trait.Value.Select(v => v.Quoted()))}});
+					""");
+
 		foreach (var kvp in result.TestMethods)
 		{
 			initialization.AppendLine($$"""
 				global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestMethod({{result.TestClassType.Quoted()}}, {{kvp.Key.Quoted()}}, {{kvp.Value.TestMethod.ToGeneratedInit()}});
 				""");
+
+			if (kvp.Value.TestMethod.Traits is not null)
+				foreach (var trait in kvp.Value.TestMethod.Traits)
+					initialization.AppendLine($$"""
+						global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestMethodTrait({{result.TestClassType.Quoted()}}, {{kvp.Key.Quoted()}}, {{trait.Key.Quoted()}}, {{string.Join(", ", trait.Value.Select(v => v.Quoted()))}});
+						""");
 
 			foreach (var testCaseFactory in kvp.Value.TestCaseFactories)
 				initialization.AppendLine($$"""

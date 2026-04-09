@@ -29,19 +29,19 @@ public abstract class TestCollectionFactoryBase(ICodeGenTestAssembly testAssembl
 			definition = CodeGenTestCollectionRegistration.Empty;
 
 		IReadOnlyDictionary<string, IReadOnlyCollection<string>>? traits;
+		var testCollectionTraits = RegisteredEngineConfig.GetTestCollectionTraits(attribute.Name);
 
-		if (definition.Traits is null || definition.Traits.Count == 0)
+		if (testCollectionTraits is null || testCollectionTraits.Count == 0)
 			traits = testAssembly.Traits;
 		else
 		{
 			var newTraits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
-			foreach (var kvp in testAssembly.Traits)
-				foreach (var value in kvp.Value)
-					newTraits.AddOrGet(kvp.Key).Add(value);
 
-			foreach (var kvp in definition.Traits)
-				foreach (var value in kvp.Value)
-					newTraits.AddOrGet(kvp.Key).Add(value);
+			foreach (var kvp in testAssembly.Traits)
+				newTraits.AddOrGet(kvp.Key).AddRange(kvp.Value);
+
+			foreach (var kvp in testCollectionTraits)
+				newTraits.AddOrGet(kvp.Key).AddRange(kvp.Value);
 
 			traits = newTraits.ToReadOnly();
 		}

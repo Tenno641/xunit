@@ -13,12 +13,28 @@ public class CollectionDefinitionAttributeGenerator() :
 		if (result is null || result.Registration is null)
 			return;
 
-		AddInitAttribute(
-			context, result,
+		var code = new List<string>
+		{
 			$$"""
 			global::Xunit.v3.RegisteredEngineConfig.RegisterCollectionDefinition({{result.Name.Quoted()}}, {{result.Registration.ToGeneratedInit()}});
 			"""
-		);
+		};
+
+		if (result.Registration.Traits is not null)
+		{
+			var name = result.Name.Quoted();
+			var type =
+				result.Registration.Type is null
+					? "null"
+					: $"typeof({result.Registration.Type})";
+
+			foreach (var trait in result.Registration.Traits)
+				code.Add($"""
+					global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestCollectionTrait({name}, {type}, {trait.Key.Quoted()}, {string.Join(", ", trait.Value.Select(v => v.Quoted()))});
+					""");
+		}
+
+		AddInitAttribute(context, result, string.Join("\r\n", code));
 	}
 
 	protected override sealed GeneratorResult? Transform(

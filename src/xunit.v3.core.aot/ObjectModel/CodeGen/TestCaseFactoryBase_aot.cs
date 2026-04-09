@@ -47,15 +47,11 @@ public abstract class TestCaseFactoryBase : ICodeGenTestCaseFactory
 	/// </summary>
 	public int Timeout { get; init; }
 
-	/// <summary>
-	/// The traits attached to the test case
-	/// </summary>
-	public IReadOnlyDictionary<string, IReadOnlyCollection<string>>? Traits { get; init; }
-
 	/// <inheritdoc/>
 	public ValueTask<IReadOnlyCollection<ICodeGenTestCase>> Generate(
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		ICodeGenTestMethod testMethod,
+		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		DisposalTracker disposalTracker)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
@@ -69,24 +65,6 @@ public abstract class TestCaseFactoryBase : ICodeGenTestCaseFactory
 				(defaultMethodDisplay == TestMethodDisplay.ClassAndMethod
 					? formatter.Format(string.Format(CultureInfo.CurrentCulture, "{0}.{1}", testMethod.TestClass.Class.SafeName(), testMethod.MethodName))
 					: formatter.Format(testMethod.MethodName));
-
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>>? traits;
-
-		if (Traits is null || Traits.Count == 0)
-			traits = testMethod.Traits;
-		else
-		{
-			var newTraits = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
-			foreach (var kvp in testMethod.Traits)
-				foreach (var value in kvp.Value)
-					newTraits.AddOrGet(kvp.Key).Add(value);
-
-			foreach (var kvp in Traits)
-				foreach (var value in kvp.Value)
-					newTraits.AddOrGet(kvp.Key).Add(value);
-
-			traits = newTraits.ToReadOnly();
-		}
 
 		return GenerateTestCases(discoveryOptions, testMethod, disposalTracker, displayName, traits);
 	}
