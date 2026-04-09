@@ -60,6 +60,32 @@ public readonly partial struct StackFrameInfo(
 
 		return None;
 	}
+
+	/// <summary>
+	/// Creates a stack frame info from error metadata.
+	/// </summary>
+	/// <param name="exception">The error to inspect</param>
+	/// <returns>The stack frame info</returns>
+	public static StackFrameInfo FromException(Exception exception)
+	{
+		try
+		{
+			var stackTrace = exception?.StackTrace;
+			if (stackTrace is not null)
+			{
+				foreach (var frame in stackTrace.Split([Environment.NewLine], 2, StringSplitOptions.RemoveEmptyEntries))
+				{
+					var match = stackFrameRegex.Match(frame);
+					if (match.Success)
+						return new StackFrameInfo(match.Groups["file"].Value, int.Parse(match.Groups["line"].Value, CultureInfo.InvariantCulture));
+				}
+			}
+		}
+		catch { }
+
+		return None;
+	}
+
 	static Regex GetStackFrameRegex()
 	{
 		// Stack trace lines look like this:

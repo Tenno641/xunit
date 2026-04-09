@@ -143,6 +143,12 @@ public class TestPlatformTestFramework :
 			await OnExecute(context.Request.Session.SessionUid, executionRequest.Filter, context.MessageBus, context.Complete, context.CancellationToken);
 	}
 
+	/// <summary>
+	/// This overload is provided for testability purposes only.
+	/// </summary>
+	protected virtual ValueTask<ITestPipelineStartup?> InvokePipelineStartup() =>
+		ProjectAssemblyRunner.InvokePipelineStartup(testAssembly, diagnosticMessageSink);
+
 	/// <summary/>
 	public ValueTask OnDiscover(
 		SessionUid sessionUid,
@@ -245,7 +251,7 @@ public class TestPlatformTestFramework :
 
 		try
 		{
-			var pipelineStartup = await ProjectAssemblyRunner.InvokePipelineStartup(testAssembly, diagnosticMessageSink);
+			var pipelineStartup = await InvokePipelineStartup();
 
 			try
 			{
@@ -256,8 +262,19 @@ public class TestPlatformTestFramework :
 			}
 			finally
 			{
-				if (pipelineStartup is not null)
-					await pipelineStartup.StopAsync();
+				try
+				{
+					if (pipelineStartup is not null)
+						await pipelineStartup.StopAsync();
+				}
+				catch (Exception ex)
+				{
+					try
+					{
+						runnerLogger.LogError(StackFrameInfo.FromException(ex), ex.Message);
+					}
+					catch { }
+				}
 			}
 		}
 		finally

@@ -129,8 +129,12 @@ public static class ConsoleRunnerInProcess
 
 			AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
 
-			if (PipelineStartup is not null)
-				await PipelineStartup.StopAsync();
+			try
+			{
+				if (PipelineStartup is not null)
+					await PipelineStartup.StopAsync();
+			}
+			catch { }
 		}
 
 		void OnUnhandledException(

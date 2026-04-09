@@ -2,9 +2,12 @@ using System.Reflection;
 using Microsoft.Testing.Platform.Extensions.Messages;
 using Microsoft.Testing.Platform.Requests;
 using Microsoft.Testing.Platform.TestHost;
+using Microsoft.VisualBasic;
 using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Runner.Common;
+using Xunit.Sdk;
+using Xunit.v3;
 
 public static class TestPlatformTestFrameworkTests
 {
@@ -234,6 +237,34 @@ public static class TestPlatformTestFrameworkTests
 			);
 		}
 
+		[Fact]
+		public async ValueTask ExceptionsInPipelineStartupAreLogged()
+		{
+			var uid = new SessionUid("abc");
+			var messageBus = new SpyTestPlatformMessageBus();
+			var pipelineStartup = new PipelineStartupThrowingOnStop();
+			var framework = TestableTestPlatformTestFramework.Create(pipelineStartup);
+			framework.ProjectAssembly.Configuration.Filters.AddIncludedClassFilter(typeof(SessionManagement).FullName!);
+			await framework.CreateTestSession(uid);
+
+			await framework.OnDiscover(uid, filter: null, messageBus, () => { }, CancellationToken.None);
+
+			Assert.Collection(
+				framework.RunnerLogger.Messages,
+				msg => { },  // Banner
+				msg => Assert.Matches(@"^\[Err @ (.*?)TestPlatformTestFrameworkTests.cs:(\d+)\] Attempted to divide by zero", msg)
+			);
+		}
+
+		class PipelineStartupThrowingOnStop : ITestPipelineStartup
+		{
+			public ValueTask StartAsync(IMessageSink diagnosticMessageSink) =>
+				default;
+
+			public ValueTask StopAsync() =>
+				throw new DivideByZeroException();
+		}
+
 		// TODO: Live output
 		// TODO: Generated reports
 	}
@@ -246,6 +277,7 @@ public static class TestPlatformTestFrameworkTests
 		Assembly testAssembly,
 		XunitTrxCapability trxCapability,
 		SpyTestPlatformOutputDevice outputDevice,
+		ITestPipelineStartup? pipelineStartup,
 		bool serverMode) :
 			TestPlatformTestFramework(runnerLogger, runnerReporter, diagnosticMessageSink, projectAssembly, testAssembly, trxCapability, outputDevice, serverMode, EmptyResultWriters)
 	{
@@ -257,7 +289,10 @@ public static class TestPlatformTestFrameworkTests
 
 		public SpyRunnerReporter RunnerReporter { get; } = runnerReporter;
 
-		public static TestableTestPlatformTestFramework Create()
+		protected override ValueTask<ITestPipelineStartup?> InvokePipelineStartup() =>
+			new(pipelineStartup);
+
+		public static TestableTestPlatformTestFramework Create(ITestPipelineStartup? pipelineStartup = null)
 		{
 			var testAssembly = typeof(TestPlatformTestFrameworkTests).Assembly;
 			var assemblyMetadata = new AssemblyMetadata(3, "TargetFramework/1.0");
@@ -277,6 +312,7 @@ public static class TestPlatformTestFrameworkTests
 				testAssembly,
 				trxCapability,
 				new SpyTestPlatformOutputDevice(),
+				pipelineStartup,
 				serverMode: false
 			);
 		}
