@@ -50,9 +50,14 @@ public enum TestMethodDisplayOptions
 	ReplacePeriodWithComma = 0x08,
 
 	/// <summary>
+	/// Removes the word <c>Async</c> from the suffix of the test method.
+	/// </summary>
+	RemoveAsyncSuffix = 0x10,
+
+	/// <summary>
 	/// Enables all method display options.
 	/// </summary>
-	All = ReplaceUnderscoreWithSpace | UseOperatorMonikers | UseEscapeSequences | ReplacePeriodWithComma
+	All = ReplaceUnderscoreWithSpace | UseOperatorMonikers | UseEscapeSequences | ReplacePeriodWithComma | RemoveAsyncSuffix
 }
 
 /// <summary>
@@ -72,6 +77,7 @@ public static class TestMethodDisplayOptionsExtensions
 			TestMethodDisplayOptions.UseOperatorMonikers,
 			TestMethodDisplayOptions.UseEscapeSequences,
 			TestMethodDisplayOptions.ReplacePeriodWithComma,
+			TestMethodDisplayOptions.RemoveAsyncSuffix,
 			TestMethodDisplayOptions.All,
 		];
 	}
@@ -82,6 +88,7 @@ public static class TestMethodDisplayOptionsExtensions
 			TestMethodDisplayOptions.UseOperatorMonikers,
 			TestMethodDisplayOptions.UseEscapeSequences,
 			TestMethodDisplayOptions.ReplaceUnderscoreWithSpace,
+			TestMethodDisplayOptions.RemoveAsyncSuffix,
 		}
 		.Select(v => Convert.ToInt32(v, CultureInfo.InvariantCulture))
 		.ToArray();

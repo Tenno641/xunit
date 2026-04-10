@@ -90,6 +90,7 @@ public abstract class CommandLineParserBase
 			"note: you can specify more than one flag by joining with commas",
 			"  none                       - apply no alterations [default]",
 			"  all                        - apply all alterations",
+			"  removeAsyncSuffix          - remove 'Async' from the end of the test method name",
 			"  replacePeriodWithComma     - replace periods in names with commas",
 			"  replaceUnderscoreWithSpace - replace underscores in names with spaces",
 			"  useOperatorMonikers        - replace operator names with operators",

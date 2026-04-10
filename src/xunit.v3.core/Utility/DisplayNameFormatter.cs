@@ -9,6 +9,7 @@ namespace Xunit.v3;
 /// </summary>
 public class DisplayNameFormatter
 {
+	readonly bool removeAsyncSuffix;
 	readonly CharacterRule rule;
 
 	/// <summary>
@@ -27,6 +28,8 @@ public class DisplayNameFormatter
 		TestMethodDisplayOptions displayOptions)
 	{
 		rule = new CharacterRule();
+
+		removeAsyncSuffix = (displayOptions & TestMethodDisplayOptions.RemoveAsyncSuffix) == TestMethodDisplayOptions.RemoveAsyncSuffix;
 
 		if ((displayOptions & TestMethodDisplayOptions.UseEscapeSequences) == TestMethodDisplayOptions.UseEscapeSequences)
 			rule = new ReplaceEscapeSequenceRule() { Next = rule };
@@ -52,6 +55,9 @@ public class DisplayNameFormatter
 	public string Format(string displayName)
 	{
 		Guard.ArgumentNotNull(displayName);
+
+		if (removeAsyncSuffix && displayName.EndsWith("Async", StringComparison.OrdinalIgnoreCase))
+			displayName = displayName.Substring(0, displayName.Length - 5);
 
 		var context = new FormatContext(displayName);
 

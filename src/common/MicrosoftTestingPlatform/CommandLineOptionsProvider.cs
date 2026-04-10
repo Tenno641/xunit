@@ -67,6 +67,7 @@ public sealed class CommandLineOptionsProvider() :
 			    none - apply no alterations [default]
 			    all  - apply all alterations
 			    Or one or more of:
+			        removeAsyncSuffix          - remove 'Async' from the end of the test method name
 			        replacePeriodWithComma     - replace periods in names with commas
 			        replaceUnderscoreWithSpace - replace underscores in names with spaces
 			        useOperatorMonikers        - replace operator names with operators

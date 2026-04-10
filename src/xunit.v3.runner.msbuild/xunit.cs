@@ -247,7 +247,7 @@ public class xunit : MSBuildTask, ICancelableTask, IDisposable
 		if (!TryParseOptionalEnum<TestMethodDisplay>(MethodDisplay, "MethodDisplay value '{0}' is invalid: must be one of 'classAndMethod' or 'method'", out var methodDisplay))
 			return false;
 
-		if (!TryParseOptionalEnum<TestMethodDisplayOptions>(MethodDisplayOptions, "MethodDisplayOptions value '{0}' is invalid: must be one of 'all', 'none', or a comma-separated list of one or more of 'replacePeriodWithComma', 'replaceUnderscoreWithSpace', 'useOperatorMonikers', or 'useEscapeSequences'", out var methodDisplayOptions))
+		if (!TryParseOptionalEnum<TestMethodDisplayOptions>(MethodDisplayOptions, "MethodDisplayOptions value '{0}' is invalid: must be one of 'all', 'none', or a comma-separated list of one or more of 'removeAsyncSuffix', 'replacePeriodWithComma', 'replaceUnderscoreWithSpace', 'useOperatorMonikers', or 'useEscapeSequences'", out var methodDisplayOptions))
 			return false;
 
 		if (!TryParseOptionalEnum<ParallelAlgorithm>(ParallelAlgorithm, "ParallelAlgorithm value '{0}' is invalid: must be one of 'aggressive' or 'conservative'", out var parallelAlgorithm))

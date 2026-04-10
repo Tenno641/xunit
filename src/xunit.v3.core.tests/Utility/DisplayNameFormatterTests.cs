@@ -170,6 +170,7 @@ public static class DisplayNameFormatterTests
 			yield return new(NameOf(FormattedDisplayNameExample.TestX20NameX20WithU0020Spaces), NameOf(FormattedDisplayNameExample.TestX20NameX20WithU0020Spaces));
 			yield return new(NameOf(FormattedDisplayNameExample.Parameter_X22RETURN_VALUEX22_is_always_added), NameOf(FormattedDisplayNameExample.Parameter_X22RETURN_VALUEX22_is_always_added));
 			yield return new(NameOf(FormattedDisplayNameExample.Parameter_X22RETURN_VALUE_X22_is_always_added), NameOf(FormattedDisplayNameExample.Parameter_X22RETURN_VALUE_X22_is_always_added));
+			yield return new(NameOf(FormattedDisplayNameExample.TestMethodAsync), NameOf(FormattedDisplayNameExample.TestMethodAsync));
 			yield return new(NameOf(Given_a_version_number.when_it_equals_1.then_it_should_be_less_than_2), NameOf(Given_a_version_number.when_it_equals_1.then_it_should_be_less_than_2));
 		}
 		else
@@ -194,6 +195,7 @@ public static class DisplayNameFormatterTests
 			yield return new(nameof(FormattedDisplayNameExample.TestX20NameX20WithU0020Spaces), nameof(FormattedDisplayNameExample.TestX20NameX20WithU0020Spaces));
 			yield return new(nameof(FormattedDisplayNameExample.Parameter_X22RETURN_VALUEX22_is_always_added), nameof(FormattedDisplayNameExample.Parameter_X22RETURN_VALUEX22_is_always_added));
 			yield return new(nameof(FormattedDisplayNameExample.Parameter_X22RETURN_VALUE_X22_is_always_added), nameof(FormattedDisplayNameExample.Parameter_X22RETURN_VALUE_X22_is_always_added));
+			yield return new(nameof(FormattedDisplayNameExample.TestMethodAsync), nameof(FormattedDisplayNameExample.TestMethodAsync));
 			yield return new(nameof(Given_a_version_number.when_it_equals_1.then_it_should_be_less_than_2), nameof(Given_a_version_number.when_it_equals_1.then_it_should_be_less_than_2));
 		}
 	}
@@ -222,6 +224,7 @@ public static class DisplayNameFormatterTests
 			yield return new(NameOf(FormattedDisplayNameExample.TestX20NameX20WithU0020Spaces), "FormattedDisplayNameExample, Test Name With Spaces");
 			yield return new(NameOf(FormattedDisplayNameExample.Parameter_X22RETURN_VALUEX22_is_always_added), "FormattedDisplayNameExample, Parameter \"RETURN VALUE\" is always added");
 			yield return new(NameOf(FormattedDisplayNameExample.Parameter_X22RETURN_VALUE_X22_is_always_added), "FormattedDisplayNameExample, Parameter \"RETURN VALUE \" is always added");
+			yield return new(NameOf(FormattedDisplayNameExample.TestMethodAsync), "FormattedDisplayNameExample, TestMethod");
 			yield return new(NameOf(Given_a_version_number.when_it_equals_1.then_it_should_be_less_than_2), "Given a version number, when it equals 1, then it should be less than 2");
 		}
 		else
@@ -246,6 +249,7 @@ public static class DisplayNameFormatterTests
 			yield return new(nameof(FormattedDisplayNameExample.TestX20NameX20WithU0020Spaces), "Test Name With Spaces");
 			yield return new(nameof(FormattedDisplayNameExample.Parameter_X22RETURN_VALUEX22_is_always_added), "Parameter \"RETURN VALUE\" is always added");
 			yield return new(nameof(FormattedDisplayNameExample.Parameter_X22RETURN_VALUE_X22_is_always_added), "Parameter \"RETURN VALUE \" is always added");
+			yield return new(nameof(FormattedDisplayNameExample.TestMethodAsync), "TestMethod");
 			yield return new(nameof(Given_a_version_number.when_it_equals_1.then_it_should_be_less_than_2), "then it should be less than 2");
 		}
 	}
@@ -429,6 +433,7 @@ public static class FormattedDisplayNameExample
 	public static void TestX20NameX20WithU0020Spaces() { }
 	public static void Parameter_X22RETURN_VALUEX22_is_always_added() { }
 	public static void Parameter_X22RETURN_VALUE_X22_is_always_added() { }
+	public static void TestMethodAsync() { }
 }
 
 namespace Given_a_version_number
