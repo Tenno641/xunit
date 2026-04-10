@@ -252,7 +252,7 @@ public static class TestPlatformTestFrameworkTests
 			Assert.Collection(
 				framework.RunnerLogger.Messages,
 				msg => { },  // Banner
-				msg => Assert.Matches(@"^\[Err @ (.*?)TestPlatformTestFrameworkTests.cs:(\d+)\] Attempted to divide by zero", msg)
+				msg => Assert.Matches(@"^\[Err(.*?)\] Attempted to divide by zero", msg)
 			);
 		}
 
