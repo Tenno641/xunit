@@ -37,6 +37,7 @@ namespace Xunit.MicrosoftTestingPlatform;
 public class TestPlatformTestFramework :
 	OutputDeviceDataProducerBase, ITestPlatformTestFramework, IDataProducer
 {
+	readonly ConsoleHelper consoleHelper;
 	readonly IMessageSink? diagnosticMessageSink;
 	readonly IOutputDevice outputDevice;
 	readonly XunitProjectAssembly projectAssembly;
@@ -61,6 +62,8 @@ public class TestPlatformTestFramework :
 		IReadOnlyDictionary<string, IMicrosoftTestingPlatformResultWriter> resultWriters) :
 			base("test framework", "30ea7c6e-dd24-4152-a360-1387158cd41d")
 	{
+		consoleHelper = new(Console.In, Console.Out);
+
 		this.runnerLogger = runnerLogger;
 		this.runnerReporter = runnerReporter;
 		this.diagnosticMessageSink = diagnosticMessageSink;
@@ -217,8 +220,19 @@ public class TestPlatformTestFramework :
 				_ => throw new ArgumentException($"Unsupported execution filter type '{filter.GetType().SafeName()}'", nameof(filter)),
 			};
 
-			// Pre-enumerate by default so the user can run tests with test IDs from --list-tests
+			// Pre-enumerate by default so the user can run tests with test IDs from --list-tests and --xunit-list
 			projectAssembly.Configuration.PreEnumerateTheories ??= true;
+
+			if (projectAssembly.Project.Configuration.List is not null)
+			{
+				var discoverySink = new TestDiscoverySink(() => cancellationToken.IsCancellationRequested);
+				await projectRunner.Discover(projectAssembly, pipelineStartup, discoverySink);
+
+				var testCasesByAssembly = new Dictionary<string, List<ITestCaseDiscovered>> { [projectAssembly.AssemblyDisplayName] = discoverySink.TestCases };
+				ConsoleProjectLister.List(consoleHelper, testCasesByAssembly, projectAssembly.Project.Configuration.List.Value.Option, ListFormat.Text);
+
+				return;
+			}
 
 			// If the user asked to run specific tests, then we auto-enable explicit support since
 			// the Test Explorer UX has no way to turn support for explicit tests on/off

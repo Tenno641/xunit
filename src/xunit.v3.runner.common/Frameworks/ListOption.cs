@@ -35,3 +35,31 @@ public enum ListOption
 	/// </summary>
 	Traits,
 }
+
+/// <summary>
+/// Extension methods for <see cref="ListOption"/>
+/// </summary>
+public static class ListOptionExtensions
+{
+	extension(ListOption)
+	{
+		/// <summary>
+		/// Gets the valid values for <see cref="ListOption"/>.
+		/// </summary>
+		public static HashSet<ListOption> ValidValues =>
+		[
+			ListOption.Classes,
+			ListOption.Discovery,
+			ListOption.Full,
+			ListOption.Methods,
+			ListOption.Tests,
+			ListOption.Traits,
+		];
+	}
+
+	/// <summary>
+	/// Determines if the value is a valid enum value.
+	/// </summary>
+	public static bool IsValid(this ListOption value) =>
+		ListOption.ValidValues.Contains(value);
+}

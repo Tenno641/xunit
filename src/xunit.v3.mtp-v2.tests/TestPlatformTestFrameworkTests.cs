@@ -2,7 +2,6 @@ using System.Reflection;
 using Microsoft.Testing.Platform.Extensions.Messages;
 using Microsoft.Testing.Platform.Requests;
 using Microsoft.Testing.Platform.TestHost;
-using Microsoft.VisualBasic;
 using Xunit;
 using Xunit.MicrosoftTestingPlatform;
 using Xunit.Runner.Common;

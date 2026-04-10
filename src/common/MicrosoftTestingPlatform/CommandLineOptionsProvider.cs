@@ -119,6 +119,14 @@ public sealed class CommandLineOptionsProvider() :
 			    on  - display internal diagnostic messages
 			    off - hide internal diagnostic messages [default]
 			""", ArgumentArity.ExactlyOne, OnInternalDiagnostics) },
+		{ "xunit-list", ("""
+			List information about the tests rather than running them.
+			    classes - list class names of every class which contains tests
+			    full    - list complete discovery data
+			    methods - list class+method names of every method which is a test
+			    tests   - list just the display name of all the tests
+			    traits  - list the set of trait name/value pairs used in the test assembly
+			""", ArgumentArity.ExactlyOne, OnList) },
 
 		// Query filtering
 		{ "filter-query", ("""
@@ -349,6 +357,9 @@ public sealed class CommandLineOptionsProvider() :
 
 		setter(intValue);
 	}
+
+	static void OnList(ParseOptions options) =>
+		options.ProjectConfig.List = (ParseEnum(options.Arguments[0], ListOption.ValidValues), ListFormat.Text);
 
 	static void OnMaxThreads(ParseOptions options) =>
 		options.AssemblyConfig.MaxParallelThreads = options.Arguments[0].ToUpperInvariant() switch
