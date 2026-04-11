@@ -58,16 +58,21 @@ public abstract class CrashDetectionSinkBase<TStart, TFinish>(
 
 		lastMessageReceived = DateTimeOffset.UtcNow;
 
+		// Delay the finish message so foreground thread detection error messages get sent before finish
+		if (message is TFinish finish)
+		{
+			Finish = finish;
+			return true;
+		}
+
 		if (message is TStart start)
 			Start = start;
-		else if (message is TFinish finish)
-			Finish = finish;
 
 		return InnerSink.OnMessage(message);
 	}
 
 	/// <summary>
-	/// Call this message to ensure the starting and finished messages were sent,
+	/// Call this method to ensure the starting and finished messages were sent,
 	/// and also send an <see cref="IErrorMessage"/> if it appears that the test
 	/// process crashed rather than cleaning up appropriately.
 	/// </summary>
@@ -82,7 +87,10 @@ public abstract class CrashDetectionSinkBase<TStart, TFinish>(
 		{
 			// If we saw the finish message, there's nothing to do
 			if (Finish is not null)
+			{
+				InnerSink.OnMessage(Finish);
 				return;
+			}
 
 			if ((DateTimeOffset.UtcNow - lastMessageReceived).TotalMilliseconds >= FinishWaitMilliseconds)
 				break;

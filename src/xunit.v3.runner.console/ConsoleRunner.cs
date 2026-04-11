@@ -444,7 +444,7 @@ sealed class ConsoleRunner(string[] args) :
 			controller.FindAndRun(resultsSink, settings);
 			resultsSink.Finished.WaitOne();
 
-			if (resultsSink.ExecutionSummary.Failed != 0 && executionOptions.GetStopOnTestFailOrDefault())
+			if ((resultsSink.ExecutionSummary.Failed != 0 || resultsSink.ExecutionSummary.Errors != 0) && executionOptions.GetStopOnTestFailOrDefault())
 			{
 				consoleHelper.WriteLine("Cancelling due to test failure...");
 

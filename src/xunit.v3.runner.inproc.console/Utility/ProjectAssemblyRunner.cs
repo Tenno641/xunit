@@ -338,7 +338,7 @@ public sealed class ProjectAssemblyRunner(
 
 				TestExecutionSummaries.Add(frontController.TestAssemblyUniqueID, resultsSink.ExecutionSummary);
 
-				if (resultsSink.ExecutionSummary.Failed != 0 && executionOptions.GetStopOnTestFailOrDefault())
+				if ((resultsSink.ExecutionSummary.Failed != 0 || resultsSink.ExecutionSummary.Errors != 0) && executionOptions.GetStopOnTestFailOrDefault())
 				{
 					if (automatedMode != AutomatedMode.Off)
 						runnerLogger.WriteMessage(new DiagnosticMessage("Cancelling due to test failure"));
