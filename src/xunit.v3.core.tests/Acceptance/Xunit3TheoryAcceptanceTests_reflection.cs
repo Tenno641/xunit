@@ -38,8 +38,6 @@ partial class Xunit3TheoryAcceptanceTests
 			];
 		}
 
-#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
-
 		class ClassUnderTest_ClassDisposable
 		{
 			[Theory]
@@ -58,8 +56,6 @@ partial class Xunit3TheoryAcceptanceTests
 				ClassDataSource.Data.GetEnumerator();
 		}
 
-#pragma warning restore xUnit1007
-
 		// This appears to be timing-related flaky on AOT
 		[Fact]
 		public async ValueTask ClassAsyncDisposable_DisposesOfClass()
@@ -73,8 +69,6 @@ partial class Xunit3TheoryAcceptanceTests
 			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassAsyncDisposable.InitializeAsync", diagnosticMessages);
 			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests+DataSource_ClassAsyncDisposable.DisposeAsync", diagnosticMessages);
 		}
-
-#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
 
 		class ClassUnderTest_ClassAsyncDisposable
 		{
@@ -96,8 +90,6 @@ partial class Xunit3TheoryAcceptanceTests
 			IEnumerator IEnumerable.GetEnumerator() =>
 				ClassDataSource.Data.GetEnumerator();
 		}
-
-#pragma warning restore xUnit1007
 
 		// Native AOT reports these in the generator
 		[Fact]
@@ -190,8 +182,6 @@ partial class Xunit3TheoryAcceptanceTests
 			];
 		}
 
-#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
-
 		class ClassUnderTest_ClassDisposable
 		{
 			[Theory]
@@ -210,8 +200,6 @@ partial class Xunit3TheoryAcceptanceTests
 				ClassDataSource.Data.GetEnumerator();
 		}
 
-#pragma warning restore xUnit1007
-
 		// This appears to be timing-related flaky on AOT
 		[Fact]
 		public async ValueTask ClassAsyncDisposable_DisposesOfClass()
@@ -225,8 +213,6 @@ partial class Xunit3TheoryAcceptanceTests
 			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassAsyncDisposable.InitializeAsync", diagnosticMessages);
 			Assert.Contains("Xunit3TheoryAcceptanceTests+ClassDataTests_Generic+DataSource_ClassAsyncDisposable.DisposeAsync", diagnosticMessages);
 		}
-
-#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
 
 		class ClassUnderTest_ClassAsyncDisposable
 		{
@@ -248,8 +234,6 @@ partial class Xunit3TheoryAcceptanceTests
 			IEnumerator IEnumerable.GetEnumerator() =>
 				ClassDataSource.Data.GetEnumerator();
 		}
-
-#pragma warning restore xUnit1007
 
 		// Native AOT reports these in the generator
 		[Fact]

@@ -1,6 +1,4 @@
 #pragma warning disable IDE0060 // Remove unused parameter
-#pragma warning disable xUnit1007 // Should be able to remove this when https://github.com/xunit/xunit/issues/3507 is resolved
-#pragma warning disable xUnit1019 // Should be able to remove this when https://github.com/xunit/xunit/issues/3508 is resolved
 #pragma warning disable xUnit1042 // The member referenced by the MemberData attribute returns untyped data rows
 
 using System.Collections;
