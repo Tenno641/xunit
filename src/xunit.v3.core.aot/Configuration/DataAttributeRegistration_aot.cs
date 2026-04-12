@@ -143,6 +143,7 @@ public class DataAttributeRegistration
 	/// <summary>
 	/// Creates a data row from the given data values.
 	/// </summary>
+	[OverloadResolutionPriority(2)]
 	public ITheoryDataRow CreateDataRow(ITheoryDataRow dataRow)
 	{
 		Guard.ArgumentNotNull(dataRow);
@@ -171,6 +172,7 @@ public class DataAttributeRegistration
 	/// <summary>
 	/// Creates a data row from the given data values.
 	/// </summary>
+	[OverloadResolutionPriority(1)]
 	public ITheoryDataRow CreateDataRow(ITuple tuple)
 	{
 		Guard.ArgumentNotNull(tuple);
