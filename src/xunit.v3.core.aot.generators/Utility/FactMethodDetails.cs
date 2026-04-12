@@ -26,4 +26,12 @@ public class FactMethodDetails : MethodDetailsBase
 	}
 
 	public string MethodInvoker { get; }
+
+	public override bool Process()
+	{
+		if (!base.Process())
+			return false;
+
+		return MethodSymbol.Parameters.Length == 0;
+	}
 }
