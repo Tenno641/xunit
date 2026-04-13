@@ -39,7 +39,7 @@ internal static class XunitEntryPointGenerator
 			        global.Xunit.Runner.InProc.SystemConsole.ConsoleRunner.Run(args).GetAwaiter().GetResult()
 			    else
 			        global.Xunit.MicrosoftTestingPlatform.TestPlatformTestFramework.RunAsync(args, System.Action<_,_>(fun b a -> global.{{selfRegisteredExtensionsNamespace}}SelfRegisteredExtensions.AddSelfRegisteredExtensions(b,a))).GetAwaiter().GetResult()
-		""";
+			""";
 
 	internal static string GetMTPEntryPointVB(string selfRegisteredExtensionsNamespace) =>
 		$$"""
