@@ -174,31 +174,6 @@ internal static class Extensions
 		return missingInterfaces.Count == 0;
 	}
 
-	public static ITypeSymbol? RecursiveGetNonPublicNonInternalType(this ITypeSymbol type)
-	{
-		if (type.TypeKind == TypeKind.TypeParameter)
-			return null;
-
-		if (type.DeclaredAccessibility is not Accessibility.Public and not Accessibility.Internal)
-			return type;
-
-		if (type is not INamedTypeSymbol namedType)
-			return null;
-
-		return namedType.TypeArguments.Select(RecursiveGetNonPublicNonInternalType).FirstOrDefault(a => a is not null);
-	}
-
-	public static ITypeSymbol? RecursiveGetOpenGenericTypeParameter(this ITypeSymbol type)
-	{
-		if (type.TypeKind == TypeKind.TypeParameter)
-			return type;
-
-		if (type is not INamedTypeSymbol namedType)
-			return null;
-
-		return namedType.TypeArguments.Select(RecursiveGetOpenGenericTypeParameter).FirstOrDefault(a => a is not null);
-	}
-
 	public static (bool IsTask, bool IsAsyncEnumerable, ITypeSymbol EnumerableType)? GetTheoryDataInfo(
 		this ITypeSymbol type,
 		INamedTypeSymbol objectType)
@@ -350,6 +325,31 @@ internal static class Extensions
 			: value is string s
 				? s.Quoted()
 				: value.ToString();
+
+	public static ITypeSymbol? RecursiveGetNonPublicNonInternalType(this ITypeSymbol type)
+	{
+		if (type.TypeKind == TypeKind.TypeParameter)
+			return null;
+
+		if (type.DeclaredAccessibility is not Accessibility.Public and not Accessibility.Internal)
+			return type;
+
+		if (type is not INamedTypeSymbol namedType)
+			return null;
+
+		return namedType.TypeArguments.Select(RecursiveGetNonPublicNonInternalType).FirstOrDefault(a => a is not null);
+	}
+
+	public static ITypeSymbol? RecursiveGetOpenGenericTypeParameter(this ITypeSymbol type)
+	{
+		if (type.TypeKind == TypeKind.TypeParameter)
+			return type;
+
+		if (type is not INamedTypeSymbol namedType)
+			return null;
+
+		return namedType.TypeArguments.Select(RecursiveGetOpenGenericTypeParameter).FirstOrDefault(a => a is not null);
+	}
 
 	public static string ToCompilerSafeName(this string value)
 	{
