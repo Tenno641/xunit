@@ -378,6 +378,7 @@ internal static class Extensions
 
 		return constant.Value switch
 		{
+			null => "null",
 			// These constant values aren't emitted by Roslyn ToCSharpString() correctly, per https://github.com/xunit/xunit/issues/3524
 			float.NaN => "float.NaN",
 			float.PositiveInfinity => "float.PositiveInfinity",
@@ -385,6 +386,18 @@ internal static class Extensions
 			double.NaN => "double.NaN",
 			double.PositiveInfinity => "double.PositiveInfinity",
 			double.NegativeInfinity => "double.NegativeInfinity",
+			// Constant values don't preserve their data type, per https://github.com/xunit/xunit/issues/3548
+			bool b => b ? "true" : "false",
+			double => constant.ToCSharpString() + "D",
+			float => constant.ToCSharpString() + "F",
+			decimal => constant.ToCSharpString() + "M",
+			long => constant.ToCSharpString() + "L",
+			ulong => constant.ToCSharpString() + "UL",
+			uint => constant.ToCSharpString() + "U",
+			byte => "(byte)" + constant.ToCSharpString(),
+			sbyte => "(sbyte)" + constant.ToCSharpString(),
+			short => "(short)" + constant.ToCSharpString(),
+			ushort => "(ushort)" + constant.ToCSharpString(),
 			_ => constant.ToCSharpString()
 		};
 	}
