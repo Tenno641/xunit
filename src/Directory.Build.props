@@ -16,6 +16,8 @@
     <DebugType Condition=" '$(TargetFrameworkIdentifier)' != '.NETFramework' ">embedded</DebugType>
     <DefineConstants>$(DefineConstants);XUNIT_NULLABLE;XUNIT_OVERLOAD_RESOLUTION_PRIORITY;XUNIT_POINTERS</DefineConstants>
     <DefineConstants Condition=" $(_XunitIsAotProject) ">$(DefineConstants);XUNIT_AOT</DefineConstants>
+    <!-- Enable this to see AOT generated source on disk -->
+    <!--<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>-->
     <ImplicitUsings Condition=" '$(ImplicitUsings)' == '' ">enable</ImplicitUsings>
     <IsAotCompatible Condition=" $(_XunitIsAotProject) AND '$(IsAotCompatible)' == '' ">true</IsAotCompatible>
     <LangVersion>14.0</LangVersion>

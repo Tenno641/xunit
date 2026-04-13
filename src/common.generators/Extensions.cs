@@ -67,6 +67,35 @@ internal static class Extensions
 		return result.ToString();
 	}
 
+	static string? FormatPrimitive(object? value) =>
+		value switch
+		{
+			null => "null",
+			// Let this fall through to whatever the default formatting will be, rather than being treated as integral
+			Enum => null,
+			// These constant values aren't emitted by Roslyn ToCSharpString() correctly, per https://github.com/xunit/xunit/issues/3524
+			float.NaN => "float.NaN",
+			float.PositiveInfinity => "float.PositiveInfinity",
+			float.NegativeInfinity => "float.NegativeInfinity",
+			double.NaN => "double.NaN",
+			double.PositiveInfinity => "double.PositiveInfinity",
+			double.NegativeInfinity => "double.NegativeInfinity",
+			// Constant values don't preserve their data type, per https://github.com/xunit/xunit/issues/3548
+			bool b => b ? "true" : "false",
+			byte b => "(byte)" + b.ToString(CultureInfo.InvariantCulture),
+			sbyte sb => "(sbyte)" + sb.ToString(CultureInfo.InvariantCulture),
+			short s => "(short)" + s.ToString(CultureInfo.InvariantCulture),
+			ushort us => "(ushort)" + us.ToString(CultureInfo.InvariantCulture),
+			int i => i.ToString(CultureInfo.InvariantCulture),
+			uint ui => ui.ToString(CultureInfo.InvariantCulture) + "U",
+			long l => l.ToString(CultureInfo.InvariantCulture) + "L",
+			ulong ul => ul.ToString(CultureInfo.InvariantCulture) + "UL",
+			float f => f.ToString("G9", CultureInfo.InvariantCulture) + "F",
+			double d => d.ToString("G17", CultureInfo.InvariantCulture) + "D",
+			decimal m => m.ToString("G29", CultureInfo.InvariantCulture) + "M",
+			_ => null,
+		};
+
 	public static ImmutableArray<ISymbol> GetAllMembers(
 		this INamedTypeSymbol type,
 		string name)
@@ -324,7 +353,7 @@ internal static class Extensions
 			? null
 			: value is string s
 				? s.Quoted()
-				: value.ToString();
+				: (FormatPrimitive(value) ?? value.ToString());
 
 	public static ITypeSymbol? RecursiveGetNonPublicNonInternalType(this ITypeSymbol type)
 	{
@@ -373,33 +402,12 @@ internal static class Extensions
 	{
 		Guard.ArgumentNotNull(constant.Type);
 
-		if (constant.Kind == TypedConstantKind.Array)
-			return $"new {constant.Type?.ToCSharp()} {{ {string.Join(", ", constant.Values.Select(v => v.ToCSharp()))} }}";
-
-		return constant.Value switch
+		return constant.Kind switch
 		{
-			null => "null",
-			// These constant values aren't emitted by Roslyn ToCSharpString() correctly, per https://github.com/xunit/xunit/issues/3524
-			float.NaN => "float.NaN",
-			float.PositiveInfinity => "float.PositiveInfinity",
-			float.NegativeInfinity => "float.NegativeInfinity",
-			double.NaN => "double.NaN",
-			double.PositiveInfinity => "double.PositiveInfinity",
-			double.NegativeInfinity => "double.NegativeInfinity",
-			// Constant values don't preserve their data type, per https://github.com/xunit/xunit/issues/3548
-			bool b => b ? "true" : "false",
-			double => constant.ToCSharpString() + "D",
-			float => constant.ToCSharpString() + "F",
-			decimal => constant.ToCSharpString() + "M",
-			long => constant.ToCSharpString() + "L",
-			ulong => constant.ToCSharpString() + "UL",
-			uint => constant.ToCSharpString() + "U",
-			byte => "(byte)" + constant.ToCSharpString(),
-			sbyte => "(sbyte)" + constant.ToCSharpString(),
-			short => "(short)" + constant.ToCSharpString(),
-			ushort => "(ushort)" + constant.ToCSharpString(),
-			_ => constant.ToCSharpString()
-		};
+			TypedConstantKind.Array => $"new {constant.Type?.ToCSharp()} {{ {string.Join(", ", constant.Values.Select(v => v.ToCSharp()))} }}",
+			TypedConstantKind.Primitive => FormatPrimitive(constant.Value),
+			_ => null,
+		} ?? constant.ToCSharpString();
 	}
 
 	public static string ToCSharp(this ImmutableArray<TypedConstant> constants) =>
