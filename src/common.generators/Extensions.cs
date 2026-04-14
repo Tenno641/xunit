@@ -12,6 +12,7 @@ internal static class Extensions
 	static readonly Dictionary<char, string> escapes = new()
 	{
 		['\\'] = "\\\\",
+		['\''] = "\\\'",
 		['"'] = "\\\"",
 		['\0'] = "\\0",
 		['\a'] = "\\a",
@@ -52,6 +53,9 @@ internal static class Extensions
 			SymbolDisplayMiscellaneousOptions.UseSpecialTypes
 	);
 
+	public static string Escape(this char value) =>
+		escapes.TryGetValue(value, out var escaped) ? escaped : value.ToString();
+
 	public static string Escape(this string value)
 	{
 		var result = new StringBuilder(value.Length);
@@ -81,6 +85,7 @@ internal static class Extensions
 			double.PositiveInfinity => "double.PositiveInfinity",
 			double.NegativeInfinity => "double.NegativeInfinity",
 			// Constant values don't preserve their data type, per https://github.com/xunit/xunit/issues/3548
+			char c => "'" + Escape(c) + "'",
 			bool b => b ? "true" : "false",
 			byte b => "(byte)" + b.ToString(CultureInfo.InvariantCulture),
 			sbyte sb => "(sbyte)" + sb.ToString(CultureInfo.InvariantCulture),

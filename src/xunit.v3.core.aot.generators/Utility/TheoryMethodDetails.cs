@@ -75,9 +75,16 @@ public class TheoryMethodDetails : MethodDetailsBase
 			if (parameter.IsOptional)
 			{
 				var defaultValue = parameter.HasExplicitDefaultValue ? parameter.ExplicitDefaultValue : null;
-				ParameterDefaultValues?[idx] = defaultValue.QuotedIfString() ?? (parameter.Type.IsValueType ? $"default({parameter.Type.ToDisplayString()})" : "null");
+				var formattedDefaultValue =
+					parameter.DeclaringSyntaxReferences.FirstOrDefault() is { } syntaxReference
+						&& syntaxReference.GetSyntax() is ParameterSyntax parameterSyntax
+						&& parameterSyntax.Default is not null
+							? parameterSyntax.Default.Value.ToFullString()
+							: defaultValue.QuotedIfString() ?? (parameter.Type.IsValueType ? $"default({parameter.Type.ToDisplayString()})" : "null");
+
+				ParameterDefaultValues?[idx] = formattedDefaultValue;
 				invokerFactoryBuilder.AppendLine($$"""
-								{{parameterNameInCode}}.Result = {{defaultValue.QuotedIfString() ?? $"default({parameter.Type.ToCSharp()})!"}};
+								{{parameterNameInCode}}.Result = ({{parameter.Type.ToCSharp()}}){{defaultValue.QuotedIfString() ?? $"default({parameter.Type.ToCSharp()})!"}};
 					""");
 			}
 			else if (parameter.IsParams)
