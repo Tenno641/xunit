@@ -23,7 +23,7 @@ public abstract class RegisterRunnerReporterAttributeGeneratorBase(string fullyQ
 		if (code.Count == 0)
 			return;
 
-		AddInitAttribute(context, result, string.Join("\r\n", code));
+		AddInitAttribute(context, result, string.Join("\n", code));
 	}
 
 	protected virtual INamedTypeSymbol? GetTypeArgument(AttributeData attribute) =>

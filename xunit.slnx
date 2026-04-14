@@ -86,6 +86,9 @@
       <BuildDependency Project="src/xunit.v3.acceptance.aot.tests/xunit.v3.acceptance.aot.tests.csproj" />
     </Project>
     <Project Path="src/xunit.v3.mtp-v2.aot.tests/xunit.v3.mtp-v2.aot.tests.csproj" />
+    <Project Path="src/xunit.v3.runner.common.aot.generators.tests/xunit.v3.runner.common.aot.generators.tests.csproj">
+      <BuildDependency Project="src/xunit.v3.runner.common.aot/xunit.v3.runner.common.aot.csproj" />
+    </Project>
     <Project Path="src/xunit.v3.runner.common.aot.tests/xunit.v3.runner.common.aot.tests.csproj" />
     <Project Path="src/xunit.v3.runner.console.aot.tests/xunit.v3.runner.console.aot.tests.csproj" />
     <Project Path="src/xunit.v3.runner.inproc.console.aot.tests/xunit.v3.runner.inproc.console.aot.tests.csproj" />

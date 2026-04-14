@@ -16,7 +16,7 @@ public abstract class IDAndTypeGenerator(
 
 		AddInitAttribute(
 			context, result,
-			string.Join("\r\n", result.Entries.Where(rw => rw.Type is not null).Select(rw => perItemInit(rw.ID, rw.Type!)))
+			string.Join("\n", result.Entries.Where(rw => rw.Type is not null).Select(rw => perItemInit(rw.ID, rw.Type!)))
 		);
 	}
 

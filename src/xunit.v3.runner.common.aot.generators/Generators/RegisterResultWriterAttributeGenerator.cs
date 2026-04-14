@@ -32,10 +32,4 @@ public class RegisterResultWriterAttributeOfTGenerator() :
 				global::Xunit.Runner.Common.RegisteredRunnerConfig.RegisterMicrosoftTestingPlatformResultWriter("{{id}}", writer);
 			}
 			""")
-{
-	protected override bool ValidateType(
-		INamedTypeSymbol type,
-		Location? location,
-		GeneratorResult result) =>
-			type.ImplementsInterfaces(Types.Xunit.Runner.Common.IConsoleResultWriter, Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
-}
+{ }

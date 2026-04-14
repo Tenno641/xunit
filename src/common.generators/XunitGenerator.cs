@@ -30,7 +30,7 @@ public abstract class XunitGenerator : IIncrementalGenerator
 		XunitGeneratorResult result,
 		string initialization)
 	{
-		if (result is null)
+		if (result is null || initialization is null)
 			return;
 
 		var initAttributeName = $"{attributeNameBase}٠{result.SafeNameSuffix}";
@@ -46,7 +46,7 @@ public abstract class XunitGenerator : IIncrementalGenerator
 				[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 				internal class {{initAttributeName}} : {{BaseInitAttributeName}} {
 					public override async global::System.Threading.Tasks.ValueTask InitializeAsync() {
-						{{initialization}}
+						{{initialization.TrimEnd('\n').Replace("\n", "\n\t\t\t")}}
 					}
 				}
 			}

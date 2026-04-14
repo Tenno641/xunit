@@ -20,10 +20,4 @@ public class RegisterMicrosoftTestingPlatformResultWriterAttributeOfTGenerator()
 	IDAndTypeGenerator(
 		Types.Xunit.Runner.Common.RegisterMicrosoftTestingPlatformResultWriterAttribute + "`1",
 		(id, type) => $@"global::Xunit.Runner.Common.RegisteredRunnerConfig.RegisterMicrosoftTestingPlatformResultWriter(""{id}"", new {type}());")
-{
-	protected override bool ValidateType(
-		INamedTypeSymbol type,
-		Location? location,
-		GeneratorResult result) =>
-			type.ImplementsInterface(Types.Xunit.Runner.Common.IMicrosoftTestingPlatformResultWriter);
-}
+{ }
