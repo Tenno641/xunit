@@ -17,7 +17,7 @@ public class TraitAttributeGenerator() :
 			context,
 			result,
 			string.Join(
-				"\r\n",
+				"\n",
 				result.NameValuePairs.Select(nvp => $"global::Xunit.v3.RegisteredEngineConfig.RegisterAssemblyTrait({nvp.Name.Quoted()}, {nvp.Value.Quoted()});")
 			)
 		);

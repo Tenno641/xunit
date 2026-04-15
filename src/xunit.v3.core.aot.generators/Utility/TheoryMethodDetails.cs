@@ -16,23 +16,29 @@ public class TheoryMethodDetails : MethodDetailsBase
 		var requiredParameterCount = methodSymbol.Parameters.Where(p => !p.IsOptional && !p.IsParams).Count();
 
 		var invokerFactoryBuilder = new StringBuilder();
-		invokerFactoryBuilder.AppendLine($$"""
+		invokerFactoryBuilder.Append("""
 			async dataRow => {
 				return async obj => {
 					await using var disposalTracker = new global::Xunit.Sdk.DisposalTracker();
 					var data = dataRow.GetData();
 					disposalTracker.AddRange(data);
-					if (data.Length < {{requiredParameterCount}})
-						throw new global::Xunit.Sdk.TestPipelineException(
-							string.Format(
-								global::System.Globalization.CultureInfo.CurrentCulture,
-								"The test method expected {{requiredParameterCount}} parameter value{{(requiredParameterCount == 1 ? "" : "s")}}, but {0} parameter value{1} {2} provided.",
-								data.Length,
-								data.Length == 1 ? "" : "s",
-								data.Length == 1 ? "was" : "were"
-							)
-						);
+
 			""");
+
+		if (requiredParameterCount > 0)
+			invokerFactoryBuilder.Append($$"""
+						if (data.Length < {{requiredParameterCount}})
+							throw new global::Xunit.Sdk.TestPipelineException(
+								string.Format(
+									global::System.Globalization.CultureInfo.CurrentCulture,
+									"The test method expected {{requiredParameterCount}} parameter value{{(requiredParameterCount == 1 ? "" : "s")}}, but {0} parameter value{1} {2} provided.",
+									data.Length,
+									data.Length == 1 ? "" : "s",
+									data.Length == 1 ? "was" : "were"
+								)
+							);
+
+				""");
 
 		var anyOptional = false;
 		var anyRequired = false;
@@ -49,9 +55,10 @@ public class TheoryMethodDetails : MethodDetailsBase
 		}
 
 		if (anyRequired)
-			invokerFactoryBuilder.AppendLine("""
-							var invalidArguments = new global::System.Collections.Generic.List<(string Type, string Name, object? Value)>();
-					""");
+			invokerFactoryBuilder.Append("""
+						var invalidArguments = new global::System.Collections.Generic.List<(string Type, string Name, object? Value)>();
+
+				""");
 		if (anyOptional)
 			ParameterDefaultValues = new string?[methodSymbol.Parameters.Length];
 
@@ -67,9 +74,10 @@ public class TheoryMethodDetails : MethodDetailsBase
 			parameterNamesInCode.Add(parameterNameInCode);
 
 			var conversion = parameter.NullableAnnotation == NullableAnnotation.NotAnnotated ? "TryGet" : "TryGetNullable";
-			invokerFactoryBuilder.AppendLine($$"""
+			invokerFactoryBuilder.Append($$"""
 						var {{parameterNameInCode}} = data.{{conversion}}<{{parameter.Type.ToCSharp()}}>({{idx}});
 						if (!{{parameterNameInCode}}.Success)
+
 				""");
 
 			if (parameter.IsOptional)
@@ -83,25 +91,28 @@ public class TheoryMethodDetails : MethodDetailsBase
 							: defaultValue.QuotedIfString() ?? (parameter.Type.IsValueType ? $"default({parameter.Type.ToDisplayString()})" : "null");
 
 				ParameterDefaultValues?[idx] = formattedDefaultValue;
-				invokerFactoryBuilder.AppendLine($$"""
+				invokerFactoryBuilder.Append($$"""
 								{{parameterNameInCode}}.Result = ({{parameter.Type.ToCSharp()}}){{defaultValue.QuotedIfString() ?? $"default({parameter.Type.ToCSharp()})!"}};
+
 					""");
 			}
 			else if (parameter.IsParams)
 			{
 				ParameterDefaultValues?[idx] = "[]";
-				invokerFactoryBuilder.AppendLine($$"""
+				invokerFactoryBuilder.Append($$"""
 								{{parameterNameInCode}}.Result = [];
+
 					""");
 			}
 			else
-				invokerFactoryBuilder.AppendLine($$"""
+				invokerFactoryBuilder.Append($$"""
 								invalidArguments.Add(({{parameter.Type.ToDisplayString().Quoted()}}, {{parameterName}}, {{parameterNameInCode}}.RawValue));
+
 					""");
 		}
 
 		if (anyRequired)
-			invokerFactoryBuilder.AppendLine($$"""
+			invokerFactoryBuilder.Append($$"""
 						if (invalidArguments.Count != 0)
 							throw new global::Xunit.Sdk.TestPipelineException(
 								string.Format(
@@ -110,6 +121,7 @@ public class TheoryMethodDetails : MethodDetailsBase
 									string.Join(", ", global::System.Linq.Enumerable.Select(invalidArguments, a => $"{a.Type} {a.Name} ({a.Value ?? "null"})"))
 								)
 							);
+
 				""");
 
 		var paramsText = string.Join(", ", parameterNamesInCode.Select(p => $"{p}.Result!"));
@@ -126,10 +138,11 @@ public class TheoryMethodDetails : MethodDetailsBase
 			(false, false) => $"		await global::Xunit.Sdk.AsyncUtility.Await((({classSymbol.ToCSharp()})obj!).{MethodSymbol.Name}({paramsText}));",
 		});
 
-		invokerFactoryBuilder.AppendLine("""
+		invokerFactoryBuilder.Append("""
 
 				};
 			}
+
 			""");
 
 		MethodInvokerFactory = invokerFactoryBuilder.ToString();

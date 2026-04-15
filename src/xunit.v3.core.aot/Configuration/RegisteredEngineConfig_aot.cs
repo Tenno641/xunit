@@ -18,7 +18,7 @@ public static class RegisteredEngineConfig
 	static readonly Dictionary<string, Dictionary<string, HashSet<string>>> testCollectionTraits = [];
 	static readonly Dictionary<(string TestClassIndex, string TestMethodName), CodeGenTestMethodRegistration> testMethodRegistrations = [];
 	static readonly Dictionary<(string TestClassIndex, string TestMethodName), Dictionary<string, HashSet<string>>> testMethodTraits = [];
-	static readonly Dictionary<(string TestClassIndex, string TestMethodName), List<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>>> theoryDataRowFactories = [];
+	static readonly Dictionary<(string TestClassIndex, string TestMethodName), List<(Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>> Factory, bool DisableDiscoveryEnumeration)>> theoryDataRowFactories = [];
 
 	/// <summary>
 	/// Gets the test case orderer that's attached to a test assembly. Returns <see langword="null"/> if there
@@ -256,7 +256,7 @@ public static class RegisteredEngineConfig
 	/// It is expected that data attributes will have registered factories via <see cref="RegisterTheoryDataRowFactory"/>.
 	/// This will return an empty array when no factories have been registered for the given test method.
 	/// </remarks>
-	public static IReadOnlyCollection<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>> GetTheoryDataRowFactories(ICodeGenTestMethod testMethod)
+	public static IReadOnlyCollection<(Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>> Factory, bool DisableDiscoveryEnumeration)> GetTheoryDataRowFactories(ICodeGenTestMethod testMethod)
 	{
 		Guard.ArgumentNotNull(testMethod);
 
@@ -372,7 +372,7 @@ public static class RegisteredEngineConfig
 					);
 
 				var testMethod = testMethodRegistration.GetTestMethod(testClass, methodName);
-				return await factory.Generate(discoveryOptions, testMethod, testMethod.Traits, disposalTracker);
+				return await factory.Generate(discoveryOptions, testMethod, disposalTracker);
 			});
 	}
 
@@ -531,6 +531,7 @@ public static class RegisteredEngineConfig
 	/// <param name="testClassIndex">The dictionary index of the test class. This is the C# compilation name for
 	/// the test class (in the form of <c>global::Namespace.TypeName</c>).</param>
 	/// <param name="methodName">The test method name</param>
+	/// <param name="disableDiscoveryEnumeration">A flag to indicate whether enumeration should be delayed to execution time</param>
 	/// <param name="factory">The factory providing theory data rows</param>
 	/// <remarks>
 	/// This is typically called when <see cref="DataAttribute"/>-derived classes are seen at the test method level.
@@ -538,6 +539,7 @@ public static class RegisteredEngineConfig
 	public static void RegisterTheoryDataRowFactory(
 		string testClassIndex,
 		string methodName,
+		bool disableDiscoveryEnumeration,
 		Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>> factory) =>
-			theoryDataRowFactories.AddOrGet((Guard.ArgumentNotNull(testClassIndex), Guard.ArgumentNotNull(methodName))).Add(factory);
+			theoryDataRowFactories.AddOrGet((Guard.ArgumentNotNull(testClassIndex), Guard.ArgumentNotNull(methodName))).Add((factory, disableDiscoveryEnumeration));
 }

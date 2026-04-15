@@ -14,6 +14,9 @@ public class TestFrameworkAttributeGeneratorBase(string fullyQualifiedAttributeT
 	{
 		Guard.ArgumentNotNull(type);
 
+		if (!ValidateImplementationType(type))
+			return null;
+
 		// First check for a ctor that takes a string/string?
 		var ctor = type.Constructors.FirstOrDefault(c =>
 			!c.IsStatic
@@ -31,15 +34,15 @@ public class TestFrameworkAttributeGeneratorBase(string fullyQualifiedAttributeT
 
 		return null;
 	}
-
-	protected override bool ValidateImplementationType(INamedTypeSymbol type) =>
-		type.ImplementsInterface(Types.Xunit.v3.ITestFramework);
 }
 
 [Generator(LanguageNames.CSharp)]
 public class TestFrameworkAttributeGenerator() :
 	TestFrameworkAttributeGeneratorBase(Types.Xunit.TestFrameworkAttribute)
-{ }
+{
+	protected override bool ValidateImplementationType(INamedTypeSymbol type) =>
+		type.ImplementsInterface(Types.Xunit.v3.ITestFramework);
+}
 
 [Generator(LanguageNames.CSharp)]
 public class TestFrameworkAttributeOfTGenerator() :

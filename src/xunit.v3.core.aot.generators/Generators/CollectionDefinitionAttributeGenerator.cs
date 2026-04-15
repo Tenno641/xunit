@@ -34,7 +34,7 @@ public class CollectionDefinitionAttributeGenerator() :
 					""");
 		}
 
-		AddInitAttribute(context, result, string.Join("\r\n", code));
+		AddInitAttribute(context, result, string.Join("\n", code));
 	}
 
 	protected override sealed GeneratorResult? Transform(

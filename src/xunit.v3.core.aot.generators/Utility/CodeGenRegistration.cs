@@ -9,7 +9,7 @@ internal static class CodeGenRegistration
 	internal static string ToFixtureFactories(IReadOnlyCollection<(string Type, string Factory)> fixtures) =>
 		$$"""
 		new global::System.Collections.Generic.Dictionary<global::System.Type, global::System.Func<global::Xunit.v3.FixtureMappingManager?, global::System.Threading.Tasks.ValueTask<object>>> {
-			{{string.Join(", ", fixtures.Select(f => $"[typeof({f.Type})] = {f.Factory}"))}}
+			{{string.Join(", ", fixtures.Select(f => $"[typeof({f.Type})] = {f.Factory.Replace("\n", "\n\t")}"))}}
 		}
 		""";
 
@@ -32,15 +32,19 @@ internal static class CodeGenRegistration
 		var parameterNamesInCode = new List<string>();
 
 		var factoryBuilder = new StringBuilder();
-		factoryBuilder.AppendLine("async mappingManager => {");
+		factoryBuilder.Append("""
+			async mappingManager => {
+
+			""");
 
 		if (ctor.Parameters.Length != 0)
 		{
 			var anyRequired = ctor.Parameters.Any(p => !p.IsOptional && !p.IsParams);
 
 			if (anyRequired)
-				factoryBuilder.AppendLine("""
+				factoryBuilder.Append("""
 						var missingParameters = new global::System.Collections.Generic.List<(string Type, string Name)>();
+
 					""");
 
 			for (var idx = 0; idx < ctor.Parameters.Length; ++idx)
@@ -50,30 +54,34 @@ internal static class CodeGenRegistration
 				var parameterNameInCode = $"param{idx}";
 				parameterNamesInCode.Add(parameterNameInCode);
 
-				factoryBuilder.AppendLine($$"""
+				factoryBuilder.Append($$"""
 						var {{parameterNameInCode}} = await {{string.Format(CultureInfo.InvariantCulture, argumentLookupFormat, parameter.Type.ToCSharp())}};
 						if (!{{parameterNameInCode}}.Success)
+
 					""");
 
 				if (parameter.IsOptional)
 				{
 					var defaultValue = parameter.HasExplicitDefaultValue ? parameter.ExplicitDefaultValue : null;
-					factoryBuilder.AppendLine($$"""
+					factoryBuilder.Append($$"""
 								{{parameterNameInCode}}.Result = {{defaultValue.QuotedIfString() ?? $"default({parameter.Type.ToCSharp(includeGlobal: false)})"}};
+
 						""");
 				}
 				else if (parameter.IsParams)
-					factoryBuilder.AppendLine($$"""
+					factoryBuilder.Append($$"""
 								{{parameterNameInCode}}.Result = [];
+
 						""");
 				else
-					factoryBuilder.AppendLine($$"""
+					factoryBuilder.Append($$"""
 								missingParameters.Add(({{parameter.Type.ToDisplayString().Quoted()}}, {{parameterName}}));
+
 						""");
 			}
 
 			if (anyRequired)
-				factoryBuilder.AppendLine($$"""
+				factoryBuilder.Append($$"""
 						if (missingParameters.Count != 0)
 							throw new global::Xunit.Sdk.TestPipelineException(
 								string.Format(
@@ -82,11 +90,13 @@ internal static class CodeGenRegistration
 									string.Join(", ", global::System.Linq.Enumerable.Select(missingParameters, p => $"{p.Type} {p.Name}"))
 								)
 							);
+
 					""");
 		}
 
-		factoryBuilder.AppendLine($$"""
+		factoryBuilder.Append($$"""
 				var instance = new {{testClassTypeName}}({{string.Join(", ", parameterNamesInCode.Select(p => $"{p}.Result!"))}});
+
 			""");
 
 		factoryBuilder.Append($$"""

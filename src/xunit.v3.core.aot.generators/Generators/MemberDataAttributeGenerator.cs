@@ -78,10 +78,14 @@ public class MemberDataAttributeGenerator() :
 
 		var parameters = string.Empty;
 		var parametersInit = new StringBuilder();
-		if (member is IMethodSymbol memberMethod)
+		var arguments = attribute.ConstructorArguments[1].Values;
+		if (member is not IMethodSymbol memberMethod)
 		{
-			var arguments = attribute.ConstructorArguments[1].Values;
-
+			if (arguments.Length != 0)
+				return;
+		}
+		else
+		{
 			if (arguments.Length > memberMethod.Parameters.Length || memberMethod.Parameters.Any(p => p.IsParams))
 				return;
 
@@ -93,8 +97,9 @@ public class MemberDataAttributeGenerator() :
 
 			if (arguments.Length > 0)
 			{
-				parametersInit.AppendLine("""
-					var invalidParameters = new global::System.Collections.Generic.List<(string Type, string Name, string Value)>();
+				parametersInit.Append("""
+				var invalidParameters = new global::System.Collections.Generic.List<(string Type, string Name, string Value)>();
+
 				""");
 
 				for (var idx = 0; idx < memberMethod.Parameters.Length; ++idx)
@@ -106,8 +111,9 @@ public class MemberDataAttributeGenerator() :
 					if (idx >= arguments.Length)
 					{
 						if (!parameter.IsOptional && !parameter.IsParams)
-							parametersInit.AppendLine($$"""
+							parametersInit.Append($$"""
 									invalidParameters.Add(({{parameter.Type.ToDisplayString().Quoted()}}, {{parameterName}}, "<missing value>"));
+
 								""");
 					}
 					else
@@ -116,14 +122,15 @@ public class MemberDataAttributeGenerator() :
 						var conversion = parameter.NullableAnnotation == NullableAnnotation.NotAnnotated ? "TryConvert" : "TryConvertNullable";
 
 						parameterNamesInCode.Add(parameterNameInCode);
-						parametersInit.AppendLine($$"""
+						parametersInit.Append($$"""
 								if (!global::Xunit.Sdk.TypeHelper.{{conversion}}({{argument.ToCSharp()}}, out {{parameter.Type.ToCSharp()}} {{parameterNameInCode}}))
 									invalidParameters.Add(({{parameter.Type.ToDisplayString().Quoted()}}, {{parameterName}}, {{argument.ToCSharp().Quoted()}}));
+
 							""");
 					}
 				}
 
-				parametersInit.AppendLine($$"""
+				parametersInit.Append($$"""
 						if (invalidParameters.Count != 0)
 							throw new global::Xunit.Sdk.TestPipelineException(
 								string.Format(
@@ -132,7 +139,8 @@ public class MemberDataAttributeGenerator() :
 									string.Join(", ", global::System.Linq.Enumerable.Select(invalidParameters, a => $"{a.Type} {a.Name} ({a.Value})"))
 								)
 							);
-					""");
+
+					""" + "\t");
 			}
 
 			parameters = $"({string.Join(", ", parameterNamesInCode)})";
@@ -142,17 +150,12 @@ public class MemberDataAttributeGenerator() :
 
 		var factory = new StringBuilder();
 
-		var span = location?.SourceTree?.GetLineSpan(location.SourceSpan, cancellationToken);
-		if (span.HasValue)
-			factory.AppendLine($@"#line {span.Value.StartLinePosition.Line - 1} ""{span.Value.Path}""");
-
 		var foreachAwait = theoryDataInfo.Value.IsAsyncEnumerable ? "await " : "";
 		var dataRowAwait = theoryDataInfo.Value.IsTask ? "await " : "";
 
-		factory.AppendLine($$"""
+		factory.Append($$"""
 			async disposalTracker => {
-			{{parametersInit}}
-				var attr = {{dataAttributeRegistration}};
+				{{parametersInit}}var attr = {{dataAttributeRegistration}};
 				var result = new global::System.Collections.Generic.List<global::Xunit.ITheoryDataRow>();
 				var dataRows = {{dataRowAwait}}{{memberType.ToCSharp()}}.{{memberName}}{{parameters}};
 				if (dataRows == null)
@@ -163,9 +166,6 @@ public class MemberDataAttributeGenerator() :
 			}
 			""");
 
-		if (span.HasValue)
-			factory.AppendLine("#line default");
-
-		result.Factories.Add(factory.ToString());
+		result.Factories.Add((factory.ToString(), disableDiscoveryEnumeration));
 	}
 }

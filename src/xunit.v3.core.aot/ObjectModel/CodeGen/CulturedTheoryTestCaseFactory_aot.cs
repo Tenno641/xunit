@@ -21,12 +21,10 @@ public class CulturedTheoryTestCaseFactory : TheoryTestCaseFactoryBase
 		ICodeGenTestMethod testMethod,
 		string displayName,
 		DisposalTracker disposalTracker,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		IReadOnlyCollection<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>> dataRowFactories)
 	{
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(displayName);
-		Guard.ArgumentNotNull(traits);
 		Guard.ArgumentNotNull(dataRowFactories);
 
 		return Cultures.Select(culture =>
@@ -45,7 +43,6 @@ public class CulturedTheoryTestCaseFactory : TheoryTestCaseFactoryBase
 								CreateDelayEnumeratedTest(
 									testCase,
 									displayName,
-									traits,
 									dataRow,
 									async obj => await CultureOverride.Call(culture, obj, await MethodInvokerFactory(dataRow)),
 									++idx,
@@ -57,7 +54,7 @@ public class CulturedTheoryTestCaseFactory : TheoryTestCaseFactoryBase
 				}
 			};
 
-			return CreateDelayEnumeratedTestCase(testMethod, displayName, traits, testFactories, displayNameSuffix);
+			return CreateDelayEnumeratedTestCase(testMethod, displayName, testFactories, displayNameSuffix);
 		}).CastOrToReadOnlyCollection();
 	}
 
@@ -66,12 +63,10 @@ public class CulturedTheoryTestCaseFactory : TheoryTestCaseFactoryBase
 		ICodeGenTestMethod testMethod,
 		string displayName,
 		DisposalTracker disposalTracker,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		IReadOnlyCollection<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>> dataRowFactories)
 	{
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(displayName);
-		Guard.ArgumentNotNull(traits);
 		Guard.ArgumentNotNull(dataRowFactories);
 
 		var result = new List<ICodeGenTestCase>();
@@ -95,7 +90,6 @@ public class CulturedTheoryTestCaseFactory : TheoryTestCaseFactoryBase
 						CreatePreEnumeratedTestCase(
 							testMethod,
 							displayName,
-							traits,
 							dataRow,
 							async obj => await CultureOverride.Call(culture, obj, await MethodInvokerFactory(dataRow)),
 							idx,

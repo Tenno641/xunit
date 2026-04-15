@@ -9,7 +9,6 @@ namespace Xunit.Generators;
 public class TestClassGenerator : XunitGenerator
 {
 	static readonly HashSet<string> validReturnTypes = ["void", Types.System.Threading.Tasks.Task, Types.System.Threading.Tasks.ValueTask];
-	// TODO: Remove TestClassGeneratorResult once all the registrars are no longer reporting diagnostics
 	readonly Dictionary<string, Func<INamedTypeSymbol, MethodDeclarationSyntax, IMethodSymbol, AttributeData, FactMethodRegistration?>> registrarsByAttribute = new()
 	{
 		[Types.Xunit.FactAttribute] = FactRegistrar.GetRegistration,
@@ -129,31 +128,36 @@ public class TestClassGenerator : XunitGenerator
 			return;
 
 		var initialization = new StringBuilder();
-		initialization.AppendLine($$"""
+		initialization.Append($$"""
 			global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestClass({{result.TestClassType.Quoted()}}, {{result.TestClass.ToGeneratedInit()}});
+
 			""");
 
 		if (result.TestClass.Traits is not null)
 			foreach (var trait in result.TestClass.Traits)
-				initialization.AppendLine($$"""
+				initialization.Append($$"""
 					global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestClassTrait({{result.TestClassType.Quoted()}}, {{trait.Key.Quoted()}}, {{string.Join(", ", trait.Value.Select(v => v.Quoted()))}});
+
 					""");
 
 		foreach (var kvp in result.TestMethods)
 		{
-			initialization.AppendLine($$"""
+			initialization.Append($$"""
 				global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestMethod({{result.TestClassType.Quoted()}}, {{kvp.Key.Quoted()}}, {{kvp.Value.TestMethod.ToGeneratedInit()}});
+
 				""");
 
 			if (kvp.Value.TestMethod.Traits is not null)
 				foreach (var trait in kvp.Value.TestMethod.Traits)
-					initialization.AppendLine($$"""
+					initialization.Append($$"""
 						global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestMethodTrait({{result.TestClassType.Quoted()}}, {{kvp.Key.Quoted()}}, {{trait.Key.Quoted()}}, {{string.Join(", ", trait.Value.Select(v => v.Quoted()))}});
+
 						""");
 
 			foreach (var testCaseFactory in kvp.Value.TestCaseFactories)
-				initialization.AppendLine($$"""
+				initialization.Append($$"""
 					global::Xunit.v3.RegisteredEngineConfig.RegisterCodeGenTestCaseFactory({{result.TestClassType.Quoted()}}, {{kvp.Key.Quoted()}}, {{testCaseFactory}});
+
 					""");
 		}
 

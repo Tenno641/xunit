@@ -35,7 +35,6 @@ public class CollectionBehaviorAttributeOfTGenerator() :
 		Guard.ArgumentNotNull(result);
 
 		return
-			type.ImplementsInterface(Types.Xunit.v3.ICodeGenTestCollectionFactory) &&
 			type.HasConstructorParameters([Types.Xunit.v3.ICodeGenTestAssembly])
 				? $"(assembly) => new {type.ToCSharp()}(assembly)"
 				: null;

@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\xunit.v3.core.aot.generators\xunit.v3.core.aot.generators.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -13,8 +13,7 @@ public class FactTestCaseFactory : FactTestCaseFactoryBase
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		ICodeGenTestMethod testMethod,
 		DisposalTracker disposalTracker,
-		string displayName,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits) =>
+		string displayName) =>
 			[new CodeGenTestCase(
 				Explicit,
 				SkipExceptions,
@@ -27,7 +26,7 @@ public class FactTestCaseFactory : FactTestCaseFactoryBase
 				[async testCase => [GenerateTest(testCase, MethodInvoker)]],
 				testMethod,
 				Timeout,
-				traits,
+				testMethod.Traits,
 				UniqueIDGenerator.ForTestCase(testMethod.UniqueID, 0)
 			)];
 }

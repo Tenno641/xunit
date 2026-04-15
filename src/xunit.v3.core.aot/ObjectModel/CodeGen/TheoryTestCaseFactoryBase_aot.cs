@@ -49,7 +49,6 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// </summary>
 	/// <param name="testCase">The test case</param>
 	/// <param name="displayName">The display name (to be used if <c><paramref name="dataRow"/>.TestDisplayName</c> is <see langword="null"/>)</param>
-	/// <param name="traits"></param>
 	/// <param name="dataRow">The data row</param>
 	/// <param name="methodInvoker">The method invoker</param>
 	/// <param name="testIndex">The test index</param>
@@ -57,7 +56,6 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	protected CodeGenTest CreateDelayEnumeratedTest(
 		ICodeGenTestCase testCase,
 		string displayName,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		ITheoryDataRow dataRow,
 		Func<object?, ValueTask> methodInvoker,
 		int testIndex,
@@ -68,11 +66,11 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 				dataRow.Skip ?? SkipReason,
 				dataRow.SkipUnless ?? SkipUnless,
 				dataRow.SkipWhen ?? SkipWhen,
-				testCase,
+				Guard.ArgumentNotNull(testCase),
 				GetTestDisplayName(dataRow, displayName, displayNameSuffix),
 				dataRow.Label,
 				dataRow.Timeout ?? Timeout,
-				MergeTraits(traits, dataRow.Traits),
+				MergeTraits(testCase.Traits, dataRow.Traits),
 				UniqueIDGenerator.ForTest(Guard.ArgumentNotNull(testCase).UniqueID, testIndex)
 			);
 
@@ -81,13 +79,11 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// </summary>
 	/// <param name="testMethod">The test method</param>
 	/// <param name="displayName">The test case display name</param>
-	/// <param name="traits">The test case traits</param>
 	/// <param name="testFactories">The factories for the tests</param>
 	/// <param name="displayNameSuffix">The optional display name suffix (will also be appended to the end of the unique ID)</param>
 	protected CodeGenTestCase CreateDelayEnumeratedTestCase(
 		ICodeGenTestMethod testMethod,
 		string displayName,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		IReadOnlyCollection<Func<ICodeGenTestCase, ValueTask<IReadOnlyCollection<ICodeGenTest>>>> testFactories,
 		string? displayNameSuffix = null) =>
 			new(
@@ -102,7 +98,7 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 				testFactories,
 				testMethod,
 				Timeout,
-				traits,
+				testMethod.Traits,
 				$"{UniqueIDGenerator.ForTestCase(testMethod.UniqueID, index: 0)}{displayNameSuffix}"
 			);
 
@@ -111,7 +107,6 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// </summary>
 	/// <param name="testMethod">The test method</param>
 	/// <param name="displayName">The display name (to be used if <c><paramref name="dataRow"/>.TestDisplayName</c> is <see langword="null"/>)</param>
-	/// <param name="traits">The test case traits</param>
 	/// <param name="dataRow">The data row</param>
 	/// <param name="methodInvoker">The method invoker</param>
 	/// <param name="testCaseIndex">The index to be used for unique ID generation</param>
@@ -120,7 +115,6 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	protected CodeGenTestCase CreatePreEnumeratedTestCase(
 		ICodeGenTestMethod testMethod,
 		string displayName,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		ITheoryDataRow dataRow,
 		Func<object?, ValueTask> methodInvoker,
 		int testCaseIndex,
@@ -131,7 +125,7 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 		Guard.ArgumentNotNull(testMethod);
 
 		var testDisplayName = GetTestDisplayName(dataRow, displayName, displayNameSuffix, displayNameIndex);
-		var mergedTraits = MergeTraits(traits, dataRow.Traits);
+		var mergedTraits = MergeTraits(testMethod.Traits, dataRow.Traits);
 
 		var skipReason = SkipReason;
 		var skipUnless = SkipUnless;
@@ -196,13 +190,11 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// <param name="testMethod">The test method</param>
 	/// <param name="displayName">The test case display name</param>
 	/// <param name="disposalTracker">The disposal tracker (used for class data instances and objects in data rows)</param>
-	/// <param name="traits">The test case traits</param>
 	/// <param name="dataRowFactories">The data row factories</param>
 	protected abstract ValueTask<IReadOnlyCollection<ICodeGenTestCase>> GenerateDelayEnumerated(
 		ICodeGenTestMethod testMethod,
 		string displayName,
 		DisposalTracker disposalTracker,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		IReadOnlyCollection<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>> dataRowFactories);
 
 	/// <summary>
@@ -211,13 +203,11 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// <param name="testMethod">The test method</param>
 	/// <param name="displayName">The test case display name</param>
 	/// <param name="disposalTracker">The disposal tracker (used for class data instances and objects in data rows)</param>
-	/// <param name="traits">The test case traits</param>
 	/// <param name="dataRowFactories">The data row factories</param>
 	protected abstract ValueTask<IReadOnlyCollection<ICodeGenTestCase>> GeneratePreEnumerated(
 		ICodeGenTestMethod testMethod,
 		string displayName,
 		DisposalTracker disposalTracker,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		IReadOnlyCollection<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>> dataRowFactories);
 
 	/// <inheritdoc/>
@@ -225,14 +215,12 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		ICodeGenTestMethod testMethod,
 		DisposalTracker disposalTracker,
-		string displayName,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits)
+		string displayName)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(disposalTracker);
 		Guard.ArgumentNotNull(displayName);
-		Guard.ArgumentNotNull(traits);
 
 		try
 		{
@@ -247,7 +235,7 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 					testMethod.SourceLineNumber,
 					displayName,
 					testMethod,
-					traits,
+					testMethod.Traits,
 					UniqueIDGenerator.ForTestCase(testMethod.UniqueID, index: -1)
 				)];
 
@@ -269,7 +257,7 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 						testMethod.SourceLineNumber,
 						displayName,
 						testMethod,
-						traits,
+						testMethod.Traits,
 						UniqueIDGenerator.ForTestCase(testMethod.UniqueID, index: -1)
 					)];
 
@@ -280,15 +268,17 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 					testMethod.SourceLineNumber,
 					displayName,
 					testMethod,
-					traits,
+					testMethod.Traits,
 					UniqueIDGenerator.ForTestCase(testMethod.UniqueID, index: -1)
 				)];
 			}
 
+			var dataRowRequestingDisableDiscoveryEnumeration = dataRowFactories.Any(f => f.DisableDiscoveryEnumeration);
+
 			return
-				DisableDiscoveryEnumeration ?? !discoveryOptions.PreEnumerateTheoriesOrDefault()
-					? await GenerateDelayEnumerated(testMethod, displayName, disposalTracker, traits, dataRowFactories)
-					: await GeneratePreEnumerated(testMethod, displayName, disposalTracker, traits, dataRowFactories);
+				dataRowRequestingDisableDiscoveryEnumeration || (DisableDiscoveryEnumeration ?? !discoveryOptions.PreEnumerateTheoriesOrDefault())
+					? await GenerateDelayEnumerated(testMethod, displayName, disposalTracker, [.. dataRowFactories.Select(f => f.Factory)])
+					: await GeneratePreEnumerated(testMethod, displayName, disposalTracker, [.. dataRowFactories.Select(f => f.Factory)]);
 		}
 		catch (Exception ex)
 		{
@@ -299,7 +289,7 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 				testMethod.SourceLineNumber,
 				displayName,
 				testMethod,
-				traits,
+				testMethod.Traits,
 				UniqueIDGenerator.ForTestCase(testMethod.UniqueID, index: -1)
 			)];
 		}
@@ -336,21 +326,21 @@ public abstract class TheoryTestCaseFactoryBase : TestCaseFactoryBase
 	/// <summary>
 	/// Merges two sets of traits together into a single trait dictionary
 	/// </summary>
-	/// <param name="testCaseTraits">The traits from the test case</param>
+	/// <param name="existingTraits">The traits from the test case or test method</param>
 	/// <param name="dataRowTraits">The traits from the data row</param>
 	/// <returns>The merged traits</returns>
 	protected static IReadOnlyDictionary<string, IReadOnlyCollection<string>> MergeTraits(
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> testCaseTraits,
+		IReadOnlyDictionary<string, IReadOnlyCollection<string>> existingTraits,
 		Dictionary<string, HashSet<string>>? dataRowTraits)
 	{
-		Guard.ArgumentNotNull(testCaseTraits);
+		Guard.ArgumentNotNull(existingTraits);
 
 		if (dataRowTraits is null || dataRowTraits.Count == 0)
-			return testCaseTraits;
+			return existingTraits;
 
 		var result = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
-		foreach (var kvp in testCaseTraits)
+		foreach (var kvp in existingTraits)
 			foreach (var value in kvp.Value)
 				result.Add(kvp.Key, value);
 

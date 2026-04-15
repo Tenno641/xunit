@@ -13,12 +13,10 @@ public class TheoryTestCaseFactory : TheoryTestCaseFactoryBase
 		ICodeGenTestMethod testMethod,
 		string displayName,
 		DisposalTracker disposalTracker,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		IReadOnlyCollection<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>> dataRowFactories)
 	{
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(displayName);
-		Guard.ArgumentNotNull(traits);
 		Guard.ArgumentNotNull(dataRowFactories);
 
 		var testFactories = new List<Func<ICodeGenTestCase, ValueTask<IReadOnlyCollection<ICodeGenTest>>>>
@@ -30,13 +28,13 @@ public class TheoryTestCaseFactory : TheoryTestCaseFactoryBase
 
 				foreach (var dataRowFactory in dataRowFactories)
 					foreach (var dataRow in await dataRowFactory(disposalTracker))
-						result.Add(CreateDelayEnumeratedTest(testCase, displayName, traits, dataRow, await MethodInvokerFactory(dataRow), ++idx));
+						result.Add(CreateDelayEnumeratedTest(testCase, displayName, dataRow, await MethodInvokerFactory(dataRow), ++idx));
 
 				return result;
 			}
 		};
 
-		return [CreateDelayEnumeratedTestCase(testMethod, displayName, traits, testFactories)];
+		return [CreateDelayEnumeratedTestCase(testMethod, displayName, testFactories)];
 	}
 
 	/// <inheritdoc/>
@@ -44,12 +42,10 @@ public class TheoryTestCaseFactory : TheoryTestCaseFactoryBase
 		ICodeGenTestMethod testMethod,
 		string displayName,
 		DisposalTracker disposalTracker,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		IReadOnlyCollection<Func<DisposalTracker, ValueTask<IReadOnlyCollection<ITheoryDataRow>>>> dataRowFactories)
 	{
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(displayName);
-		Guard.ArgumentNotNull(traits);
 		Guard.ArgumentNotNull(dataRowFactories);
 
 		var result = new List<ICodeGenTestCase>();
@@ -65,7 +61,7 @@ public class TheoryTestCaseFactory : TheoryTestCaseFactoryBase
 						? StringExtensions.FormatTestCaseIndex(idx)
 						: null;
 
-				result.Add(CreatePreEnumeratedTestCase(testMethod, displayName, traits, dataRow, await MethodInvokerFactory(dataRow), idx, displayNameIndex: displayNameIndex));
+				result.Add(CreatePreEnumeratedTestCase(testMethod, displayName, dataRow, await MethodInvokerFactory(dataRow), idx, displayNameIndex: displayNameIndex));
 			}
 
 		return result;

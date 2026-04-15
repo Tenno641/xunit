@@ -21,8 +21,7 @@ public class CulturedFactTestCaseFactory : FactTestCaseFactoryBase
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		ICodeGenTestMethod testMethod,
 		DisposalTracker disposalTracker,
-		string displayName,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits)
+		string displayName)
 	{
 		Guard.ArgumentNotNull(testMethod);
 		Guard.ArgumentNotNull(displayName);
@@ -40,7 +39,7 @@ public class CulturedFactTestCaseFactory : FactTestCaseFactoryBase
 				[async testCase => [GenerateTest(testCase, obj => CultureOverride.Call(culture, obj, MethodInvoker))]],
 				testMethod,
 				Timeout,
-				traits,
+				testMethod.Traits,
 				$"{UniqueIDGenerator.ForTestCase(testMethod.UniqueID, index: 0)}[{culture}]"
 			)
 		).CastOrToReadOnlyCollection();

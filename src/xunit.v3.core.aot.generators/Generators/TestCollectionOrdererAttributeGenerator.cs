@@ -13,7 +13,4 @@ public class TestCollectionOrdererAttributeGenerator() :
 [Generator(LanguageNames.CSharp)]
 public class TestCollectionOrdererAttributeOfTGenerator() :
 	AssemblyFactoryAttributeGeneratorBase(Types.Xunit.TestCollectionOrdererAttribute + "`1", "RegisterAssemblyTestCollectionOrdererFactory")
-{
-	protected override bool ValidateImplementationType(INamedTypeSymbol type) =>
-		type.ImplementsInterface(Types.Xunit.v3.ITestCollectionOrderer);
-}
+{ }

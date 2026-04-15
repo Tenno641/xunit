@@ -51,7 +51,6 @@ public abstract class TestCaseFactoryBase : ICodeGenTestCaseFactory
 	public ValueTask<IReadOnlyCollection<ICodeGenTestCase>> Generate(
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		ICodeGenTestMethod testMethod,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits,
 		DisposalTracker disposalTracker)
 	{
 		Guard.ArgumentNotNull(discoveryOptions);
@@ -66,7 +65,7 @@ public abstract class TestCaseFactoryBase : ICodeGenTestCaseFactory
 					? formatter.Format(string.Format(CultureInfo.CurrentCulture, "{0}.{1}", testMethod.TestClass.Class.SafeName(), testMethod.MethodName))
 					: formatter.Format(testMethod.MethodName));
 
-		return GenerateTestCases(discoveryOptions, testMethod, disposalTracker, displayName, traits);
+		return GenerateTestCases(discoveryOptions, testMethod, disposalTracker, displayName);
 	}
 
 	/// <summary>
@@ -100,11 +99,9 @@ public abstract class TestCaseFactoryBase : ICodeGenTestCaseFactory
 	/// <param name="testMethod">The test method the test cases are generated from</param>
 	/// <param name="disposalTracker">The disposal tracker (for class data instances and objects in data rows)</param>
 	/// <param name="displayName">The base display name of the test case</param>
-	/// <param name="traits">The traits for the test case</param>
 	protected abstract ValueTask<IReadOnlyCollection<ICodeGenTestCase>> GenerateTestCases(
 		ITestFrameworkDiscoveryOptions discoveryOptions,
 		ICodeGenTestMethod testMethod,
 		DisposalTracker disposalTracker,
-		string displayName,
-		IReadOnlyDictionary<string, IReadOnlyCollection<string>> traits);
+		string displayName);
 }

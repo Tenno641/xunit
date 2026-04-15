@@ -29,10 +29,10 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 		SourceProductionContext context,
 		GeneratorResult result)
 	{
-		if (result is null || result.Factory is null)
+		if (result is null || result.Factories.Count == 0)
 			return;
 
-		AddInitAttribute(context, result, GetRegistration(result));
+		AddInitAttribute(context, result, string.Join("\n", result.Factories.Select(f => GetRegistration(f.Type, f.Factory))));
 	}
 
 	protected virtual string? GetFactory(
@@ -54,8 +54,10 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 		return null;
 	}
 
-	protected virtual string GetRegistration(GeneratorResult result) =>
-		$"global::Xunit.v3.RegisteredEngineConfig.{Guard.ArgumentNotNull(factoryRegistrationMethod)}({Guard.ArgumentNotNull(result).Factory});";
+	protected virtual string GetRegistration(
+		string type,
+		string factory) =>
+			$"global::Xunit.v3.RegisteredEngineConfig.{Guard.ArgumentNotNull(factoryRegistrationMethod)}({Guard.ArgumentNotNull(factory)});";
 
 	protected override sealed GeneratorResult? Transform(
 		GeneratorAttributeSyntaxContext context,
@@ -66,8 +68,7 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 
 		var result = new GeneratorResult(context);
 
-		var attribute = context.Attributes.FirstOrDefault();
-		if (attribute is not null)
+		foreach (var attribute in context.Attributes)
 		{
 			var type = GetTypeArgument(attribute);
 			if (type is not null)
@@ -75,14 +76,11 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 				var location = attribute.ApplicationSyntaxReference.Location;
 				var factory = GetFactory(type, location, result);
 				if (factory is not null)
-				{
-					result.Type = type.ToCSharp();
-					result.Factory = factory;
-				}
+					result.Factories.Add((type.ToCSharp(), factory));
 			}
 		}
 
-		return result;
+		return result.Factories.Count != 0 ? result : null;
 	}
 
 	protected virtual INamedTypeSymbol? GetTypeArgument(AttributeData attribute) =>
@@ -112,9 +110,7 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 	public sealed class GeneratorResult(GeneratorAttributeSyntaxContext context) :
 		XunitGeneratorResult(context.SemanticModel, context.TargetNode), IEquatable<GeneratorResult?>
 	{
-		public string? Factory { get; set; }
-
-		public string? Type { get; set; }
+		public List<(string Type, string Factory)> Factories = [];
 
 		public override bool Equals(object? obj) =>
 			Equals(obj as GeneratorResult);
@@ -122,10 +118,9 @@ public abstract class AssemblyFactoryAttributeGeneratorBase(
 		public bool Equals(GeneratorResult? other) =>
 			other is not null &&
 			base.Equals(other) &&
-			ComparerHelper.Equals(Factory, other.Factory) &&
-			ComparerHelper.Equals(Type, other.Type);
+			ComparerHelper.Equals(Factories, other.Factories);
 
 		public override int GetHashCode() =>
-			Hasher.Extend(base.GetHashCode()).With(Factory).With(Type);
+			Hasher.Extend(base.GetHashCode()).With(Factories);
 	}
 }

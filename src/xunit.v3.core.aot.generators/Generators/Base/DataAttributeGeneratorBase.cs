@@ -17,10 +17,11 @@ public abstract class DataAttributeGeneratorBase(string fullyQualifiedAttributeT
 
 		foreach (var factory in result.Factories)
 			// The extra whitespace around {{factory}} allows us to use preprocessor directives in the factory code
-			initialization.AppendLine($$"""
-				global::Xunit.v3.RegisteredEngineConfig.RegisterTheoryDataRowFactory({{result.Type.Quoted()}}, {{result.MethodName.Quoted()}},
-				{{factory}}
+			initialization.Append($$"""
+				global::Xunit.v3.RegisteredEngineConfig.RegisterTheoryDataRowFactory({{result.Type.Quoted()}}, {{result.MethodName.Quoted()}}, {{factory.DisableDiscoveryEnumeration.ToCSharp()}},
+					{{factory.Factory.Replace("\n", "\n\t")}}
 				);
+
 				"""
 			);
 
@@ -174,7 +175,7 @@ public abstract class DataAttributeGeneratorBase(string fullyQualifiedAttributeT
 	public class GeneratorResult(GeneratorAttributeSyntaxContext context) :
 		XunitGeneratorResult(context.SemanticModel, context.TargetNode), IEquatable<GeneratorResult?>
 	{
-		public List<string> Factories = [];
+		public List<(string Factory, bool DisableDiscoveryEnumeration)> Factories = [];
 
 		public required string MethodName { get; set; }
 

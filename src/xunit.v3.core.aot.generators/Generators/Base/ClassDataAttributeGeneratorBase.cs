@@ -36,20 +36,19 @@ public abstract class ClassDataAttributeGeneratorBase(string fullyQualifiedAttri
 		var dataRowAwait = theoryDataInfo.Value.IsTask ? "await " : "";
 		var asyncClassDataInit =
 			classDataType.Implements(Types.Xunit.IAsyncLifetime)
-				? "await ((global::Xunit.IAsyncLifetime)classData).InitializeAsync();"
+				? "await ((global::Xunit.IAsyncLifetime)classData).InitializeAsync();\n\t"
 				: string.Empty;
 
-		result.Factories.Add($$"""
+		result.Factories.Add(($$"""
 			async disposalTracker => {
 				var attr = {{dataAttributeRegistration}};
 				var dataRows = new global::System.Collections.Generic.List<global::Xunit.ITheoryDataRow>();
 				var classData = new {{classDataType.ToCSharp()}}();
 				disposalTracker.Add(classData);
-				{{asyncClassDataInit}}
-				{{foreachAwait}}foreach (var dataRow in {{dataRowAwait}}classData)
+				{{asyncClassDataInit}}{{foreachAwait}}foreach (var dataRow in {{dataRowAwait}}classData)
 					dataRows.Add(attr.CreateDataRow(dataRow));
 				return dataRows;
 			}
-			""");
+			""", false));
 	}
 }

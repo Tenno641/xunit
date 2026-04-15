@@ -25,12 +25,12 @@ public class InlineDataAttributeGenerator() :
 
 		result.GeneratorSuffix = $"{classSymbol.Name}٠{methodSymbol.Name}٠";
 
-		result.Factories.Add($$"""
+		result.Factories.Add(($$"""
 			async disposalTracker => {
 				var attr = {{dataAttributeRegistration}};
 				var data = {{(attribute.ConstructorArguments[0].IsNull ? "new object?[] { null }" : attribute.ConstructorArguments[0].ToCSharp())}};
 				return new[] { attr.CreateDataRow(data) };
 			}
-			""");
+			""", false));
 	}
 }
