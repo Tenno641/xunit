@@ -52,25 +52,23 @@ public sealed class TestContextTests : IClassFixture<TestContextTests.MyClassFix
 	}
 
 	[Fact]
-	public static void CannotAccessCancellationTokenOfDisposedContext()
+	public static void CancellationTokenReturnsDefaultTokenWhenDisposed()
 	{
 		TestContextInternal.Current.Dispose();
 
 		var ex = Record.Exception(() => TestContext.Current.CancellationToken);
 
-		var odex = Assert.IsType<ObjectDisposedException>(ex);
-		Assert.Equal(typeof(TestContext).FullName, odex.ObjectName);
+		Assert.Null(ex);
 	}
 
 	[Fact]
-	public static void CannotCancelTestWithDisposedContext()
+	public static void TryingToCancelFromDisposedContextDoesNotThrow()
 	{
 		TestContextInternal.Current.Dispose();
 
 		var ex = Record.Exception(() => TestContext.Current.CancelCurrentTest());
 
-		var odex = Assert.IsType<ObjectDisposedException>(ex);
-		Assert.Equal(typeof(TestContext).FullName, odex.ObjectName);
+		Assert.Null(ex);
 	}
 
 	[Fact]

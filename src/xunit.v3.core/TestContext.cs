@@ -52,15 +52,8 @@ public sealed class TestContext : ITestContext, IDisposable
 	public IReadOnlyDictionary<string, TestAttachment>? Attachments => attachments;
 
 	/// <inheritdoc/>
-	public CancellationToken CancellationToken
-	{
-		get
-		{
-			ObjectDisposedException.ThrowIf(disposed, this);
-
-			return linkedCancellationTokenSource.Token;
-		}
-	}
+	public CancellationToken CancellationToken =>
+		disposed ? default : linkedCancellationTokenSource.Token;
 
 	/// <summary>
 	/// Gets the current test context. If called outside of the test discovery or execution path,
@@ -219,9 +212,8 @@ public sealed class TestContext : ITestContext, IDisposable
 	/// <inheritdoc/>
 	public void CancelCurrentTest()
 	{
-		ObjectDisposedException.ThrowIf(disposed, this);
-
-		testCancellationTokenSource.Cancel();
+		if (!disposed)
+			testCancellationTokenSource.Cancel();
 	}
 
 	/// <inheritdoc/>
