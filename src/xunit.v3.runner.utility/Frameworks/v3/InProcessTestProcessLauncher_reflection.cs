@@ -2,6 +2,11 @@ using System.Reflection;
 using Xunit.Runner.Common;
 using Xunit.Sdk;
 
+#if NETCOREAPP
+using System.Runtime.Loader;
+using Xunit.Runner.v3;
+#endif
+
 namespace Xunit.v3;
 
 /// <summary>
@@ -22,6 +27,29 @@ public sealed class InProcessTestProcessLauncher : ITestProcessLauncher, ITestPr
 
 	InProcessTestProcessLauncher()
 	{ }
+
+#if NETCOREAPP
+
+	static AssemblyLoadContext? loadContext;
+
+	/// <summary>
+	/// Gets or sets the assembly load context used to load the test assembly.
+	/// </summary>
+	/// <remarks>
+	/// Note: You must set this before calling any other APIs on this class, directly or via its
+	/// interfaces <see cref="ITestProcessLauncher"/> and <see cref="ITestProcessDirectLauncher"/>,
+	/// as well as any usage of <see cref="Xunit3.ForDiscoveryAndExecution"/> when passing in
+	/// the static <see cref="Instance"/> as the test process launcher.<br />
+	/// <br />
+	/// By default, returns <see cref="AssemblyLoadContext.Default"/>.
+	/// </remarks>
+	public static AssemblyLoadContext LoadContext
+	{
+		get => loadContext ?? AssemblyLoadContext.Default;
+		set => loadContext = Guard.ArgumentNotNull(value, nameof(LoadContext));
+	}
+
+#endif  // NETCOREAPP
 
 	/// <summary>
 	/// Gets the singleton instance of <see cref="InProcessTestProcessLauncher"/>.
@@ -71,11 +99,19 @@ public sealed class InProcessTestProcessLauncher : ITestProcessLauncher, ITestPr
 	{
 		Guard.ArgumentNotNull(testAssemblyFileName);
 
+#if NETCOREAPP
+		var testAssembly = LoadContext.LoadFromAssemblyPath(testAssemblyFileName);
+#else
 		var testAssembly = Assembly.LoadFrom(testAssemblyFileName);
+#endif
 		if (testAssembly is null)
 			throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Could not load test assembly '{0}'", testAssemblyFileName));
 
+#if NETCOREAPP
+		inprocRunnerAssembly ??= LoadContext.Assemblies.FirstOrDefault(a => a.GetName().Name == "xunit.v3.runner.inproc.console");
+#else
 		inprocRunnerAssembly ??= AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == "xunit.v3.runner.inproc.console");
+#endif
 		if (inprocRunnerAssembly is null)
 			throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Test assembly '{0}' does not link against xunit.v3.runner.inproc.console", testAssemblyFileName));
 

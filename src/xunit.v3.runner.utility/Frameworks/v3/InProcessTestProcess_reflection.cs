@@ -54,8 +54,13 @@ internal sealed class InProcessTestProcess : ITestProcess
 		string testAssembly,
 		IReadOnlyList<string> responseFileArguments)
 	{
+#if NETCOREAPP
+		var assembly = InProcessTestProcessLauncher.LoadContext.LoadFromAssemblyPath(testAssembly);
+		var inprocRunnerAssembly = InProcessTestProcessLauncher.LoadContext.Assemblies.FirstOrDefault(a => a.GetName().Name == "xunit.v3.runner.inproc.console");
+#else
 		var assembly = Assembly.LoadFrom(testAssembly);
 		var inprocRunnerAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == "xunit.v3.runner.inproc.console");
+#endif
 		if (inprocRunnerAssembly is null)
 			return null;
 
