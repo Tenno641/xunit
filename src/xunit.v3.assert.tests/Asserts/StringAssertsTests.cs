@@ -942,13 +942,13 @@ public static class StringAssertsTests
 			verify(() => Assert.Equal(expected.Spanify(), actual.AsSpan(), ignoreWhiteSpaceDifferences: true));
 			verify(() => Assert.Equal(expected.AsSpan(), actual.AsSpan(), ignoreWhiteSpaceDifferences: true));
 		}
-		
+
 		[Fact]
 		public static void SetPrintMaxStringLength()
 		{
 			var expected = "01234567890123456789_01234567890123456789";
-			var actual   = "01234567890123456789012345678901234567890123456789";
-			
+			var actual = "01234567890123456789012345678901234567890123456789";
+
 			static void verify(Action action)
 			{
 				Assert.SetPrintMaxStringLength(20);
@@ -977,12 +977,12 @@ public static class StringAssertsTests
 			verify(() => Assert.Equal(expected.Spanify(), actual.AsSpan()));
 			verify(() => Assert.Equal(expected.AsSpan(), actual.AsSpan()));
 		}
-		
+
 		[Fact]
 		public static void SetPrintMaxStringLength_Zero_DisablesTruncation()
 		{
 			var expected = "01234567890123456789012345678901234567890123456789_1234";
-			var actual   = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
+			var actual = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
 			static void verify(Action action)
 			{
@@ -1012,12 +1012,12 @@ public static class StringAssertsTests
 			verify(() => Assert.Equal(expected.Spanify(), actual.AsSpan()));
 			verify(() => Assert.Equal(expected.AsSpan(), actual.AsSpan()));
 		}
-		
+
 		[Fact]
 		public static void SetPrintMaxStringLength_MismatchedAtFirst()
 		{
 			var expected = "01234_56789012345678901234567890123456789";
-			var actual   = "01234567890123456789012345678901234567890123456789";
+			var actual = "01234567890123456789012345678901234567890123456789";
 
 			static void verify(Action action)
 			{
@@ -1047,12 +1047,12 @@ public static class StringAssertsTests
 			verify(() => Assert.Equal(expected.Spanify(), actual.AsSpan()));
 			verify(() => Assert.Equal(expected.AsSpan(), actual.AsSpan()));
 		}
-		
+
 		[Fact]
 		public static void SetPrintMaxStringLength_MismatchedAtEnd()
 		{
 			var expected = "01234567890123456789012345678901234567890123456789_1234";
-			var actual   = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
+			var actual = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
 			static void verify(Action action)
 			{
@@ -1082,16 +1082,16 @@ public static class StringAssertsTests
 			verify(() => Assert.Equal(expected.Spanify(), actual.AsSpan()));
 			verify(() => Assert.Equal(expected.AsSpan(), actual.AsSpan()));
 		}
-		
+
 		[Fact]
 		public static void SetPrintMaxStringLength_DoesNotAffectOtherTests()
 		{
 			var expected = "01234567890123456789012345678901234567890123456789_1234";
-			var actual   = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
-			
+			var actual = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
+
 			Assert.SetPrintMaxStringLength(0);
 			var ex1 = Record.Exception(() => Assert.Equal(expected, actual));
-			
+
 			Assert.SetPrintMaxStringLength(null);
 			var ex2 = Record.Exception(() => Assert.Equal(expected, actual));
 
