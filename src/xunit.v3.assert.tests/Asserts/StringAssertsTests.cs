@@ -944,14 +944,14 @@ public static class StringAssertsTests
 		}
 
 		[Fact]
-		public static void SetPrintMaxStringLength()
+		public static void OverrideMaxStringLength_NonZero()
 		{
 			var expected = "01234567890123456789_01234567890123456789";
 			var actual = "01234567890123456789012345678901234567890123456789";
 
 			static void verify(Action action)
 			{
-				Assert.SetPrintMaxStringLength(20);
+				Assert.OverrideMaxStringLength(20);
 
 				var ex = Record.Exception(action);
 
@@ -979,14 +979,14 @@ public static class StringAssertsTests
 		}
 
 		[Fact]
-		public static void SetPrintMaxStringLength_Zero_DisablesTruncation()
+		public static void OverrideMaxStringLength_Zero_DisablesTruncation()
 		{
 			var expected = "01234567890123456789012345678901234567890123456789_1234";
 			var actual = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
 			static void verify(Action action)
 			{
-				Assert.SetPrintMaxStringLength(0);
+				Assert.OverrideMaxStringLength(0);
 
 				var ex = Record.Exception(action);
 
@@ -1014,14 +1014,14 @@ public static class StringAssertsTests
 		}
 
 		[Fact]
-		public static void SetPrintMaxStringLength_MismatchedAtFirst()
+		public static void OverrideMaxStringLength_MismatchedAtFirst()
 		{
 			var expected = "01234_56789012345678901234567890123456789";
 			var actual = "01234567890123456789012345678901234567890123456789";
 
 			static void verify(Action action)
 			{
-				Assert.SetPrintMaxStringLength(20);
+				Assert.OverrideMaxStringLength(20);
 
 				var ex = Record.Exception(action);
 
@@ -1049,14 +1049,14 @@ public static class StringAssertsTests
 		}
 
 		[Fact]
-		public static void SetPrintMaxStringLength_MismatchedAtEnd()
+		public static void OverrideMaxStringLength_MismatchedAtEnd()
 		{
 			var expected = "01234567890123456789012345678901234567890123456789_1234";
 			var actual = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
 			static void verify(Action action)
 			{
-				Assert.SetPrintMaxStringLength(10);
+				Assert.OverrideMaxStringLength(10);
 
 				var ex = Record.Exception(action);
 
@@ -1084,15 +1084,15 @@ public static class StringAssertsTests
 		}
 
 		[Fact]
-		public static void SetPrintMaxStringLength_DoesNotAffectOtherTests()
+		public static void OverrideMaxStringLength_DoesNotAffectOtherTests()
 		{
 			var expected = "01234567890123456789012345678901234567890123456789_1234";
 			var actual = "01234567890123456789012345678901234567890123456789012345678901234567890123456789";
 
-			Assert.SetPrintMaxStringLength(0);
+			Assert.OverrideMaxStringLength(0);
 			var ex1 = Record.Exception(() => Assert.Equal(expected, actual));
 
-			Assert.SetPrintMaxStringLength(null);
+			Assert.OverrideMaxStringLength(null);
 			var ex2 = Record.Exception(() => Assert.Equal(expected, actual));
 
 			Assert.IsType<EqualException>(ex1);
